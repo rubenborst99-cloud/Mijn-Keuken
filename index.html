@@ -67,6 +67,9 @@ textarea{min-height:170px;resize:vertical}
 
 <dialog id="dlg">
   <h2 id="dt">Recept</h2>
+  <label for="f-url">Link naar een recept (optioneel)</label>
+  <div class="row"><input id="f-url" type="url" placeholder="https://..." style="flex:1;width:auto;min-width:0"><button class="btn sm" id="f-go" onclick="fetchRecipe()">Ophalen</button></div>
+  <p id="f-st" class="mute" style="margin:6px 0 0"></p>
   <label for="f-name">Naam</label><input id="f-name">
   <div class="row"><div style="flex:1"><label for="f-cat">Categorie</label><input id="f-cat" list="cats"></div>
   <div><label for="f-pers">Voor (personen)</label><input id="f-pers" type="number" min="1" value="4" style="width:90px"></div></div>
@@ -121,11 +124,11 @@ function draw(){if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";$("main"
  document.getElementById("main").innerHTML={rec:vRec,menu:vMenu,list:vList,log:vLog}[S.tab]();ft()}
 function cats(){return[...new Set(S.recipes.map(r=>r.cat).filter(Boolean))].sort()}
 const OPEN={};function tog(id){OPEN[id]=!OPEN[id];draw()}
-function detail(r){return`<div style="margin:10px 0 14px"><h3 style="font-size:1rem;margin-bottom:4px">Ingrediënten</h3><ul style="margin:0 0 12px;padding-left:20px">${r.ing.map(l=>`<li>${esc(l.split("|")[0].trim())}</li>`).join("")}</ul><h3 style="font-size:1rem;margin-bottom:4px">Bereiding</h3>${r.steps?`<div style="white-space:pre-wrap;max-width:70ch">${esc(r.steps)}</div>`:`<p class="mute">Nog geen bereidingswijze. Voeg die toe via Aanpassen.</p>`}</div>`}
+function detail(r){return`<div style="margin:10px 0 14px">${/^https?:\/\//.test(r.url||"")?`<p style="margin:0 0 8px"><a href="${esc(r.url)}" target="_blank" rel="noopener" style="color:var(--green)">Bron van dit recept</a></p>`:""}<h3 style="font-size:1rem;margin-bottom:4px">Ingrediënten</h3><ul style="margin:0 0 12px;padding-left:20px">${r.ing.map(l=>`<li>${esc(l.split("|")[0].trim())}</li>`).join("")}</ul><h3 style="font-size:1rem;margin-bottom:4px">Bereiding</h3>${r.steps?`<div style="white-space:pre-wrap;max-width:70ch">${esc(r.steps)}</div>`:`<p class="mute">Nog geen bereidingswijze. Voeg die toe via Aanpassen.</p>`}</div>`}
 function vRec(){
  const c=["Alles",...cats()];
  const rs=S.recipes.filter(r=>S.cat=="Alles"||r.cat==S.cat);
- return`<div class="bar">${c.map(x=>`<button class="chip ${S.cat==x?"on":""}" onclick="S.cat='${esc(x).replace(/'/g,"")}';save();draw()">${esc(x)}</button>`).join("")}<span style="flex:1"></span><button class="btn" onclick="openR()">+ Nieuw recept</button></div>`+
+ return sugBlock()+`<div class="bar">${c.map(x=>`<button class="chip ${S.cat==x?"on":""}" onclick="S.cat='${esc(x).replace(/'/g,"")}';save();draw()">${esc(x)}</button>`).join("")}<span style="flex:1"></span><button class="btn" onclick="openR()">+ Nieuw recept</button></div>`+
  (rs.length?`<div class="grid">${rs.map(r=>`<div class="card rc"${OPEN[r.id]?' style="grid-column:1/-1"':""}><h3 style="cursor:pointer" onclick="tog(${r.id})">${esc(r.name)}</h3><span class="tag">${esc(r.cat||"Zonder categorie")}</span><p class="mute">${r.ing.length} ingrediënten, voor ${r.pers} personen</p>${OPEN[r.id]?detail(r):""}<div class="row"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button><button class="btn ghost sm" onclick="tog(${r.id})">${OPEN[r.id]?"Sluiten":"Bekijken"}</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button></div></div>`).join("")}</div>`:`<div class="empty">Nog geen recepten in deze categorie. Voeg je eerste recept toe.</div>`)}
 function vList(){
  const L=list(),st=STORES[S.store];
@@ -153,6 +156,51 @@ function vMenu(){if(!S.sel.length)return`<div class="empty">Nog geen recepten ge
  return`<div class="card">${S.sel.map((e,i)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<div class="item" style="cursor:default"><b>${esc(r.name)}</b><span class="row" style="margin-left:auto"><input type="number" min="1" value="${e.pers}" style="width:70px;height:auto" aria-label="Personen voor ${esc(r.name)}" onchange="setP(${i},this.value)"><span class="mute">pers.</span><button class="btn ghost sm del" onclick="rmS(${i})">Weghalen</button></span></div>`:""}).join("")}</div><p class="mute">Je boodschappenlijst staat onder Boodschappen.</p>`}
 function setP(i,v){S.sel[i].pers=Math.max(1,+v||1);save();draw()}
 function rmS(i){S.sel.splice(i,1);save();draw()}
+const SUG={on:false,n:4,ids:[]};
+function recentNames(){const t=new Set();for(const g of S.log.slice(0,2))for(const m of g.meals||[])t.add(typeof m=="string"?m.replace(/ \(\d+ pers\.\)$/,""):m.name);return t}
+function suggest(n,keep){const rec=recentNames(),chosen=new Set(S.sel.map(e=>e.rid));
+ let pool=S.recipes.filter(r=>!chosen.has(r.id)&&!keep.includes(r.id));
+ const fresh=pool.filter(r=>!rec.has(r.name));if(fresh.length>=n-keep.length)pool=fresh;
+ pool=pool.map(r=>[Math.random(),r]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+ const out=keep.slice(),cnt={};for(const id of keep){const r=S.recipes.find(x=>x.id==id);if(r)cnt[r.cat]=(cnt[r.cat]||0)+1}
+ while(out.length<n&&pool.length){let bi=0,bc=1e9;for(let i=0;i<pool.length;i++){const c=cnt[pool[i].cat]||0;if(c<bc){bc=c;bi=i}}
+  const r=pool.splice(bi,1)[0];cnt[r.cat]=(cnt[r.cat]||0)+1;out.push(r.id)}
+ return out}
+function sugBlock(){
+ const head=`<label class="bar" style="cursor:pointer;margin:0 0 10px"><input type="checkbox" ${SUG.on?"checked":""} style="width:20px;height:20px;padding:0;accent-color:var(--green)" onchange="sugToggle(this.checked)"><b>Suggesties voor de week</b></label>`;
+ if(!SUG.on)return`<div style="margin-bottom:14px">${head}</div>`;
+ const cards=SUG.ids.map((id,i)=>{const r=S.recipes.find(x=>x.id==id);return r?`<div class="card rc"><h3>${esc(r.name)}</h3><span class="tag">${esc(r.cat||"Zonder categorie")}</span><div class="row" style="margin-top:12px"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button><button class="btn ghost sm" onclick="sugSwap(${i})">Andere</button></div></div>`:""}).join("");
+ return`<div class="card" style="margin-bottom:18px">${head}<div class="row" style="margin-bottom:14px"><label for="sn">Hoeveel maaltijden?</label><input id="sn" type="number" min="1" max="14" value="${SUG.n}" style="width:70px"><button class="btn sm" onclick="sugGo()">${SUG.ids.length?"Nieuwe suggesties":"Geef suggesties"}</button></div>${cards?`<div class="grid">${cards}</div>`:`<p class="mute" style="margin:0">Kies hoeveel maaltijden je wilt en klik op Geef suggesties.</p>`}${SUG.ids.length&&SUG.ids.length<SUG.n?`<p class="mute" style="margin-bottom:0">Meer recepten zijn er nu niet beschikbaar.</p>`:""}</div>`}
+function sugToggle(v){SUG.on=v;draw()}
+function sugGo(){SUG.n=Math.max(1,Math.min(14,+document.getElementById("sn").value||4));SUG.ids=suggest(SUG.n,[]);draw()}
+function sugSwap(i){const keep=SUG.ids.filter((_,j)=>j!=i);const all=suggest(SUG.n,keep);const nid=all[all.length-1];if(all.length>keep.length&&nid!=null)SUG.ids[i]=nid;draw()}
+function dec(t){const x=String(t==null?"":t).replace(/<br\s*\/?>|<\/p>|<\/li>/gi,"\n").replace(/<[^>]+>/g,"");const a=document.createElement("textarea");a.innerHTML=x;return a.value.replace(/[ \t ]+/g," ").replace(/\n\s*/g,"\n").trim()}
+function normIng(t){let x=dec(t).replace(/^[•\-*▢\s]+/,"");
+ x=x.replace(/(\d)?\s?([½¼¾])/g,(m,d,c)=>String((+d||0)+({"½":.5,"¼":.25,"¾":.75})[c]));
+ x=x.replace(/\b(eetlepels?|eetl\.?)(?=\s)/gi,"el").replace(/\b(theelepels?|theel\.?)(?=\s)/gi,"tl").replace(/\btbsp\b/gi,"el").replace(/\btsp\b/gi,"tl").replace(/\bmilliliter\b/gi,"ml").replace(/\bdeciliter\b/gi,"dl").replace(/\bliters?\b/gi,"l").replace(/\bkilo(gram)?\b/gi,"kg").replace(/\bgrammen\b/gi,"g");
+ return x.replace(/\s+/g," ").trim()}
+function yieldN(y){if(Array.isArray(y))y=y.find(v=>/\d/.test(String(v)))||y[0];const m=String(y==null?"":y).match(/\d+/);return m?+m[0]:4}
+function stepsOf(ins){const out=[];(function w(n){if(!n)return;if(typeof n=="string"){dec(n).split("\n").filter(Boolean).forEach(l=>out.push(l));return}if(Array.isArray(n)){n.forEach(w);return}if(n.itemListElement){w(n.itemListElement);return}if(n.text){dec(n.text).split("\n").filter(Boolean).forEach(l=>out.push(l));return}if(n.name)w(String(n.name))})(ins);
+ return out.map((t,i)=>(i+1)+". "+t.replace(/^\d+[.)]\s*/,"")).join("\n")}
+function findRecipe(doc){const nodes=[];doc.querySelectorAll('script[type="application/ld+json"]').forEach(sc=>{try{nodes.push(JSON.parse(sc.textContent))}catch(e){}});
+ let hit=null;(function w(n){if(hit||!n||typeof n!="object")return;if(Array.isArray(n)){n.forEach(w);return}if([].concat(n["@type"]||[]).includes("Recipe")){hit=n;return}w(n["@graph"]);w(n.mainEntity);w(n.itemListElement)})(nodes);return hit}
+async function fetchRecipe(){const st=document.getElementById("f-st"),u=f("url").value.trim();
+ if(!/^https?:\/\//i.test(u)){st.textContent="Plak een volledige link, beginnend met https://";return}
+ if(!sb){st.textContent="Link ophalen werkt alleen met online opslag (Supabase).";return}
+ const btn=document.getElementById("f-go");btn.disabled=true;st.textContent="Bezig met ophalen...";
+ try{const{data,error}=await sb.functions.invoke("recept-ophalen",{body:{url:u}});
+  if(error)throw new Error("functie");
+  if(!data||data.error)throw new Error(data&&data.error||"geen antwoord");
+  const doc=new DOMParser().parseFromString(data.html,"text/html"),r=findRecipe(doc);
+  if(!r){st.textContent="Op deze pagina staan geen receptgegevens die ik kan lezen. Vul het recept zelf in.";return}
+  const nm=dec(r.name);if(nm)f("name").value=nm;
+  f("pers").value=yieldN(r.recipeYield);
+  const ing=[].concat(r.recipeIngredient||[]).map(normIng).filter(Boolean);
+  f("ing").value=ing.join("\n");f("steps").value=stepsOf(r.recipeInstructions);
+  if(!f("cat").value.trim()){const c=[].concat(r.recipeCategory||[])[0]||[].concat(r.recipeCuisine||[])[0]||"";if(c)f("cat").value=dec(c).replace(/^./,x=>x.toUpperCase())}
+  st.textContent="Gevonden: "+ing.length+" ingrediënten. Controleer alles en klik op Recept opslaan."
+ }catch(e){st.textContent=e.message=="functie"?"Ophalen mislukt: de ophaalfunctie in Supabase is niet bereikbaar. Is die al aangemaakt?":"Ophalen mislukt: "+e.message}
+ finally{btn.disabled=false}}
 function xrow(){return`<div class="card" style="margin-bottom:16px"><div class="row"><input id="xi" placeholder="Losse boodschap, bijv. 2 pakken wc-papier" aria-label="Losse boodschap" style="flex:1;min-width:200px" onkeydown="if(event.key=='Enter')addX()"><button class="btn sm" onclick="addX()">Toevoegen</button></div>${S.extra.length?`<div style="margin-top:10px">${S.extra.map((t,i)=>`<span class="ent">${esc(t)}<button aria-label="Verwijder" onclick="rmX(${i})">×</button></span>`).join("")}</div>`:""}</div>`}
 function addX(){const v=document.getElementById("xi").value.trim();if(!v)return;S.extra.push(v);save();draw();document.getElementById("xi").focus()}
 function rmX(i){S.extra.splice(i,1);save();draw()}
@@ -160,11 +208,11 @@ function tick(k){S.checked[k]=!S.checked[k];save();draw()}
 function copyL(){const st=STORES[S.store][1],L=list();let t="";for(const a of st){const it=L.filter(x=>x.ai==a);if(it.length)t+=AISLES[a]+"\n"+it.map(x=>"- "+fmt(x.a,x.u)+" "+x.name).join("\n")+"\n\n"}try{navigator.clipboard.writeText(t)}catch(e){}}
 function openR(id){editId=id||null;const r=S.recipes.find(x=>x.id==id)||{name:"",cat:"",pers:4,ing:[]};
  document.getElementById("dt").textContent=id?"Recept aanpassen":"Nieuw recept";
- f("name").value=r.name;f("cat").value=r.cat;f("pers").value=r.pers;f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
+ f("name").value=r.name;f("cat").value=r.cat;f("url").value=r.url||"";document.getElementById("f-st").textContent="";f("pers").value=r.pers;f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
  document.getElementById("cats").innerHTML=cats().map(c=>`<option value="${esc(c)}">`).join("");dlg.showModal()}
 function f(x){return document.getElementById("f-"+x)}
 function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focus();return}
- const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||4,ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim()};
+ const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||4,ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim(),url:f("url").value.trim()};
  const i=S.recipes.findIndex(x=>x.id==editId);if(i>=0)S.recipes[i]=r;else S.recipes.push(r);save();dlg.close();draw()}
 function delR(id){ask("Dit recept verwijderen?",()=>delR2(id))}
 function delR2(id){S.recipes=S.recipes.filter(r=>r.id!=id);S.sel=S.sel.filter(e=>e.rid!=id);save();draw()}
