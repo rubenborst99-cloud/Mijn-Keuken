@@ -172,9 +172,9 @@ const $=i=>document.getElementById(i);
 const SB_URL=window.SB_URL||"",SB_KEY=window.SB_KEY||"";
 let sb=null,uid=null,tm,statTxt="";
 function setStat(t){statTxt=t;const e=$("stat");if(e)e.textContent=t}
-function push(){if(!sb||!uid)return;clearTimeout(tm);tm=setTimeout(async()=>{const{error}=await sb.from("keuken").upsert({user_id:uid,data:S,updated_at:new Date().toISOString()});setStat(error?"Opslaan mislukt":"Gesynchroniseerd")},600)}
+function push(){if(!sb||!uid)return;clearTimeout(tm);tm=setTimeout(async()=>{const{error}=await sb.from("keuken").upsert({user_id:uid,data:S,updated_at:new Date().toISOString()});setStat(error?"Opslaan mislukt: "+error.message:"Gesynchroniseerd")},600)}
 async function pull(){const{data,error}=await sb.from("keuken").select("data").eq("user_id",uid).maybeSingle();
- if(error){setStat("Ophalen mislukt");return}
+ if(error){setStat("Ophalen mislukt: "+error.message);return}
  if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};S.extra=S.extra||[];S.log=S.log||[];S.menu=S.menu||{};S.checked=S.checked||{};try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd")}else push()}
 function vLogin(){return`<div class="card" style="max-width:380px;margin:30px auto"><h2 style="margin-bottom:12px">Inloggen</h2><label for="em" class="mute">E-mailadres</label><input id="em" type="email" autocomplete="username" style="width:100%;margin-bottom:10px"><label for="pw" class="mute">Wachtwoord</label><input id="pw" type="password" autocomplete="current-password" style="width:100%;margin-bottom:14px" onkeydown="if(event.key=='Enter')login()"><button class="btn" onclick="login()">Inloggen</button><p id="lerr" style="color:var(--danger)"></p></div>`}
 async function login(){const{data,error}=await sb.auth.signInWithPassword({email:$("em").value.trim(),password:$("pw").value});if(error){$("lerr").textContent="Inloggen mislukt. Controleer je e-mailadres en wachtwoord.";return}uid=data.user.id;await pull();draw()}
