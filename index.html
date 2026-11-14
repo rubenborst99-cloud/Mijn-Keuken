@@ -70,6 +70,10 @@ textarea{min-height:170px;resize:vertical}
   <label for="f-url">Link naar een recept (optioneel)</label>
   <div class="row"><input id="f-url" type="url" placeholder="https://..." style="flex:1;width:auto;min-width:0"><button class="btn sm" id="f-go" onclick="fetchRecipe()">Ophalen</button></div>
   <p id="f-st" class="mute" style="margin:6px 0 0"></p>
+  <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">Recepttekst plakken</summary>
+  <textarea id="f-paste" style="min-height:110px;margin-top:8px" placeholder="Kopieer het recept van de website (ingrediënten en bereiding) en plak het hier"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn sm" onclick="parsePaste()">Verwerken</button></div>
+  <p id="f-ps" class="mute" style="margin:6px 0 0"></p></details>
   <label for="f-name">Naam</label><input id="f-name">
   <div class="row"><div style="flex:1"><label for="f-cat">Categorie</label><input id="f-cat" list="cats"></div>
   <div><label for="f-pers">Voor (personen)</label><input id="f-pers" type="number" min="1" value="4" style="width:90px"></div></div>
@@ -201,6 +205,31 @@ async function fetchRecipe(){const st=document.getElementById("f-st"),u=f("url")
   st.textContent="Gevonden: "+ing.length+" ingrediënten. Controleer alles en klik op Recept opslaan."
  }catch(e){st.textContent=e.message=="functie"?"Ophalen mislukt: de ophaalfunctie in Supabase is niet bereikbaar. Is die al aangemaakt?":"Ophalen mislukt: "+e.message}
  finally{btn.disabled=false}}
+function parsePaste(){const ps=document.getElementById("f-ps");
+ const HS=/^(ingredi[eë]nten|benodigdheden|ingredients)\b/i,HB=/^(bereiding(swijze)?|zo maak je het|en zo doe je het|aan de slag|instructies|werkwijze|instructions|directions|method)\b/i,
+  STOP=/^(voedingswaarden?|voedingsinformatie|nutrition|reacties|gerelateerde|wat vond je|laat een reactie)/i,SKIP=/^(bewaar|print|deel|opslaan|kies producten|aantal personen|benodigdheid|vegatip|algemeen)\b/i;
+ const L=document.getElementById("f-paste").value.split(/\r?\n/).map(x=>x.replace(/^[\s•▢□☐\-*#>]+/,"").trim()).filter(Boolean);
+ let pers=0;for(const l of L.slice(0,25)){const m=l.match(/(\d+)\s*(personen|persoons|pers\.?|porties|servings)\b/i)||l.match(/(?:aantal personen|serves|servings|porties)\s*:?\s*(\d+)/i);if(m){const n=+m[1];if(n>=1&&n<=20){pers=n;break}}}
+ const f0=L[0];const name=f0&&!HS.test(f0)&&!HB.test(f0)&&!/^[\d½¼¾]/.test(f0)&&f0.length<=90?f0:"";
+ let sec=null;const ing=[],st=[];
+ for(let i=0;i<L.length;i++){let l=L[i];
+  if(i==0&&name)continue;
+  if(STOP.test(l))break;
+  if(HS.test(l)){sec="ing";continue}
+  if(HB.test(l)){sec="st";continue}
+  if(SKIP.test(l)||/^\d+\s*(personen|pers\.?|porties)$/i.test(l)||/^\d+\s*(min\.?|minuten|uur)$/i.test(l))continue;
+  if(/^dit heb je nodig/i.test(l)){sec=sec=="ing"?"skip":"ing";continue}
+  if(sec=="skip")continue;
+  if(/^[\d.,\/½¼¾]+$/.test(l)){if(sec!="st"&&L[i+1]){l=l+" "+L[++i]}else continue}
+  const ingLike=/^([\d½¼¾]|een\b|snufje|handje|scheutje|mespunt|beetje|naar smaak|peper|zout)/i.test(l)&&l.length<90&&!/[.!?]$/.test(l);
+  const num=/^\d+[.)]\s+\S/.test(l),sentence=l.length>60&&/[.!?]$/.test(l);
+  if(num||sec=="st"||(sec!="ing"&&!ingLike&&l.length>40)||(sec=="ing"&&sentence)){sec="st";st.push(l.replace(/^\d+[.)]\s*/,""))}
+  else if(!/:$/.test(l)&&!/^voor (de|het)\b/i.test(l)){const n=normIng(l);if(n.length>1)ing.push(n)}}
+ if(name&&!f("name").value.trim())f("name").value=name;
+ if(pers)f("pers").value=pers;
+ if(ing.length)f("ing").value=ing.join("\n");
+ if(st.length)f("steps").value=st.map((t,i)=>(i+1)+". "+t).join("\n");
+ ps.textContent=ing.length||st.length?"Herkend: "+ing.length+" ingrediënten en "+st.length+" stappen. Controleer de velden hieronder en pas aan waar nodig.":"Niets herkend. Plak de ingrediënten en de bereiding, elk op een eigen regel."}
 function xrow(){return`<div class="card" style="margin-bottom:16px"><div class="row"><input id="xi" placeholder="Losse boodschap, bijv. 2 pakken wc-papier" aria-label="Losse boodschap" style="flex:1;min-width:200px" onkeydown="if(event.key=='Enter')addX()"><button class="btn sm" onclick="addX()">Toevoegen</button></div>${S.extra.length?`<div style="margin-top:10px">${S.extra.map((t,i)=>`<span class="ent">${esc(t)}<button aria-label="Verwijder" onclick="rmX(${i})">×</button></span>`).join("")}</div>`:""}</div>`}
 function addX(){const v=document.getElementById("xi").value.trim();if(!v)return;S.extra.push(v);save();draw();document.getElementById("xi").focus()}
 function rmX(i){S.extra.splice(i,1);save();draw()}
@@ -208,7 +237,7 @@ function tick(k){S.checked[k]=!S.checked[k];save();draw()}
 function copyL(){const st=STORES[S.store][1],L=list();let t="";for(const a of st){const it=L.filter(x=>x.ai==a);if(it.length)t+=AISLES[a]+"\n"+it.map(x=>"- "+fmt(x.a,x.u)+" "+x.name).join("\n")+"\n\n"}try{navigator.clipboard.writeText(t)}catch(e){}}
 function openR(id){editId=id||null;const r=S.recipes.find(x=>x.id==id)||{name:"",cat:"",pers:4,ing:[]};
  document.getElementById("dt").textContent=id?"Recept aanpassen":"Nieuw recept";
- f("name").value=r.name;f("cat").value=r.cat;f("url").value=r.url||"";document.getElementById("f-st").textContent="";f("pers").value=r.pers;f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
+ f("name").value=r.name;f("cat").value=r.cat;f("url").value=r.url||"";document.getElementById("f-st").textContent="";document.getElementById("f-paste").value="";document.getElementById("f-ps").textContent="";f("pers").value=r.pers;f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
  document.getElementById("cats").innerHTML=cats().map(c=>`<option value="${esc(c)}">`).join("");dlg.showModal()}
 function f(x){return document.getElementById("f-"+x)}
 function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focus();return}
@@ -217,7 +246,7 @@ function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focu
 function delR(id){ask("Dit recept verwijderen?",()=>delR2(id))}
 function delR2(id){S.recipes=S.recipes.filter(r=>r.id!=id);S.sel=S.sel.filter(e=>e.rid!=id);save();draw()}
 f("file").addEventListener("change",e=>{const fl=e.target.files[0];if(!fl)return;const rd=new FileReader();rd.onload=()=>{const t=String(rd.result);
- try{let j=JSON.parse(t);j=Array.isArray(j)?j:[j];for(const x of j)S.recipes.push({id:S.next++,name:x.name||"Naamloos",cat:x.cat||x.categorie||"",pers:+(x.pers||x.personen)||4,ing:x.ing||x.ingredienten||[],steps:x.steps||x.bereiding||x.bereidingswijze||""});save();dlg.close();draw()}
+ try{let j=JSON.parse(t);j=Array.isArray(j)?j:[j];for(const x of j)S.recipes.push({id:S.next++,name:x.name||"Naamloos",cat:x.cat||x.categorie||"",pers:+(x.pers||x.personen)||4,ing:x.ing||x.ingredienten||[],steps:x.steps||x.bereiding||x.bereidingswijze||"",url:x.url||""});save();dlg.close();draw()}
  catch(err){const L=t.split("\n").map(x=>x.trim()).filter(Boolean);const bi=L.findIndex(x=>/^bereiding/i.test(x));f("name").value=L[0]||"";f("ing").value=L.slice(1,bi<0?L.length:bi).join("\n");f("steps").value=bi<0?"":L.slice(bi+1).join("\n")}};rd.readAsText(fl)});
 const GC=""; // Plak hier je GoatCounter-code, bijv. "mijn-keuken" (leeg laten = geen teller)
 if(GC){const s=document.createElement("script");s.async=true;s.dataset.goatcounter="https://"+GC+".goatcounter.com/count";s.src="https://gc.zgo.at/count.js";document.head.appendChild(s)}
