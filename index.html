@@ -83,6 +83,7 @@ textarea{min-height:170px;resize:vertical}
     <button class="btn" onclick="saveRecipe()">Recept opslaan</button></div>
 </dialog>
 
+<dialog id="pdlg"><h2 id="pt" style="font-size:1.2rem;margin-bottom:10px"></h2><label for="pn" class="mute">Voor hoeveel personen?</label><input id="pn" type="number" min="1" value="4" style="width:100%;margin:6px 0 16px" onkeydown="if(event.key=='Enter')pickOk()"><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="pdlg.close()">Annuleren</button><button class="btn" onclick="pickOk()">Op lijstje zetten</button></div></dialog>
 <dialog id="cdlg"><p id="cm" style="margin-top:0"></p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="cdlg.close()">Annuleren</button><button class="btn" id="cok">Doorgaan</button></div></dialog>
 <script>
 const DAYS=["Maandag","Dinsdag","Woensdag","Donderdag","Vrijdag","Zaterdag","Zondag"];
@@ -94,7 +95,8 @@ const SEED=[{id:1,name:"Hutspot met rookworst",cat:"Hollands",pers:4,ing:["1 kg 
 let S;
 try{S=JSON.parse(localStorage.getItem("keuken"))}catch(e){}
 if(!S||!S.recipes)S={recipes:SEED,menu:{},store:"ah",checked:{},tab:"rec",cat:"Alles",next:10};
-S.extra=S.extra||[];S.log=S.log||[];
+function fixS(){S.extra=S.extra||[];S.log=S.log||[];S.checked=S.checked||{};S.sel=S.sel||[];if(S.menu){for(const d in S.menu)for(const e of S.menu[d])S.sel.push(e);delete S.menu}}
+fixS();
 const dlg=document.getElementById("dlg");let editId=null;
 function save(){try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}push()}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
@@ -108,14 +110,14 @@ function parse(line){const p=line.split("|"),t=p[0].trim();
  return{a,u,name,ai}}
 function fmt(a,u){if(!a)return"";if(u=="g"&&a>=1000)return+(a/1000).toFixed(2)+" kg";if(u=="ml"&&a>=1000)return+(a/1000).toFixed(2)+" l";return+a.toFixed(1)+(u?" "+u:"")}
 function list(){const m={};
- for(const d of DAYS)for(const e of(S.menu[d]||[])){const r=S.recipes.find(x=>x.id==e.rid);if(!r)continue;
+ for(const e of S.sel){const r=S.recipes.find(x=>x.id==e.rid);if(!r)continue;
   for(const l of r.ing){const i=parse(l),k=i.name.toLowerCase()+"|"+i.u;const v=i.a*e.pers/r.pers;
-   if(!m[k])m[k]={...i,a:0,k};m[k].a+=v}}
+   if(!m[k])m[k]={...i,a:0,k};m[k].a+=v;m[k].src=m[k].src||[];if(!m[k].src.includes(r.name))m[k].src.push(r.name)}}
  for(const t of S.extra){const i=parse(t),k=i.name.toLowerCase()+"|"+i.u;if(!m[k])m[k]={...i,a:0,k};m[k].a+=i.a}
  return Object.values(m)}
 function go(t){S.tab=t;save();draw()}
 function draw(){if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";$("main").innerHTML=vLogin();return}
- document.getElementById("nav").innerHTML=[["rec","Recepten"],["menu","Weekmenu"],["list","Boodschappen"],["log","Logboek"]].map(([k,n])=>`<button class="${S.tab==k?"on":""}" onclick="go('${k}')">${n}</button>`).join("");
+ document.getElementById("nav").innerHTML=[["rec","Recepten"],["menu","Gekozen"+(S.sel.length?" ("+S.sel.length+")":"")],["list","Boodschappen"],["log","Logboek"]].map(([k,n])=>`<button class="${S.tab==k?"on":""}" onclick="go('${k}')">${n}</button>`).join("");
  document.getElementById("main").innerHTML={rec:vRec,menu:vMenu,list:vList,log:vLog}[S.tab]();ft()}
 function cats(){return[...new Set(S.recipes.map(r=>r.cat).filter(Boolean))].sort()}
 const OPEN={};function tog(id){OPEN[id]=!OPEN[id];draw()}
@@ -124,13 +126,7 @@ function vRec(){
  const c=["Alles",...cats()];
  const rs=S.recipes.filter(r=>S.cat=="Alles"||r.cat==S.cat);
  return`<div class="bar">${c.map(x=>`<button class="chip ${S.cat==x?"on":""}" onclick="S.cat='${esc(x).replace(/'/g,"")}';save();draw()">${esc(x)}</button>`).join("")}<span style="flex:1"></span><button class="btn" onclick="openR()">+ Nieuw recept</button></div>`+
- (rs.length?`<div class="grid">${rs.map(r=>`<div class="card rc"${OPEN[r.id]?' style="grid-column:1/-1"':""}><h3 style="cursor:pointer" onclick="tog(${r.id})">${esc(r.name)}</h3><span class="tag">${esc(r.cat||"Zonder categorie")}</span><p class="mute">${r.ing.length} ingrediënten, voor ${r.pers} personen</p>${OPEN[r.id]?detail(r):""}<div class="row"><button class="btn ghost sm" onclick="tog(${r.id})">${OPEN[r.id]?"Sluiten":"Bekijken"}</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button></div></div>`).join("")}</div>`:`<div class="empty">Nog geen recepten in deze categorie. Voeg je eerste recept toe.</div>`)}
-function vMenu(){
- const o=S.recipes.map(r=>`<option value="${r.id}">${esc(r.name)}</option>`).join("");
- return`<div class="card">${DAYS.map((d,i)=>`<div class="day"><h3>${d}</h3><div>${(S.menu[d]||[]).map((e,j)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<span class="ent"><b>${esc(r.name)}</b> voor ${e.pers} pers.<button aria-label="Verwijder" onclick="rmE('${d}',${j})">×</button></span>`:""}).join("")}
- <div class="row"><select id="s${i}">${o}</select><input id="n${i}" type="number" min="1" value="4" aria-label="Personen"><button class="btn sm" onclick="addE(${i})">Toevoegen</button></div></div></div>`).join("")}</div>`}
-function addE(i){const rid=+document.getElementById("s"+i).value,pers=+document.getElementById("n"+i).value||1;if(!rid)return;(S.menu[DAYS[i]]=S.menu[DAYS[i]]||[]).push({rid,pers});save();draw()}
-function rmE(d,j){S.menu[d].splice(j,1);save();draw()}
+ (rs.length?`<div class="grid">${rs.map(r=>`<div class="card rc"${OPEN[r.id]?' style="grid-column:1/-1"':""}><h3 style="cursor:pointer" onclick="tog(${r.id})">${esc(r.name)}</h3><span class="tag">${esc(r.cat||"Zonder categorie")}</span><p class="mute">${r.ing.length} ingrediënten, voor ${r.pers} personen</p>${OPEN[r.id]?detail(r):""}<div class="row"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button><button class="btn ghost sm" onclick="tog(${r.id})">${OPEN[r.id]?"Sluiten":"Bekijken"}</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button></div></div>`).join("")}</div>`:`<div class="empty">Nog geen recepten in deze categorie. Voeg je eerste recept toe.</div>`)}
 function vList(){
  const L=list(),st=STORES[S.store];
  const chips=`<div class="bar">${Object.entries(STORES).map(([k,v])=>`<button class="chip ${S.store==k?"on":""}" onclick="S.store='${k}';save();draw()">${v[0]}</button>`).join("")}<span style="flex:1"></span><button class="btn sm" onclick="doneL()">Boodschappen gedaan</button><button class="btn ghost sm" onclick="copyL()">Kopieer lijst</button><button class="btn ghost sm" onclick="S.checked={};save();draw()">Vinkjes wissen</button></div>`;
@@ -140,13 +136,23 @@ function vList(){
 function ask(msg,cb){document.getElementById("cm").textContent=msg;const d=document.getElementById("cdlg");document.getElementById("cok").onclick=()=>{d.close();cb()};d.showModal()}
 function doneL(){const L=list();if(!L.length)return;const open=L.filter(x=>!S.checked[x.k]).length;
  ask(open?open+" items zijn niet afgevinkt. Toch afronden en loggen?":"Boodschappen loggen en de lijst leegmaken?",finishL)}
-function finishL(){const L=list();const meals=[];for(const d of DAYS)for(const e of(S.menu[d]||[])){const r=S.recipes.find(x=>x.id==e.rid);if(r)meals.push(r.name+" ("+e.pers+" pers.)")}
- S.log.unshift({date:new Date().toISOString(),store:STORES[S.store][0],meals,items:L.map(x=>({n:x.name,q:fmt(x.a,x.u),ok:!!S.checked[x.k]}))});
- S.menu={};S.extra=[];S.checked={};save();S.tab="log";draw()}
+function finishL(){const L=list();const meals=[];for(const e of S.sel){const r=S.recipes.find(x=>x.id==e.rid);if(r)meals.push({name:r.name,pers:e.pers,orig:r.pers,cat:r.cat||"",ing:r.ing.map(l=>l.split("|")[0].trim()),steps:r.steps||""})}
+ S.log.unshift({date:new Date().toISOString(),store:STORES[S.store][0],meals,items:L.map(x=>({n:x.name,q:fmt(x.a,x.u),ok:!!S.checked[x.k],from:x.src||[]}))});
+ S.sel=[];S.extra=[];S.checked={};save();S.tab="log";draw()}
 function vLog(){if(!S.log.length)return`<div class="empty">Nog geen gelogde boodschappen. Rond een lijst af met Boodschappen gedaan.</div>`;
- return S.log.map((g,i)=>`<details class="card" style="margin-bottom:12px"><summary style="cursor:pointer;font-weight:600">${new Date(g.date).toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long",year:"numeric"})} bij ${esc(g.store)} <span class="mute">(${g.items.length} items)</span></summary>${g.meals.length?`<p class="mute">Gerechten: ${esc(g.meals.join(", "))}</p>`:""}${g.items.map(x=>`<div class="item" style="cursor:default"><span ${x.ok?"":'style="color:var(--danger)"'}>${esc(x.n)}${x.ok?"":" (niet gekocht)"}</span><em>${esc(x.q)}</em></div>`).join("")}<button class="btn ghost sm del" style="margin-top:10px" onclick="rmLog(${i})">Verwijderen uit logboek</button></details>`).join("")}
+ return S.log.map((g,i)=>`<details class="card" style="margin-bottom:12px"><summary style="cursor:pointer;font-weight:600">${new Date(g.date).toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long",year:"numeric"})} bij ${esc(g.store)} <span class="mute">(${g.items.length} items)</span></summary>${logMeals(g.meals)}<h3 style="font-size:1rem;margin:14px 0 4px">Boodschappen</h3>${g.items.map(x=>`<div class="item" style="cursor:default"><span ${x.ok?"":'style="color:var(--danger)"'}>${esc(x.n)}${x.ok?"":" (niet gekocht)"}${x.from&&x.from.length?` <span class="mute">voor ${esc(x.from.join(", "))}</span>`:""}</span><em>${esc(x.q)}</em></div>`).join("")}<button class="btn ghost sm del" style="margin-top:10px" onclick="rmLog(${i})">Verwijderen uit logboek</button></details>`).join("")}
+function logMeals(ms){if(!ms||!ms.length)return"";
+ return`<h3 style="font-size:1rem;margin:14px 0 4px">Recepten</h3>`+ms.map(m=>typeof m=="string"?`<p style="margin:4px 0">${esc(m)}</p>`:`<details style="margin:4px 0"><summary style="cursor:pointer"><b>${esc(m.name)}</b> <span class="mute">voor ${m.pers} pers.${m.cat?", "+esc(m.cat):""}</span></summary><div style="margin:8px 0 8px 12px"><div class="mute">Ingredi\u00ebnten (hoeveelheden zoals in het recept, voor ${m.orig} pers.)</div><ul style="margin:4px 0 10px;padding-left:20px">${m.ing.map(l=>`<li>${esc(l)}</li>`).join("")}</ul>${m.steps?`<div class="mute">Bereiding</div><div style="white-space:pre-wrap;max-width:70ch">${esc(m.steps)}</div>`:""}</div></details>`).join("")}
 function rmLog(i){ask("Dit logboek-item verwijderen?",()=>rmLog2(i))}
 function rmLog2(i){S.log.splice(i,1);save();draw()}
+let pickId=null;
+function pickLbl(id){const e=S.sel.find(x=>x.rid==id);return e?"Op lijstje ("+e.pers+" pers.)":"Op lijstje"}
+function pickR(id){const r=S.recipes.find(x=>x.id==id);if(!r)return;pickId=id;document.getElementById("pt").textContent=r.name;const n=document.getElementById("pn");const e=S.sel.find(x=>x.rid==id);n.value=e?e.pers:r.pers;pdlg.showModal();n.select()}
+function pickOk(){const n=Math.max(1,+document.getElementById("pn").value||1);const e=S.sel.find(x=>x.rid==pickId);if(e)e.pers=n;else S.sel.push({rid:pickId,pers:n});save();pdlg.close();draw()}
+function vMenu(){if(!S.sel.length)return`<div class="empty">Nog geen recepten gekozen. Klik bij Recepten op Op lijstje.</div>`;
+ return`<div class="card">${S.sel.map((e,i)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<div class="item" style="cursor:default"><b>${esc(r.name)}</b><span class="row" style="margin-left:auto"><input type="number" min="1" value="${e.pers}" style="width:70px;height:auto" aria-label="Personen voor ${esc(r.name)}" onchange="setP(${i},this.value)"><span class="mute">pers.</span><button class="btn ghost sm del" onclick="rmS(${i})">Weghalen</button></span></div>`:""}).join("")}</div><p class="mute">Je boodschappenlijst staat onder Boodschappen.</p>`}
+function setP(i,v){S.sel[i].pers=Math.max(1,+v||1);save();draw()}
+function rmS(i){S.sel.splice(i,1);save();draw()}
 function xrow(){return`<div class="card" style="margin-bottom:16px"><div class="row"><input id="xi" placeholder="Losse boodschap, bijv. 2 pakken wc-papier" aria-label="Losse boodschap" style="flex:1;min-width:200px" onkeydown="if(event.key=='Enter')addX()"><button class="btn sm" onclick="addX()">Toevoegen</button></div>${S.extra.length?`<div style="margin-top:10px">${S.extra.map((t,i)=>`<span class="ent">${esc(t)}<button aria-label="Verwijder" onclick="rmX(${i})">×</button></span>`).join("")}</div>`:""}</div>`}
 function addX(){const v=document.getElementById("xi").value.trim();if(!v)return;S.extra.push(v);save();draw();document.getElementById("xi").focus()}
 function rmX(i){S.extra.splice(i,1);save();draw()}
@@ -161,7 +167,7 @@ function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focu
  const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||4,ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim()};
  const i=S.recipes.findIndex(x=>x.id==editId);if(i>=0)S.recipes[i]=r;else S.recipes.push(r);save();dlg.close();draw()}
 function delR(id){ask("Dit recept verwijderen?",()=>delR2(id))}
-function delR2(id){S.recipes=S.recipes.filter(r=>r.id!=id);for(const d in S.menu)S.menu[d]=S.menu[d].filter(e=>e.rid!=id);save();draw()}
+function delR2(id){S.recipes=S.recipes.filter(r=>r.id!=id);S.sel=S.sel.filter(e=>e.rid!=id);save();draw()}
 f("file").addEventListener("change",e=>{const fl=e.target.files[0];if(!fl)return;const rd=new FileReader();rd.onload=()=>{const t=String(rd.result);
  try{let j=JSON.parse(t);j=Array.isArray(j)?j:[j];for(const x of j)S.recipes.push({id:S.next++,name:x.name||"Naamloos",cat:x.cat||x.categorie||"",pers:+(x.pers||x.personen)||4,ing:x.ing||x.ingredienten||[],steps:x.steps||x.bereiding||x.bereidingswijze||""});save();dlg.close();draw()}
  catch(err){const L=t.split("\n").map(x=>x.trim()).filter(Boolean);const bi=L.findIndex(x=>/^bereiding/i.test(x));f("name").value=L[0]||"";f("ing").value=L.slice(1,bi<0?L.length:bi).join("\n");f("steps").value=bi<0?"":L.slice(bi+1).join("\n")}};rd.readAsText(fl)});
@@ -172,16 +178,16 @@ const $=i=>document.getElementById(i);
 const SB_URL=window.SB_URL||"",SB_KEY=window.SB_KEY||"";
 let sb=null,uid=null,tm,statTxt="";
 function setStat(t){statTxt=t;const e=$("stat");if(e)e.textContent=t}
-function push(){if(!sb||!uid)return;clearTimeout(tm);tm=setTimeout(async()=>{const{error}=await sb.from("keuken").upsert({user_id:uid,data:S,updated_at:new Date().toISOString()});setStat(error?"Opslaan mislukt: "+error.message:"Gesynchroniseerd")},600)}
-async function pull(){const{data,error}=await sb.from("keuken").select("data").eq("user_id",uid).maybeSingle();
+function push(){if(!sb||!uid)return;clearTimeout(tm);tm=setTimeout(async()=>{const{error}=await sb.from("huishouden").upsert({id:"main",data:S,updated_at:new Date().toISOString()});setStat(error?"Opslaan mislukt: "+error.message:"Gesynchroniseerd")},600)}
+async function pull(){const{data,error}=await sb.from("huishouden").select("data").eq("id","main").maybeSingle();
  if(error){setStat("Ophalen mislukt: "+error.message);return}
- if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};S.extra=S.extra||[];S.log=S.log||[];S.menu=S.menu||{};S.checked=S.checked||{};try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd")}else push()}
+ if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};fixS();try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd")}else push()}
 function vLogin(){return`<div class="card" style="max-width:380px;margin:30px auto"><h2 style="margin-bottom:12px">Inloggen</h2><label for="em" class="mute">E-mailadres</label><input id="em" type="email" autocomplete="username" style="width:100%;margin-bottom:10px"><label for="pw" class="mute">Wachtwoord</label><input id="pw" type="password" autocomplete="current-password" style="width:100%;margin-bottom:14px" onkeydown="if(event.key=='Enter')login()"><button class="btn" onclick="login()">Inloggen</button><p id="lerr" style="color:var(--danger)"></p></div>`}
 async function login(){const{data,error}=await sb.auth.signInWithPassword({email:$("em").value.trim(),password:$("pw").value});if(error){$("lerr").textContent="Inloggen mislukt. Controleer je e-mailadres en wachtwoord.";return}uid=data.user.id;await pull();draw()}
 async function logout(){await sb.auth.signOut();uid=null;draw()}
 function ft(){$("ft").innerHTML=`<span id="stat" class="mute">${sb?statTxt:"Alleen op dit apparaat opgeslagen"}</span><span style="flex:1"></span><button class="btn ghost sm" onclick="backup()">Back-up opslaan</button><label class="btn ghost sm" style="cursor:pointer">Back-up terugzetten<input type="file" accept=".json" hidden onchange="restore(this)"></label>${sb?`<button class="btn ghost sm" onclick="logout()">Uitloggen</button>`:""}`}
 function backup(){const b=new Blob([JSON.stringify(S,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mijn-keuken-backup-"+new Date().toISOString().slice(0,10)+".json";a.click()}
-function restore(i){const fl=i.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{let d;try{d=JSON.parse(r.result);if(!d.recipes)throw 0}catch(e){ask("Dit bestand is geen geldige back-up.",()=>{});return}ask("Alle huidige gegevens vervangen door deze back-up?",()=>{S={...d,tab:"rec",cat:"Alles"};S.extra=S.extra||[];S.log=S.log||[];S.menu=S.menu||{};S.checked=S.checked||{};save();draw()})};r.readAsText(fl)}
+function restore(i){const fl=i.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{let d;try{d=JSON.parse(r.result);if(!d.recipes)throw 0}catch(e){ask("Dit bestand is geen geldige back-up.",()=>{});return}ask("Alle huidige gegevens vervangen door deze back-up?",()=>{S={...d,tab:"rec",cat:"Alles"};fixS();save();draw()})};r.readAsText(fl)}
 async function init(){if(!SB_URL||!SB_KEY||!window.supabase){draw();return}
  sb=window.supabase.createClient(SB_URL,SB_KEY);
  const{data}=await sb.auth.getSession();
