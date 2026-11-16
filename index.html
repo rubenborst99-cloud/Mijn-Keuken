@@ -206,6 +206,14 @@ dialog.kk[open]{display:flex;flex-direction:column}
 .kn{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;padding:12px 14px calc(14px + env(safe-area-inset-bottom,0px))}
 .kn .btn{min-height:56px;font-size:1.1rem}
 .kb .btn{align-self:flex-start;font-size:1.05rem}
+.g3{display:grid;grid-template-columns:1.3fr 1fr .8fr;gap:8px;margin:8px 12px 0}
+.g3 select,.g3 input{width:100%;min-width:0}
+dialog .g3{margin:0}
+.fdet .g3{grid-template-columns:1fr 1fr 1fr}
+.rmeta{font-weight:600;font-size:.76rem;margin-bottom:2px}
+.g3 select,.g3 input{font-size:.9rem!important;padding:9px 6px}
+dialog .g3{grid-template-columns:1.5fr 1.3fr .8fr}
+dialog .g3 label{white-space:nowrap;font-size:.8rem}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -225,10 +233,11 @@ dialog.kk[open]{display:flex;flex-direction:column}
   <label for="f-name">Naam</label><input id="f-name">
   <div class="row"><div style="flex:1"><label for="f-cat">Categorie</label><input id="f-cat" list="cats"></div>
   <div><label for="f-pers">Voor (personen)</label><input id="f-pers" type="number" min="1" value="4" style="width:90px"></div></div>
+  <div class="g3"><div><label for="f-type">Soort gerecht</label><select id="f-type"><option value="">Kies…</option></select></div><div><label for="f-level">Moeilijkheid</label><select id="f-level"><option value="">Kies…</option></select></div><div><label for="f-time">Tijd (min)</label><input id="f-time" type="number" min="0" placeholder="30"></div></div>
   <datalist id="cats"></datalist>
   <label for="f-photo">Foto</label>
-  <div class="row"><div id="f-prev" style="width:110px"></div><button type="button" class="btn ghost sm" onclick="document.getElementById('f-photo').click()">Foto kiezen</button><input type="file" accept="image/*" id="f-photo" hidden><button type="button" class="btn ghost sm del" id="f-photodel" onclick="setImg('')">Foto verwijderen</button></div>
-  <div class="row" style="margin-top:8px"><input id="f-imgurl" placeholder="Of plak een link naar een afbeelding" style="flex:1;width:auto;min-width:0"><button type="button" class="btn ghost sm" onclick="setImg(document.getElementById('f-imgurl').value.trim())">Gebruiken</button></div>
+  <div class="row nw" style="align-items:center"><div id="f-prev" style="width:84px;flex:none"></div><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><button type="button" class="btn ghost sm" onclick="document.getElementById('f-photo').click()">Foto kiezen</button><input type="file" accept="image/*" id="f-photo" hidden><button type="button" class="btn ghost sm del" id="f-photodel" onclick="setImg('')">Foto verwijderen</button></div></div>
+  <div class="row nw" style="margin-top:8px"><input id="f-imgurl" placeholder="Of plak een link naar een afbeelding" style="flex:1;width:auto;min-width:0"><button type="button" class="btn ghost sm" onclick="setImg(document.getElementById('f-imgurl').value.trim())">Gebruiken</button></div>
   <label for="f-ing">Ingrediënten (één per regel, bijv. 500 g aardappelen)</label>
   <textarea id="f-ing" placeholder="1 kg aardappelen&#10;500 g winterpeen&#10;2 uien&#10;1 rookworst"></textarea>
   <p class="mute">Het gangpad wordt automatisch herkend. Zelf kiezen kan met een streepje, bijv. <i>2 el pindakaas | Houdbaar</i>.</p>
@@ -262,7 +271,9 @@ const PRESET_IMG={
 "Yaki udon (gebakken udon noedels)":"https://www.cookerru.com/wp-content/uploads/2021/04/yaki-udon-feature-4-feature-scaled.jpg",
 "Romige courgettesoep met speltbrood":"https://chickslovefood.com/app/uploads/2018/10/romige-courgettesoep-bovenkant-chickslovefood-1.jpg",
 "Vegetarische shepherd's pie":"https://static.ah.nl/static/recepten/img_065497_1024x748_JPG.jpg"};
-function fixS(){S.extra=S.extra||[];S.log=S.log||[];S.checked=S.checked||{};S.sel=S.sel||[];S.deals=S.deals||[];if(S.menu){for(const d in S.menu)for(const e of S.menu[d])S.sel.push(e);delete S.menu}let ch=false;for(const r of S.recipes||[])if(r.img===undefined&&PRESET_IMG[r.name]){r.img=PRESET_IMG[r.name];ch=true}return ch}
+const TYPES=["Hoofdgerecht","Voorgerecht","Bijgerecht","Soep","Lunch","Ontbijt","Dessert","Snack"],LEVELS=["Makkelijk","Gemiddeld","Uitdagend"];
+const PRESET_META={"Orzo met tomaat en spinazie":["Hoofdgerecht","Makkelijk",30],"Griekse tomatenrijst met feta":["Hoofdgerecht","Makkelijk",35],"Gnocchi-ovenschotel met romige kip":["Hoofdgerecht","Makkelijk",40],"Kip, spinazie en kaas met penne":["Hoofdgerecht","Makkelijk",30],"Macaroni met ham en kaas":["Hoofdgerecht","Makkelijk",25],"Spaghetti met gehaktsaus":["Hoofdgerecht","Makkelijk",30],"Wraps met kip en groenten":["Hoofdgerecht","Makkelijk",25],"Kip tandoori met rijst":["Hoofdgerecht","Gemiddeld",45],"Pasta carbonara":["Hoofdgerecht","Makkelijk",20],"Pasta pesto":["Hoofdgerecht","Makkelijk",15],"Pasta met kaassaus":["Hoofdgerecht","Makkelijk",20],"Rode pesto pasta":["Hoofdgerecht","Makkelijk",20],"Pasta met prei, champignons, kip en slagroom":["Hoofdgerecht","Makkelijk",30],"Carpaccio met gember, cashewnoten en wasabimayo":["Voorgerecht","Makkelijk",15],"BLT pastasalade met avocado":["Lunch","Makkelijk",25],"Yaki udon (gebakken udon noedels)":["Hoofdgerecht","Gemiddeld",25],"Romige courgettesoep met speltbrood":["Soep","Makkelijk",30],"Vegetarische shepherd's pie":["Hoofdgerecht","Gemiddeld",60]};
+function fixS(){S.extra=S.extra||[];S.log=S.log||[];S.checked=S.checked||{};S.sel=S.sel||[];S.deals=S.deals||[];if(S.menu){for(const d in S.menu)for(const e of S.menu[d])S.sel.push(e);delete S.menu}let ch=false;for(const r of S.recipes||[]){if(r.img===undefined&&PRESET_IMG[r.name]){r.img=PRESET_IMG[r.name];ch=true}if(r.type===undefined&&r.level===undefined&&r.time===undefined&&PRESET_META[r.name]){[r.type,r.level,r.time]=PRESET_META[r.name];ch=true}}return ch}
 fixS();
 const dlg=document.getElementById("dlg");let editId=null;
 function save(){try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}push()}
@@ -288,26 +299,31 @@ function list(){const m={};
  for(const t of S.extra){const i=parse(t);add(i,i.a)}
  return Object.values(m).map(x=>({...x,name:dispName(x)}))}
 function go(t){S.tab=t;save();draw()}
+let WL=null;
+async function wake(){const want=S.tab=="list"&&document.visibilityState=="visible";try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
 function draw(){if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";$("main").innerHTML=vLogin();return}
  document.getElementById("nav").innerHTML=[["rec","Recepten","Recepten","📖"],["menu","Menu","Menu","🍽️"],["list","Boodschappen","Lijst","🛒"],["deals","Aanbiedingen","Deals","🏷️"],["log","Logboek","Log","🗒️"],["trend","Trends","Trends","📊"]].map(([k,n,sh,ic])=>`<button class="${S.tab==k?"on":""}" onclick="go('${k}')"><b class="ni" aria-hidden="true">${ic}</b><span class="lf">${n}</span><span class="ls">${sh}</span>${k=="menu"&&S.sel.length?`<i class="bd">${S.sel.length}</i>`:""}</button>`).join("");
- document.getElementById("main").innerHTML={rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals}[S.tab]();ft()}
+ document.getElementById("main").innerHTML={rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals}[S.tab]();ft();wake()}
 function cats(){return[...new Set(S.recipes.map(r=>r.cat).filter(Boolean))].sort()}
 const OPEN={};function tog(id){OPEN[id]=!OPEN[id];draw()}
 function detail(r){return`<div style="margin:10px 0 14px">${/^https?:\/\//.test(r.url||"")?`<p style="margin:0 0 8px"><a href="${esc(r.url)}" target="_blank" rel="noopener" style="color:var(--green)">Bron van dit recept</a></p>`:""}<h3 style="font-size:1rem;margin-bottom:4px">Ingrediënten</h3><ul style="margin:0 0 12px;padding-left:20px">${r.ing.map(l=>`<li>${esc(l.split("|")[0].trim())}</li>`).join("")}</ul><h3 style="font-size:1rem;margin-bottom:4px">Bereiding</h3>${r.steps?`<div style="white-space:pre-wrap;max-width:70ch">${esc(r.steps)}</div>`:`<p class="mute">Nog geen bereidingswijze. Voeg die toe via Aanpassen.</p>`}</div>`}
-let Q="";
-function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}"><div class="rh" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm"><span class="tag">${esc(r.cat||"Zonder categorie")}</span> <span class="mute">${r.ing.length} ingr. · ${r.pers} pers.</span></div></div></div><div class="pk"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button></div>${o?detail(r):""}${o?`<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">👩‍🍳 Kookmodus</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div>`:""}</div>`}
-function rlist(){const q=Q.trim().toLowerCase();const rs=S.recipes.filter(r=>(S.cat=="Alles"||r.cat==S.cat)&&(!q||(r.name||"").toLowerCase().includes(q)));
+let Q="",FT="",FM=0,FL="";
+function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}"><div class="rh" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm">${[r.type,r.time?r.time+" min":"",r.level].filter(Boolean).length?`<div class="mute rmeta">${[r.type,r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ")}</div>`:""}<span class="tag">${esc(r.cat||"Zonder categorie")}</span> <span class="mute">${r.ing.length} ingr. · ${r.pers} pers.</span></div></div></div><div class="pk"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button></div>${o?detail(r):""}${o?`<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">👩‍🍳 Kookmodus</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div>`:""}</div>`}
+function rlist(){const q=Q.trim().toLowerCase();const rs=S.recipes.filter(r=>(S.cat=="Alles"||r.cat==S.cat)&&(!q||(r.name||"").toLowerCase().includes(q))&&(!FT||r.type==FT)&&(!FL||r.level==FL)&&(!FM||(r.time>0&&r.time<=FM)));
  return rs.length?`<div class="grid">${rs.map(rcard).join("")}</div>`:`<div class="empty">${S.recipes.length?"Geen recepten gevonden.":"Nog geen recepten. Voeg je eerste recept toe."}</div>`}
 function setQ(v){Q=v;document.getElementById("rl").innerHTML=rlist()}
 function vRec(){
  const cs=cats();if(S.cat!="Alles"&&!cs.includes(S.cat))S.cat="Alles";
  const cnt=c=>S.recipes.filter(r=>c=="Alles"||r.cat==c).length;
- return sugBlock()+`<div class="bar rbar"><select id="catsel" aria-label="Categorie" onchange="S.cat=this.value;save();draw()">${["Alles",...cs].map(x=>`<option value="${esc(x)}"${S.cat==x?" selected":""}>${esc(x)} (${cnt(x)})</option>`).join("")}</select><input id="rq" type="search" placeholder="Zoek recept…" aria-label="Zoek recept" value="${esc(Q)}" oninput="setQ(this.value)"><button class="btn" onclick="openR()">+ Nieuw</button></div><div id="rl">${rlist()}</div>`}
+ return sugBlock()+`<div class="bar rbar"><select id="catsel" aria-label="Categorie" onchange="S.cat=this.value;save();draw()">${["Alles",...cs].map(x=>`<option value="${esc(x)}"${S.cat==x?" selected":""}>${esc(x)} (${cnt(x)})</option>`).join("")}</select><input id="rq" type="search" placeholder="Zoek recept…" aria-label="Zoek recept" value="${esc(Q)}" oninput="setQ(this.value)"><button class="btn" onclick="openR()">+ Nieuw</button></div>${recFilters()}<div id="rl">${rlist()}</div>`}
+function recFilters(){const n=(FT?1:0)+(FM?1:0)+(FL?1:0);
+ const o=(a,v,l)=>a.map(x=>`<option value="${x[0]}"${v==x[0]?" selected":""}>${x[1]}</option>`).join("");
+ return`<details class="xd card fdet" ${n?"open":""}><summary>Filters${n?" ("+n+" actief)":""}</summary><div class="g3"><select id="ftype" aria-label="Soort gerecht" onchange="FT=this.value;draw()">${o([["","Soort"],...TYPES.map(t=>[t,t])],FT)}</select><select id="ftime" aria-label="Maximale tijd" onchange="FM=+this.value;draw()">${o([[0,"Tijd"],[20,"≤20 min"],[30,"≤30 min"],[45,"≤45 min"],[60,"≤60 min"]],FM)}</select><select id="flevel" aria-label="Moeilijkheid" onchange="FL=this.value;draw()">${o([["","Niveau"],...LEVELS.map(t=>[t,t])],FL)}</select></div>${n?`<div style="margin:8px 12px 0"><button class="btn ghost sm" onclick="FT='';FM=0;FL='';draw()">Filters wissen</button></div>`:""}</details>`}
 let XO=false;
 function vList(){
  const L=list(),st=STORES[S.store];
  const done=L.filter(x=>S.checked[x.k]).length;
- const top=`<div class="bar lbar"><select id="storesel" aria-label="Supermarkt" onchange="S.store=this.value;save();draw()">${Object.entries(STORES).map(([k,v])=>`<option value="${k}"${S.store==k?" selected":""}>${v[0]}</option>`).join("")}</select><button class="btn" onclick="doneL()">Gedaan ✓</button><details class="dd"><summary class="btn ghost" aria-label="Meer acties">⋯</summary><div class="ddm"><button onclick="copyL()">Kopieer lijst</button><button onclick="S.checked={};save();draw()">Vinkjes wissen</button></div></details></div>`;
+ const top=`<div class="bar lbar"><select id="storesel" aria-label="Supermarkt" onchange="S.store=this.value;save();draw()">${Object.entries(STORES).map(([k,v])=>`<option value="${k}"${S.store==k?" selected":""}>${v[0]}</option>`).join("")}</select><button class="btn" onclick="doneL()">Gedaan ✓</button><details class="dd"><summary class="btn ghost" aria-label="Meer acties">⋯</summary><div class="ddm"><button onclick="copyL()">Kopieer lijst</button><button onclick="resetCk();save();draw()">Vinkjes wissen</button></div></details></div>`;
  const x=`<details class="xd card" ${XO||S.extra.length||!L.length?"open":""} ontoggle="XO=this.open"><summary>+ Losse boodschap${S.extra.length?" ("+S.extra.length+")":""}</summary>${xrow()}</details>`;
  if(!L.length)return top+x+`<div class="empty">Je lijst is leeg. Kies recepten bij Recepten of voeg hierboven een losse boodschap toe.</div>`;
  return top+x+`<p class="mute" style="margin:2px 2px 8px">${done} van ${L.length} afgevinkt · volgorde ${st[0]}</p>`+st[1].map(a=>{const it=L.filter(x=>x.ai==a).sort((x,y)=>x.name.localeCompare(y.name));
@@ -317,7 +333,7 @@ function doneL(){const L=list();if(!L.length)return;const open=L.filter(x=>!S.ch
  ask(open?open+" items zijn niet afgevinkt. Toch afronden en loggen?":"Boodschappen loggen en de lijst leegmaken?",finishL)}
 function finishL(){const L=list();const meals=[];for(const e of S.sel){const r=S.recipes.find(x=>x.id==e.rid);if(r)meals.push({name:r.name,pers:e.pers,orig:r.pers,cat:r.cat||"",ing:r.ing.map(l=>l.split("|")[0].trim()),steps:r.steps||""})}
  S.log.unshift({date:new Date().toISOString(),store:STORES[S.store][0],meals,items:L.map(x=>({n:x.name,q:fmt(x.a,x.u),ok:!!S.checked[x.k],from:x.src||[]}))});
- S.sel=[];S.extra=[];S.checked={};save();S.tab="log";draw()}
+ S.sel=[];S.extra=[];resetCk();save();S.tab="log";draw()}
 function vLog(){if(!S.log.length)return`<div class="empty">Nog geen gelogde boodschappen. Rond een lijst af met Boodschappen gedaan.</div>`;
  return S.log.map((g,i)=>`<details class="card" style="margin-bottom:12px"><summary style="cursor:pointer;font-weight:600">${new Date(g.date).toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long",year:"numeric"})} bij ${esc(g.store)} <span class="mute">(${g.items.length} items)</span></summary>${logMeals(g.meals)}<h3 style="font-size:1rem;margin:14px 0 4px">Boodschappen</h3>${g.items.map(x=>`<div class="item" style="cursor:default"><span ${x.ok?"":'style="color:var(--danger)"'}>${esc(x.n)}${x.ok?"":" (niet gekocht)"}${x.from&&x.from.length?` <span class="mute">voor ${esc(x.from.join(", "))}</span>`:""}</span><em>${esc(x.q)}</em></div>`).join("")}<button class="btn ghost sm del" style="margin-top:10px" onclick="rmLog(${i})">Verwijderen uit logboek</button></details>`).join("")}
 function logMeals(ms){if(!ms||!ms.length)return"";
@@ -335,7 +351,7 @@ function rmS(i){S.sel.splice(i,1);save();draw()}
 const SUG={on:false,n:4,ids:[],haveTxt:"",have:[]};
 function recentNames(){const t=new Set();for(const g of S.log.slice(0,2))for(const m of g.meals||[])t.add(typeof m=="string"?m.replace(/ \(\d+ pers\.\)$/,""):m.name);return t}
 function suggest(n,keep,have){have=have||[];const rec=recentNames(),chosen=new Set(S.sel.map(e=>e.rid));
- let pool=S.recipes.filter(r=>!chosen.has(r.id)&&!keep.includes(r.id));
+ let pool=S.recipes.filter(r=>!chosen.has(r.id)&&!keep.includes(r.id)&&!["Voorgerecht","Dessert","Bijgerecht","Snack","Ontbijt"].includes(r.type));
  const all=pool.map(r=>[Math.random(),r]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
  const need=Math.max(0,n-keep.length),dt=dealTerms();
  const h1=have.length?all.map(r=>[r,matchTerms(r,have).length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]).map(x=>x[0]).slice(0,need):[];
@@ -389,6 +405,8 @@ async function fetchRecipe(){const st=document.getElementById("f-st"),u=f("url")
   f("ing").value=ing.join("\n");f("steps").value=stepsOf(r.recipeInstructions);
   {const im=[].concat(r.image||[])[0],iu=typeof im=="string"?im:(im&&(im.url||im["@id"]))||"";if(/^https?:\/\//.test(iu))setImg(iu)}
   if(!f("cat").value.trim()){const c=[].concat(r.recipeCategory||[])[0]||[].concat(r.recipeCuisine||[])[0]||"";if(c)f("cat").value=dec(c).replace(/^./,x=>x.toUpperCase())}
+  {const tt=String(r.totalTime||r.cookTime||"").match(/^P(?:\d+D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?/i);if(tt&&!f("time").value){const mm=(+tt[1]||0)*60+(+tt[2]||0);if(mm)f("time").value=mm}
+   const c=[].concat(r.recipeCategory||[]).join(" ").toLowerCase();if(!f("type").value){const m=[[/voorgerecht/,"Voorgerecht"],[/hoofdgerecht|hoofd/,"Hoofdgerecht"],[/dessert|toetje|nagerecht|zoet/,"Dessert"],[/bijgerecht|bij /,"Bijgerecht"],[/soep/,"Soep"],[/ontbijt/,"Ontbijt"],[/lunch/,"Lunch"],[/snack|borrel|hapje/,"Snack"]].find(([re])=>re.test(c));if(m)f("type").value=m[1]}}
   st.textContent="Gevonden: "+ing.length+" ingrediënten. Controleer alles en klik op Recept opslaan."
  }catch(e){st.textContent=e.message=="functie"?"Ophalen mislukt: de ophaalfunctie in Supabase is niet bereikbaar. Is die al aangemaakt?":"Ophalen mislukt: "+e.message}
  finally{btn.disabled=false}}
@@ -495,23 +513,30 @@ function addDeal(){const name=document.getElementById("dn").value.trim();if(!nam
  S.deals.push({id:S.next++,name,price:document.getElementById("dp").value.trim(),store:document.getElementById("dsx").value,until:document.getElementById("du").value});save();draw()}
 function rmDeal(id){S.deals=S.deals.filter(d=>d.id!=id);save();draw()}
 function clearExp(){const t=todayStr();S.deals=S.deals.filter(d=>!d.until||d.until>=t);save();draw()}
-function xrow(){return`<div class="row nw" style="margin-top:8px"><input id="xi" placeholder="bijv. 2 pakken wc-papier" aria-label="Losse boodschap" style="flex:1;min-width:0" onkeydown="if(event.key=='Enter')addX()"><button class="btn sm" onclick="addX()">Toevoegen</button></div>${S.extra.length?`<div style="margin-top:8px">${S.extra.map((t,i)=>`<span class="ent">${esc(t)}<button aria-label="Verwijder" onclick="rmX(${i})">×</button></span>`).join("")}</div>`:""}`}
+function sugList(){const c={};const add=(n,w)=>{n=(n||"").trim().toLowerCase();if(n&&n.length<40)c[n]=(c[n]||0)+w};
+ for(const g of S.log)for(const x of g.items||[])add(x.n,3);
+ for(const t of S.extra)add(parse(t).name,2);
+ for(const r of S.recipes)for(const l of r.ing)add(parse(l).name,1);
+ for(const w of ["melk","brood","boter","eieren","koffie","wc-papier","keukenrol","afwasmiddel","vuilniszakken","yoghurt","kaas","hagelslag","pindakaas","appels","bananen","sinaasappelsap","water","cola","chips"])add(w,0.5);
+ return Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,300).map(x=>x[0])}
+function xrow(){return`<datalist id="xdl">${sugList().map(n=>`<option value="${esc(n)}">`).join("")}</datalist><div class="row nw" style="margin-top:8px"><input id="xi" list="xdl" autocomplete="off" autocapitalize="none" placeholder="bijv. 2 pakken wc-papier" aria-label="Losse boodschap" style="flex:1;min-width:0" onkeydown="if(event.key=='Enter')addX()"><button class="btn sm" onclick="addX()">Toevoegen</button></div>${S.extra.length?`<div style="margin-top:8px">${S.extra.map((t,i)=>`<span class="ent">${esc(t)}<button aria-label="Verwijder" onclick="rmX(${i})">×</button></span>`).join("")}</div>`:""}`}
 function addX(){const v=document.getElementById("xi").value.trim();if(!v)return;S.extra.push(v);save();draw();document.getElementById("xi").focus()}
 function rmX(i){S.extra.splice(i,1);save();draw()}
-function tick(k){S.checked[k]=!S.checked[k];save();draw()}
+function tick(k){S.checked[k]=!S.checked[k];S.ct=S.ct||{};S.ct[k]=Date.now();save();draw()}
+function resetCk(){S.checked={};S.ct={};S.ctReset=Date.now()}
 function copyL(){const st=STORES[S.store][1],L=list();let t="";for(const a of st){const it=L.filter(x=>x.ai==a);if(it.length)t+=AISLES[a]+"\n"+it.map(x=>"- "+fmt(x.a,x.u)+" "+x.name).join("\n")+"\n\n"}try{navigator.clipboard.writeText(t)}catch(e){}}
 function openR(id){editId=id||null;const r=S.recipes.find(x=>x.id==id)||{name:"",cat:"",pers:4,ing:[]};
  document.getElementById("dt").textContent=id?"Recept aanpassen":"Nieuw recept";
- f("name").value=r.name;f("cat").value=r.cat;f("url").value=r.url||"";setImg(r.img||"");document.getElementById("f-imgurl").value="";document.getElementById("f-st").textContent="";document.getElementById("f-paste").value="";document.getElementById("f-ps").textContent="";f("pers").value=r.pers;f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
+ f("name").value=r.name;f("cat").value=r.cat;f("url").value=r.url||"";setImg(r.img||"");document.getElementById("f-imgurl").value="";document.getElementById("f-st").textContent="";document.getElementById("f-paste").value="";document.getElementById("f-ps").textContent="";f("pers").value=r.pers;f("type").innerHTML='<option value="">Kies…</option>'+TYPES.map(x=>`<option${r.type==x?" selected":""}>${x}</option>`).join("");f("level").innerHTML='<option value="">Kies…</option>'+LEVELS.map(x=>`<option${r.level==x?" selected":""}>${x}</option>`).join("");f("time").value=r.time||"";f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
  document.getElementById("cats").innerHTML=cats().map(c=>`<option value="${esc(c)}">`).join("");dlg.showModal()}
 function f(x){return document.getElementById("f-"+x)}
 function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focus();return}
- const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||4,ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim(),url:f("url").value.trim(),img:curImg};
+ const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||4,ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim(),url:f("url").value.trim(),img:curImg,type:f("type").value,level:f("level").value,time:+f("time").value||0};
  const i=S.recipes.findIndex(x=>x.id==editId);if(i>=0)S.recipes[i]=r;else S.recipes.push(r);save();dlg.close();draw()}
 function delR(id){ask("Dit recept verwijderen?",()=>delR2(id))}
 function delR2(id){S.recipes=S.recipes.filter(r=>r.id!=id);S.sel=S.sel.filter(e=>e.rid!=id);save();draw()}
 f("file").addEventListener("change",e=>{const fl=e.target.files[0];if(!fl)return;const rd=new FileReader();rd.onload=()=>{const t=String(rd.result);
- try{let j=JSON.parse(t);j=Array.isArray(j)?j:[j];for(const x of j)S.recipes.push({id:S.next++,name:x.name||"Naamloos",cat:x.cat||x.categorie||"",pers:+(x.pers||x.personen)||4,ing:x.ing||x.ingredienten||[],steps:x.steps||x.bereiding||x.bereidingswijze||"",url:x.url||"",img:typeof(x.img||x.image)=="string"?(x.img||x.image):""});save();dlg.close();draw()}
+ try{let j=JSON.parse(t);j=Array.isArray(j)?j:[j];for(const x of j)S.recipes.push({id:S.next++,name:x.name||"Naamloos",cat:x.cat||x.categorie||"",pers:+(x.pers||x.personen)||4,ing:x.ing||x.ingredienten||[],steps:x.steps||x.bereiding||x.bereidingswijze||"",url:x.url||"",img:typeof(x.img||x.image)=="string"?(x.img||x.image):"",type:x.type||x.gerecht||"",level:x.level||x.moeilijkheid||"",time:+(x.time||x.kooktijd)||0});save();dlg.close();draw()}
  catch(err){const L=t.split("\n").map(x=>x.trim()).filter(Boolean);const bi=L.findIndex(x=>/^bereiding/i.test(x));f("name").value=L[0]||"";f("ing").value=L.slice(1,bi<0?L.length:bi).join("\n");f("steps").value=bi<0?"":L.slice(bi+1).join("\n")}};rd.readAsText(fl)});
 const GC=""; // Plak hier je GoatCounter-code, bijv. "mijn-keuken" (leeg laten = geen teller)
 if(GC){const s=document.createElement("script");s.async=true;s.dataset.goatcounter="https://"+GC+".goatcounter.com/count";s.src="https://gc.zgo.at/count.js";document.head.appendChild(s)}
@@ -520,7 +545,24 @@ const $=i=>document.getElementById(i);
 const SB_URL=window.SB_URL||"",SB_KEY=window.SB_KEY||"";
 let sb=null,uid=null,tm,statTxt="";
 function setStat(t){statTxt=t;const e=$("stat");if(e)e.textContent=t}
-function push(){if(!sb||!uid)return;clearTimeout(tm);tm=setTimeout(async()=>{const{error}=await sb.from("huishouden").upsert({id:"main",data:S,updated_at:new Date().toISOString()});setStat(error?"Opslaan mislukt: "+error.message:"Gesynchroniseerd")},600)}
+let pending=false;
+function mergeCk(rm){let ch=false;const rr=rm.ctReset||0;
+ if(rr>(S.ctReset||0)){S.ctReset=rr;S.checked={};S.ct={};ch=true}
+ S.ct=S.ct||{};const base=S.ctReset||0;
+ for(const k in (rm.ct||{})){const t=rm.ct[k];if(t>base&&t>(S.ct[k]||0)){S.ct[k]=t;const on=!!(rm.checked&&rm.checked[k]);if(on)S.checked[k]=true;else delete S.checked[k];ch=true}}
+ return ch}
+function push(){if(!sb||!uid)return;clearTimeout(tm);pending=true;tm=setTimeout(async()=>{
+ try{const{data:cur}=await sb.from("huishouden").select("data").eq("id","main").maybeSingle();
+  if(cur&&cur.data&&mergeCk(cur.data)){try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}if(S.tab=="list"&&!typing())draw()}}catch(e){}
+ const{error}=await sb.from("huishouden").upsert({id:"main",data:S,updated_at:new Date().toISOString()});pending=false;setStat(error?"Opslaan mislukt: "+error.message:"Gesynchroniseerd")},600)}
+function typing(){const a=document.activeElement;return a&&(a.tagName=="TEXTAREA"||a.tagName=="INPUT"&&!/checkbox|button|range/.test(a.type))}
+const stable=o=>JSON.stringify({...o,checked:0,ct:0,ctReset:0,tab:0,cat:0});
+async function poll(){if(!sb||!uid||pending||document.hidden||S.tab!="list"||dlg.open||$("cdlg").open||$("kdlg").open)return;
+ try{const{data}=await sb.from("huishouden").select("data").eq("id","main").maybeSingle();if(pending||!data||!data.data||!data.data.recipes)return;
+  const rm=data.data;let ch=mergeCk(rm);
+  if(stable(rm)!==stable(S)){S={...rm,tab:S.tab,cat:S.cat,checked:S.checked,ct:S.ct,ctReset:S.ctReset};fixS();ch=true}
+  if(ch){try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}if(!typing())draw();setStat("Zojuist bijgewerkt")}}catch(e){}}
+setInterval(poll,4000);
 async function pull(){const{data,error}=await sb.from("huishouden").select("data").eq("id","main").maybeSingle();
  if(error){setStat("Ophalen mislukt: "+error.message);return}
  if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};const chg=fixS();if(chg)push();try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd")}else push()}
@@ -535,6 +577,6 @@ async function init(){if(!SB_URL||!SB_KEY||!window.supabase){draw();return}
  const{data}=await sb.auth.getSession();
  if(data.session){uid=data.session.user.id;await pull()}
  draw()}
-document.addEventListener("visibilitychange",async()=>{if(document.visibilityState=="visible"&&sb&&uid&&!dlg.open&&!$("cdlg").open){await pull();draw()}});
+document.addEventListener("visibilitychange",async()=>{if(document.visibilityState=="visible"&&sb&&uid&&!dlg.open&&!$("cdlg").open){await pull();draw()}else wake()});
 init();
 </script></body></html>
