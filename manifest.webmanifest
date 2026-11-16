@@ -1,13 +1,13 @@
 {
  "name": "Mijn Keuken",
- "short_name": "Keuken",
+ "short_name": "Mijn Keuken",
  "lang": "nl",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
- "background_color": "#eef3ee",
- "theme_color": "#14392b",
+ "background_color": "#faf6ee",
+ "theme_color": "#faf6ee",
  "icons": [
   {
    "src": "icon-192.png",
