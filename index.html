@@ -1003,9 +1003,9 @@ async function inspLoad(force){if(!sb||!uid){INSP.state="off";return}if(INSP.sta
  if(!force){try{const c=JSON.parse(localStorage.getItem("kinsp")||"null");if(c&&Date.now()-c.t<432e5&&c.items&&c.items.length){INSP.items=c.items.filter(r=>!dupOf(r));if(INSP.items.length){INSP.state="ok";return}}}catch(e){}}
  INSP.state="loading";INSP.q=inspQuery();INSP.note="";if(S.tab=="home")draw();
  try{const{data,error}=await sb.functions.invoke("recept-zoeken",{body:{q:INSP.q,n:6,exclude:S.recipes.map(r=>r.url).filter(Boolean)}});
-  if(error)throw new Error("functie");if(!data||data.error)throw new Error(data&&data.error||"geen antwoord");
+  if(error){const st=error.context&&error.context.status;throw new Error(st==404?"functie":"Functie gaf een fout"+(st?" ("+st+")":"")+(error.message?": "+error.message:""))}if(!data||data.error)throw new Error(data&&data.error||"geen antwoord");
   const items=[];for(const x of data.results||[]){const r=inspParse(x);if(r&&r.name&&!dupOf(r))items.push(r)}
-  INSP.items=items.slice(0,4);INSP.state=items.length?"ok":"empty";if(items.length)inspSave()
+  INSP.items=items.slice(0,4);INSP.state=items.length?"ok":"empty";INSP.err=items.length?"":(data.results||[]).length+" pagina's gevonden, maar niets nieuws of leesbaars";if(items.length)inspSave()
  }catch(e){INSP.state="err";INSP.err=e.message=="functie"?"nofn":e.message}
  if(S.tab=="home")draw()}
 function inspAdd(i){const r=INSP.items[i];if(!r)return;const rec={...r,id:S.next++};delete rec.host;toDp(rec);S.recipes.push(rec);INSP.items.splice(i,1);INSP.note=rec.name;inspSave();save();draw()}
@@ -1016,7 +1016,7 @@ function inspSection(){
  if(INSP.state=="loading"||INSP.state=="pre")return head("Zoeken op internet naar iets nieuws…","")+`<div class="card sk"><span class="mute">Even geduld…</span></div>`;
  if(INSP.state=="ok"&&INSP.items.length)return head("Nieuw op internet, op basis van wat jullie vaak eten",`<button onclick="inspLoad(true)">↻ Andere</button>`)+(INSP.note?`<p style="margin:0 2px 8px;color:var(--sagefg);font-size:.88rem">✓ "${esc(INSP.note)}" staat nu bij je recepten.</p>`:"")+INSP.items.map((r,i)=>`<div class="card" style="padding:8px 12px;margin-bottom:8px"><div class="item" style="cursor:default;gap:10px;border:0;padding-bottom:4px"><span class="th">${imgHtml(r)}</span><span style="flex:1;min-width:0"><b>${esc(r.name)}</b><br><span class="mute" style="font-size:.85rem">${[r.time?r.time+" min":"",r.host].filter(Boolean).map(esc).join(" · ")}</span></span></div><div class="row" style="gap:8px;padding:0 0 4px"><a class="btn ghost sm" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">Bekijk online</a><button class="btn sm" onclick="inspAdd(${i})">+ Toevoegen aan mijn recepten</button></div></div>`).join("");
  const L=loc();if(!L&&INSP.state!="err"&&INSP.state!="empty")return"";
- const why=INSP.state=="err"?(INSP.err=="nofn"?"Zoeken op internet is nog niet ingesteld. Dit komt uit je eigen recepten.":"Zoeken op internet lukte nu niet. Dit komt uit je eigen recepten."):INSP.state=="empty"?"Op internet niets nieuws gevonden. Dit komt uit je eigen recepten.":"Uit je eigen recepten";
+ const why=INSP.state=="err"?(INSP.err=="nofn"?"Zoeken op internet is nog niet ingesteld. Dit komt uit je eigen recepten.":"Zoeken op internet lukte nu niet"+(INSP.err?" ("+esc(INSP.err)+")":"")+". Dit komt uit je eigen recepten."):INSP.state=="empty"?"Op internet niets nieuws gevonden"+(INSP.err?" ("+esc(INSP.err)+")":"")+". Dit komt uit je eigen recepten.":"Uit je eigen recepten";
  return head(why,`<button onclick="${sb&&uid?"inspLoad(true)":"HS=null;draw()"}">↻ Andere</button>`)+L}
 
 function cats(){return[...new Set(S.recipes.map(r=>r.cat).filter(Boolean))].sort()}
@@ -1177,7 +1177,7 @@ function inspD(){if(INSP.state=="idle"){INSP.state="pre";setTimeout(()=>inspLoad
  let sub="Gevonden op internet, op basis van wat je graag kookt",btn=`<button class="lnk" onclick="inspLoad(true)">↻ Andere</button>`,cards="";
  if(INSP.state=="loading"||INSP.state=="pre"){sub="Zoeken op internet naar iets nieuws…";btn="";cards=`<div class="card sk" style="grid-column:1/-1"><span class="mute">Even geduld…</span></div>`}
  else if(INSP.state=="ok"&&INSP.items.length){cards=INSP.items.slice(0,4).map((r,i)=>`<div class="dic">${tileHtml(r,"dit")}<button class="dpl" aria-label="Toevoegen aan mijn recepten" onclick="inspAdd(${i})">${ico("plus")}</button><div class="dib"><span class="chp">Nieuw op internet</span><b>${esc(r.name)}</b><span class="mute">${esc([r.time?r.time+" min":"",r.host].filter(Boolean).join(" · "))}</span><a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">Bekijk online</a></div></div>`).join("")}
- else{sub=INSP.state=="err"||INSP.state=="empty"?"Kon online niets vinden; dit komt uit je eigen recepten":"Uit je eigen recepten";btn=`<button class="lnk" onclick="HS=null;draw()">↻ Andere</button>`;
+ else{sub=INSP.state=="err"||INSP.state=="empty"?(INSP.err=="nofn"?"Zoeken op internet is nog niet ingesteld":"Online zoeken lukte niet"+(INSP.err?": "+esc(INSP.err):""))+"; dit komt uit je eigen recepten":"Uit je eigen recepten";btn=`<button class="lnk" onclick="HS=null;draw()">↻ Andere</button>`;
   let ids=[];try{ids=suggest(4,[],[])}catch(e){}cards=ids.map(id=>S.recipes.find(r=>r.id==id)).filter(Boolean).map(r=>`<div class="dic">${tileHtml(r,"dit")}<button class="dpl" aria-label="Op menu zetten" onclick="pickR(${r.id})">${ico("plus")}</button><div class="dib"><span class="chp">Uit je recepten</span><b>${esc(r.name)}</b><span class="mute">${esc([r.time?r.time+" min":"",r.cat].filter(Boolean).join(" · "))}</span></div></div>`).join("")}
  return`<div class="dsec"><div><h3>Misschien iets voor jou</h3><p class="mute">${sub}</p></div>${btn}</div>${INSP.note?`<p style="margin:0 2px 10px;color:var(--sagefg);font-size:.9rem">✓ "${esc(INSP.note)}" staat nu bij je recepten.</p>`:""}<div class="dg4">${cards}</div>`}
 let DIDS=null;
