@@ -1041,7 +1041,8 @@ async function inspLoad(force){if(!sb||!uid){INSP.state="off";return}if(INSP.sta
  INSP.state="loading";INSP.q=inspQuery();INSP.note="";if(S.tab=="home")draw();
  try{const{data,error}=await sb.functions.invoke("recept-zoeken",{body:{q:INSP.q,n:9,exclude:S.recipes.map(r=>r.url).filter(Boolean)}});
   if(error){const st=error.context&&error.context.status;throw new Error(st==404?"functie":"Functie gaf een fout"+(st?" ("+st+")":"")+(error.message?": "+error.message:""))}if(!data||data.error)throw new Error(data&&data.error||"geen antwoord");
-  const items=[];for(const x of data.results||[]){const r=inspParse(x);if(r&&r.name&&!dupOf(r))items.push(r)}
+  const items=[],seen=new Set(),take=d=>{for(const x of d.results||[]){if(seen.has(x.url))continue;seen.add(x.url);const r=inspParse(x);if(r&&r.name&&!dupOf(r)&&!items.some(i=>i.name==r.name))items.push(r)}};take(data);
+  for(let k=0;k<2&&items.length<3;k++){try{const q2=inspQuery();const r2=await sb.functions.invoke("recept-zoeken",{body:{q:q2,n:9,exclude:S.recipes.map(r=>r.url).filter(Boolean).concat([...seen])}});if(r2.data&&r2.data.results)take(r2.data)}catch(e){}}
   INSP.items=items.slice(0,6);INSP.state=items.length?"ok":"empty";INSP.err=items.length?"":(data.results||[]).length+" pagina's gevonden, maar niets nieuws of leesbaars";if(items.length)inspSave()
  }catch(e){INSP.state="err";INSP.err=e.message=="functie"?"nofn":e.message}
  if(S.tab=="home")draw()}
