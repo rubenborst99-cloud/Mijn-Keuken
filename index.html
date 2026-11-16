@@ -190,6 +190,21 @@ nav .ni,nav .ls,nav .bd{display:none}
  .row input:not([type=number]):not([type=checkbox]){flex:1 1 100%!important}
  .dform input,.dform select{flex:none!important;width:100%!important}
 }
+
+dialog.kk{width:100vw;max-width:none;height:100vh;height:100dvh;max-height:none;margin:0;padding:0;border-radius:0;overflow:hidden}
+dialog.kk[open]{display:flex;flex-direction:column}
+.kh{display:flex;gap:8px;align-items:center;padding:10px 12px}
+.kh b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:"Bricolage Grotesque",sans-serif}
+.kp{height:5px;background:var(--line)}.kp i{display:block;height:100%;background:var(--sun);transition:width .25s}
+.ktm{display:flex;justify-content:center;align-items:center;gap:12px;padding:8px;background:var(--sunbg);font:700 1.4rem "Bricolage Grotesque",sans-serif}
+.ktm.done{background:var(--danger);color:#fff;font-size:1.15rem}
+.kb{flex:1;overflow:auto;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:20px 22px;max-width:680px;width:100%;margin:0 auto}
+.ks{color:var(--mute);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.82rem}
+.kt{font:600 1.65rem/1.4 "DM Sans",sans-serif}
+.ki{font-size:1.15rem;line-height:1.9;margin:0;padding-left:22px}
+.kn{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;padding:12px 14px calc(14px + env(safe-area-inset-bottom,0px))}
+.kn .btn{min-height:56px;font-size:1.1rem}
+.kb .btn{align-self:flex-start;font-size:1.05rem}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -227,6 +242,7 @@ nav .ni,nav .ls,nav .bd{display:none}
 
 <dialog id="pdlg"><h2 id="pt" style="font-size:1.2rem;margin-bottom:10px"></h2><label for="pn" class="mute">Voor hoeveel personen?</label><input id="pn" type="number" min="1" value="4" style="width:100%;margin:6px 0 16px" onkeydown="if(event.key=='Enter')pickOk()"><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="pdlg.close()">Annuleren</button><button class="btn" onclick="pickOk()">Op lijstje zetten</button></div></dialog>
 <dialog id="cdlg"><p id="cm" style="margin-top:0"></p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="cdlg.close()">Annuleren</button><button class="btn" id="cok">Doorgaan</button></div></dialog>
+<dialog id="kdlg" class="kk" onclose="stopK()" ontouchstart="KX=event.touches[0].clientX" ontouchend="swK(event)"></dialog>
 <script>
 const DAYS=["Maandag","Dinsdag","Woensdag","Donderdag","Vrijdag","Zaterdag","Zondag"];
 const AISLES=["Groente & fruit","Brood & bakkerij","Vlees & vis","Kaas & vleeswaren","Zuivel & eieren","Houdbaar","Kruiden & sauzen","Diepvries","Overig","Dranken","Huishouden & verzorging"];
@@ -278,7 +294,7 @@ function cats(){return[...new Set(S.recipes.map(r=>r.cat).filter(Boolean))].sort
 const OPEN={};function tog(id){OPEN[id]=!OPEN[id];draw()}
 function detail(r){return`<div style="margin:10px 0 14px">${/^https?:\/\//.test(r.url||"")?`<p style="margin:0 0 8px"><a href="${esc(r.url)}" target="_blank" rel="noopener" style="color:var(--green)">Bron van dit recept</a></p>`:""}<h3 style="font-size:1rem;margin-bottom:4px">Ingrediënten</h3><ul style="margin:0 0 12px;padding-left:20px">${r.ing.map(l=>`<li>${esc(l.split("|")[0].trim())}</li>`).join("")}</ul><h3 style="font-size:1rem;margin-bottom:4px">Bereiding</h3>${r.steps?`<div style="white-space:pre-wrap;max-width:70ch">${esc(r.steps)}</div>`:`<p class="mute">Nog geen bereidingswijze. Voeg die toe via Aanpassen.</p>`}</div>`}
 let Q="";
-function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}"><div class="rh" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm"><span class="tag">${esc(r.cat||"Zonder categorie")}</span> <span class="mute">${r.ing.length} ingr. · ${r.pers} pers.</span></div></div></div><div class="pk"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button></div>${o?detail(r):""}${o?`<div class="row ex"><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div>`:""}</div>`}
+function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}"><div class="rh" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm"><span class="tag">${esc(r.cat||"Zonder categorie")}</span> <span class="mute">${r.ing.length} ingr. · ${r.pers} pers.</span></div></div></div><div class="pk"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button></div>${o?detail(r):""}${o?`<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">👩‍🍳 Kookmodus</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div>`:""}</div>`}
 function rlist(){const q=Q.trim().toLowerCase();const rs=S.recipes.filter(r=>(S.cat=="Alles"||r.cat==S.cat)&&(!q||(r.name||"").toLowerCase().includes(q)));
  return rs.length?`<div class="grid">${rs.map(rcard).join("")}</div>`:`<div class="empty">${S.recipes.length?"Geen recepten gevonden.":"Nog geen recepten. Voeg je eerste recept toe."}</div>`}
 function setQ(v){Q=v;document.getElementById("rl").innerHTML=rlist()}
@@ -404,6 +420,31 @@ let curImg="";
 function imgHtml(r){return`<div class="ph" data-i="${esc(((r.name||"?")[0]||"?").toUpperCase())}">${r.img?`<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:""}</div>`}
 function setImg(u){curImg=u||"";const p=document.getElementById("f-prev");p.innerHTML=curImg?`<div class="ph" data-i="" style="margin:0"><img src="${esc(curImg)}" alt="Voorbeeld" referrerpolicy="no-referrer" onerror="this.style.display='none'"></div>`:`<span class="mute">Geen foto</span>`;document.getElementById("f-photodel").style.display=curImg?"":"none"}
 document.getElementById("f-photo").addEventListener("change",e=>{const fl=e.target.files[0];e.target.value="";if(!fl)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,560/im.width),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);setImg(c.toDataURL("image/jpeg",.7))};im.onerror=()=>{document.getElementById("f-st").textContent="Deze foto kon niet worden gelezen."};im.src=rd.result};rd.readAsDataURL(fl)});
+
+let KR=null,KI=0,KX=0,KEND=0,KT=null,KWL=null;
+function ksteps(r){return(r.steps||"").split(/\n+/).map(x=>x.replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean)}
+function startK(id){const r=S.recipes.find(x=>x.id==id);if(!r)return;const st=ksteps(r);
+ if(!st.length){ask("Dit recept heeft nog geen bereidingswijze. Voeg die toe via Aanpassen.",()=>{});return}
+ KR={r,st,ing:false};KI=0;KEND=0;drawK();document.getElementById("kdlg").showModal();
+ try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(l=>KWL=l).catch(()=>{})}catch(e){}}
+function stopK(){if(KT){clearInterval(KT);KT=null}KEND=0;try{if(KWL){KWL.release();KWL=null}}catch(e){}}
+function closeK(){document.getElementById("kdlg").close()}
+function kgo(d){const n=KI+d;if(n<0||n>KR.st.length)return;KI=n;drawK()}
+function swK(e){const dx=e.changedTouches[0].clientX-KX;if(Math.abs(dx)>70&&document.getElementById("kdlg").open)kgo(dx<0?1:-1)}
+function ktog(){KR.ing=!KR.ing;drawK()}
+function kdur(t){const m=t.match(/(\d+)(?:\s*[-–]\s*(\d+))?\s*(minuten|minuut|min|uur)\b/i);if(!m)return 0;const n=+(m[2]||m[1]);return n*(/uur/i.test(m[3])?3600:60)}
+function kstart(sec){KEND=Date.now()+sec*1000;if(KT)clearInterval(KT);KT=setInterval(ktick,500);ktick();drawK()}
+function kfmt(ms){const t=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return(h?h+":"+String(m).padStart(2,"0"):m)+":"+String(s).padStart(2,"0")}
+function ktick(){const e=document.getElementById("ktime");if(!KEND)return;const left=KEND-Date.now();
+ if(left<=0){clearInterval(KT);KT=null;KEND=-1;try{navigator.vibrate&&navigator.vibrate([400,200,400,200,400])}catch(x){}drawK();return}
+ if(e)e.textContent="⏱ "+kfmt(left)}
+function kstop(){if(KT){clearInterval(KT);KT=null}KEND=0;drawK()}
+function drawK(){const d=document.getElementById("kdlg"),n=KR.st.length,fin=KI>=n,t=fin?"":KR.st[KI],sec=fin?0:kdur(t);
+ const tm=KEND>0?`<div class="ktm"><span id="ktime">⏱ ${kfmt(KEND-Date.now())}</span><button class="btn ghost sm" onclick="kstop()">Stop</button></div>`:KEND<0?`<div class="ktm done">⏰ Timer klaar!<button class="btn sm" onclick="kstop()">OK</button></div>`:"";
+ d.innerHTML=`<div class="kh"><b>${esc(KR.r.name)}</b><button class="btn ghost sm" onclick="ktog()">${KR.ing?"Verberg":"Ingrediënten"}</button><button class="btn ghost sm" aria-label="Sluiten" onclick="closeK()">✕</button></div>
+ <div class="kp"><i style="width:${Math.round(Math.min(KI,n)/n*100)}%"></i></div>${tm}
+ <div class="kb">${KR.ing?`<ul class="ki">${KR.r.ing.map(l=>`<li>${esc(l.split("|")[0].trim())}</li>`).join("")}</ul>`:fin?`<div class="kt">Klaar! Eet smakelijk 🍽️</div>`:`<div class="ks">Stap ${KI+1} van ${n}</div><div class="kt">${esc(t)}</div>${sec&&KEND<=0?`<button class="btn" onclick="kstart(${sec})">⏱ Start timer ${sec>=3600?(sec/3600)+" uur":Math.round(sec/60)+" min"}</button>`:""}`}</div>
+ <div class="kn"><button class="btn ghost" onclick="kgo(-1)" ${KI==0?"disabled":""}>← Vorige</button>${fin?`<button class="btn" onclick="closeK()">Sluiten</button>`:`<button class="btn" onclick="kgo(1)">${KI==n-1?"Klaar ✓":"Volgende →"}</button>`}</div>`}
 let TP="all";
 function vTrend(){
  const cut=(()=>{const n=new Date();return {all:null,"4w":new Date(n-28*864e5),"3m":new Date(n-92*864e5),"6m":new Date(n-183*864e5),y:new Date(n.getFullYear(),0,1)}[TP]})();
