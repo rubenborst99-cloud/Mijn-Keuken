@@ -115,12 +115,7 @@ dialog{max-height:92vh;max-height:92dvh;overflow-y:auto;max-width:calc(100vw - 1
  .row.nw{flex-wrap:nowrap}
  .row.nw input:not([type=number]){flex:1 1 0!important;width:auto!important}
  .row.nw .btn{flex:none}
- .item.gk{flex-wrap:wrap;gap:6px 8px}
- .item.gk>b{flex:1 1 0;min-width:0;font-size:.95rem}
- .item.gk .row{flex:1 1 100%;justify-content:flex-end}
 
- .item.gk input[type=number]{width:56px!important;flex:none!important;padding:6px}
- .item.gk .mute{display:none}
  .chip{padding:6px 11px;font-size:.88rem}
 }
 nav .ni,nav .ls,nav .bd{display:none}
@@ -214,6 +209,18 @@ dialog .g3{margin:0}
 .g3 select,.g3 input{font-size:.9rem!important;padding:9px 6px}
 dialog .g3{grid-template-columns:1.5fr 1.3fr .8fr}
 dialog .g3 label{white-space:nowrap;font-size:.8rem}
+.item.gk{flex-wrap:wrap;gap:8px 10px;align-items:center}
+.item.gk .gt{flex:1 1 0;min-width:0}
+.item.gk .gt b{font-size:.98rem;line-height:1.25;display:block}
+.item.gk .gt .mute{font-size:.8rem}
+.item.gk .xb{flex:none;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:none;color:var(--danger);font-size:1rem;cursor:pointer;line-height:1}
+.item.gk .gc{flex:1 1 100%;display:flex;gap:10px;align-items:center}
+.item.gk .gc .btn{flex:1}
+.stp{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}
+.stp button{width:42px;height:42px;border:0;background:none;font-size:1.4rem;cursor:pointer;color:var(--ink)}
+.stp button:active{background:var(--sunbg)}
+.stp span{min-width:68px;text-align:center;font-size:.9rem;color:var(--mute)}
+.stp span b{color:var(--ink);font-size:1.05rem}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -345,7 +352,8 @@ function pickLbl(id){const e=S.sel.find(x=>x.rid==id);return e?"✓ "+e.pers+" p
 function pickR(id){const r=S.recipes.find(x=>x.id==id);if(!r)return;pickId=id;document.getElementById("pt").textContent=r.name;const n=document.getElementById("pn");const e=S.sel.find(x=>x.rid==id);n.value=e?e.pers:r.pers;pdlg.showModal();n.select()}
 function pickOk(){const n=Math.max(1,+document.getElementById("pn").value||1);const e=S.sel.find(x=>x.rid==pickId);if(e)e.pers=n;else S.sel.push({rid:pickId,pers:n});save();pdlg.close();draw()}
 function vMenu(){if(!S.sel.length)return`<div class="empty">Nog geen recepten gekozen. Klik bij Recepten op Op lijstje.</div>`;
- return`<div class="card">${S.sel.map((e,i)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<div class="item gk" style="cursor:default"><span class="th">${imgHtml(r)}</span><b>${esc(r.name)}</b><span class="row nw" style="margin-left:auto"><input type="number" min="1" value="${e.pers}" style="width:70px;height:auto" aria-label="Personen voor ${esc(r.name)}" onchange="setP(${i},this.value)"><span class="mute">pers.</span><button class="btn sm" onclick="startK(${r.id},${e.pers})">👩‍🍳 Koken</button><button class="btn ghost sm del" onclick="rmS(${i})">Weghalen</button></span></div>`:""}).join("")}</div><div class="bar" style="margin-top:12px"><button class="btn" onclick="go('list')">Naar boodschappenlijst →</button></div>`}
+ return`<div class="card">${S.sel.map((e,i)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<div class="item gk" style="cursor:default"><span class="th">${imgHtml(r)}</span><div class="gt"><b>${esc(r.name)}</b><div class="mute">${[r.time?"⏱ "+r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ")||"&nbsp;"}</div></div><button class="xb" aria-label="Weghalen: ${esc(r.name)}" onclick="rmS(${i})">✕</button><div class="gc"><div class="stp" role="group" aria-label="Personen voor ${esc(r.name)}"><button aria-label="Minder personen" onclick="stepP(${i},-1)">−</button><span><b>${e.pers}</b> pers.</span><button aria-label="Meer personen" onclick="stepP(${i},1)">+</button></div><button class="btn sm" onclick="startK(${r.id},${e.pers})">👩‍🍳 Koken</button></div></div>`:""}).join("")}</div><div class="bar" style="margin-top:12px"><button class="btn" onclick="go('list')">Naar boodschappenlijst →</button></div>`}
+function stepP(i,d){setP(i,(S.sel[i].pers||1)+d)}
 function setP(i,v){S.sel[i].pers=Math.max(1,+v||1);save();draw()}
 function rmS(i){S.sel.splice(i,1);save();draw()}
 const SUG={on:false,n:4,ids:[],haveTxt:"",have:[]};
