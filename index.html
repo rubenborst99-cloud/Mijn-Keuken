@@ -538,6 +538,31 @@ footer#ft{text-align:center}
 .ach{border:1.5px solid var(--line);border-radius:12px;padding:0 12px;margin-bottom:8px;background:var(--bg)}.ach summary{padding:11px 0;font-weight:600;cursor:pointer}.ach ol{margin:0 0 12px;padding-left:20px}.ach li{margin:4px 0}
 body[data-tab="account"] header{display:none}
 @media(min-width:1024px){body[data-tab="account"] header{display:block}body[data-tab="account"] main{max-width:760px}}
+
+/* === KLEURENPALET (uit het palet-document) === */
+:root{--bg:#FBF6EE;--card:#FFFFFF;--tile:#EFE7DC;--line:#E6DACB;--dash:#C9B8A3;--ink:#2B2118;--mute:#6B5B4B;--ink2:#4A3D31;--green:#B8441F;--ahov:#8E3216;--on:#FFFFFF;--pg:#3D6B4F;--sagefg:#3D6B4F;--sage:#E4EEE5;--ong:#FFFFFF;--ongm:#CFE3D3;--t-beige:#F3E3C9;--t-peach:#F6D9C4;--t-green:#DCE8D6;--t-lilac:#E9E0F0;--lilacline:#6B4A8A;--sunbg:#F3E3C9;--lav:#E9E0F0;--lavfg:#6B4A8A;--shadow:0 6px 20px rgba(43,33,24,.08)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#140F0C;--card:#30271F;--tile:#3D3229;--line:#54473A;--dash:#7A6956;--ink:#FFF8EF;--mute:#D2C3B1;--ink2:#EADFD2;--green:#F2875C;--ahov:#FFA884;--on:#140F0C;--pg:#2F5A40;--sagefg:#A9D9B6;--sage:#2F5038;--ong:#FFF8EF;--ongm:#CFE3D3;--t-beige:#54452A;--t-peach:#613A28;--t-green:#2F5038;--t-lilac:#4A3A5E;--lilacline:#D4BCEC;--sunbg:#54452A;--lav:#4A3A5E;--lavfg:#D4BCEC;--shadow:0 6px 20px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{--bg:#140F0C;--card:#30271F;--tile:#3D3229;--line:#54473A;--dash:#7A6956;--ink:#FFF8EF;--mute:#D2C3B1;--ink2:#EADFD2;--green:#F2875C;--ahov:#FFA884;--on:#140F0C;--pg:#2F5A40;--sagefg:#A9D9B6;--sage:#2F5038;--ong:#FFF8EF;--ongm:#CFE3D3;--t-beige:#54452A;--t-peach:#613A28;--t-green:#2F5038;--t-lilac:#4A3A5E;--lilacline:#D4BCEC;--sunbg:#54452A;--lav:#4A3A5E;--lavfg:#D4BCEC;--shadow:0 6px 20px rgba(0,0,0,.35)}
+:focus-visible{outline-color:var(--green)}
+/* tegels en receptplaatjes */
+.dst,.ph.pi,.dhi,.dit,.wct{background:var(--t,var(--t-beige));color:var(--c)}
+.wct.o{background:none}
+.tg button:nth-child(4n+1),.dtl.c1{background:var(--t-peach)}.tg button:nth-child(4n+2),.dtl.c2{background:var(--t-lilac)}.tg button:nth-child(4n+3),.dtl.c3{background:var(--t-beige)}.tg button:nth-child(4n),.dtl.c4{background:var(--t-green)}
+.dtl{color:var(--ink)}
+/* groene kaarten */
+.mpg,.dshop{color:var(--ong)}.mpt span,.dpg>div>span{color:var(--ongm);opacity:1}
+.mps i.p{background:var(--ong)}.mps i.o{background:var(--ongm);opacity:.6}
+.mpg button{background:var(--ong);color:var(--pg)}
+.dsh h3{color:var(--ong)}.dsh .hi,.dsh em{background:var(--ong);color:var(--pg)}.dsg2 b{color:var(--ongm)}.dsl{color:var(--ong)}
+.hlist{background:var(--pg);color:var(--ong)}.hlist .hi{background:var(--ong);color:var(--pg)}.hlist span.mute,.hlist i{color:var(--ongm)}
+/* rustige vlakken, stippellijnen, schaduw */
+.mr.out,.wcd.out{background:var(--tile);color:var(--ink2)}.mr.out .mri,.wct.o span{color:var(--ink2)}
+.mslot,.dwr.em,.wcd.em{border-color:var(--dash)}.empty{border-color:var(--dash)}
+.dwr.em,.dwr.em b{color:var(--mute)}
+.card,.dhero,.dwk,.dpan,.dic,.wcd,.mr,.hero{box-shadow:var(--shadow)}
+.mr.out,.wcd.out,.wcd.em,.mr.made{box-shadow:none}
+nav .bd{background:var(--green);color:var(--on)}
+@media(hover:hover){.btn:hover,.dcta:hover,.wbt.pl:hover,.mrc.pl:hover,.mcta:hover,.dsft button:hover:not(:disabled),.acl:hover{background:var(--ahov);color:var(--on)}}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -1096,7 +1121,7 @@ function mrThumb(r){const i=r.id%4;return`<span class="dst" style="--c:${DSC[i]}
 function mrCard(e,i,k,t){const r=S.recipes.find(x=>x.id==e.rid);if(!r)return"";const play=k==t&&!e.done;
  return`<div class="mr${k==t?" now":""}${e.done?" made":""}"><button class="mrb" onclick="dayAct(${i})">${mrThumb(r)}<span class="dsn"><b>${esc(r.name)}</b><span class="dsm">${ico(e.done?"check":"clock")}<span>${[r.time?r.time+" min":"",e.pers+" pers.",e.done?"gemaakt":""].filter(Boolean).join(" · ")}</span></span></span></button>${play?`<button class="mrc pl" aria-label="Kook mee: ${esc(r.name)}" onclick="startK(${r.id},${e.pers},${i})">${ico("play")}</button>`:`<button class="mrc" aria-label="Aanpassen: ${esc(r.name)}" onclick="dayAct(${i})">${ico("swap")}</button>`}</div>`}
 function mrDx(x){const out=x.kind=="out";
- return`<div class="mr${out?" out":""}${x.done?" made":""}"><button class="mrb" onclick="dxAct(${x.id})">${out?`<span class="mri">${ico("home")}</span><span class="dsn"><b>Uit eten · niet koken</b>${x.note?`<span class="dsm"><span>${esc(x.note)}</span></span>`:""}</span>`:`<span class="dst" style="--c:#6b4c9a">${ico("box")}</span><span class="dsn"><b>Kliekje: ${esc(x.note||"restje")}</b><span class="dsm">${ico(x.done?"check":"clock")}<span>${x.lid?(x.por||1)+" portie"+((x.por||1)==1?"":"s")+" uit de voorraad":"zelf ingevuld"}${x.done?" · opgegeten":""}</span></span></span>`}</button><button class="mrc${out?" flat":""}" aria-label="Aanpassen" onclick="dxAct(${x.id})">${ico("swap")}</button></div>`}
+ return`<div class="mr${out?" out":""}${x.done?" made":""}"><button class="mrb" onclick="dxAct(${x.id})">${out?`<span class="mri">${ico("home")}</span><span class="dsn"><b>Uit eten · niet koken</b>${x.note?`<span class="dsm"><span>${esc(x.note)}</span></span>`:""}</span>`:`<span class="dst" style="--c:var(--lilacline);--t:var(--t-lilac)">${ico("box")}</span><span class="dsn"><b>Kliekje: ${esc(x.note||"restje")}</b><span class="dsm">${ico(x.done?"check":"clock")}<span>${x.lid?(x.por||1)+" portie"+((x.por||1)==1?"":"s")+" uit de voorraad":"zelf ingevuld"}${x.done?" · opgegeten":""}</span></span></span>`}</button><button class="mrc${out?" flat":""}" aria-label="Aanpassen" onclick="dxAct(${x.id})">${ico("swap")}</button></div>`}
 function vMenu(){if(DESK())return vMenuD();const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
  const lbl=MW==0?"Deze week":MW==1?"Volgende week":MW==-1?"Vorige week":"Week van "+d0.getDate()+" "+MON[d0.getMonth()];
  const long=d=>d.toLocaleDateString("nl-NL",{month:"long"});
@@ -1130,7 +1155,7 @@ function setDay(i,k){if(k)S.sel[i].day=k;else delete S.sel[i].day;if(k)MW=wOff(k
 // === DAG KIEZEN (onderschuif-scherm op Thuis) ===
 Object.assign(ICP,{bowl:'<path d="M4 12h16a8 8 0 0 1-16 0z"/><path d="M9 8c0-1.200 1-1.200 1-2.400M13 8c0-1.200 1-1.200 1-2.400"/>',plate:'<ellipse cx="12" cy="13" rx="9" ry="4.500"/><path d="M8 12.500c2-1.500 6-1.500 8 0"/>',bake:'<path d="M3 11h18v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M7 11V8h10v3"/>',cloche:'<path d="M4 16a8 8 0 0 1 16 0z"/><path d="M12 8V6M3 19h18"/>',star:'<path d="M12 3.500l2.600 5.400 5.900.8-4.300 4.100 1 5.800L12 16.800 6.800 19.600l1-5.800L3.500 9.700l5.900-.8z"/>',clock:'<circle cx="12" cy="12" r="8"/><path d="M12 7.500V12l3 2"/>',check:'<path d="M5 12.500l4.500 4.500L19 7.500"/>',close:'<path d="M6 6l12 12M18 6L6 18"/>',box:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V5.500h6V8"/>'});
 let DS={day:"",sel:null,q:"",f:"you",pin:null,rows:[]},DSFROM=false;
-const DSC=["#b5451f","#2f6b4f","#a8742a","#6b4c9a"],DSI=["bowl","plate","bake","cloche"];
+const DSC=["var(--green);--t:var(--t-beige)","var(--sagefg);--t:var(--t-green)","var(--green);--t:var(--t-peach)","var(--lilacline);--t:var(--t-lilac)"],DSI=["bowl","plate","bake","cloche"];
 function dsStats(){const n={},last={};for(const g of S.log||[])for(const m of g.meals||[]){const nm=typeof m=="string"?m.replace(/ \(\d+ pers\.\)$/,""):(m&&m.name);if(!nm)continue;n[nm]=(n[nm]||0)+1;if(!last[nm]||g.date>last[nm])last[nm]=g.date}return{n,last}}
 function dsBuild(){DS.rows=dsCalc()}
 function dsCalc(){const st=dsStats(),used=new Set(S.sel.filter(e=>!e.done).map(e=>e.rid)),cats={};S.sel.forEach(e=>{const r=S.recipes.find(x=>x.id==e.rid);if(r)cats[r.cat]=1});
@@ -1205,9 +1230,9 @@ function vHomeD(){const nm=uname(),todo=homePick(),t=todayK(),WD=wDays(0);let he
  else hero=`<div class="dhero"><div class="dhb" style="padding:34px 26px"><small>${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</small><h2>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle recepten op je menu zijn gemaakt.":"Kies een paar recepten voor deze week."}</p><div class="row"><button class="btn" onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button><button class="btn ghost" onclick="go('rec')">Zelf kiezen</button></div></div></div>`;
  const wk=`<div class="dwk"><div class="dsec" style="margin:0 0 10px"><h3>Deze week</h3><button class="lnk" onclick="MW=0;go('menu')">Aanpassen</button></div>${WD.map(k=>{const es=S.sel.filter(e=>e.day==k).map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).filter(Boolean),dx=dxOf(k).map(x=>x.kind=="out"?"Uit eten":"Kliekje: "+(x.note||"restje")),n=es.concat(dx);
   return n.length?`<button class="dwr${k==t?" now":""}" onclick="MW=0;go('menu')"><span>${WDL(k)}</span><b>${esc(n.join(", "))}</b></button>`:`<button class="dwr em" onclick="dsOpen('${k}')"><span>${WDL(k)}</span><b>+ Kies iets</b></button>`}).join("")}</div>`;
- const tl=(c,ic,txt,js)=>`<button class="dtl" style="background:${c}" onclick="${js}"><span class="ti">${ico(ic)}</span>${txt}</button>`;
+ const tl=(c,ic,txt,js)=>`<button class="dtl ${c}" onclick="${js}"><span class="ti">${ico(ic)}</span>${txt}</button>`;
  const more=[["deals","Aanbiedingen"],["log","Logboek"],["trend","Trends"]].concat(optOn("stock")||optOn("left")?[["stock","Voorraad"]]:[]).map(([k,n])=>`<button class="dpill" onclick="go('${k}')">${n}</button>`).join("");
- return`<div class="dh1"><div><p class="mute" style="margin:0">${greet()}${nm?", "+esc(nm):""}</p><h2 class="pt" style="margin:2px 0 0;font-size:2.2rem">Wat eten we vanavond?</h2></div><label class="dsrch">${ico("search")}<input placeholder="Zoek een recept…" aria-label="Zoek een recept" onkeydown="if(event.key=='Enter'){Q=this.value;S.tab='rec';draw()}"></label></div><div class="dg2">${hero}${wk}</div><div class="dg3">${shopCardD("Boodschappenlijst")}<div><h3 class="dsq2">Snel naar</h3><div class="dtg">${tl("color-mix(in srgb,#b5451f 20%,var(--card))","plus","Recept toevoegen","openR()")}${tl("var(--lav)","star","Verras me","surprise()")}${tl("var(--sunbg)","calendar","Weekmenu maken","cfOpen()")}${tl("var(--sage)","list","Mijn recepten","go('rec')")}</div><div class="dpills">${more}</div></div></div>${inspD()}`}
+ return`<div class="dh1"><div><p class="mute" style="margin:0">${greet()}${nm?", "+esc(nm):""}</p><h2 class="pt" style="margin:2px 0 0;font-size:2.2rem">Wat eten we vanavond?</h2></div><label class="dsrch">${ico("search")}<input placeholder="Zoek een recept…" aria-label="Zoek een recept" onkeydown="if(event.key=='Enter'){Q=this.value;S.tab='rec';draw()}"></label></div><div class="dg2">${hero}${wk}</div><div class="dg3">${shopCardD("Boodschappenlijst")}<div><h3 class="dsq2">Snel naar</h3><div class="dtg">${tl("c1","plus","Recept toevoegen","openR()")}${tl("c2","star","Verras me","surprise()")}${tl("c3","calendar","Weekmenu maken","cfOpen()")}${tl("c4","list","Mijn recepten","go('rec')")}</div><div class="dpills">${more}</div></div></div>${inspD()}`}
 function ideeRows(day){if(!DIDS||DIDS.day!=day||DIDS.rows.some(x=>!S.recipes.some(r=>r.id==x.r.id)||S.sel.some(e=>e.rid==x.r.id&&!e.done))){DIDS={day,rows:dsCalc().filter(x=>x.you&&x.why!="Al op je menu").sort((a,b)=>b.sc-a.sc).slice(0,3)}}return DIDS.rows}
 function ideeAdd(id,k){S.sel.push({rid:id,pers:dp(),day:k});DIDS=null;save();draw()}
 function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
@@ -1224,7 +1249,7 @@ function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
   let body="";
   body+=es.map(([e,i])=>{const r=S.recipes.find(x=>x.id==e.rid);if(!r)return"";const play=k==t&&!e.done;
    return`<div class="wcd${k==t?" now":""}${e.done?" made":""}">${tileHtml(r,"wct")}<div class="wcb"><b>${esc(r.name)}</b><span class="dsm">${ico(e.done?"check":"clock")}<span>${esc([r.time?r.time+" min":"",e.done?"gemaakt":e.pers+" pers."].filter(Boolean).join(" · "))}</span></span></div>${play?`<button class="wbt pl" onclick="startK(${r.id},${e.pers},${i})">${ico("play")} Kook mee</button>`:`<button class="wbt" onclick="dayAct(${i})">${ico("swap")} Wissel</button>`}</div>`}).join("");
-  body+=dxs.map(x=>x.kind=="out"?`<div class="wcd out"><div class="wct o">${ico("home")}<b>Uit eten</b><span>Geen boodschappen nodig</span></div><button class="wbt" onclick="dxAct(${x.id})">Wijzigen</button></div>`:`<div class="wcd"><span class="wct" style="--c:#6b4c9a">${ico("box")}</span><div class="wcb"><b>Kliekje: ${esc(x.note||"restje")}</b><span class="dsm">${ico(x.done?"check":"clock")}<span>${x.lid?(x.por||1)+" portie":"zelf ingevuld"}${x.done?" · opgegeten":""}</span></span></div><button class="wbt" onclick="dxAct(${x.id})">Wijzigen</button></div>`).join("");
+  body+=dxs.map(x=>x.kind=="out"?`<div class="wcd out"><div class="wct o">${ico("home")}<b>Uit eten</b><span>Geen boodschappen nodig</span></div><button class="wbt" onclick="dxAct(${x.id})">Wijzigen</button></div>`:`<div class="wcd"><span class="wct" style="--c:var(--lilacline);--t:var(--t-lilac)">${ico("box")}</span><div class="wcb"><b>Kliekje: ${esc(x.note||"restje")}</b><span class="dsm">${ico(x.done?"check":"clock")}<span>${x.lid?(x.por||1)+" portie":"zelf ingevuld"}${x.done?" · opgegeten":""}</span></span></div><button class="wbt" onclick="dxAct(${x.id})">Wijzigen</button></div>`).join("");
   if(!body)body=`<button class="wcd em" onclick="dsOpen('${k}')">${ico("plus")}<span>Kies iets</span></button>`;
   return`<div class="wcol${k<t&&MW<=0?" past":""}"><div class="wch"><b>${WDL(k)}</b><span>${d.getDate()} ${MON[d.getMonth()]}${k==t?' <em class="vd">VANDAAG</em>':""}</span></div>${body}</div>`}).join("");
  const un=S.sel.map((e,i)=>[e,i]).filter(([e])=>!e.day);
