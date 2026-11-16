@@ -221,6 +221,34 @@ dialog .g3 label{white-space:nowrap;font-size:.8rem}
 .stp button:active{background:var(--sunbg)}
 .stp span{min-width:68px;text-align:center;font-size:.9rem;color:var(--mute)}
 .stp span b{color:var(--ink);font-size:1.05rem}
+:root{--ing-bg:#fde0cc;--ing-fg:#8a3a0c}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ing-bg:#5b3420;--ing-fg:#ffcfa6}}
+mark.mi{background:var(--ing-bg);color:var(--ing-fg);border-radius:6px;padding:0 5px;font-weight:700}
+.kc{display:flex;flex-wrap:wrap;gap:8px}
+.ing{background:var(--ing-bg);color:var(--ing-fg);border-radius:10px;padding:7px 12px;font-size:1.05rem;line-height:1.3}
+.ing b,.ki .am{font-weight:800}
+.ki .am{color:var(--ing-fg);background:var(--ing-bg);border-radius:6px;padding:1px 7px;margin-right:4px}
+:root{--made-bg:#dcefe6;--made-fg:#17603f}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--made-bg:#1f3a2e;--made-fg:#8fe0b4}}
+#dlg .mm,#dlg .chs{display:none}
+#dlg[data-mode=choice] .chs{display:block}
+#dlg[data-mode=link] #m-link,#dlg[data-mode=photo] #m-photo,#dlg[data-mode=form] #m-form{display:block}
+#dlg:not([data-mode=form]) #f-save{display:none}
+#dlg .back{display:none}
+#dlg[data-isnew="1"]:not([data-mode=choice]) .back{display:inline-flex}
+.chb{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;color:var(--ink)}
+.chb:hover,.chb:focus-visible{border-color:var(--green)}
+.chb b{font-size:1.8rem;font-weight:400}
+.chb strong{display:block;font-size:1.05rem}
+.chb small{display:block;color:var(--mute);font-size:.85rem;line-height:1.3}
+.item.gk.made{background:var(--made-bg);border-radius:12px;padding:10px;margin:4px 0;border-bottom:0}
+.item.gk.made .gt .mute{color:var(--made-fg);font-weight:600}
+.item.gk.made .th{opacity:.75}
+.item.gk .xb.dn{color:var(--mute)}
+.item.gk .xb.dn.on{background:var(--made-fg);border-color:var(--made-fg);color:var(--bg)}
+.bonus{margin-top:14px;padding:12px;border:1.5px dashed var(--sun);border-radius:12px;background:var(--sunbg)}
+.rc>p{flex:1 1 100%;margin:0!important}
+.rc .pk .btn.ghost{min-width:42px;padding:8px}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -228,15 +256,33 @@ dialog .g3 label{white-space:nowrap;font-size:.8rem}
 <main id="main"></main>
 <footer id="ft" class="bar" style="max-width:1000px;margin:auto;padding:10px 20px 30px"></footer>
 
-<dialog id="dlg">
+<dialog id="dlg" data-mode="choice" data-isnew="1">
   <h2 id="dt">Recept</h2>
-  <label for="f-url">Link naar een recept (optioneel)</label>
+  <div class="chs">
+   <p class="mute" style="margin:0 0 10px">Hoe wil je het recept toevoegen?</p>
+   <button class="chb" onclick="setMode('link')"><b aria-hidden="true">🔗</b><span><strong>Via link</strong><small>Plak een link, het recept wordt opgehaald</small></span></button>
+   <button class="chb" onclick="setMode('photo')"><b aria-hidden="true">📷</b><span><strong>Via foto</strong><small>Foto van een kookboek of scherm, de tekst wordt gelezen</small></span></button>
+   <button class="chb" onclick="setMode('form')"><b aria-hidden="true">✍️</b><span><strong>Zelf invullen</strong><small>Typ of plak het recept zelf</small></span></button>
+  </div>
+  <div id="m-link" class="mm">
+  <label for="f-url">Link naar een recept</label>
   <div class="row"><input id="f-url" type="url" placeholder="https://..." style="flex:1;width:auto;min-width:0"><button class="btn sm" id="f-go" onclick="fetchRecipe()">Ophalen</button></div>
   <p id="f-st" class="mute" style="margin:6px 0 0"></p>
   <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">Recepttekst plakken</summary>
   <textarea id="f-paste" style="min-height:110px;margin-top:8px" placeholder="Kopieer het recept van de website (ingrediënten en bereiding) en plak het hier"></textarea>
   <div class="row" style="margin-top:8px"><button class="btn sm" onclick="parsePaste()">Verwerken</button></div>
   <p id="f-ps" class="mute" style="margin:6px 0 0"></p></details>
+  <p class="mute" style="margin:12px 0 0"><a href="#" onclick="setMode('form');return false" style="color:var(--green)">Zelf invullen</a></p>
+  </div>
+  <div id="m-photo" class="mm">
+   <p class="mute" style="margin:0 0 10px">Maak een foto van het recept (ingrediënten en bereiding in beeld) of kies een afbeelding. Zorg voor goed licht en een scherpe, rechte foto.</p>
+   <button class="btn" onclick="document.getElementById('f-ocr').click()">📷 Foto maken of kiezen</button>
+   <input type="file" accept="image/*" id="f-ocr" hidden>
+   <p id="f-pst" class="mute" style="margin:10px 0 0"></p>
+   <p class="mute" style="margin:12px 0 0">Lukt het niet? Op veel telefoons kun je de tekst in een foto lang indrukken en kopiëren. Plak die dan bij <a href="#" onclick="setMode('link');return false" style="color:var(--green)">Via link, Recepttekst plakken</a>.</p>
+  </div>
+  <div id="m-form" class="mm">
+   <p id="f-note" class="mute" style="margin:0 0 4px"></p>
   <label for="f-name">Naam</label><input id="f-name">
   <div class="row"><div style="flex:1"><label for="f-cat">Categorie</label><input id="f-cat" list="cats"></div>
   <div><label for="f-pers">Voor (personen)</label><input id="f-pers" type="number" min="1" value="4" style="width:90px"></div></div>
@@ -252,9 +298,11 @@ dialog .g3 label{white-space:nowrap;font-size:.8rem}
   <textarea id="f-steps" style="min-height:140px" placeholder="1. Schil de aardappelen en snijd ze in stukken.&#10;2. Kook alles 20 minuten.&#10;3. Stamp tot een stamppot."></textarea>
   <label for="f-file">Of upload een .txt of .json bestand</label>
   <p class="mute" style="margin:0 0 4px">Bij .txt is de eerste regel de naam. Een regel die begint met Bereiding scheidt de ingrediënten van de stappen.</p><input id="f-file" type="file" accept=".txt,.json">
-  <div class="row" style="margin-top:18px;justify-content:flex-end">
+  </div>
+  <div class="row foot" style="margin-top:18px;justify-content:flex-end">
+    <button class="btn ghost back" onclick="setMode('choice')">← Terug</button><span style="flex:1"></span>
     <button class="btn ghost" onclick="dlg.close()">Annuleren</button>
-    <button class="btn" onclick="saveRecipe()">Recept opslaan</button></div>
+    <button class="btn" id="f-save" onclick="saveRecipe()">Recept opslaan</button></div>
 </dialog>
 
 <dialog id="pdlg"><h2 id="pt" style="font-size:1.2rem;margin-bottom:10px"></h2><label for="pn" class="mute">Voor hoeveel personen?</label><input id="pn" type="number" min="1" value="4" style="width:100%;margin:6px 0 16px" onkeydown="if(event.key=='Enter')pickOk()"><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="pdlg.close()">Annuleren</button><button class="btn" onclick="pickOk()">Op lijstje zetten</button></div></dialog>
@@ -352,7 +400,8 @@ function pickLbl(id){const e=S.sel.find(x=>x.rid==id);return e?"✓ "+e.pers+" p
 function pickR(id){const r=S.recipes.find(x=>x.id==id);if(!r)return;pickId=id;document.getElementById("pt").textContent=r.name;const n=document.getElementById("pn");const e=S.sel.find(x=>x.rid==id);n.value=e?e.pers:r.pers;pdlg.showModal();n.select()}
 function pickOk(){const n=Math.max(1,+document.getElementById("pn").value||1);const e=S.sel.find(x=>x.rid==pickId);if(e)e.pers=n;else S.sel.push({rid:pickId,pers:n});save();pdlg.close();draw()}
 function vMenu(){if(!S.sel.length)return`<div class="empty">Nog geen recepten gekozen. Klik bij Recepten op Op lijstje.</div>`;
- return`<div class="card">${S.sel.map((e,i)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<div class="item gk" style="cursor:default"><span class="th">${imgHtml(r)}</span><div class="gt"><b>${esc(r.name)}</b><div class="mute">${[r.time?"⏱ "+r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ")||"&nbsp;"}</div></div><button class="xb" aria-label="Weghalen: ${esc(r.name)}" onclick="rmS(${i})">✕</button><div class="gc"><div class="stp" role="group" aria-label="Personen voor ${esc(r.name)}"><button aria-label="Minder personen" onclick="stepP(${i},-1)">−</button><span><b>${e.pers}</b> pers.</span><button aria-label="Meer personen" onclick="stepP(${i},1)">+</button></div><button class="btn sm" onclick="startK(${r.id},${e.pers})">👩‍🍳 Koken</button></div></div>`:""}).join("")}</div><div class="bar" style="margin-top:12px"><button class="btn" onclick="go('list')">Naar boodschappenlijst →</button></div>`}
+ return`<div class="card">${S.sel.map((e,i)=>{const r=S.recipes.find(x=>x.id==e.rid);return r?`<div class="item gk${e.done?" made":""}" style="cursor:default"><span class="th">${imgHtml(r)}</span><div class="gt"><b>${esc(r.name)}</b><div class="mute">${[e.done?"✓ Gemaakt":"",r.time?"⏱ "+r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ")||"&nbsp;"}</div></div><button class="xb dn${e.done?" on":""}" aria-pressed="${e.done?"true":"false"}" aria-label="${e.done?"Markeer als nog niet gemaakt":"Markeer als gemaakt"}: ${esc(r.name)}" onclick="doneS(${i})">✓</button><button class="xb" aria-label="Weghalen: ${esc(r.name)}" onclick="rmS(${i})">✕</button><div class="gc"><div class="stp" role="group" aria-label="Personen voor ${esc(r.name)}"><button aria-label="Minder personen" onclick="stepP(${i},-1)">−</button><span><b>${e.pers}</b> pers.</span><button aria-label="Meer personen" onclick="stepP(${i},1)">+</button></div><button class="btn sm" onclick="startK(${r.id},${e.pers},${i})">${e.done?"👩‍🍳 Opnieuw":"👩‍🍳 Koken"}</button></div></div>`:""}).join("")}</div><div class="bar" style="margin-top:12px"><button class="btn" onclick="go('list')">Naar boodschappenlijst →</button></div>`}
+function doneS(i){S.sel[i].done=!S.sel[i].done;save();draw()}
 function stepP(i,d){setP(i,(S.sel[i].pers||1)+d)}
 function setP(i,v){S.sel[i].pers=Math.max(1,+v||1);save();draw()}
 function rmS(i){S.sel.splice(i,1);save();draw()}
@@ -375,8 +424,8 @@ function suggest(n,keep,have){have=have||[];const rec=recentNames(),chosen=new S
 function sugBlock(){
  const head=`<label class="bar" style="cursor:pointer;margin:0 0 10px"><input type="checkbox" ${SUG.on?"checked":""} style="width:20px;height:20px;padding:0;accent-color:var(--green)" onchange="sugToggle(this.checked)"><b>Suggesties voor de week</b></label>`;
  if(!SUG.on)return`<div style="margin-bottom:14px">${head}</div>`;
- const cards=SUG.ids.map((id,i)=>{const r=S.recipes.find(x=>x.id==id);return r?`<div class="card rc">${imgHtml(r)}<h3>${esc(r.name)}</h3><span class="tag">${esc(r.cat||"Zonder categorie")}</span>${usedHtml(r)}<div class="row" style="margin-top:12px"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button><button class="btn ghost sm" onclick="sugSwap(${i})">Andere</button></div></div>`:""}).join("");
- return`<div class="card" style="margin-bottom:18px">${head}<div class="row" style="margin-bottom:10px"><label for="sn">Hoeveel maaltijden?</label><input id="sn" type="number" min="1" max="14" value="${SUG.n}" style="width:70px"></div><div style="margin-bottom:14px"><label for="sh" class="mute">Wat heb je nog in huis? (optioneel)</label><input id="sh" value="${esc(SUG.haveTxt)}" placeholder="bijv. 2 paprika, 1 courgette, 1 kg kip" style="width:100%;margin:4px 0 10px" onkeydown="if(event.key=='Enter')sugGo()"><button class="btn sm" onclick="sugGo()">${SUG.ids.length?"Nieuwe suggesties":"Geef suggesties"}</button></div>${cards?`<div class="grid">${cards}</div>`:`<p class="mute" style="margin:0">Kies hoeveel maaltijden je wilt en klik op Geef suggesties.</p>`}${SUG.have.length&&SUG.ids.length&&!SUG.ids.some(id=>{const r=S.recipes.find(x=>x.id==id);return r&&matchTerms(r,SUG.have).length})?`<p class="mute" style="margin-bottom:0">Geen recepten gevonden met jouw ingrediënten. Dit zijn gewone suggesties.</p>`:""}${SUG.ids.length&&SUG.ids.length<SUG.n?`<p class="mute" style="margin-bottom:0">Meer recepten zijn er nu niet beschikbaar.</p>`:""}</div>`}
+ const cards=SUG.ids.map((id,i)=>{const r=S.recipes.find(x=>x.id==id);return r?`<div class="card rc"><div class="rh">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm"><span class="tag">${esc(r.cat||"Zonder categorie")}</span> <span class="mute">${[r.time?r.time+" min":"",r.level].filter(Boolean).join(" · ")}</span></div></div></div><div class="pk" style="display:flex;gap:6px"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button><button class="btn ghost sm" aria-label="Andere suggestie" title="Andere suggestie" onclick="sugSwap(${i})">↻</button></div>${usedHtml(r)}</div>`:""}).join("");
+ return`<div class="card" style="margin-bottom:18px">${head}<div class="row" style="margin-bottom:10px"><label for="sn">Hoeveel maaltijden?</label><input id="sn" type="number" min="1" max="14" value="${SUG.n}" style="width:70px"></div><div style="margin-bottom:14px"><label for="sh" class="mute">Wat heb je nog in huis? (optioneel)</label><input id="sh" value="${esc(SUG.haveTxt)}" placeholder="bijv. 2 paprika, 1 courgette, 1 kg kip" style="width:100%;margin:4px 0 10px" onkeydown="if(event.key=='Enter')sugGo()"><button class="btn sm" onclick="sugGo()">${SUG.ids.length?"Nieuwe suggesties":"Geef suggesties"}</button></div>${cards?`<div class="grid">${cards}</div>`:`<p class="mute" style="margin:0">Kies hoeveel maaltijden je wilt en klik op Geef suggesties.</p>`}${SUG.have.length&&SUG.ids.length&&!SUG.ids.some(id=>{const r=S.recipes.find(x=>x.id==id);return r&&matchTerms(r,SUG.have).length})?`<p class="mute" style="margin-bottom:0">Geen recepten gevonden met jouw ingrediënten. Dit zijn gewone suggesties.</p>`:""}${SUG.ids.length&&SUG.ids.length<SUG.n?`<p class="mute" style="margin-bottom:0">Meer recepten zijn er nu niet beschikbaar.</p>`:""}${SUG.ids.length?bonusHtml():""}</div>`}
 function haveTerms(txt){return txt.split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean).map(x=>{const t=parse(x).name.toLowerCase().replace(/[^a-zà-ÿ' ]/g,"").replace(/\b(g|gr|gram|kg|ml|dl|l|pak|pakken|stuks?|st|bos|zak|blik|el|tl|per|de|het|een)\b/g," ").replace(/\s+/g," ").trim().replace(/'s$/,"");const v=new Set([t]);{const w=t.split(" ");if(w.length>1&&w[w.length-1].length>=3)v.add(w[w.length-1])}if(t.endsWith("en")&&t.length>4)v.add(t.slice(0,-2));if(t.endsWith("s")&&t.length>3)v.add(t.slice(0,-1));return{label:t,vs:[...v].filter(w=>w.length>=2)}}).filter(h=>h.vs.length)}
 function matchTerms(r,have){const names=r.ing.map(l=>parse(l).name.toLowerCase());return have.filter(h=>h.vs.some(w=>{const re=new RegExp("(^|[^a-zà-ÿ])"+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));return names.some(n=>re.test(n))})).map(h=>h.label)}
 function usedHtml(r){return usedHave(r)+usedDeals(r)}
@@ -385,6 +434,17 @@ function usedHave(r){const m=SUG.have.length?matchTerms(r,SUG.have):[];return m.
 function todayStr(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
 function activeDeals(){const t=todayStr();return S.deals.filter(d=>!d.until||d.until>=t)}
 function dealTerms(){return activeDeals().flatMap(d=>haveTerms(d.name))}
+const PANTRY=/\b(zout|peper|olie|olijfolie|zonnebloemolie|water|boter|bouillon|bouillonblokje|ui|uien|knoflook|suiker|bloem|melk|ei|eieren|azijn|sojasaus|kruiden|specerijen|mosterd|tomatenpuree|ketchup|mayonaise|slagroom|kookroom)\b/;
+function bonusInfo(){const meals=[];for(const g of S.log)for(const m of g.meals||[])if(typeof m!="string")meals.push({cat:m.cat,ing:m.ing||[]});
+ const src=meals.length?meals:S.recipes.map(r=>({cat:r.cat,ing:r.ing}));const cc={},ic={};
+ for(const m of src){if(m.cat&&!/^zonder/i.test(m.cat))cc[m.cat]=(cc[m.cat]||0)+1;
+  const seen=new Set();for(const l of m.ing){const n=canon(parse(l).name);if(!n||PANTRY.test(n))continue;const w=kwords_(n);if(w&&!seen.has(w)){seen.add(w);ic[w]=(ic[w]||0)+1}}}
+ const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);
+ return{cat:(top(cc)[0]||[""])[0],ings:top(ic).slice(0,2).map(x=>x[0]),fromLog:!!meals.length}}
+function kwords_(n){const w=n.split(" ").filter(x=>x.length>=3&&!KSTOP.has(x));return w[w.length-1]||""}
+function bonusHtml(){const b=bonusInfo(),parts=[b.cat,...b.ings].filter(Boolean);if(!parts.length)return"";
+ const q=parts.join(" ").toLowerCase()+" recept",g=u=>"https://www.google.com/search?q="+encodeURIComponent(u);
+ return`<div class="bonus"><b>🎁 Bonus: probeer iets nieuws</b><p class="mute" style="margin:4px 0 8px">${b.fromLog?"Jullie eten vaak":"In je recepten komt vaak voor"}: <b>${esc(parts.map(x=>x.toLowerCase()).join(", "))}</b>. Zoek vergelijkbare recepten die je nog niet hebt:</p><div class="row"><a class="btn ghost sm" style="text-decoration:none" target="_blank" rel="noopener" href="${g("site:ah.nl/allerhande/recept "+q)}">Allerhande</a><a class="btn ghost sm" style="text-decoration:none" target="_blank" rel="noopener" href="${g("site:lekkerensimpel.com "+q)}">Lekker en Simpel</a><a class="btn ghost sm" style="text-decoration:none" target="_blank" rel="noopener" href="${g(q)}">Google</a></div><p class="mute" style="margin:8px 0 0;font-size:.85rem">Gevonden? Kies bij <b>+ Nieuw</b> voor <b>Via link</b>.</p></div>`}
 function sugToggle(v){SUG.on=v;draw()}
 function sugGo(){SUG.n=Math.max(1,Math.min(14,+document.getElementById("sn").value||4));SUG.haveTxt=document.getElementById("sh").value;SUG.have=haveTerms(SUG.haveTxt);SUG.ids=suggest(SUG.n,[],SUG.have);draw()}
 function sugSwap(i){const keep=SUG.ids.filter((_,j)=>j!=i);const all=suggest(SUG.n,keep,SUG.have);const nid=all[all.length-1];if(all.length>keep.length&&nid!=null)SUG.ids[i]=nid;draw()}
@@ -415,7 +475,7 @@ async function fetchRecipe(){const st=document.getElementById("f-st"),u=f("url")
   if(!f("cat").value.trim()){const c=[].concat(r.recipeCategory||[])[0]||[].concat(r.recipeCuisine||[])[0]||"";if(c)f("cat").value=dec(c).replace(/^./,x=>x.toUpperCase())}
   {const tt=String(r.totalTime||r.cookTime||"").match(/^P(?:\d+D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?/i);if(tt&&!f("time").value){const mm=(+tt[1]||0)*60+(+tt[2]||0);if(mm)f("time").value=mm}
    const c=[].concat(r.recipeCategory||[]).join(" ").toLowerCase();if(!f("type").value){const m=[[/voorgerecht/,"Voorgerecht"],[/hoofdgerecht|hoofd/,"Hoofdgerecht"],[/dessert|toetje|nagerecht|zoet/,"Dessert"],[/bijgerecht|bij /,"Bijgerecht"],[/soep/,"Soep"],[/ontbijt/,"Ontbijt"],[/lunch/,"Lunch"],[/snack|borrel|hapje/,"Snack"]].find(([re])=>re.test(c));if(m)f("type").value=m[1]}}
-  st.textContent="Gevonden: "+ing.length+" ingrediënten. Controleer alles en klik op Recept opslaan."
+  st.textContent="Gevonden: "+ing.length+" ingrediënten. Controleer alles en klik op Recept opslaan.";showForm(st.textContent)
  }catch(e){st.textContent=e.message=="functie"?"Ophalen mislukt: de ophaalfunctie in Supabase is niet bereikbaar. Is die al aangemaakt?":"Ophalen mislukt: "+e.message}
  finally{btn.disabled=false}}
 function parsePaste(){const ps=document.getElementById("f-ps");
@@ -442,22 +502,45 @@ function parsePaste(){const ps=document.getElementById("f-ps");
  if(pers)f("pers").value=pers;
  if(ing.length)f("ing").value=ing.join("\n");
  if(st.length)f("steps").value=st.map((t,i)=>(i+1)+". "+t).join("\n");
- ps.textContent=ing.length||st.length?"Herkend: "+ing.length+" ingrediënten en "+st.length+" stappen. Controleer de velden hieronder en pas aan waar nodig.":"Niets herkend. Plak de ingrediënten en de bereiding, elk op een eigen regel."}
+ ps.textContent=ing.length||st.length?"Herkend: "+ing.length+" ingrediënten en "+st.length+" stappen. Controleer de velden hieronder en pas aan waar nodig.":"Niets herkend. Plak de ingrediënten en de bereiding, elk op een eigen regel.";if(ing.length||st.length)showForm(ps.textContent);return !!(ing.length||st.length)}
 let curImg="";
+function loadTess(){return new Promise((ok,no)=>{if(window.Tesseract)return ok();const sc=document.createElement("script");sc.src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js";sc.onload=ok;sc.onerror=()=>no(new Error("script"));document.head.appendChild(sc)})}
+document.getElementById("f-ocr").addEventListener("change",async e=>{const fl=e.target.files[0];e.target.value="";if(!fl)return;const st=document.getElementById("f-pst");
+ try{st.textContent="Foto laden...";
+  const cv=await new Promise((ok,no)=>{const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1800/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext("2d");x.filter="grayscale(1) contrast(1.35)";x.drawImage(im,0,0,c.width,c.height);ok(c)};im.onerror=()=>no(new Error("foto"));im.src=rd.result};rd.onerror=()=>no(new Error("foto"));rd.readAsDataURL(fl)});
+  st.textContent="Tekstlezer laden (de eerste keer duurt dit even)...";await loadTess();
+  const res=await window.Tesseract.recognize(cv,"nld+eng",{logger:m=>{if(m.status)st.textContent=(m.status=="recognizing text"?"Tekst lezen ":"Voorbereiden ")+Math.round((m.progress||0)*100)+"%"}});
+  const txt=(res.data.text||"").trim();if(txt.length<20){st.textContent="Ik kon bijna geen tekst lezen. Probeer een scherpere foto met meer licht.";return}
+  document.getElementById("f-paste").value=txt;
+  if(!parsePaste()){st.textContent="Tekst gelezen, maar ik herken geen ingrediënten. Je kunt de tekst zelf bewerken bij Via link, Recepttekst plakken.";return}
+  document.getElementById("f-note").textContent="Gelezen uit de foto. Foto's kunnen fouten bevatten, controleer de ingrediënten en hoeveelheden goed.";setMode("form")
+ }catch(err){st.textContent="Foto lezen is niet gelukt ("+err.message+"). Is er internet? Je kunt ook de tekst uit de foto kopiëren en plakken bij Via link."}});
 function imgHtml(r){return`<div class="ph" data-i="${esc(((r.name||"?")[0]||"?").toUpperCase())}">${r.img?`<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:""}</div>`}
 function setImg(u){curImg=u||"";const p=document.getElementById("f-prev");p.innerHTML=curImg?`<div class="ph" data-i="" style="margin:0"><img src="${esc(curImg)}" alt="Voorbeeld" referrerpolicy="no-referrer" onerror="this.style.display='none'"></div>`:`<span class="mute">Geen foto</span>`;document.getElementById("f-photodel").style.display=curImg?"":"none"}
 document.getElementById("f-photo").addEventListener("change",e=>{const fl=e.target.files[0];e.target.value="";if(!fl)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,560/im.width),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);setImg(c.toDataURL("image/jpeg",.7))};im.onerror=()=>{document.getElementById("f-st").textContent="Deze foto kon niet worden gelezen."};im.src=rd.result};rd.readAsDataURL(fl)});
 
 let KR=null,KI=0,KX=0,KEND=0,KT=null,KWL=null;
 function ksteps(r){return(r.steps||"").split(/\n+/).map(x=>x.replace(/^\s*\d+[.)]\s*/,"").trim()).filter(Boolean)}
-function startK(id,pers){const r=S.recipes.find(x=>x.id==id);if(!r)return;const st=ksteps(r);
+function startK(id,pers,si){const r=S.recipes.find(x=>x.id==id);if(!r)return;const st=ksteps(r);
  if(!st.length){ask("Dit recept heeft nog geen bereidingswijze. Voeg die toe via Aanpassen.",()=>{});return}
- KR={r,st,ing:false,pers:pers&&pers!=r.pers?pers:0};KI=0;KEND=0;drawK();document.getElementById("kdlg").showModal();
+ KR={r,st,ing:false,si:si==null?null:si,pers:pers&&pers!=r.pers?pers:0};KI=0;KEND=0;drawK();document.getElementById("kdlg").showModal();
  try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(l=>KWL=l).catch(()=>{})}catch(e){}}
-function stopK(){if(KT){clearInterval(KT);KT=null}KEND=0;try{if(KWL){KWL.release();KWL=null}}catch(e){}}
+function stopK(){if(S.tab=="menu")draw();if(KT){clearInterval(KT);KT=null}KEND=0;try{if(KWL){KWL.release();KWL=null}}catch(e){}}
 function closeK(){document.getElementById("kdlg").close()}
+const KSTOP=new Set("verse vers plantaardige plantaardig gesneden gesnipperde gesnipperd grote kleine gehakte gehakt gerookte fijne rode gele groene gekookte gekookt geraspte geraspt gewassen zongedroogde ongezouten kruimige vastkokende gerookt diepvries blik pot pak zak bosje bos stuk stuks theelepel eetlepel".split(" "));
+function kparts(l){const i=parse(l),f=KR.pers?KR.pers/KR.r.pers:1;return{a:i.a?fmt(i.a*f,i.u):"",n:i.name}}
+function kwords(n){return canon(n).split(" ").filter(w=>w.length>=2&&!KSTOP.has(w))}
+function kmatch(text){const sw=text.toLowerCase().split(/[^a-zà-ÿ'-]+/).filter(Boolean).map(sing),sj=" "+sw.join(" ")+" ";
+ const items=KR.r.ing.map(l=>{const pr=kparts(l),ws=kwords(pr.n),head=ws[ws.length-1]||"";
+  const full=canon(pr.n);const strong=!!full&&sj.includes(" "+full+" ");
+  const weak=!strong&&head&&sw.some(w=>w==head||(w.length>=5&&head.length>=5&&(head.includes(w)||w.includes(head)))||(w.length==3&&head.length>5&&head.startsWith(w)));
+  return{pr,ws,head,strong,weak}});
+ const sh=new Set(items.filter(x=>x.strong).map(x=>x.head));
+ return items.filter(x=>x.strong||(x.weak&&!sh.has(x.head)))}
+function khl(text,ms){const ws=[...new Set(ms.flatMap(m=>m.ws))];if(!ws.length)return esc(text);
+ return esc(text).split(/(\s+|[.,;:!?()])/).map(t=>{const lw=t.toLowerCase();if(!/[a-zà-ÿ]/i.test(lw))return t;const sg=sing(lw);return ws.some(m=>sg==m||(lw.length>=5&&m.length>=5&&(lw.includes(m)||m.includes(lw))))?`<mark class="mi">${t}</mark>`:t}).join("")}
 function kline(l){const t=l.split("|")[0].trim();if(!KR.pers)return t;const i=parse(l);if(!i.a)return t;return(fmt(i.a*KR.pers/KR.r.pers,i.u)+" "+i.name).trim()}
-function kgo(d){const n=KI+d;if(n<0||n>KR.st.length)return;KI=n;drawK()}
+function kgo(d){const n=KI+d;if(n<0||n>KR.st.length)return;KI=n;if(n==KR.st.length&&KR.si!=null){const e=S.sel[KR.si];if(e&&e.rid==KR.r.id&&!e.done){e.done=true;save()}}drawK()}
 function swK(e){const dx=e.changedTouches[0].clientX-KX;if(Math.abs(dx)>70&&document.getElementById("kdlg").open)kgo(dx<0?1:-1)}
 function ktog(){KR.ing=!KR.ing;drawK()}
 function kdur(t){const m=t.match(/(\d+)(?:\s*[-–]\s*(\d+))?\s*(minuten|minuut|min|uur)\b/i);if(!m)return 0;const n=+(m[2]||m[1]);return n*(/uur/i.test(m[3])?3600:60)}
@@ -471,7 +554,7 @@ function drawK(){const d=document.getElementById("kdlg"),n=KR.st.length,fin=KI>=
  const tm=KEND>0?`<div class="ktm"><span id="ktime">⏱ ${kfmt(KEND-Date.now())}</span><button class="btn ghost sm" onclick="kstop()">Stop</button></div>`:KEND<0?`<div class="ktm done">⏰ Timer klaar!<button class="btn sm" onclick="kstop()">OK</button></div>`:"";
  d.innerHTML=`<div class="kh"><b>${esc(KR.r.name)}</b><button class="btn ghost sm" onclick="ktog()">${KR.ing?"Verberg":"Ingrediënten"}</button><button class="btn ghost sm" aria-label="Sluiten" onclick="closeK()">✕</button></div>
  <div class="kp"><i style="width:${Math.round(Math.min(KI,n)/n*100)}%"></i></div>${tm}
- <div class="kb">${KR.ing?`${KR.pers?`<div class="ks">Voor ${KR.pers} personen</div>`:""}<ul class="ki">${KR.r.ing.map(l=>`<li>${esc(kline(l))}</li>`).join("")}</ul>`:fin?`<div class="kt">Klaar! Eet smakelijk 🍽️</div>`:`<div class="ks">Stap ${KI+1} van ${n}</div><div class="kt">${esc(t)}</div>${sec&&KEND<=0?`<button class="btn" onclick="kstart(${sec})">⏱ Start timer ${sec>=3600?(sec/3600)+" uur":Math.round(sec/60)+" min"}</button>`:""}`}</div>
+ <div class="kb">${KR.ing?`${KR.pers?`<div class="ks">Voor ${KR.pers} personen</div>`:""}<ul class="ki">${KR.r.ing.map(l=>{const q=kparts(l);return`<li>${q.a?`<b class="am">${esc(q.a)}</b> `:""}${esc(q.n)}</li>`}).join("")}</ul>`:fin?`<div class="kt">Klaar! Eet smakelijk 🍽️</div>`:`<div class="ks">Stap ${KI+1} van ${n}</div>${(()=>{const ms=kmatch(t);return`<div class="kt">${khl(t,ms)}</div>${ms.length?`<div class="kc">${ms.map(m=>`<span class="ing">${m.pr.a?`<b>${esc(m.pr.a)}</b> `:""}${esc(m.pr.n)}</span>`).join("")}</div>`:""}`})()}${sec&&KEND<=0?`<button class="btn" onclick="kstart(${sec})">⏱ Start timer ${sec>=3600?(sec/3600)+" uur":Math.round(sec/60)+" min"}</button>`:""}`}</div>
  <div class="kn"><button class="btn ghost" onclick="kgo(-1)" ${KI==0?"disabled":""}>← Vorige</button>${fin?`<button class="btn" onclick="closeK()">Sluiten</button>`:`<button class="btn" onclick="kgo(1)">${KI==n-1?"Klaar ✓":"Volgende →"}</button>`}</div>`}
 let TP="all";
 function vTrend(){
@@ -533,7 +616,9 @@ function rmX(i){S.extra.splice(i,1);save();draw()}
 function tick(k){S.checked[k]=!S.checked[k];S.ct=S.ct||{};S.ct[k]=Date.now();save();draw()}
 function resetCk(){S.checked={};S.ct={};S.ctReset=Date.now()}
 function copyL(){const st=STORES[S.store][1],L=list();let t="";for(const a of st){const it=L.filter(x=>x.ai==a);if(it.length)t+=AISLES[a]+"\n"+it.map(x=>"- "+fmt(x.a,x.u)+" "+x.name).join("\n")+"\n\n"}try{navigator.clipboard.writeText(t)}catch(e){}}
-function openR(id){editId=id||null;const r=S.recipes.find(x=>x.id==id)||{name:"",cat:"",pers:4,ing:[]};
+function setMode(m){dlg.dataset.mode=m;const d=dlg;try{d.scrollTop=0}catch(e){}}
+function showForm(msg){document.getElementById("f-note").textContent=msg||"";setMode("form")}
+function openR(id){editId=id||null;dlg.dataset.isnew=id?"0":"1";setMode(id?"form":"choice");document.getElementById("f-note").textContent="";document.getElementById("f-pst").textContent="";const r=S.recipes.find(x=>x.id==id)||{name:"",cat:"",pers:4,ing:[]};
  document.getElementById("dt").textContent=id?"Recept aanpassen":"Nieuw recept";
  f("name").value=r.name;f("cat").value=r.cat;f("url").value=r.url||"";setImg(r.img||"");document.getElementById("f-imgurl").value="";document.getElementById("f-st").textContent="";document.getElementById("f-paste").value="";document.getElementById("f-ps").textContent="";f("pers").value=r.pers;f("type").innerHTML='<option value="">Kies…</option>'+TYPES.map(x=>`<option${r.type==x?" selected":""}>${x}</option>`).join("");f("level").innerHTML='<option value="">Kies…</option>'+LEVELS.map(x=>`<option${r.level==x?" selected":""}>${x}</option>`).join("");f("time").value=r.time||"";f("ing").value=r.ing.join("\n");f("steps").value=r.steps||"";f("file").value="";
  document.getElementById("cats").innerHTML=cats().map(c=>`<option value="${esc(c)}">`).join("");dlg.showModal()}
