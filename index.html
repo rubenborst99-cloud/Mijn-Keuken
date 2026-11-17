@@ -733,6 +733,16 @@ body[data-tab="account"] #ft{display:none}
 .axing{margin:0;padding-left:20px}.axing li{margin:2px 0}
 .axsteps{margin:0;white-space:normal;line-height:1.5}
 @media(min-width:1024px){.axgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* === RECEPTEN PER PERSOON === */
+.axownf{margin:0 0 10px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.axownf::-webkit-scrollbar{display:none}
+.axownf .axchip{flex:none;padding:7px 13px;font-size:.9rem}
+.axcc{opacity:.65;font-weight:500;margin-left:2px}
+.axunown{display:flex;align-items:center;gap:10px;padding:12px 14px;margin:0 0 10px;border:1px dashed var(--dash);font-size:.9rem}
+.axunown span{flex:1;min-width:0}
+.axunown .btn{flex:none}
+.axassign{border:1px dashed var(--dash);padding:14px 16px;margin-top:10px}
+.axown{font-size:.85rem}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -836,7 +846,7 @@ const PRESET_META={"Orzo met tomaat en spinazie":["Hoofdgerecht","Makkelijk",30]
 function fixS(){S.dx=S.dx||[];S.left=S.left||[];S.stock=S.stock||[];{const lim=dk(new Date(Date.now()-14*864e5));S.sel=(S.sel||[]).filter(e=>!(e.done&&e.shopped&&e.day&&e.day<lim))}S.extra=S.extra||[];S.log=S.log||[];S.checked=S.checked||{};S.sel=S.sel||[];S.deals=S.deals||[];if(S.menu){for(const d in S.menu)for(const e of S.menu[d])S.sel.push(e);delete S.menu}let ch=false;for(const r of S.recipes||[]){if(r.img===undefined&&PRESET_IMG[r.name]){r.img=PRESET_IMG[r.name];ch=true}if(r.type===undefined&&r.level===undefined&&r.time===undefined&&PRESET_META[r.name]){[r.type,r.level,r.time]=PRESET_META[r.name];ch=true}}return ch}
 fixS();
 const dlg=document.getElementById("dlg");let editId=null;
-function save(){try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}push()}
+function save(){ownFix();try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}push()}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function aisleOf(n){n=n.toLowerCase();for(const[a,w]of KW)for(const k of w.split(" "))if(new RegExp("\\b"+k).test(n))return a;return 8}
 function parse(line){const p=line.split("|"),t=p[0].trim();
@@ -1233,14 +1243,14 @@ const OPEN={};function tog(id){const was=!!OPEN[id];for(const k in OPEN)delete O
 document.addEventListener("click",e=>{if(S.tab!="rec"||!Object.values(OPEN).some(Boolean))return;const t=e.target;if(!t.isConnected||!t.closest||t.closest(".rc,dialog,nav,input,select,textarea,summary,a"))return;for(const k in OPEN)delete OPEN[k];draw()});
 function detail(r){return`<div style="margin:10px 0 14px">${/^https?:\/\//.test(r.url||"")?`<p style="margin:0 0 8px"><a href="${esc(r.url)}" target="_blank" rel="noopener" style="color:var(--green)">Bron van dit recept</a></p>`:""}<h3 style="font-size:1rem;margin-bottom:4px">Ingrediënten</h3><ul style="margin:0 0 12px;padding-left:20px">${r.ing.map(l=>`<li>${esc(l.split("|")[0].trim())}</li>`).join("")}</ul><h3 style="font-size:1rem;margin-bottom:4px">Bereiding</h3>${r.steps?`<div style="white-space:pre-wrap;max-width:70ch">${esc(r.steps)}</div>`:`<p class="mute">Nog geen bereidingswijze. Voeg die toe via Aanpassen.</p>`}${nutBox(r)}</div>`}
 let Q="",FT="",FM=0,FL="";
-function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}"><div class="rh" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm">${[r.type,r.time?r.time+" min":"",r.level].filter(Boolean).length?`<div class="mute rmeta">${[r.type,r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ")}</div>`:""}<span class="tag">${esc(r.cat||"Zonder categorie")}</span> <span class="mute">${r.ing.length} ingr. · ${r.pers} pers.</span></div></div></div><div class="pk"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button></div>${o?detail(r):""}${o?`<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">${ico("play")} Kookmodus</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div>`:""}</div>`}
-function rlist(){const q=Q.trim().toLowerCase();const rs=S.recipes.filter(r=>(S.cat=="Alles"||r.cat==S.cat)&&(!q||(r.name||"").toLowerCase().includes(q))&&(!FT||r.type==FT)&&(!FL||r.level==FL)&&(!FM||(r.time>0&&r.time<=FM)));
+function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}"><div class="rh" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}<div class="rt"><h3>${esc(r.name)}</h3><div class="rm">${[r.type,r.time?r.time+" min":"",r.level].filter(Boolean).length?`<div class="mute rmeta">${[r.type,r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ")}</div>`:""}<span class="tag">${esc(r.cat||"Zonder categorie")}</span>${ownLbl(r)} <span class="mute">${r.ing.length} ingr. · ${r.pers} pers.</span></div></div></div><div class="pk"><button class="btn sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button></div>${o?detail(r):""}${o?`<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">${ico("play")} Kookmodus</button><button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div>`:""}</div>`}
+function rlist(){const q=Q.trim().toLowerCase();const rs=recView().filter(r=>(S.cat=="Alles"||r.cat==S.cat)&&(!q||(r.name||"").toLowerCase().includes(q))&&(!FT||r.type==FT)&&(!FL||r.level==FL)&&(!FM||(r.time>0&&r.time<=FM)));
  return rs.length?`<div class="grid">${rs.map(rcard).join("")}</div>`:`<div class="empty">${S.recipes.length?"Geen recepten gevonden.":"Nog geen recepten. Voeg je eerste recept toe."}</div>`}
 function setQ(v){Q=v;document.getElementById("rl").innerHTML=rlist()}
 function vRec(){
  const cs=cats();if(S.cat!="Alles"&&!cs.includes(S.cat))S.cat="Alles";
- const cnt=c=>S.recipes.filter(r=>c=="Alles"||r.cat==c).length;
- return `<div class="bar rbar"><select id="catsel" aria-label="Categorie" onchange="S.cat=this.value;save();draw()">${["Alles",...cs].map(x=>`<option value="${esc(x)}"${S.cat==x?" selected":""}>${esc(x)} (${cnt(x)})</option>`).join("")}</select><input id="rq" type="search" placeholder="Zoek recept…" aria-label="Zoek recept" value="${esc(Q)}" oninput="setQ(this.value)"><button class="btn" onclick="openR()">+ Nieuw</button></div>${recFilters()}<div id="rl">${rlist()}</div>`}
+ const cnt=c=>recView().filter(r=>c=="Alles"||r.cat==c).length;
+ return `<div class="bar rbar"><select id="catsel" aria-label="Categorie" onchange="S.cat=this.value;save();draw()">${["Alles",...cs].map(x=>`<option value="${esc(x)}"${S.cat==x?" selected":""}>${esc(x)} (${cnt(x)})</option>`).join("")}</select><input id="rq" type="search" placeholder="Zoek recept…" aria-label="Zoek recept" value="${esc(Q)}" oninput="setQ(this.value)"><button class="btn" onclick="openR()">+ Nieuw</button></div>${ownChips()}${recFilters()}<div id="rl">${rlist()}</div>`}
 function recFilters(){const n=(FT?1:0)+(FM?1:0)+(FL?1:0);
  const o=(a,v,l)=>a.map(x=>`<option value="${x[0]}"${v==x[0]?" selected":""}>${x[1]}</option>`).join("");
  return`<details class="xd card fdet" ${n?"open":""}><summary>Filters${n?" ("+n+" actief)":""}</summary><div class="g3"><select id="ftype" aria-label="Soort gerecht" onchange="FT=this.value;draw()">${o([["","Soort"],...TYPES.map(t=>[t,t])],FT)}</select><select id="ftime" aria-label="Maximale tijd" onchange="FM=+this.value;draw()">${o([[0,"Tijd"],[20,"≤20 min"],[30,"≤30 min"],[45,"≤45 min"],[60,"≤60 min"]],FM)}</select><select id="flevel" aria-label="Moeilijkheid" onchange="FL=this.value;draw()">${o([["","Niveau"],...LEVELS.map(t=>[t,t])],FL)}</select></div>${n?`<div style="margin:8px 12px 0"><button class="btn ghost sm" onclick="FT='';FM=0;FL='';draw()">Filters wissen</button></div>`:""}</details>`}
@@ -1331,7 +1341,7 @@ function dsStats(){const n={},last={};for(const g of S.log||[])for(const m of g.
 function dsBuild(){DS.rows=dsCalc()}
 function dsCalc(){const st=dsStats(),used=new Set(S.sel.filter(e=>!e.done).map(e=>e.rid)),cats={};S.sel.forEach(e=>{const r=S.recipes.find(x=>x.id==e.rid);if(r)cats[r.cat]=1});
  let dt=[];try{dt=dealTerms()}catch(e){}const mx=Math.max(0,...Object.values(st.n)),now=Date.now();
- return S.recipes.map(r=>{const c=st.n[r.name]||0,wk=st.last[r.name]?Math.floor((now-new Date(st.last[r.name]))/6048e5):null;let why="",sc=Math.random();
+ return dedupR().map(r=>{const c=st.n[r.name]||0,wk=st.last[r.name]?Math.floor((now-new Date(st.last[r.name]))/6048e5):null;let why="",sc=Math.random();
   if(used.has(r.id)){why="Al op je menu";sc-=5}
   else if(wk!=null&&wk>=3){why="Al "+wk+" weken niet gegeten";sc+=3+Math.min(wk,8)/2}
   else if(dt.length&&r.ing&&matchTerms(r,dt).length){why="In de aanbieding";sc+=2.5}
@@ -1442,7 +1452,7 @@ function rmS(i){S.sel.splice(i,1);save();draw()}
 const SUG={on:false,n:4,ids:[],haveTxt:"",have:[]};
 function recentNames(){const t=new Set();for(const g of S.log.slice(0,2))for(const m of g.meals||[])t.add(typeof m=="string"?m.replace(/ \(\d+ pers\.\)$/,""):m.name);return t}
 function suggest(n,keep,have){have=have||[];const rec=recentNames(),chosen=new Set(S.sel.map(e=>e.rid));
- let pool=S.recipes.filter(r=>!chosen.has(r.id)&&!keep.includes(r.id)&&!["Voorgerecht","Dessert","Bijgerecht","Snack","Ontbijt"].includes(r.type));
+ let pool=dedupR().filter(r=>!chosen.has(r.id)&&!keep.includes(r.id)&&!["Voorgerecht","Dessert","Bijgerecht","Snack","Ontbijt"].includes(r.type));
  const all=pool.map(r=>[Math.random(),r]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
  const need=Math.max(0,n-keep.length),dt=dealTerms();
  const h1=have.length?all.map(r=>[r,matchTerms(r,have).length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]).map(x=>x[0]).slice(0,need):[];
@@ -1740,10 +1750,10 @@ function dupOf(r,skipId){const u=normUrl(r.url),a=nname(r.name),ai=new Set((r.in
 function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focus();return}
  const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||dp(),ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim(),url:f("url").value.trim(),img:curImg,type:f("type").value,level:f("level").value,time:+f("time").value||0};
  {const old=S.recipes.find(x=>x.id==editId),nu=optOn("nutri")?readNut():(old&&old.nut);if(nu)r.nut=nu}
- const commit=()=>{const i=S.recipes.findIndex(x=>x.id==editId);if(i>=0)S.recipes[i]=r;else S.recipes.push(toDp(r));save();dlg.close();draw()};
+ const commit=()=>{const i=S.recipes.findIndex(x=>x.id==editId);if(i>=0){const o=S.recipes[i];if(o.own)r.own=o.own;if(o.src)r.src=o.src;S.recipes[i]=r}else S.recipes.push(toDp(r));save();dlg.close();draw()};
  if(!editId){const d=dupOf(r,r.id);if(d){ask("Dit lijkt op \""+d.r.name+"\" ("+d.why+"), dat staat al in je recepten. Toch opslaan als nieuw recept?",commit,"Toch opslaan");return}}
  commit()}
-function delR(id){ask("Dit recept verwijderen?",()=>delR2(id))}
+function delR(id){const r=S.recipes.find(x=>x.id==id),o=r?ownerIds(r).filter(x=>x!=uid):[];if(isMulti()&&r&&own(r).includes(uid)&&o.length){ask("Dit recept is ook van "+o.map(mName).join(" en ")+". Alleen bij jou weghalen? Het blijft dan bij "+(o.length>1?"hen":o.map(mName)[0])+".",()=>{r.own=own(r).filter(x=>x!=uid);save();draw()},"Bij mij weghalen");return}ask("Dit recept verwijderen?",()=>delR2(id))}
 function delR2(id){S.recipes=S.recipes.filter(r=>r.id!=id);S.sel=S.sel.filter(e=>e.rid!=id);save();draw()}
 f("file").addEventListener("change",e=>{const fl=e.target.files[0];if(!fl)return;const rd=new FileReader();rd.onload=()=>{const t=String(rd.result);
  try{let j=JSON.parse(t);j=Array.isArray(j)?j:[j];let skipped=0;for(const x of j){const o={id:S.next++,name:x.name||"Naamloos",cat:x.cat||x.categorie||"",pers:+(x.pers||x.personen)||4,ing:x.ing||x.ingredienten||[],steps:x.steps||x.bereiding||x.bereidingswijze||"",url:x.url||"",img:typeof(x.img||x.image)=="string"?(x.img||x.image):"",type:x.type||x.gerecht||"",level:x.level||x.moeilijkheid||"",time:+(x.time||x.kooktijd)||0};if(dupOf(o)){skipped++;continue}S.recipes.push(toDp(o))}save();dlg.close();draw();if(skipped)ask(skipped+" dubbele recepten overgeslagen, die stonden er al.",()=>{})}
@@ -1776,7 +1786,7 @@ async function poll(){if(!sb||!uid||!HH||pending||document.hidden||S.tab!="list"
 setInterval(poll,4000);
 async function pull(){if(!HH)return;const{data,error}=await sb.from("huishouden").select("data").eq("id",HH).maybeSingle();
  if(error){setStat("Ophalen mislukt: "+error.message);return}
- if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};const chg=fixS();if(chg)push();try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd");autoBackup()}else{if(!data&&!LEGACY){const ok=await loadHH();if(!ok){draw();return}}push()}}
+ if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};const chg=fixS();if(chg|ownMig()|ownFix())push();try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd");autoBackup()}else{if(!data&&!LEGACY){const ok=await loadHH();if(!ok){draw();return}}push()}}
 // === HUISHOUDENS (losse huishoudens, accounts, uitnodigingen) ===
 let HHERR="",HH=null,HROL="",LEDEN=null,LEGACY=false,UNAAM="",LM="in",LMSG={},INV=null,SMSG={};
 try{const u=new URL(location.href),c=u.searchParams.get("uitnodiging");if(c){localStorage.setItem("kinv",c.trim().toUpperCase());u.searchParams.delete("uitnodiging");history.replaceState(null,"",u.pathname+u.search+u.hash)}INV=localStorage.getItem("kinv")}catch(e){}
@@ -1790,11 +1800,11 @@ async function loadHH(){HHERR="";HH=null;HROL="";LEDEN=null;LEGACY=false;
  if(!data){setHHLocal(null);return false}
  HH=data.hh;HROL=data.rol;let last=null;try{last=localStorage.getItem("khh")}catch(e){}
  if(last&&last!==HH){S={...freshS(),tab:S.tab}}setHHLocal(HH);loadLeden();return true}
-async function loadLeden(){if(LEGACY||!HH)return;try{const{data,error}=await sb.rpc("ledenlijst");if(!error&&data){LEDEN=data;if(S.tab=="account"&&!typing())draw()}}catch(e){}}
+async function loadLeden(){if(LEGACY||!HH)return;try{const{data,error}=await sb.rpc("ledenlijst");if(!error&&data){LEDEN=data;if(ownMig()|ownFix())save();if(S.tab=="account"&&!typing())draw()}}catch(e){}}
 let HHCK=false;
 async function afterLogin(user){uid=user.id;uemail=user.email||"";UNAAM=(user.user_metadata&&user.user_metadata.naam)||"";
- const ok=await loadHH();HHCK=true;if(!ok){draw();return}await pull();regMe();draw();loadVR();
- if(INV&&!LEGACY){const code=INV;ask("Je bent uitgenodigd voor een ander huishouden. Wil je overstappen? Je ziet dan niet meer de recepten en lijsten van "+hhName()+".",()=>joinHH(code),"Overstappen");try{localStorage.removeItem("kinv")}catch(e){}INV=null}}
+ const ok=await loadHH();HHCK=true;if(!ok){if(HHERR){draw();return}if(INV){const c=INV;await joinHH(c)}else await startSolo(null,null);return}await pull();regMe();draw();loadVR();
+ if(INV&&!LEGACY){const code=INV;ask((isMulti()?"Je bent uitgenodigd voor een ander huishouden. Wil je overstappen? Je recepten gaan mee; het weekmenu en de lijst van "+hhName()+" niet.":"Je bent uitgenodigd voor een huishouden. Lid worden? Je recepten gaan mee."),()=>joinHH(code),"Overstappen");try{localStorage.removeItem("kinv")}catch(e){}INV=null}}
 // ---- Inlogscherm: inloggen, account maken, wachtwoord vergeten
 function lmSet(m){LM=m;LMSG={};draw()}
 async function signup(){const n=$("lnm").value.trim(),em=$("em").value.trim(),pw=$("pw").value;
@@ -1824,11 +1834,16 @@ async function logout(){await sb.auth.signOut();uid=null;HH=null;LEDEN=null;HROL
 async function createHH(){const n=($("shn").value||"").trim()||"Ons huishouden";SMSG={busy:1};draw();
  const{data,error}=await sb.rpc("maak_huishouden");if(error){SMSG={err:"Maken mislukt: "+error.message};return draw()}
  HH=data;HROL="beheerder";setHHLocal(HH);S={...freshS(),tab:"home",hhName:n};regMe();push();loadLeden();SMSG={};draw();loadVR()}
-async function joinHH(code){code=String(code||"").trim().toUpperCase();if(!code){SMSG={err:"Vul de code in."};return draw()}SMSG={busy:1};if(!HH)draw();
+async function joinHH(code){code=String(code||"").trim().toUpperCase();if(!code){SMSG={err:"Vul de code in."};return draw()}SMSG={busy:1};
+ const had=!!HH,mine=HH?myRecipes():[],keep={prof:(S.prof||{})[uid]},snap=HH?JSON.stringify(S.recipes):null,multi=HH&&isMulti();
+ if(multi){leaveCleanup();await pushNow()}
  const{data,error}=await sb.rpc("accepteer_uitnodiging",{p_code:code});try{localStorage.removeItem("kinv")}catch(e){}INV=null;
- if(error){SMSG={err:/verlopen|bestaat niet/i.test(error.message)?"Deze uitnodiging bestaat niet of is verlopen. Vraag om een nieuwe link.":"Lid worden mislukt: "+error.message};if(HH){ask(SMSG.err,()=>{});SMSG={}}return draw()}
- S={...freshS(),tab:"home"};setHHLocal(data);await loadHH();await pull();regMe();SMSG={};S.tab="home";AP="";draw();loadVR()}
-function vSetup(){if(HHERR)return`<div class="axw axlogin"><div class="axbrand"><h1>Even geduld</h1><p class="mute">Je huishouden kon niet worden opgehaald.</p></div><div class="card axlcard"><p class="axerr" style="margin:0 0 6px">${esc(HHERR)}</p><p class="mute" style="margin:0">Maak géén nieuw huishouden. Probeer het opnieuw, of stuur deze melding door.</p><button class="btn axbig" onclick="location.reload()">Opnieuw proberen</button></div><p class="axswitch"><button class="lnk axlk" onclick="logout()">Uitloggen</button></p></div>`;const sug=(()=>{const w=(UNAAM||"").trim().split(/\s+/);return w.length>1?"Huize "+w[w.length-1]:""})();
+ if(error){const msg=/verlopen|bestaat niet/i.test(error.message)?"Deze uitnodiging bestaat niet of is verlopen. Vraag om een nieuwe link.":"Lid worden mislukt: "+error.message;SMSG={};
+  if(multi){S.recipes=JSON.parse(snap);await pushNow()}if(!had){await startSolo(null,null)}ask(msg,()=>{});return draw()}
+ S={...freshS(),tab:"home"};setHHLocal(data);await loadHH();await pull();await loadLeden();ownMig();
+ if(keep.prof){S.prof=S.prof||{};S.prof[uid]=keep.prof}mergeInto(mine);await pushNow();regMe();SMSG={};S.tab="home";AP="";draw();loadVR();
+ ask("Welkom in "+hhName()+"!"+(mine.length?" Je "+mine.length+" recepten zijn toegevoegd.":""),()=>{})}
+function vSetup(){if(!HHERR)return`<p class="mute" style="text-align:center;margin-top:40px">Even geduld…</p>`;if(HHERR)return`<div class="axw axlogin"><div class="axbrand"><h1>Even geduld</h1><p class="mute">Je huishouden kon niet worden opgehaald.</p></div><div class="card axlcard"><p class="axerr" style="margin:0 0 6px">${esc(HHERR)}</p><p class="mute" style="margin:0">Maak géén nieuw huishouden. Probeer het opnieuw, of stuur deze melding door.</p><button class="btn axbig" onclick="location.reload()">Opnieuw proberen</button></div><p class="axswitch"><button class="lnk axlk" onclick="logout()">Uitloggen</button></p></div>`;const sug=(()=>{const w=(UNAAM||"").trim().split(/\s+/);return w.length>1?"Huize "+w[w.length-1]:""})();
  return`<div class="axw axlogin"><div class="axbrand"><h1>Welkom${UNAAM?", "+esc(UNAAM.split(" ")[0]):""}!</h1><p class="mute">Je account is klaar. Kies hoe je begint.</p></div>
  ${SMSG.err?`<p class="axerr" style="margin:0 0 12px">${esc(SMSG.err)}</p>`:""}
  <div class="card axlcard"><h2>Ik ben uitgenodigd</h2><p class="mute" style="margin:0">Vul de code uit de uitnodiging in, of open de link die je kreeg.</p><input id="shc" class="axin" style="margin-top:12px;text-transform:uppercase" placeholder="bijv. 7F3K9Q2A" value="${esc(INV||"")}"><button class="btn axbig" style="margin-top:12px" ${SMSG.busy?"disabled":""} onclick="joinHH($('shc').value)">Lid worden</button></div>
@@ -1839,10 +1854,15 @@ async function hhInvite(){const d=$("bkdlg");if(LEGACY){d.innerHTML=`<h2 style="
  d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Iemand uitnodigen</h2><p class="mute">Uitnodiging maken…</p>`;d.showModal();
  const{data,error}=await sb.rpc("maak_uitnodiging");if(error){d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Iemand uitnodigen</h2><p class="axerr">Maken mislukt: ${esc(error.message)}</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="bkdlg.close()">Sluiten</button></div>`;return}
  const link=appUrl()+"?uitnodiging="+data;
- d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Iemand uitnodigen</h2><p style="margin:0 0 10px">Stuur deze link naar wie je wilt uitnodigen voor <b>${esc(hhName())}</b>. Die persoon maakt een account en is daarna lid.</p><div class="axcode"><small class="mute">Code</small><b>${esc(data)}</b></div><p class="axhelp" style="margin:8px 0 14px">7 dagen geldig. Wie lid wordt, ziet al jullie recepten, het weekmenu en de lijst.</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button><button class="btn" id="shbtn" onclick="hhShare('${esc(link)}')">${ico("a_share")} Link delen</button></div>`}
+ d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Iemand uitnodigen</h2><p style="margin:0 0 10px">Stuur deze link naar wie je wilt uitnodigen${isMulti()?` voor <b>${esc(hhName())}</b>`:""}. Die persoon logt in of maakt een account en is daarna lid. Diens recepten komen erbij.</p><div class="axcode"><small class="mute">Code</small><b>${esc(data)}</b></div><p class="axhelp" style="margin:8px 0 14px">7 dagen geldig. Jullie delen daarna het weekmenu en de boodschappenlijst, en zien elkaars recepten.</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button><button class="btn" id="shbtn" onclick="hhShare('${esc(link)}')">${ico("a_share")} Link delen</button></div>`}
 async function hhShare(u){try{if(navigator.share){await navigator.share({title:"Kom in mijn huishouden op Mijn Keuken",text:"Je bent uitgenodigd voor "+hhName()+" op Mijn Keuken.",url:u});return}}catch(e){return}try{await navigator.clipboard.writeText(u);const b=$("shbtn");if(b)b.textContent="Link gekopieerd ✓"}catch(e){prompt("Kopieer deze link:",u)}}
 function hhKick(id,nm){ask(nm+" uit het huishouden halen? Diegene ziet jullie recepten en lijsten dan niet meer.",async()=>{const{error}=await sb.rpc("lid_verwijderen",{p_uid:id});if(error)ask("Verwijderen mislukt: "+error.message,()=>{});await loadLeden();draw()},"Verwijderen")}
-function hhLeave(){const alone=(LEDEN||[]).length<=1;ask(alone?"Je bent het enige lid. Als je vertrekt, kan niemand meer bij de recepten en lijsten van "+hhName()+". Maak eerst een back-up als je ze wilt bewaren. Toch vertrekken?":"Weet je zeker dat je "+hhName()+" wilt verlaten? Je ziet de gedeelde recepten en lijsten dan niet meer.",async()=>{const{error}=await sb.rpc("verlaat_huishouden");if(error){ask("Verlaten mislukt: "+error.message,()=>{});return}HH=null;HROL="";LEDEN=null;setHHLocal(null);S={...freshS(),tab:"home"};try{localStorage.removeItem("keuken")}catch(e){}AP="";draw()},"Verlaten")}
+function hhLeave(){const oud=hhName(),n=S.recipes.filter(r=>own(r).includes(uid)).length;
+ ask("Weet je zeker dat je "+hhName()+" wilt verlaten? Je neemt je "+n+(n==1?" recept":" recepten")+" mee. Het weekmenu en de boodschappenlijst blijven bij het huishouden.",async()=>{
+  const rs=myRecipes(),keep={prof:(S.prof||{})[uid],opt:S.opt,defP:S.defP},snap=JSON.stringify(S.recipes),sel=JSON.stringify(S.sel);
+  leaveCleanup();await pushNow();
+  const{error}=await sb.rpc("verlaat_huishouden");if(error){S.recipes=JSON.parse(snap);S.sel=JSON.parse(sel);await pushNow();ask("Verlaten mislukt: "+error.message,()=>{});return}
+  await startSolo(rs,keep);ask("Je hebt "+oud+" verlaten. Je hebt nu weer je eigen recepten ("+rs.length+"), weekmenu en boodschappenlijst.",()=>{})},"Verlaten")}
 // === ACCOUNT-TABBLAD ===
 let DEFI=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();DEFI=e;if(S&&S.tab=="account")draw()});
 function instApp(){if(!DEFI)return;DEFI.prompt();DEFI.userChoice.finally(()=>{DEFI=null;draw()})}
@@ -1879,7 +1899,7 @@ function vAccount(){const local=!sb;
  const mNames=ms.length?ms.map(m=>pName(m.p)||m.name).join(" en "):"Alleen jij";
  return`<div class="axw">${aTop("Account","aBack()")}
  <div class="card axprof">${avHTML(pName(p)||p.name||uname(),0,84,p.photo)}<div class="axpi"><h3>${esc(p.name||uname()||"Jouw naam")}</h3><div class="mute axem">${esc(ok?uemail:local?"Alleen op dit apparaat":"")}</div><button class="lnk axlk" onclick="aGo('profiel')">Profiel bewerken</button><div class="axst"><i id="sdot2" class="sd ${ok&&!bad?"ok":bad?"bad":"off"}"></i><span id="stat">${esc(st)}</span>${ok?` · <button class="lnk axlk2" onclick="pull().then(draw)">Nu bijwerken</button>`:""}</div></div></div>
- <h4 class="axh">HUISHOUDEN</h4><button class="axhh" onclick="aGo('huis')"><span class="axhht"><b>${esc(hhName())}</b>${ico("chevr")}</span><span class="axhhb"><span class="axstack">${mAv}</span><span>${esc(mNames)} · koken voor ${dp()} · ${S.recipes.length} gedeelde recepten</span></span></button>
+ <h4 class="axh">HUISHOUDEN</h4>${isMulti()?`<button class="axhh" onclick="aGo('huis')"><span class="axhht"><b>${esc(hhName())}</b>${ico("chevr")}</span><span class="axhhb"><span class="axstack">${mAv}</span><span>${esc(mNames)} · koken voor ${dp()} · ${dedupR().length} recepten samen</span></span></button>`:`<button class="card axfr axfrb" onclick="aGo('huis')"><span class="axic" style="background:var(--t-green);color:var(--sagefg)">${ico("a_house")}</span><span class="axt"><b>Geen huishouden</b><small class="mute">Kook je samen? Deel je weekmenu en lijst</small></span><span class="axch">${ico("chevr")}</span></button>`}
  <h4 class="axh">VRIENDEN</h4>${vrCard()}
  <h4 class="axh">INSTELLINGEN</h4><div class="card axlist">${aRow("a_sliders",AT_LILAC,"Kookvoorkeuren",kCount()+" aan","aGo('kook')")}${aRow("a_bell",AT_BEIGE,"Meldingen",optOn("leftRem")&&optOn("left")?"aan":"","aGo('meld')")}${aRow("a_save",AT_GREEN,"Back-ups","","aGo('bk')")}${aRow("a_phone",AT_PEACH,"Als app op je telefoon",isStandalone()?"geïnstalleerd":"","aGo('app')")}</div>
  ${ok?`<h4 class="axh">INLOGGEN EN BEVEILIGING</h4><div class="card axlist">${aRow("a_mail",AT_BEIGE,"E-mailadres",`<span class="axtrunc">${esc(uemail)}</span>`,"aGo('mail')")}${aRow("a_lock",AT_BEIGE,"Wachtwoord wijzigen","","aGo('ww')")}</div>
@@ -1944,11 +1964,17 @@ function hhP(d){S.defP=Math.max(1,Math.min(20,dp()+d));save();draw()}
 function vAHuis(){const ms=members(),me=uid;
  const av=(ms.length?ms:[{name:pName(myP())||"?",p:myP()}]).slice(0,5).map((m,i)=>avHTML(pName(m.p)||m.name,i,52,m.p&&m.p.photo)).join("");
  const undo=(()=>{try{return localStorage.getItem("kundo")}catch(e){return null}})();
+ if(!isMulti())return`${aTop("Huishouden","aBack()")}<div class="card axempty" style="padding:18px"><b style="font:700 1.15rem Fraunces,serif">Je kookt nu alleen</b><p style="margin:6px 0 0">Je recepten, weekmenu en boodschappenlijst zijn van jou. Vorm een huishouden om het weekmenu en de lijst te delen en elkaars recepten te zien.</p></div>
+ <h4 class="axh">STANDAARD AANTAL PERSONEN</h4><div class="card axpers"><span><b>Ik kook voor</b><small class="mute">Recepten en boodschappen passen zich hierop aan</small></span><span class="axstep"><button onclick="hhP(-1)" aria-label="Minder" ${dp()<=1?"disabled":""}>−</button><b>${dp()}</b><button class="on" onclick="hhP(1)" aria-label="Meer">+</button></span></div>
+ ${sb&&uid&&!LEGACY?`<button class="axghost" onclick="hhInvite()">${ico("plus")} Iemand uitnodigen</button><button class="axghost" onclick="hhJoinDlg()">${ico("a_mail")} Ik heb een code</button>`:""}`;
+ const U=unowned().length,auto=!!myP().autoAdd;
  return`${aTop("Huishouden","aBack()")}<div class="axhh big"><span class="axstack">${av}</span><span class="axhht"><b>${esc(hhName())}</b><button class="axren" onclick="hhRename()" aria-label="Naam wijzigen">${ico("pen")}</button></span><span class="axhhs">Jullie delen recepten, weekmenu en boodschappenlijst</span></div>
  <h4 class="axh">STANDAARD AANTAL PERSONEN</h4><div class="card axpers"><span><b>We koken voor</b><small class="mute">Recepten en boodschappen passen zich hierop aan</small></span><span class="axstep"><button onclick="hhP(-1)" aria-label="Minder" ${dp()<=1?"disabled":""}>−</button><b>${dp()}</b><button class="on" onclick="hhP(1)" aria-label="Meer">+</button></span></div>
  ${S.recipes.some(r=>r.pers&&r.pers!=dp())||undo?`<div class="row" style="margin-top:8px">${S.recipes.some(r=>r.pers&&r.pers!=dp())?`<button class="btn ghost sm" onclick="persOm()">Recepten omrekenen naar ${dp()} pers.</button>`:""}${undo?`<button class="btn ghost sm" onclick="persUndo()">Omrekenen ongedaan maken</button>`:""}</div>`:""}
+ <h4 class="axh">RECEPTEN</h4><div class="card axlist"><label class="axtg"><span class="axic" style="background:var(--t-green);color:var(--sagefg)">${ico("book")}</span><span class="axtx"><b>Recepten van huisgenoten overnemen</b><small>Hun recepten worden ook van jou: je vrienden zien ze en je houdt ze als je vertrekt</small></span><input type="checkbox" class="axsw" ${auto?"checked":""} onchange="ownAuto(this.checked)" aria-label="Recepten van huisgenoten toevoegen"></label></div>
+ ${U?`<div class="card axassign"><b>${U} ${U==1?"recept is":"recepten zijn"} nog van niemand</b><p class="mute" style="margin:4px 0 10px">Deze stonden er al voordat recepten per persoon werden bijgehouden. Van wie zijn ze?</p><div class="axchips">${ms.map(m=>`<button class="axchip" onclick="ownAssign('${m.id}')">Van ${esc((pName(m.p)||m.name||"?").split(" ")[0])}</button>`).join("")}<button class="axchip" onclick="ownAssign('all')">Van ons allemaal</button></div></div>`:""}
  <h4 class="axh">LEDEN · ${ms.length||1}</h4><div class="card axlist">${ms.length?ms.map((m,i)=>`<div class="axmem">${avHTML(pName(m.p)||m.name,i,44,m.p&&m.p.photo)}<span><b>${esc(pName(m.p)||m.name||m.email||"Lid")}${m.id==me?" (jij)":""}</b><small class="mute">${(m.rol?m.rol=="beheerder":i==0)?"Beheerder":"Lid"}</small></span>${HROL=="beheerder"&&!LEGACY&&m.id!=me?`<button class="axkick" onclick="hhKick('${m.id}','${esc(pName(m.p)||m.name||"dit lid").replace(/'/g,"")}')" aria-label="Verwijderen uit huishouden">${ico("a_x")}</button>`:""}</div>`).join(""):`<div class="axmem">${avHTML(pName(myP())||"?",0,44,myP().photo)}<span><b>${esc(pName(myP())||"Jij")} (jij)</b><small class="mute">Alleen op dit apparaat</small></span></div>`}</div>
- ${sb?`<button class="axghost" onclick="hhInvite()">${ico("plus")} Iemand uitnodigen</button>`:""}<p class="axhelp" style="margin-top:12px">Alle leden zien dezelfde recepten (${S.recipes.length}), hetzelfde weekmenu en dezelfde lijst. Andere huishoudens zien hier niets van.</p>${sb&&uid&&!LEGACY?`<button class="axleave" onclick="hhLeave()">Huishouden verlaten</button>`:""}`}
+ ${sb?`<button class="axghost" onclick="hhInvite()">${ico("plus")} Iemand uitnodigen</button>`:""}<p class="axhelp" style="margin-top:12px">Jullie delen het weekmenu en de boodschappenlijst, en zien elkaars recepten (${dedupR().length} samen). Vrienden zien alleen de recepten die van jou zijn.</p>${sb&&uid&&!LEGACY?`<button class="axleave" onclick="hhLeave()">Huishouden verlaten</button>`:""}`}
 // ---- Back-ups en app
 function vABk(){return`${aTop("Back-ups","aBack()")}<div class="card"><p class="mute" style="margin:0 0 10px">${sb?"Elke dag wordt automatisch een kopie bewaard (laatste 14 dagen).":"Sla af en toe een back-up op."}</p><div class="row">${sb?`<button class="btn ghost sm" onclick="bkOpen()">Automatische back-ups</button>`:""}<button class="btn ghost sm" onclick="backup()">Back-up opslaan</button><label class="btn ghost sm" style="cursor:pointer">Back-up terugzetten<input type="file" accept=".json" hidden onchange="restore(this)"></label></div></div>`}
 function vAApp(){const ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/i.test(ua),and=/Android/i.test(ua);
@@ -2021,7 +2047,7 @@ async function vrOpen(id){FV=id;FVR=null;FVQ="";FVCAT="";FVF=false;AP="vriend";d
  const{data,error}=await sb.rpc("vriend_recepten",{p_uid:id});if(FV!==id)return;FVR=error?{err:error.message}:(Array.isArray(data)?data:[]);draw()}
 const vrHas=r=>S.recipes.some(x=>x.src&&x.src.uid==FV&&x.src.rid==r.id);
 function vrAddRec(i){const r=Array.isArray(FVR)&&FVR[i];if(!r||vrHas(r))return;const f=vrF(FV),c=JSON.parse(JSON.stringify(r));
- c.id=S.next++;c.src={uid:FV,naam:f?f.naam:"",rid:r.id};toDp(c);S.recipes.push(c);save();
+ delete c.own;c.id=S.next++;c.src={uid:FV,naam:f?f.naam:"",rid:r.id};toDp(c);S.recipes.push(c);save();
  const d=$("bkdlg");if(d.open)d.close();draw()}
 function vrRec(i){const r=FVR[i];if(!r)return;const d=$("bkdlg"),has=vrHas(r);
  d.innerHTML=`${r.img?`<img class="axrimg" src="${esc(r.img)}" alt="">`:""}<h2 style="font-size:1.3rem;margin:4px 0 2px">${esc(r.name)}</h2><p class="mute" style="margin:0 0 10px">${[r.time?r.time+" min":"",r.pers?r.pers+" pers.":"",r.cat||r.type||""].filter(Boolean).map(esc).join(" · ")}</p>
@@ -2047,6 +2073,43 @@ async function vrMeldWeg(id){MELD=MELD.filter(m=>m.id!=id);draw();try{await sb.f
 function meldCard(){if(!VRON)return"";const I=vrIn();if(!I.length&&!MELD.length)return"";
  return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><b>Vrienden</b></div>${I.slice(0,3).map(f=>`<div class="axreml"><span><b>${esc(f.naam)}</b><small class="mute">wil vrienden worden</small></span><button class="btn ghost sm" onclick="go('account');aGo('vrienden')">Bekijken</button></div>`).join("")}${MELD.slice(0,3).map(m=>`<div class="axreml"><span><small style="color:var(--ink);font-size:.92rem">${esc(m.tekst)}</small></span><button class="axkick" onclick="vrMeldWeg(${m.id})" aria-label="Weghalen">${ico("a_x")}</button></div>`).join("")}</div>`}
 Object.assign(ICP,{a_clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.500 2"/>'});
+// === RECEPTEN PER PERSOON (eigenaren, filter, geen dubbele) ===
+let OWNF="";
+const own=r=>Array.isArray(r&&r.own)?r.own:[];
+const memIds=()=>{const m=members();return m.length?m.map(x=>x.id):[uid||"local"]};
+const ownerIds=r=>{const M=new Set(memIds());return own(r).filter(x=>M.has(x))};
+const isMulti=()=>members().length>1;
+const nkey=r=>String((r&&r.name)||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]/g,"");
+function dedupR(list){list=list||S.recipes||[];const me=uid||"local",best=new Map();
+ for(const r of list){const k=nkey(r)||("#"+r.id),b=best.get(k);if(!b){best.set(k,r);continue}if(!ownerIds(b).includes(me)&&ownerIds(r).includes(me))best.set(k,r)}
+ const win=new Set([...best.values()].map(r=>r.id));return list.filter(r=>win.has(r.id))}
+function recView(){const R=S.recipes||[];if(!OWNF)return dedupR(R);if(OWNF=="none")return dedupR(R.filter(r=>!ownerIds(r).length));return dedupR(R.filter(r=>ownerIds(r).includes(OWNF)))}
+const mName=id=>{if(id==(uid||"local"))return"mij";const m=members().find(x=>x.id==id);return m?(m.name||"").split(" ")[0]:"?"};
+function ownLbl(r){if(!isMulti())return"";const k=nkey(r),ids=[...new Set(S.recipes.filter(x=>nkey(x)==k).flatMap(ownerIds))];if(!ids.length)return` <span class="mute axown">· van niemand</span>`;
+ const me=uid||"local",n=ids.sort((a,b)=>(b==me)-(a==me)).map(mName);return` <span class="mute axown">· van ${esc(n.length>1?n.slice(0,-1).join(", ")+" en "+n[n.length-1]:n[0])}</span>`}
+function unowned(){return(S.recipes||[]).filter(r=>!ownerIds(r).length)}
+function ownChips(){const U=unowned().length;if(!isMulti()&&!U)return"";if(OWNF&&OWNF!="none"&&!memIds().includes(OWNF))OWNF="";
+ const me=uid||"local",n=f=>{const o=OWNF;OWNF=f;const c=recView().length;OWNF=o;return c};
+ const ch=(f,l)=>`<button class="axchip${OWNF==f?" on":""}" onclick="OWNF='${f}';draw()">${esc(l)} <span class="axcc">${n(f)}</span></button>`;
+ return`<div class="axchips axownf">${ch("","Iedereen")}${ch(me,"Van mij")}${members().filter(m=>m.id!=me).map(m=>ch(m.id,"Van "+(m.name||"?").split(" ")[0])).join("")}${U?ch("none","Van niemand"):""}</div>${U&&isMulti()?`<div class="card axunown"><span>${U} ${U==1?"recept is":"recepten zijn"} nog van niemand. Vrienden zien ze pas als ze van iemand zijn.</span><button class="btn ghost sm" onclick="go('account');aGo('huis')">Toewijzen</button></div>`:""}`}
+function ownMig(){if(S.ownv||!S.recipes)return false;if(sb&&!LEGACY&&!LEDEN)return false;if(LEGACY)return false;const ids=memIds();
+ for(const r of S.recipes)if(!Array.isArray(r.own))r.own=ids.length==1?[ids[0]]:[];S.ownv=1;return true}
+function ownFix(){if(!S||!S.ownv||!S.recipes||(sb&&!uid))return false;const me=uid||"local";let ch=false;const auto=isMulti()&&myP().autoAdd;
+ for(const r of S.recipes){if(!Array.isArray(r.own)){r.own=[me];ch=true}else if(auto&&ownerIds(r).length&&!r.own.includes(me)){r.own.push(me);ch=true}}return ch}
+function ownAssign(who){S.ownv=1;const ids=who=="all"?memIds():[who];for(const r of unowned())r.own=[...new Set(own(r).concat(ids))];save();draw()}
+function ownAuto(v){myP().autoAdd=!!v;ownFix();save();draw()}
+function myRecipes(){return(S.recipes||[]).filter(r=>own(r).includes(uid)).map(r=>{const c=JSON.parse(JSON.stringify(r));c.own=[uid];return c})}
+function leaveCleanup(){S.recipes=(S.recipes||[]).filter(r=>{const o=own(r);if(!o.includes(uid))return true;r.own=o.filter(x=>x!=uid);return r.own.length>0});const ids=new Set(S.recipes.map(r=>r.id));S.sel=(S.sel||[]).filter(e=>ids.has(e.rid))}
+function mergeInto(rs){S.recipes=S.recipes||[];S.next=Math.max(S.next||1,...S.recipes.map(r=>+r.id+1||0),1);
+ for(const r of rs){const ex=S.recipes.find(x=>nkey(x)&&nkey(x)==nkey(r));if(ex){if(!own(ex).includes(uid))ex.own=own(ex).concat(uid);continue}r.id=S.next++;r.own=[uid];S.recipes.push(r)}}
+async function pushNow(){if(!sb||!uid||!HH)return false;clearTimeout(tm);pending=false;try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}const{error}=await sb.from("huishouden").upsert(hhRow(S));return!error}
+async function startSolo(rs,keep){const{data,error}=await sb.rpc("maak_huishouden");if(error){HH=null;HHERR=error.message;HHCK=true;draw();return}
+ HH=data;HROL="beheerder";LEDEN=null;setHHLocal(HH);S={...freshS(),tab:"home"};
+ if(rs){S.recipes=[];S.next=1;for(const r of rs){r.id=S.next++;S.recipes.push(r)}}
+ S.ownv=1;for(const r of S.recipes)r.own=[uid];
+ if(keep){if(keep.prof)S.prof={[uid]:keep.prof};if(keep.opt)S.opt=keep.opt;if(keep.defP)S.defP=keep.defP}
+ regMe();await pushNow();await loadLeden();AP="";draw();loadVR()}
+function hhJoinDlg(){const d=$("bkdlg");d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Lid worden van een huishouden</h2><p style="margin:0 0 10px">Vul de code uit de uitnodiging in.</p><input id="jcode" class="axin" style="text-transform:uppercase" placeholder="bijv. 7F3K9Q2A"><p class="axhelp" style="margin:8px 0 14px">Je recepten gaan mee en horen daarna bij het huishouden (dubbele worden samengevoegd). Je huidige weekmenu en boodschappenlijst gaan niet mee.</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Annuleren</button><button class="btn" onclick="const c=$('jcode').value;bkdlg.close();joinHH(c)">Lid worden</button></div>`;d.showModal()}
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
