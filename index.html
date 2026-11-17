@@ -2,12 +2,12 @@
 <html lang="nl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Mijn Keuken</title>
+<title>KookBuddy</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="theme-color" content="#faf6ee">
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Mijn Keuken"><link rel="icon" type="image/png" href="icon-192.png"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KookBuddy"><link rel="icon" type="image/png" href="icon-192.png"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="config.js"></script>
@@ -973,9 +973,45 @@ dialog.hx-cook{width:min(520px,96vw);max-height:92vh;overflow:auto;padding:22px 
 .fx-rl button{display:flex;justify-content:space-between;gap:8px;width:100%;border:0;border-top:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 12px;text-align:left;cursor:pointer;font:inherit}
 .fx-rl button:first-child{border-top:0}.fx-rl button.on{background:var(--sage)}
 .fx-rl button small{flex:none}.fx-rl p{padding:10px 12px;margin:0}
+/* === OPSTARTSCHERM === */
+#splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:radial-gradient(ellipse 47% 22% at 50% 45%,#CC5C36 0 99%,transparent 100%),radial-gradient(ellipse 64% 31% at 50% 45%,#C25030 0 99%,transparent 100%),#B8441F;transition:opacity .4s ease}
+#splash.out{opacity:0;pointer-events:none}
+.sp-c{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 24px;margin-top:-4vh}
+.sp-logo{width:min(48vw,230px);aspect-ratio:1;border-radius:50%;background:#FBF6EE;display:grid;place-items:center;box-shadow:0 18px 40px rgba(80,25,8,.35);animation:sp-pop .6s ease both}
+.sp-logo svg{width:52%;height:auto;margin-top:-2%}
+.sp-name{font:700 clamp(2.6rem,12vw,3.6rem)/1 Fraunces,Georgia,serif;margin-top:34px;letter-spacing:-.01em}
+.sp-name span:first-child{color:#FFF8EF}.sp-name span:last-child{color:#FFD9A8}
+#splash p{color:#FFE9DA;font:400 1.15rem/1.45 "DM Sans",system-ui,sans-serif;margin:18px 0 0}
+@keyframes sp-pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.sp-logo{animation:none}#splash{transition:none}}
+/* === INLOGSCHERM === */
+body[data-tab="login"] header{display:none}
+.lg{max-width:440px;margin:0 auto;padding:clamp(16px,6vh,56px) 4px 32px}
+.lg-logo{display:flex;flex-direction:column;align-items:center;margin-bottom:26px}
+.lg-tile{width:96px;height:96px;border-radius:26px;display:block;box-shadow:0 8px 22px rgba(184,68,31,.25)}
+.lg-tile svg{width:100%;height:100%;display:block}
+.lg-name{font:700 2rem/1 Fraunces,Georgia,serif;margin-top:14px}
+.lg-name span:first-child{color:var(--green)}.lg-name span:last-child{color:var(--pg)}
+:root[data-theme="dark"] .lg-name span:last-child{color:var(--sagefg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lg-name span:last-child{color:var(--sagefg)}}
+.lg-h{font:700 2.1rem/1.15 Fraunces,serif;margin:0 0 6px;color:var(--ink)}
+.lg-sub{margin:0 0 18px;font-size:1.05rem}
+.lg-l{display:block;font-weight:700;margin:16px 0 8px;font-size:1rem;color:var(--ink)}
+.lg-f{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--card);border-radius:16px;padding:0 14px 0 16px;color:var(--mute);margin:0;font-weight:400}
+.lg-f:focus-within{outline:2px solid var(--green);outline-offset:1px}
+.lg-f>.ic{width:22px;height:22px;flex:none}
+.lg-f input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;font-size:1.05rem;padding:16px 0;outline:none}
+.lg-eye{border:0;background:none;color:var(--mute);padding:6px;cursor:pointer;display:grid;place-items:center}
+.lg-fg{display:flex;justify-content:flex-end;margin-top:10px}
+.lg .lnk{background:none;border:0;padding:0;color:var(--green);font:700 1rem "DM Sans",sans-serif;cursor:pointer}
+.lg-btn{width:100%;min-height:58px;margin-top:20px;border-radius:18px;font-size:1.15rem;font-weight:700;justify-content:center}
+.lg-sw{text-align:center;margin:30px 0 0;color:var(--mute);font-size:1rem}
+
+.hx-pieper svg{width:58%;height:auto}
 </style></head>
 <body>
-<header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
+<div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
+<header><h1>KookBuddy</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
 <nav id="nav"></nav>
 <main id="main"></main>
 <footer id="ft" class="bar" style="max-width:1000px;margin:auto;padding:10px 20px 30px"></footer>
@@ -1278,7 +1314,7 @@ let WL=null;
 async function wake(){const want=S.tab=="list"&&document.visibilityState=="visible";try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
 function draw(){try{if((!sb||(uid&&HH))&&S.fixed&&S.fixed.length&&applyFixed())save()}catch(e){}document.body.classList.toggle("nutri-on",optOn("nutri"));document.body.classList.toggle("home-on",S.tab=="home");if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=vLogin();return}if(sb&&uid&&!HH){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=HHCK?vSetup():`<p class="mute" style="text-align:center;margin-top:40px">Laden…</p>`;return}
  document.getElementById("nav").innerHTML=[["home","Thuis","Thuis","home"],["rec","Recepten","Recepten","book"],["menu","Weekmenu","Menu","calendar"],["list","Boodschappen","Lijst","cart"]].map(([k,n,sh,io])=>`<button class="${S.tab==k||(k=="home"&&["deals","log","trend","stock"].includes(S.tab))?"on":""}" onclick="go('${k}')"><b class="ni" aria-hidden="true">${ico(io)}</b><span class="lf">${n}</span><span class="ls">${sh}</span>${k=="menu"&&S.sel.length?`<i class="bd">${S.sel.length}</i>`:""}</button>`).join("");
- navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="Mijn Keuken"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals","log","trend"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go('home')">${ico("chevl")} Thuis</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
+ navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="KookBuddy"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals","log","trend"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go('home')">${ico("chevl")} Thuis</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
 const greet=()=>{const h=new Date().getHours();return h<6?"Goedenacht":h<12?"Goedemorgen":h<18?"Goedemiddag":"Goedenavond"};
 function uname(){const pp=(S.prof||{})[uid||"local"];if(pp){const nm=(pp.name||pp.nick||"").trim();if(nm)return nm.split(/\s+/)[0]}if(S.userName)return S.userName;const m=String(uemail||"").split("@")[0].match(/^[a-zA-Z]+/);return m?m[0][0].toUpperCase()+m[0].slice(1).toLowerCase():""}
 let HS=null;
@@ -2047,7 +2083,7 @@ async function signup(){const n=$("lnm").value.trim(),em=$("em").value.trim(),pw
 async function lForgot(){const em=$("em").value.trim();if(!/^\S+@\S+\.\S+$/.test(em)){LMSG={err:"Vul eerst je e-mailadres in."};return draw()}
  const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:appUrl()});LM="in";LMSG=error?{err:"Versturen mislukt: "+error.message,em}:{ok:"We hebben een mail gestuurd naar "+em+". Klik op de link om een nieuw wachtwoord te kiezen.",em};draw()}
 function vLogin(){const t={in:"Inloggen",up:"Account maken",reset:"Wachtwoord vergeten"}[LM];
- return`<div class="axw axlogin"><div class="axbrand"><h1>Mijn Keuken</h1><p class="mute">Recepten, weekmenu en boodschappen, samen met je huishouden.</p></div>
+ return`<div class="axw axlogin"><div class="axbrand"><h1>KookBuddy</h1><p class="mute">Recepten, weekmenu en boodschappen, samen met je huishouden.</p></div>
  ${(()=>{try{return localStorage.getItem("kvf")}catch(e){return null}})()&&!INV?`<div class="axok">${ico("a_friends")}<span>Je bent uitgenodigd om vrienden te worden. Log in of maak een account.</span></div>`:""}${INV?`<div class="axok">${ico("a_mail")}<span>Je bent uitgenodigd voor een huishouden. ${LM=="up"?"Maak een account":"Log in of maak een account"} om lid te worden.</span></div>`:""}
  <div class="card axlcard"><h2>${t}</h2>
  ${LM=="up"?`<label class="axl" for="lnm">Je naam</label><input id="lnm" class="axin" autocomplete="name" value="${esc(LMSG.n||"")}">`:""}
@@ -2085,7 +2121,7 @@ async function hhInvite(){const d=$("bkdlg");if(LEGACY){d.innerHTML=`<h2 style="
  const{data,error}=await sb.rpc("maak_uitnodiging");if(error){d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Iemand uitnodigen</h2><p class="axerr">Maken mislukt: ${esc(error.message)}</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="bkdlg.close()">Sluiten</button></div>`;return}
  const link=appUrl()+"?uitnodiging="+data;
  d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Iemand uitnodigen</h2><p style="margin:0 0 10px">Stuur deze link naar wie je wilt uitnodigen${isMulti()?` voor <b>${esc(hhName())}</b>`:""}. Die persoon logt in of maakt een account en is daarna lid. Diens recepten komen erbij.</p><div class="axcode"><small class="mute">Code</small><b>${esc(data)}</b></div><p class="axhelp" style="margin:8px 0 14px">7 dagen geldig. Jullie delen daarna het weekmenu en de boodschappenlijst, en zien elkaars recepten.</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button><button class="btn" id="shbtn" onclick="hhShare('${esc(link)}')">${ico("a_share")} Link delen</button></div>`}
-async function hhShare(u){try{if(navigator.share){await navigator.share({title:"Kom in mijn huishouden op Mijn Keuken",text:"Je bent uitgenodigd voor "+hhName()+" op Mijn Keuken.",url:u});return}}catch(e){return}try{await navigator.clipboard.writeText(u);const b=$("shbtn");if(b)b.textContent="Link gekopieerd ✓"}catch(e){prompt("Kopieer deze link:",u)}}
+async function hhShare(u){try{if(navigator.share){await navigator.share({title:"Kom in mijn huishouden op KookBuddy",text:"Je bent uitgenodigd voor "+hhName()+" op KookBuddy.",url:u});return}}catch(e){return}try{await navigator.clipboard.writeText(u);const b=$("shbtn");if(b)b.textContent="Link gekopieerd ✓"}catch(e){prompt("Kopieer deze link:",u)}}
 function hhKick(id,nm){ask(nm+" uit het huishouden halen? Diegene ziet jullie recepten en lijsten dan niet meer.",async()=>{const{error}=await sb.rpc("lid_verwijderen",{p_uid:id});if(error)ask("Verwijderen mislukt: "+error.message,()=>{});await loadLeden();draw()},"Verwijderen")}
 function hhLeave(){const oud=hhName(),n=S.recipes.filter(r=>own(r).includes(uid)).length;
  ask("Weet je zeker dat je "+hhName()+" wilt verlaten? Je neemt je "+n+(n==1?" recept":" recepten")+" mee. Het weekmenu en de boodschappenlijst blijven bij het huishouden.",async()=>{
@@ -2218,7 +2254,7 @@ function vAHuis(){const ms=members(),me=uid;
 // ---- Back-ups en app
 function vABk(){return`${aTop("Back-ups","aBack()")}<div class="card"><p class="mute" style="margin:0 0 10px">${sb?"Elke dag wordt automatisch een kopie bewaard (laatste 14 dagen).":"Sla af en toe een back-up op."}</p><div class="row">${sb?`<button class="btn ghost sm" onclick="bkOpen()">Automatische back-ups</button>`:""}<button class="btn ghost sm" onclick="backup()">Back-up opslaan</button><label class="btn ghost sm" style="cursor:pointer">Back-up terugzetten<input type="file" accept=".json" hidden onchange="restore(this)"></label></div></div>`}
 function vAApp(){const ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/i.test(ua),and=/Android/i.test(ua);
- const how=isStandalone()?`<p class="mute" style="margin:0">Je gebruikt Mijn Keuken al als app.</p>`:`${DEFI?`<button class="btn" style="width:100%;margin-bottom:12px" onclick="instApp()">Installeer Mijn Keuken als app</button>`:""}<details class="ach" ${ios||(!and&&!DEFI)?"open":""}><summary>iPhone of iPad (Safari)</summary><ol><li>Open deze pagina in <b>Safari</b> (niet in Chrome).</li><li>Tik onderaan op de knop <b>Delen</b> (vierkantje met pijl omhoog).</li><li>Kies <b>Zet op beginscherm</b>.</li><li>Laat de naam <b>Mijn Keuken</b> staan en tik op <b>Voeg toe</b>.</li></ol></details><details class="ach" ${and?"open":""}><summary>Android (Chrome)</summary><ol><li>Open deze pagina in <b>Chrome</b>.</li><li>Tik rechtsboven op de drie puntjes <b>⋮</b>.</li><li>Kies <b>App installeren</b> (of <b>Toevoegen aan startscherm</b>).</li><li>Bevestig met <b>Installeren</b>.</li></ol></details><details class="ach"><summary>Laptop (Chrome of Edge)</summary><ol><li>Klik rechts in de adresbalk op het installeer-icoontje (een scherm met pijltje).</li><li>Kies <b>Installeren</b>. Mijn Keuken opent dan in een eigen venster.</li></ol></details><p class="mute" style="margin:10px 0 0;font-size:.85rem">Wijzigt het icoon later, dan moet je de app één keer van je beginscherm halen en opnieuw toevoegen.</p>`;
+ const how=isStandalone()?`<p class="mute" style="margin:0">Je gebruikt KookBuddy al als app.</p>`:`${DEFI?`<button class="btn" style="width:100%;margin-bottom:12px" onclick="instApp()">Installeer KookBuddy als app</button>`:""}<details class="ach" ${ios||(!and&&!DEFI)?"open":""}><summary>iPhone of iPad (Safari)</summary><ol><li>Open deze pagina in <b>Safari</b> (niet in Chrome).</li><li>Tik onderaan op de knop <b>Delen</b> (vierkantje met pijl omhoog).</li><li>Kies <b>Zet op beginscherm</b>.</li><li>Laat de naam <b>KookBuddy</b> staan en tik op <b>Voeg toe</b>.</li></ol></details><details class="ach" ${and?"open":""}><summary>Android (Chrome)</summary><ol><li>Open deze pagina in <b>Chrome</b>.</li><li>Tik rechtsboven op de drie puntjes <b>⋮</b>.</li><li>Kies <b>App installeren</b> (of <b>Toevoegen aan startscherm</b>).</li><li>Bevestig met <b>Installeren</b>.</li></ol></details><details class="ach"><summary>Laptop (Chrome of Edge)</summary><ol><li>Klik rechts in de adresbalk op het installeer-icoontje (een scherm met pijltje).</li><li>Kies <b>Installeren</b>. KookBuddy opent dan in een eigen venster.</li></ol></details><p class="mute" style="margin:10px 0 0;font-size:.85rem">Wijzigt het icoon later, dan moet je de app één keer van je beginscherm halen en opnieuw toevoegen.</p>`;
  return`${aTop("Als app op je telefoon","aBack()")}<div class="card">${how}</div>`}
 // ---- Restjesherinnering op Thuis
 function leftDue(){if(!optOn("left")||!optOn("leftRem"))return[];const t=pdk(todayK());
@@ -2269,7 +2305,7 @@ async function vrLink(){const d=$("bkdlg");d.innerHTML=`<h2 style="font-size:1.2
  const{data,error}=await sb.rpc("maak_vriendlink");if(error){d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Vriend uitnodigen</h2><p class="axerr">Mislukt: ${esc(error.message)}</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="bkdlg.close()">Sluiten</button></div>`;return}
  const link=appUrl()+"?vriend="+data;
  d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Vriend uitnodigen</h2><p style="margin:0 0 12px">Stuur deze link. Wie hem opent en inlogt (of een account maakt), is meteen je vriend. Jullie zien dan elkaars recepten, niet elkaars weekmenu of lijst.</p><p class="axhelp" style="margin:0 0 14px">7 dagen geldig.${myP().gnaam?` Of laat ze je zoeken op <b>@${esc(myP().gnaam)}</b>.`:""}</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button><button class="btn" id="shbtn" onclick="vrShare('${esc(link)}')">${ico("a_share")} Link delen</button></div>`}
-async function vrShare(u){try{if(navigator.share){await navigator.share({title:"Mijn Keuken",text:"Word mijn vriend op Mijn Keuken, dan kunnen we elkaars recepten zien."+(myP().gnaam?" Je vindt mij ook als @"+myP().gnaam+".":""),url:u});return}}catch(e){return}try{await navigator.clipboard.writeText(u);const b=$("shbtn");if(b)b.textContent="Link gekopieerd ✓"}catch(e){prompt("Kopieer deze link:",u)}}
+async function vrShare(u){try{if(navigator.share){await navigator.share({title:"KookBuddy",text:"Word mijn vriend op KookBuddy, dan kunnen we elkaars recepten zien."+(myP().gnaam?" Je vindt mij ook als @"+myP().gnaam+".":""),url:u});return}}catch(e){return}try{await navigator.clipboard.writeText(u);const b=$("shbtn");if(b)b.textContent="Link gekopieerd ✓"}catch(e){prompt("Kopieer deze link:",u)}}
 function vrNotify(v){const p=myP();p.notifyCook=!!v;save()}
 function vAVr(){const F=vrFriends(),I=vrIn(),O=vrOut(),p=myP();
  const sub=f=>f.recepten==null?"Deelt geen recepten":f.recepten+(f.recepten==1?" recept":" recepten");
@@ -2458,7 +2494,7 @@ function ldPor(n){LD.por=n;leftDraw()}
 function leftDraw(){const d=$("ldlg");d.className="hx-cook";
  const ch=(n,l)=>`<button class="${LD.por==n||(n==3&&LD.por>=3)?"on":""}" onclick="ldPor(${n==3&&LD.por>=3?LD.por:n})">${l}</button>`;
  const F=VRON?vrFriends().filter(f=>!LD.eat.some(x=>x.id==f.uid)):[];
- d.innerHTML=`<div class="hx-cookh"><span class="hx-cookic">${ico("a_pot")}</span><h2>Smakelijk eten!</h2><p class="mute">${esc(LD.name)} · ${LD.pers} ${LD.pers==1?"persoon":"personen"}</p></div>
+ d.innerHTML=`<div class="hx-cookh"><span class="hx-cookic hx-pieper">${MASCOT}</span><h2>Smakelijk eten!</h2><p class="mute">${esc(LD.name)} · ${LD.pers} ${LD.pers==1?"persoon":"personen"}</p></div>
  <h3 class="hx-h" style="margin-top:14px">Wie heeft er meegegeten?</h3><div class="hx-eat">${LD.eat.map((x,i)=>`<button class="hx-eater${x.on?" on":""}" onclick="LD.eat[${i}].on=!LD.eat[${i}].on;leftDraw()" aria-pressed="${x.on}">${avHTML(x.naam,x.hh?x.i:vrIdx(x.id),48,x.foto)}<span>${esc(x.naam)}</span>${x.on?`<i>${ico("a_check")}</i>`:""}</button>`).join("")}<button class="hx-eater add" onclick="LD.pick=!LD.pick;leftDraw()" aria-label="Vriend toevoegen"><span class="hx-addc">${ico(LD.pick?"a_x":"plus")}</span><span>${LD.pick?"Sluiten":"Vriend"}</span></button></div>
  ${LD.pick?`<div class="card hx-pick">${!VRON?`<p class="mute" style="margin:0">Vrienden toevoegen kan zodra Vrienden aanstaat.</p>`:F.length?F.map(f=>`<button class="axrow hx-srow" onclick="LD.eat.push({id:'${f.uid}',naam:'${esc(f.naam.split(" ")[0]).replace(/'/g,"")}',foto:'${esc(f.foto||"")}',on:true,fr:1});LD.pick=false;leftDraw()">${avHTML(f.naam,vrIdx(f.uid),36,f.foto)}<span class="axt">${esc(f.naam)}${f.gnaam?`<small class="mute">@${esc(f.gnaam)}</small>`:""}</span>${ico("plus")}</button>`).join(""):`<p class="mute" style="margin:0">${vrFriends().length?"Al je vrienden staan er al bij.":"Je hebt nog geen vrienden. Voeg ze toe bij Account → Vrienden."}</p>`}</div>`:""}
  ${LD.left?`<h3 class="hx-h" style="margin-top:6px">Is er iets over?</h3><div class="hx-pors">${ch(0,"Niets")}${ch(1,"1 portie")}${ch(2,"2 porties")}${ch(3,LD.por>=3?LD.por+" porties":"Meer")}</div>${LD.por>=3?`<div class="row nw" style="justify-content:center;margin-top:8px"><button class="btn ghost sm" onclick="ldPor(Math.max(3,LD.por-1))">−</button><b style="min-width:70px;text-align:center">${LD.por} porties</b><button class="btn ghost sm" onclick="ldPor(LD.por+1)">+</button></div>`:""}
@@ -2704,6 +2740,23 @@ function vAVast(){if(!VD)return vAHuis();const r=S.recipes.find(x=>x.id==VD.rid)
  ${VD._err?`<p class="axerr">${esc(VD._err)}</p>`:""}
  <button class="btn axbig" onclick="vdSave()">Opslaan</button>
  ${VD.id?`<button class="axleave" style="display:block;margin:18px auto 0" onclick="vdDel()">Vaste dag verwijderen</button>`:""}`}
+// === KOOKBUDDY: opstartscherm en inlogscherm ===
+Object.assign(ICP,{a_eye:'<path d="M2.500 12s3.500-6.500 9.500-6.500S21.500 12 21.500 12 18 18.500 12 18.500 2.500 12 2.500 12z"/><circle cx="12" cy="12" r="3"/>',a_eyeoff:'<path d="M3 3l18 18"/><path d="M10.600 6.100A9.700 9.700 0 0 1 12 6c6 0 9.500 6 9.500 6a16 16 0 0 1-3 3.600M6.600 7.600C4 9.400 2.500 12 2.500 12S6 18 12 18c1.700 0 3.200-.4 4.500-1.100"/><path d="M9.900 9.900a3 3 0 0 0 4.200 4.200"/>'});
+const MASCOT=`<svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg>`,KBLOGO=`<svg viewBox="0 0 120 120" role="img" aria-label="KookBuddy"><rect width="120" height="120" rx="30" fill="#B8441F"></rect><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg>`;
+function hideSplash(){const s=document.getElementById("splash");if(!s||s.dataset.going)return;s.dataset.going=1;const wait=Math.max(0,900-performance.now());setTimeout(()=>{s.classList.add("out");setTimeout(()=>s.remove(),450)},wait)}
+function lgField(id,type,ic,ph,ac,val,extra){return`<label class="lg-f">${ico(ic)}<input id="${id}" type="${type}" placeholder="${ph}" autocomplete="${ac}" value="${esc(val||"")}" ${extra||""}>${type=="password"?`<button type="button" class="lg-eye" onclick="lgEye('${id}',this)" aria-label="Wachtwoord tonen">${ico("a_eye")}</button>`:""}</label>`}
+function lgEye(id,b){const e=$(id);if(!e)return;e.type=e.type=="password"?"text":"password";b.innerHTML=ico(e.type=="password"?"a_eye":"a_eyeoff");b.setAttribute("aria-label",e.type=="password"?"Wachtwoord tonen":"Wachtwoord verbergen")}
+function vLogin(){const up=LM=="up",rs=LM=="reset";let kvf=null;try{kvf=localStorage.getItem("kvf")}catch(e){}
+ return`<div class="lg"><div class="lg-logo"><span class="lg-tile">${KBLOGO}</span><div class="lg-name"><span>Kook</span><span>Buddy</span></div></div>
+ <h1 class="lg-h">${up?"Maak een account":rs?"Wachtwoord vergeten":"Welkom terug"}</h1><p class="mute lg-sub">${up?"En begin meteen met koken":rs?"We sturen je een link om een nieuw wachtwoord te kiezen":"Log in om verder te koken"}</p>
+ ${INV?`<div class="axok">${ico("a_mail")}<span>Je bent uitgenodigd voor een huishouden. ${up?"Maak een account":"Log in of maak een account"} om lid te worden.</span></div>`:kvf?`<div class="axok">${ico("a_friends")}<span>Je bent uitgenodigd om vrienden te worden. Log in of maak een account.</span></div>`:""}
+ ${up?`<label class="lg-l" for="lnm">Je naam</label>${lgField("lnm","text","a_user","bijv. Ruben Borst","name",LMSG.n)}`:""}
+ <label class="lg-l" for="em">E-mailadres</label>${lgField("em","email","a_mail","naam@voorbeeld.nl","username",LMSG.em,rs?`onkeydown="if(event.key=='Enter')lForgot()"`:"")}
+ ${rs?"":`<label class="lg-l" for="pw">Wachtwoord</label>${lgField("pw","password","a_lock",up?"Minstens 8 tekens":"Je wachtwoord",up?"new-password":"current-password","",`onkeydown="if(event.key=='Enter')${up?"signup":"login"}()"`)}`}
+ ${LM=="in"?`<div class="lg-fg"><button class="lnk" onclick="lmSet('reset')">Wachtwoord vergeten?</button></div>`:up?`<p class="axhelp">Minstens 8 tekens, met een cijfer of leesteken</p>`:""}
+ ${LMSG.err?`<p class="axerr" id="lerr">${esc(LMSG.err)}</p>`:`<p id="lerr" class="axerr" style="margin:0"></p>`}${LMSG.ok?`<div class="axok">${ico("a_check")}<span>${esc(LMSG.ok)}</span></div>`:""}
+ <button class="btn lg-btn" ${LMSG.busy?"disabled":""} onclick="${up?"signup":rs?"lForgot":"login"}()">${LMSG.busy?"Bezig…":up?"Account maken":rs?"Stuur mail":"Inloggen"}</button>
+ <p class="lg-sw">${LM=="in"?(LEGACY?"":`Nog geen account? <button class="lnk" onclick="lmSet('up')">Maak er een</button>`):`<button class="lnk" onclick="lmSet('in')">${up?"Ik heb al een account":"Terug naar inloggen"}</button>`}</p></div>`}
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
@@ -2735,12 +2788,12 @@ async function persGo(){bkdlg.close();const n=dp();try{localStorage.setItem("kun
 function persUndo(){let u;try{u=JSON.parse(localStorage.getItem("kundo")||"null")}catch(e){}if(!u)return;ask("Omrekenen ongedaan maken? Recepten die je daarna hebt aangepast, gaan terug naar de oude versie.",()=>{S.recipes=u;try{localStorage.removeItem("kundo")}catch(e){}save();draw()},"Ongedaan maken")}
 function backup(){const b=new Blob([JSON.stringify(S,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mijn-keuken-backup-"+new Date().toISOString().slice(0,10)+".json";a.click()}
 function restore(i){const fl=i.files[0];if(!fl)return;const r=new FileReader();r.onload=()=>{let d;try{d=JSON.parse(r.result);if(!d.recipes)throw 0}catch(e){ask("Dit bestand is geen geldige back-up.",()=>{});return}ask("Alle huidige gegevens vervangen door deze back-up?",()=>{S={...d,tab:"rec",cat:"Alles"};fixS();save();draw()})};r.readAsText(fl)}
-async function init(){if(!SB_URL||!SB_KEY||!window.supabase){draw();return}
+async function init(){if(!SB_URL||!SB_KEY||!window.supabase){draw();hideSplash();return}
  sb=window.supabase.createClient(SB_URL,SB_KEY);sb.auth.onAuthStateChange((ev,ses)=>{if(ev=="PASSWORD_RECOVERY"&&ses){RECOV=true;uid=ses.user.id;uemail=ses.user.email||"";S.tab="account";AP="ww";setTimeout(draw,0)}});
  const{data}=await sb.auth.getSession();
  if(!data.session){try{const r=await sb.from("leden").select("hh").limit(1);if(r.error&&/42P01|PGRST205|schema cache|does not exist/i.test((r.error.message||"")+(r.error.code||"")))LEGACY=true}catch(e){}}
  if(data.session){await afterLogin(data.session.user);if(RECOV){S.tab="account";AP="ww"}}
- draw()}
+ draw();hideSplash()}
 document.addEventListener("visibilitychange",async()=>{if(document.visibilityState=="visible"&&sb&&uid&&!dlg.open&&!$("cdlg").open){await pull();draw();loadVR()}else wake()});
 init();
 </script></body></html>

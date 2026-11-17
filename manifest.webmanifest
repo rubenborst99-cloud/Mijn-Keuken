@@ -1,12 +1,12 @@
 {
- "name": "Mijn Keuken",
- "short_name": "Mijn Keuken",
+ "name": "KookBuddy",
+ "short_name": "KookBuddy",
  "lang": "nl",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
  "orientation": "portrait",
- "background_color": "#faf6ee",
+ "background_color": "#B8441F",
  "theme_color": "#faf6ee",
  "icons": [
   {
