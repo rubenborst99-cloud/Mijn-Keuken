@@ -937,6 +937,26 @@ dialog.hx-cook{width:min(520px,96vw);max-height:92vh;overflow:auto;padding:22px 
 .kx-mod p{margin:0 0 6px}.kx-mh{color:var(--ink)}
 .kx-mb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .kx-mb .btn{min-height:54px;border-radius:16px;justify-content:center;font-weight:700}
+/* kookstand: kleiner, swipe, compacte balken */
+.kx-txt{font-size:1.45rem;line-height:1.45;margin:6px 0 18px}
+.kx-h1{font-size:1.7rem}
+.kx-sw{position:relative;margin-bottom:10px;border-radius:18px;overflow:hidden;background:var(--danger,#B42318);touch-action:pan-y}
+.kx-sw.cur{margin-top:16px;margin-bottom:6px}
+.kx-sw .kx-ban{margin:0}
+.kx-swi{position:relative;transition:transform .18s ease;will-change:transform}
+.kx-del{position:absolute;right:0;top:0;bottom:0;width:84px;border:0;background:none;color:#fff;display:grid;place-items:center;cursor:pointer;opacity:0;transition:opacity .15s,width .15s}
+.kx-del .ic{width:26px;height:26px;stroke-width:2.4}
+.kx-sw.show .kx-del{opacity:1}
+.kx-sw.far .kx-del{width:100%;justify-content:end;padding-right:30px}
+.kx-ban.sm{padding:8px 10px 8px 14px;border-radius:14px;gap:10px}
+.kx-ban.sm b{font-size:1.15rem}
+.kx-ban.sm small{font-size:.78rem}
+.kx-ban.sm .kx-bp{width:40px;height:40px}
+.kx-ban.sm .kx-bi .ic{width:18px;height:18px}
+.kx-ban.big{padding:16px}
+.kx-ban.big b{font-size:2rem}
+.kx-ban.big .kx-bp{width:56px;height:56px}
+.kx-swh{margin-top:6px}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -2539,8 +2559,73 @@ function drawK(){const d=$("kdlg"),n=KR.st.length,p=KR.pers||KR.r.pers||2,r=KR.r
  ${KR.ing?`<h4 class="axh">ALLE INGREDIËNTEN · ${p} ${p==1?"PERSOON":"PERSONEN"}</h4>${ingTable}<button class="axghost" onclick="ktog()">Terug naar stap ${KI+1}</button>`:`
  <div class="kx-txt">${khl2(t,ms)}</div>
  ${ms.length?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${ms.map(m=>kRow(m.pr.a,m.pr.n)).join("")}</div>`:""}
- ${sec&&!run?`<div class="kx-tc"><span class="kx-ti">${ico("a_timer")}</span><span class="axt"><b>${kfmt(sec*1000)}</b><small>${esc(kLabel(t,ms,KI))}</small></span><button class="kx-ts" onclick="kstart(${sec},${KI})">${ico("a_tri")} Start</button></div>${others?`<p class="kx-note">Je kunt meerdere timers tegelijk laten lopen. Is er een klaar, dan hoor je een geluid en zie je welke stap het is.</p>`:""}`:""}`}</div>
+ ${sec&&!run?`<div class="kx-tc"><span class="kx-ti">${ico("a_timer")}</span><span class="axt"><b>${kfmt(sec*1000)}</b><small>${esc(kLabel(t,ms,KI))}</small></span><button class="kx-ts" onclick="kstart(${sec},${KI})">${ico("a_tri")} Start</button></div>`:""}`}</div>
  <div class="kx-foot two"><button class="btn ghost kx-prev" onclick="kgo(-1)">${ico("chevl")} Vorige</button><button class="btn kx-go" onclick="kgo(1)">${KI==n-1?`${ico("a_check")} Klaar`:`Volgende stap ${ico("chevr")}`}</button></div>${kModal()}`}
+// ---- vervolg: kleinere tekst, timers na elkaar, swipe om te stoppen, beter markeren
+let KSTEPT={};
+const KSW2=new Set(["en","de","het","een","in","met","op","aan","van","tot","of","je","als","dan","er","om","te","bij","uit","over","onder","zo","nog","wat","ze","hem","pan","water","minuten","minuut","uur","min","stuk","stukken","beetje","even","goed","alles","helft","rest","snuf"]);
+const kcp=(a,b)=>{let i=0;while(i<a.length&&i<b.length&&a[i]==b[i])i++;return i};
+function kIngs(){if(KR._ik&&KR._ikp==KR.pers)return KR._ik;KR._ikp=KR.pers;KR._ik=KR.r.ing.map((l,i)=>{const pr=kparts(l);const keys=[...new Set(kwords(pr.n).filter(w=>w.length>=2&&!KSW2.has(w)))];return{i,pr,keys}}).filter(x=>x.keys.length);return KR._ik}
+function kTok(lw,ing){if(lw.length<2||KSW2.has(lw))return false;const a=sing(lw);
+ return ing.keys.some(b=>{if(b==a||b==lw)return true;if(a==b+"en"||a==b+"s"||a==b+"'s"||a==b+"eren"||b==a+"en"||b==a+"s")return true;
+  if(a.length>=4&&b.length>=4&&(b.includes(a)||a.includes(b)))return true;
+  if(a.length>=3&&b.length>=a.length+2&&b.startsWith(a))return true;
+  const p=kcp(a,b);return p>=4&&p>=Math.min(a.length,b.length)-1&&Math.abs(a.length-b.length)<=3})}
+function kScan(t){const I=kIngs(),hit=new Set();
+ const html=esc(t).split(/(\s+|[.,;:!?()])/).map(tok=>{if(!/[a-zà-ÿ]/i.test(tok))return tok;const lw=tok.toLowerCase();const m=I.filter(g=>kTok(lw,g));if(!m.length)return tok;m.forEach(g=>hit.add(g.i));return`<mark class="mi">${tok}</mark>`}).join("")
+  .replace(/(\d+(?:\s*[-–]\s*\d+)?\s*(?:minuten|minuut|min\.?|uur|kwartier|seconden|sec\.?))(?![^<]*<\/mark>)/gi,'<mark class="mt">$1</mark>');
+ let ms=[];try{ms=kmatch(t)}catch(e){}const idx=new Set(ms.map(m=>KR.r.ing.findIndex(l=>kparts(l).n==m.pr.n)).filter(i=>i>=0));hit.forEach(i=>idx.add(i));
+ return{html,need:[...idx].sort((a,b)=>a-b).map(i=>kparts(KR.r.ing[i]))}}
+function kdurs(t){const out=[],re=/(\d+)(?:\s*[-–]\s*(\d+))?\s*(minuten|minuut|min\b|uur|kwartier)/gi;let m;
+ const sents=[];let pos=0;for(const s of t.split(/(?<=[.!?])\s+/)){const i=t.indexOf(s,pos);sents.push([i,i+s.length,s]);pos=i+s.length}
+ while((m=re.exec(t))){const n=+(m[2]||m[1]),u=m[3].toLowerCase(),sec=u=="uur"?n*3600:u=="kwartier"?n*900:n*60;if(sec<=0)continue;const se=(sents.find(([a,b])=>m.index>=a&&m.index<b)||[0,0,t])[2];out.push({sec,sent:se})}
+ return out}
+function kLab2(sent){let ms=[];try{ms=kmatch(sent)}catch(e){}const I=kIngs(),names=[];for(const tok of sent.toLowerCase().split(/[^a-zà-ÿ'-]+/)){const g=I.find(g=>kTok(tok,g));if(g){const n=tok;if(!names.includes(n))names.push(n)}}
+ const ing=names.length?capF(names.slice(0,2).join(" en ")):kIngNames(ms),lw=sent.toLowerCase(),v=(KVERB.find(([re])=>re.test(lw))||[])[1]||"";return{label:(ing&&v?ing+" "+v:ing||capF(v)||"Timer"),ing:ing||capF(v)||"Timer"}}
+function startK(id,pers,si){const r=S.recipes.find(x=>x.id==id);if(!r)return;const st=ksteps(r);
+ if(!st.length){ask("Dit recept heeft nog geen bereidingswijze. Voeg die toe via Aanpassen.",()=>{});return}
+ if(!KR||KR.r.id!==id){KTM=[];KDUE=null;KSTEPT={}}
+ KR={r,st,ing:false,si:si==null?null:si,pers:pers||r.pers||2};KI=-1;drawK();const d=$("kdlg");if(!d.open)d.showModal();
+ try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(l=>KWL=l).catch(()=>{})}catch(e){}}
+function kstart(step,k){kAudio();const D=kdurs(KR.st[step])[k];if(!D)return;const L=kLab2(D.sent);KTM=KTM.filter(x=>x.step!==step);
+ KTM.push({id:++KTID,step,k,label:L.label,ing:L.ing,txt:D.sent,end:Date.now()+D.sec*1000,paused:false,left:0});kRun();drawK()}
+function kAdv(x){if(x)KSTEPT[x.step]=Math.max(KSTEPT[x.step]||0,(x.k||0)+1)}
+function kstop(id){const x=KTM.find(y=>y.id==id);kAdv(x);KTM=KTM.filter(y=>y.id!=id);if(KDUE&&KDUE.id==id)KDUE=KTM.find(y=>y.done)||null;drawK()}
+function kDone(id){kstop(id)}
+function swK(e){if(e.target&&e.target.closest&&e.target.closest(".kx-sw"))return;const dx=e.changedTouches[0].clientX-KX;if(Math.abs(dx)>70&&$("kdlg").open&&!KDUE)kgo(dx<0?1:-1)}
+function kSwBox(x,inner,cls){return`<div class="kx-sw ${cls||""}" data-id="${x.id}"><button class="kx-del" onclick="kstop(${x.id})" aria-label="Timer stoppen">${ico("a_x")}</button><div class="kx-swi">${inner}</div></div>`}
+function kBanners(){const R=KTM.filter(x=>!x.done&&x.step!=KI);if(!R.length)return"";return R.map(x=>kSwBox(x,`<div class="kx-ban sm"><span class="kx-bi">${ico("a_timer")}</span><span class="axt"><small>${esc(x.ing)} · stap ${x.step+1}</small><b id="kt_${x.id}">${kfmt(x.paused?x.left:x.end-Date.now())}</b></span><button class="kx-bp" onclick="kPause(${x.id})" aria-label="${x.paused?"Verder":"Pauzeer"}">${ico(x.paused?"a_tri":"a_pause")}</button></div>`)).join("")}
+function kRunCard(x){return kSwBox(x,`<div class="kx-ban big"><span class="kx-bi">${ico("a_timer")}</span><span class="axt"><small>${esc(x.label)}${x.paused?" · gepauzeerd":""}</small><b id="kt_${x.id}">${kfmt(x.paused?x.left:x.end-Date.now())}</b></span><button class="kx-bp" onclick="kPause(${x.id})" aria-label="${x.paused?"Verder":"Pauzeer"}">${ico(x.paused?"a_tri":"a_pause")}</button></div>`,"cur")+`<p class="kx-note kx-swh">Veeg de timer naar links om hem te stoppen.</p>`}
+function kSwInit(){document.querySelectorAll("#kdlg .kx-sw").forEach(box=>{const el=box.querySelector(".kx-swi"),id=+box.dataset.id;let x0=null,y0=0,dx=0,drag=false,open=false;
+ el.addEventListener("pointerdown",e=>{x0=e.clientX;y0=e.clientY;dx=0;drag=false;el.style.transition="none"});
+ el.addEventListener("pointermove",e=>{if(x0==null)return;const mx=e.clientX-x0,my=e.clientY-y0;if(!drag){if(Math.abs(mx)>8&&Math.abs(mx)>Math.abs(my)){drag=true;try{el.setPointerCapture(e.pointerId)}catch(err){}}else return}
+  dx=Math.min(0,mx+(open?-84:0));el.style.transform=`translateX(${dx}px)`;box.classList.toggle("far",dx<-el.offsetWidth*.5);box.classList.toggle("show",dx<-10)});
+ const end=()=>{if(x0==null)return;x0=null;el.style.transition="";if(!drag){return}const w=el.offsetWidth;
+  if(dx<-w*.5){el.style.transform="translateX(-105%)";setTimeout(()=>kstop(id),170)}else if(dx<-44){el.style.transform="translateX(-84px)";open=true;box.classList.add("show")}else{el.style.transform="";open=false;box.classList.remove("show","far")}};
+ el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+ el.addEventListener("click",e=>{if(drag){e.stopPropagation();e.preventDefault();drag=false}},true)})}
+function drawK(){const d=$("kdlg"),n=KR.st.length,p=KR.pers||KR.r.pers||2,r=KR.r;d.classList.add("kx");
+ const ingTable=`<div class="card kx-ing">${r.ing.map(l=>{const q=kparts(l);return kRow(q.a,q.n)}).join("")}</div>`;
+ if(KI<0){d.innerHTML=`<div class="kx-top"><button class="kx-c" onclick="closeKAsk()" aria-label="Terug">${ico("chevl")}</button><b>Kookstand</b><span></span></div>
+  <div class="kx-body"><h1 class="kx-h1">${esc(r.name)}</h1><p class="mute kx-meta">${[r.time?r.time+" min":"",n+(n==1?" stap":" stappen")].filter(Boolean).join(" · ")}</p>
+  <div class="card kx-pers"><span class="kx-pl">${ico("a_friends")}<b>Personen</b></span><span class="kx-st"><button onclick="kPers(-1)" aria-label="Minder" ${p<=1?"disabled":""}>−</button><b>${p}</b><button onclick="kPers(1)" aria-label="Meer">+</button></span></div>
+  <h4 class="axh">INGREDIËNTEN VOOR ${p} ${p==1?"PERSOON":"PERSONEN"}</h4>${ingTable}
+  <p class="kx-note">${ico("a_sun")} Je scherm blijft aan zolang je kookt</p></div>
+  <div class="kx-foot"><button class="btn kx-go" onclick="kgo(1)">Start met koken ${ico("chevr")}</button></div>${kModal()}`;return}
+ const t=KR.st[KI],sc=kScan(t),D=kdurs(t),k=KSTEPT[KI]||0,run=KTM.find(x=>x.step==KI&&!x.done),others=KTM.some(x=>!x.done&&x.step!=KI);
+ let timer="";
+ if(run)timer=kRunCard(run);
+ else if(k<D.length){const L=kLab2(D[k].sent);timer=`<div class="kx-tc"><span class="kx-ti">${ico("a_timer")}</span><span class="axt"><b>${kfmt(D[k].sec*1000)}</b><small>${esc(L.label)}${D.length>1?` · timer ${k+1} van ${D.length}`:""}</small></span><button class="kx-ts" onclick="kstart(${KI},${k})">${ico("a_tri")} Start</button></div>`}
+ else if(D.length)timer=`<p class="kx-note">${ico("a_check")} ${D.length>1?"Alle timers van deze stap zijn klaar.":"De timer van deze stap is klaar."}</p>`;
+ d.innerHTML=`<div class="kx-top"><button class="kx-c" onclick="closeKAsk()" aria-label="Sluiten">${ico("a_x")}</button><span class="kx-tt"><small>${esc(r.name.length>24?r.name.split(/ (?:met|en|in|op|van|uit|à la) /i)[0].slice(0,30):r.name)}</small><b>Stap ${KI+1} van ${n}</b></span><button class="kx-c${KR.ing?" on":""}" onclick="ktog()" aria-label="Alle ingrediënten">${ico("a_list")}</button></div>
+ <div class="kx-prog">${KR.st.map((_,i)=>`<i class="${i<=KI?"on":""}"></i>`).join("")}</div>
+ <div class="kx-body">${kBanners()}
+ ${KR.ing?`<h4 class="axh">ALLE INGREDIËNTEN · ${p} ${p==1?"PERSOON":"PERSONEN"}</h4>${ingTable}<button class="axghost" onclick="ktog()">Terug naar stap ${KI+1}</button>`:`
+ <div class="kx-txt">${sc.html}</div>
+ ${sc.need.length?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${sc.need.map(q=>kRow(q.a,q.n)).join("")}</div>`:""}
+ ${timer}`}</div>
+ <div class="kx-foot two"><button class="btn ghost kx-prev" onclick="kgo(-1)">${ico("chevl")} Vorige</button><button class="btn kx-go" onclick="kgo(1)">${KI==n-1?`${ico("a_check")} Klaar`:`Volgende stap ${ico("chevr")}`}</button></div>${kModal()}`;
+ kSwInit()}
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
