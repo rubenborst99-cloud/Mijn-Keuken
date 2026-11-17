@@ -1087,6 +1087,9 @@ button.ls-amt{border:0;background:none;font:inherit;font-weight:700;font-size:.9
 .pk-crow .axt{flex:1;min-width:0}.pk-crow small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pk-it{cursor:default;padding:10px 12px 10px 16px;gap:8px}.pk-it .axt{flex:1;min-width:0;overflow-wrap:anywhere}
 .pk-mv{flex:none;width:92px;font:inherit;font-size:.85rem;padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+
+.vr-seg{grid-template-columns:1fr 1fr;margin:0 0 10px}
+.vr-seg button{white-space:nowrap}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -2341,7 +2344,7 @@ function leftDue(){if(!optOn("left")||!optOn("leftRem"))return[];const t=pdk(tod
 function remCard(){const D=leftDue();if(!D.length)return"";const st=r=>r<0?"over de datum":r==0?"vandaag opmaken":r==1?"nog 1 dag":r<14?"nog "+r+" dagen":"nog ±"+Math.round(r/7)+" weken";
  return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_bell")}</span><b>Restjes opmaken</b></div>${D.slice(0,3).map(({l,rest})=>`<div class="axreml"><span><b>${esc(l.name)}</b><small class="${rest<=0?"axerr":"mute"}">${l.where=="vriezer"?"Vriezer":"Koelkast"} · ${st(rest)}</small></span><button class="btn ghost sm" onclick="lfPlan(${l.id})">Inplannen</button></div>`).join("")}${D.length>3?`<button class="lnk axlk" onclick="go('stock')">Alle ${D.length} restjes bekijken</button>`:""}</div>`}
 // === VRIENDEN ===
-let VR=null,VRON=false,MELD=[],FV=null,FVR=null,FVQ="",FVCAT="",FVF=false,VRQ="",VRRES=null,VRT=null;
+let FVNEW=false;let VR=null,VRON=false,MELD=[],FV=null,FVR=null,FVQ="",FVCAT="",FVF=false,VRQ="",VRRES=null,VRT=null;
 try{const u=new URL(location.href),c=u.searchParams.get("vriend");if(c){localStorage.setItem("kvf",c.trim().toUpperCase());u.searchParams.delete("vriend");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
 const VRMND=["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
 const vrF=id=>(VR||[]).find(f=>f.uid==id);
@@ -2398,7 +2401,7 @@ function vAVr(){const F=vrFriends(),I=vrIn(),O=vrOut(),p=myP();
  <h4 class="axh">DELEN MET VRIENDEN</h4><div class="card axlist"><label class="axtg"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_bell")}</span><span class="axtx"><b>Laat weten als je hun recept kookt</b><small>Je vriend krijgt een berichtje als jij zijn of haar recept hebt gekookt</small></span><input type="checkbox" class="axsw" ${p.notifyCook!==false?"checked":""} onchange="vrNotify(this.checked)" aria-label="Laat weten als je hun recept kookt"></label></div>
  <p class="axhelp" style="margin-top:12px">Wie je recepten mag zien, stel je in bij Profiel bewerken. Vrienden zien nooit je weekmenu of boodschappenlijst.</p>`}
 // ---- Pagina van één vriend
-async function vrOpen(id){FV=id;FVR=null;FVQ="";FVCAT="";FVF=false;AP="vriend";draw();window.scrollTo(0,0);
+async function vrOpen(id){FV=id;FVR=null;FVQ="";FVCAT="";FVF=false;FVNEW=false;AP="vriend";draw();window.scrollTo(0,0);
  const{data,error}=await sb.rpc("vriend_recepten",{p_uid:id});if(FV!==id)return;FVR=error?{err:error.message}:(Array.isArray(data)?data:[]);draw()}
 const vrHas=r=>{const k=nkey(r),me=uid||"local";return S.recipes.some(x=>(x.src&&x.src.uid==FV&&x.src.rid==r.id)||(k&&nkey(x)==k&&(!isMulti()||ownerIds(x).includes(me))))};
 function vrAddRec(i){const r=Array.isArray(FVR)&&FVR[i];if(!r||vrHas(r))return;const f=vrF(FV),c=JSON.parse(JSON.stringify(r));
@@ -2416,10 +2419,11 @@ function vAVriend(){const f=vrF(FV);if(!f)return`${aTop("Vriend","aGo('vrienden'
  else if(FVR.err)body=`<p class="axerr">Recepten laden mislukt: ${esc(FVR.err)}</p>`;
  else if(!FVR.length)body=`<div class="card axempty"><p>${f.recepten==null?esc(f.naam)+" deelt geen recepten met vrienden.":esc(f.naam)+" heeft nog geen recepten."}</p></div>`;
  else{const cats=[...new Set(FVR.map(r=>r.cat||r.type).filter(Boolean))].sort();const q=FVQ.trim().toLowerCase();
-  const L=FVR.map((r,i)=>[r,i]).reverse().filter(([r])=>(!q||String(r.name).toLowerCase().includes(q)||(r.ing||[]).some(l=>String(l).toLowerCase().includes(q)))&&(!FVCAT||(r.cat||r.type)==FVCAT));
+  const L=FVR.map((r,i)=>[r,i]).reverse().filter(([r])=>(!q||String(r.name).toLowerCase().includes(q)||(r.ing||[]).some(l=>String(l).toLowerCase().includes(q)))&&(!FVCAT||(r.cat||r.type)==FVCAT)&&(!FVNEW||!vrHas(r)));const nNew=FVR.filter(r=>!vrHas(r)).length;
   body=`<div class="axfsrch"><label class="axsearch">${ico("search")}<input id="fvq" type="search" placeholder="Zoek in recepten…" value="${esc(FVQ)}" oninput="FVQ=this.value;clearTimeout(VRT);VRT=setTimeout(()=>{draw();const e=$('fvq');if(e){e.focus();e.setSelectionRange(e.value.length,e.value.length)}},250)"></label>${cats.length?`<button class="axfbtn${FVF||FVCAT?" on":""}" onclick="FVF=!FVF;draw()">${ico("a_sliders")} Filter</button>`:""}</div>
   ${FVF&&cats.length?`<div class="axchips" style="margin:0 0 12px">${["",...cats].map(c=>`<button class="axchip${FVCAT==c?" on":""}" onclick="FVCAT='${esc(c).replace(/'/g,"")}';draw()">${c?esc(c):"Alles"}</button>`).join("")}</div>`:""}
-  <p class="mute axcnt">${L.length} ${L.length==1?"recept":"recepten"} · nieuwste eerst</p>
+  <div class="axseg vr-seg"><button class="${FVNEW?"":"on"}" onclick="FVNEW=false;draw()">Alle recepten</button><button class="${FVNEW?"on":""}" onclick="FVNEW=true;draw()">Nog niet opgeslagen${nNew?" · "+nNew:""}</button></div>
+  <p class="mute axcnt">${L.length} ${L.length==1?"recept":"recepten"} · nieuwste eerst</p>${FVNEW&&!L.length?`<div class="card axempty"><p>${nNew?"Geen recepten die passen bij je zoekopdracht.":"Je hebt alle recepten van "+esc(f.naam)+" al."}</p></div>`:""}
   <div class="axgrid">${L.map(([r,i])=>{const has=vrHas(r),[bg,fg]=ATINT[i%4];return`<div class="axrc"><button class="axrct" onclick="vrRec(${i})" style="background:${bg};color:${fg}">${r.img?`${ico("a_bowl")}<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:ico("a_bowl")}</button><button class="axrcadd${has?" ok":""}" onclick="${has?"":`vrAddRec(${i})`}" aria-label="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}" title="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}">${ico(has?"a_check":"plus")}</button><button class="axrcb" onclick="vrRec(${i})"><b>${esc(r.name)}</b>${r.time?`<small class="mute">${ico("a_clock")} ${r.time} min</small>`:""}</button></div>`}).join("")}</div>`}
  return`${aTop(f.naam,"aGo('vrienden')")}<div class="axfhead">${avHTML(f.naam,vrIdx(f.uid),110,f.foto)}<h3>${esc(f.naam)}</h3>${f.gnaam?`<div class="axgn">@${esc(f.gnaam)}</div>`:""}<p class="mute">${[f.recepten!=null?f.recepten+(f.recepten==1?" recept":" recepten"):"",since].filter(Boolean).join(" · ")}</p>${f.over?`<p class="axabout">${esc(f.over)}</p>`:""}</div>${body}
  <button class="axleave" style="color:var(--mute)" onclick="vrRemove('${f.uid}',true)">Vriendschap verbreken</button>`}
