@@ -1157,7 +1157,11 @@ body nav .ls{padding:0;margin:0;max-width:none}
 @keyframes sp-steam{0%{opacity:0;transform:translateY(6px)}40%{opacity:.9}100%{opacity:0;transform:translateY(-8px)}}
 @keyframes sp-up{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){#splash .sp-pot,#splash .sp-hat,#splash .sp-eye,#splash .sp-st,#splash .sp-name span,#splash p{animation:none}#splash .sp-st{display:none}}
-.lg-name span:last-child{color:#3D6B4F!important}
+
+.lg-at .lg-atc{font-weight:700;color:var(--mute);font-size:1.05rem;width:22px;text-align:center;flex:none}
+/* Woordmerk: altijd donkeroranje + lichtoranje, geen groen */
+.lg-name span:first-child{color:#B8441F!important}
+.lg-name span:last-child{color:#F2875C!important}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -2228,15 +2232,15 @@ async function loadHH(){HHERR="";HH=null;HROL="";LEDEN=null;LEGACY=false;
  if(last&&last!==HH){S={...freshS(),tab:S.tab}}setHHLocal(HH);loadLeden();return true}
 async function loadLeden(){if(LEGACY||!HH)return;try{const{data,error}=await sb.rpc("ledenlijst");if(!error&&data){LEDEN=data;if(ownMig()|ownFix())save();if(S.tab=="account"&&!typing())draw()}}catch(e){}}
 let HHCK=false;
-async function afterLogin(user){uid=user.id;uemail=user.email||"";UNAAM=(user.user_metadata&&user.user_metadata.naam)||"";
+async function afterLogin(user){uid=user.id;uemail=user.email||"";UNAAM=(user.user_metadata&&user.user_metadata.naam)||"";try{GNPEND=(user.user_metadata&&user.user_metadata.gnaam)||localStorage.getItem("kgn")||""}catch(e){GNPEND=(user.user_metadata&&user.user_metadata.gnaam)||""}
  const ok=await loadHH();HHCK=true;if(!ok){if(HHERR){draw();return}if(INV){const c=INV;await joinHH(c)}else await startSolo(null,null);return}await pull();regMe();draw();loadVR();
  if(INV&&!LEGACY){const code=INV;ask((isMulti()?"Je bent uitgenodigd voor een ander huishouden. Wil je overstappen? Je recepten gaan mee; het weekmenu en de lijst van "+hhName()+" niet.":"Je bent uitgenodigd voor een huishouden. Lid worden? Je recepten gaan mee."),()=>joinHH(code),"Overstappen");try{localStorage.removeItem("kinv")}catch(e){}INV=null}}
 // ---- Inlogscherm: inloggen, account maken, wachtwoord vergeten
 function lmSet(m){LM=m;LMSG={};draw()}
 async function signup(){const n=$("lnm").value.trim(),em=$("em").value.trim(),pw=$("pw").value;
- if(!n){LMSG={err:"Vul je naam in."};return draw()}if(!/^\S+@\S+\.\S+$/.test(em)){LMSG={err:"Vul een geldig e-mailadres in.",n};return draw()}
+ if(!n){LMSG={err:"Vul je naam in.",em};return draw()}const g=LGN;if(!/^[a-z0-9_]{3,20}$/.test(g)){LMSG={err:"Kies een gebruikersnaam van 3 tot 20 tekens: kleine letters, cijfers en _.",n,em};return draw()}if(GNV[g]===false){LMSG={err:"@"+g+" is al bezet. Kies een andere gebruikersnaam.",n,em};return draw()}if(!/^\S+@\S+\.\S+$/.test(em)){LMSG={err:"Vul een geldig e-mailadres in.",n};return draw()}
  if(pw.length<8||!/[\d\W_]/.test(pw)){LMSG={err:"Je wachtwoord moet minstens 8 tekens hebben, met een cijfer of leesteken.",n,em};return draw()}
- LMSG={busy:1,n,em};draw();const{data,error}=await sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:appUrl(),data:{naam:n}}});
+ LMSG={busy:1,n,em};draw();const{data,error}=await sb.auth.signUp({email:em,password:pw,options:{emailRedirectTo:appUrl(),data:{naam:n,gnaam:g}}});try{localStorage.setItem("kgn",g)}catch(e){}
  if(error){LMSG={err:/registered|exists/i.test(error.message)?"Er is al een account met dit e-mailadres. Log in of kies Wachtwoord vergeten.":/disabled|not allowed/i.test(error.message)?"Account maken staat (nog) uit in Supabase.":"Account maken mislukt: "+error.message,n,em};return draw()}
  if(data&&data.session){LM="in";await afterLogin(data.user);return}
  LM="in";LMSG={ok:"Bijna klaar! We hebben een mail gestuurd naar "+em+". Klik op de link in die mail en log daarna hier in.",em};draw()}
@@ -2444,7 +2448,7 @@ const vrIdx=id=>{let h=0;for(const c of String(id))h=(h*31+c.charCodeAt(0))|0;re
 const vrMissing=e=>/PGRST202|42883|Could not find the function|does not exist/i.test(((e&&e.message)||"")+((e&&e.code)||""));
 async function loadVR(){if(!sb||!uid||!HH||LEGACY)return;let r;try{r=await sb.rpc("vriendenlijst")}catch(e){return}
  if(!r)return;if(r.error){if(vrMissing(r.error)){VRON=false;VR=null}return}
- VRON=true;VR=r.data||[];
+ VRON=true;VR=r.data||[];gnApply();
  try{const m=await sb.from("meldingen").select("id,tekst,gemaakt,van").gte("gemaakt",new Date(Date.now()-14*864e5).toISOString()).order("gemaakt",{ascending:false}).limit(10);MELD=(m&&m.data)||[]}catch(e){}
  syncProf();vrFeedUpd();vrPending();if(["home","account"].includes(S.tab)&&!typing()&&!document.querySelector("dialog[open]"))draw()}
 function syncProf(){if(!sb||!uid||!VRON)return;const p=myP(),row={uid,naam:(pName(p)||uname()||"").trim(),over:p.about||"",foto:p.photo||"",vis:p.vis||"friends",gnaam:p.gnaam||null};
@@ -2731,7 +2735,7 @@ function vHome2(){const nm=uname(),p=myP(),todo=homePick(),t=todayK();let hero;
  const L=list().length;
  const shop=`<button class="hx-shop" onclick="go('list')"><span class="hx-shi">${ico("cart")}</span><span class="axt"><b>Boodschappenlijst</b><small>${L?L+(L==1?" item":" items")+" · op volgorde van jouw supermarkt":"Nog leeg, vult zich met je menu"}</small></span>${ico("chevr")}</button>`;
  const more=`<div class="hx-more">${[["surprise()","Verras me"],["go('deals')","Aanbiedingen"],["go('log')","Logboek"],["go('trend')","Trends"]].concat(optOn("stock")||optOn("left")||optOn("pantry")?[["go('stock')","Voorraad"]]:[]).map(([js,l])=>`<button onclick="${js}">${l}</button>`).join("")}</div>`;
- return head+hero+wk+shop+dmoCard()+vrNewsCard()+inspRail()}
+ return head+gnClashCard()+hero+wk+shop+dmoCard()+vrNewsCard()+inspRail()}
 
 function inspRail(){return`<div class="hx-insp">${inspD().replace('<div class="dg4">','<div class="dg4 hx-rail">')}</div>`}
 
@@ -2929,12 +2933,28 @@ function vLogin(){const up=LM=="up",rs=LM=="reset";let kvf=null;try{kvf=localSto
  <h1 class="lg-h">${up?"Maak een account":rs?"Wachtwoord vergeten":"Welkom terug"}</h1><p class="mute lg-sub">${up?"En begin meteen met koken":rs?"We sturen je een link om een nieuw wachtwoord te kiezen":"Log in om verder te koken"}</p>
  ${INV?`<div class="axok">${ico("a_mail")}<span>Je bent uitgenodigd voor een huishouden. ${up?"Maak een account":"Log in of maak een account"} om lid te worden.</span></div>`:kvf?`<div class="axok">${ico("a_friends")}<span>Je bent uitgenodigd om vrienden te worden. Log in of maak een account.</span></div>`:""}
  ${up?`<label class="lg-l" for="lnm">Je naam</label>${lgField("lnm","text","a_user","bijv. Chef Pieper","name",LMSG.n)}`:""}
+ ${up?`<label class="lg-l" for="lgn">Gebruikersnaam</label><label class="lg-f lg-at"><span class="lg-atc" aria-hidden="true">@</span><input id="lgn" type="text" placeholder="bijv. chefpieper" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="20" value="${esc(LGN)}" oninput="lgGn(this)"></label><p class="axhelp" id="lgnst">${lgGnStat()}</p>`:""}
  <label class="lg-l" for="em">E-mailadres</label>${lgField("em","email","a_mail","chefpieper@voorbeeld.nl","username",LMSG.em,rs?`onkeydown="if(event.key=='Enter')lForgot()"`:"")}
  ${rs?"":`<label class="lg-l" for="pw">Wachtwoord</label>${lgField("pw","password","a_lock",up?"Minstens 8 tekens":"Je wachtwoord",up?"new-password":"current-password","",`onkeydown="if(event.key=='Enter')${up?"signup":"login"}()"`)}`}
  ${LM=="in"?`<div class="lg-fg"><button class="lnk" onclick="lmSet('reset')">Wachtwoord vergeten?</button></div>`:up?`<p class="axhelp">Minstens 8 tekens, met een cijfer of leesteken</p>`:""}
  ${LMSG.err?`<p class="axerr" id="lerr">${esc(LMSG.err)}</p>`:`<p id="lerr" class="axerr" style="margin:0"></p>`}${LMSG.ok?`<div class="axok">${ico("a_check")}<span>${esc(LMSG.ok)}</span></div>`:""}
  <button class="btn lg-btn" ${LMSG.busy?"disabled":""} onclick="${up?"signup":rs?"lForgot":"login"}()">${LMSG.busy?"Bezig…":up?"Account maken":rs?"Stuur mail":"Inloggen"}</button>
  <p class="lg-sw">${LM=="in"?(LEGACY?"":`Nog geen account? <button class="lnk" onclick="lmSet('up')">Maak er een</button>`):`<button class="lnk" onclick="lmSet('in')">${up?"Ik heb al een account":"Terug naar inloggen"}</button>`}</p></div>`}
+
+// ---- Gebruikersnaam bij account maken
+let LGN="",LGNT=null,GNPEND="",GNCLASH="";
+function lgGnStat(){const v=LGN;if(!v)return"3 tot 20 tekens: kleine letters, cijfers en _. Hiermee vinden vrienden je.";if(v.length<3)return"Minstens 3 tekens";
+ if(GNV[v]===true)return`<span class="axgok">✓ @${esc(v)} is nog vrij</span>`;if(GNV[v]===false)return`<span class="axgno">@${esc(v)} is al bezet</span>`;return"Even kijken of @"+esc(v)+" nog vrij is…"}
+function lgGn(el){const v=el.value.toLowerCase().replace(/[^a-z0-9_]/g,"").slice(0,20);if(el.value!==v)el.value=v;LGN=v;const st=()=>{const e=$("lgnst");if(e)e.innerHTML=lgGnStat()};st();clearTimeout(LGNT);
+ if(v.length>=3&&GNV[v]===undefined)LGNT=setTimeout(async()=>{try{const{data,error}=await sb.rpc("gnaam_vrij",{p:v});GNV[v]=error?null:!!data}catch(e){GNV[v]=null}
+  const e=$("lgnst");if(e)e.innerHTML=GNV[v]===null?"Dit controleren we zodra je bent ingelogd.":lgGnStat()},400)}
+async function gnApply(){if(!GNPEND||!VRON||!uid)return;const g=GNPEND,p=myP();GNPEND="";
+ if(p.gnaam){try{localStorage.removeItem("kgn")}catch(e){}return}
+ const{error}=await sb.from("profielen").upsert({uid,naam:(pName(p)||uname()||"").trim(),over:p.about||"",foto:p.photo||"",vis:p.vis||"friends",gnaam:g,updated_at:new Date().toISOString()});
+ try{localStorage.removeItem("kgn")}catch(e){}
+ if(error){if(error.code=="23505"||/unique|duplicate/i.test(error.message||""))GNCLASH=g;draw();return}
+ p.gnaam=g;save();try{localStorage.removeItem("kprof")}catch(e){}draw()}
+function gnClashCard(){if(!GNCLASH)return"";return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_user")}</span><b>Kies een andere gebruikersnaam</b></div><p style="margin:0 0 10px">@${esc(GNCLASH)} was net al door iemand anders gekozen.</p><button class="btn sm" onclick="GNCLASH='';go('account');aGo('profiel')">Gebruikersnaam kiezen</button></div>`}
 // === BOODSCHAPPENLIJST (nieuw ontwerp, verpakkingen) ===
 Object.assign(ICP,{a_dots:'<circle cx="6" cy="12" r="1.600"/><circle cx="12" cy="12" r="1.600"/><circle cx="18" cy="12" r="1.600"/>',a_chevd:'<path d="M6.500 9.500L12 15l5.500-5.500"/>',a_store:'<path d="M4 9.500L5.500 5h13L20 9.500"/><path d="M4 9.500h16v1a2.700 2.700 0 0 1-5.300.700 2.700 2.700 0 0 1-5.400 0A2.700 2.700 0 0 1 4 10.500z"/><path d="M5.500 12.500V20h13v-7.500M10 20v-4h4v4"/>'});
 // [namen, soort (m=gram, v=ml, n=stuks), verpakkingen, [enkelvoud, meervoud] of null]
