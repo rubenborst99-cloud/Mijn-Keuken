@@ -1008,6 +1008,64 @@ body[data-tab="login"] header{display:none}
 .lg-sw{text-align:center;margin:30px 0 0;color:var(--mute);font-size:1rem}
 
 .hx-pieper svg{width:58%;height:auto}
+/* === BOODSCHAPPENLIJST === */
+.ls{max-width:640px;margin:0 auto;padding-bottom:20px}
+.ls-head{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 14px}
+.ls-head h1{font:700 2rem/1.1 Fraunces,serif;margin:0;color:var(--ink)}
+.ls-menu{position:relative}
+.ls-dots{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.ls-dd{position:absolute;right:0;top:54px;z-index:20;min-width:230px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);padding:6px;display:flex;flex-direction:column}
+.ls-dd button{display:flex;align-items:center;gap:8px;text-align:left;border:0;background:none;color:var(--ink);padding:11px 12px;border-radius:10px;font:500 .98rem "DM Sans",sans-serif;cursor:pointer}
+.ls-dd button:hover{background:var(--tile)}
+.ls-store{position:relative;display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--line);border-radius:18px;background:var(--card);margin:0;font-weight:400;cursor:pointer}
+.ls-store small{font-size:.85rem}.ls-store b{font-size:1.05rem}
+.ls-store>.ic{color:var(--mute)}
+.ls-store select{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ls-si{width:44px;height:44px;border-radius:12px;background:var(--t-beige);color:var(--green);display:grid;place-items:center;flex:none}
+.ls-prog{margin-top:12px;background:var(--pg);color:var(--ong);border-radius:18px;padding:16px}
+.ls-pt{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.ls-pt b{font-size:1.1rem}.ls-pt span{color:var(--ongm);font-weight:600}
+.ls-dash{display:flex;gap:4px;margin:12px 0 10px}
+.ls-dash i{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.28)}
+.ls-dash i.on{background:#FBF6EE}
+.ls-prog small{display:flex;align-items:center;gap:6px;color:var(--ongm);font-size:.88rem;line-height:1.35}
+.ls-prog small .ic{width:16px;height:16px;flex:none}
+.ls-add{display:flex;gap:10px;margin-top:12px}
+.ls-add input{flex:1;min-width:0;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--ink);padding:14px 16px;font:inherit;font-size:1rem}
+.ls-plus{width:54px;height:54px;border-radius:16px;border:0;background:var(--green);color:var(--on);display:grid;place-items:center;cursor:pointer;flex:none}
+.ls-plus .ic{width:24px;height:24px}
+.ls-ask{display:flex;align-items:center;gap:10px;margin-top:12px;padding:14px 14px 14px 16px;border-radius:18px;background:var(--t-lilac);color:var(--ink)}
+.ls-ask b{font-size:1rem}.ls-ask small{color:var(--ink2);font-size:.88rem;line-height:1.3}
+.ls-yes{border:0;background:var(--card);color:var(--ink);border-radius:12px;padding:11px 14px;font:700 .95rem "DM Sans",sans-serif;cursor:pointer;flex:none}
+.ls-op{border:0;background:var(--lilacline);color:#fff;border-radius:12px;padding:11px 14px;font:700 .95rem "DM Sans",sans-serif;cursor:pointer;flex:none}
+:root[data-theme="dark"] .ls-op{color:#1d1426}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ls-op{color:#1d1426}}
+.ls-sec{margin-top:22px}
+.ls-sh{display:flex;justify-content:space-between;align-items:baseline;margin:0 4px 8px}
+.ls-sh span{font-weight:700;font-size:.8rem;letter-spacing:.06em;color:var(--mute)}.ls-sh small{color:var(--mute);font-size:.82rem}
+.ls-card{padding:0;overflow:hidden;border:1px solid var(--line)}
+.ls-row{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 14px;border-top:1px solid var(--line)}
+.ls-row:first-child{border-top:0}
+.ls-cb{width:28px;height:28px;border-radius:8px;border:2px solid var(--dash);background:var(--card);display:grid;place-items:center;color:#fff;cursor:pointer;flex:none;padding:0}
+.ls-cb .ic{width:16px;height:16px;stroke-width:3}
+.ls-row.done .ls-cb{background:var(--pg);border-color:var(--pg);color:var(--ong)}
+.ls-tx{flex:1;min-width:0;border:0;background:none;text-align:left;padding:0;cursor:pointer;color:var(--ink);font:inherit;display:flex;flex-direction:column}
+.ls-tx b{font-weight:500;font-size:1.02rem}
+.ls-tx small{color:var(--mute);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ls-row.done .ls-tx b{text-decoration:line-through;color:var(--mute)}
+.ls-amt{font-weight:700;font-size:.98rem;white-space:nowrap;flex:none}
+.ls-row.done .ls-amt{color:var(--mute)}
+.ls-who{flex:none;display:grid}
+.ls-x{border:0;background:none;color:var(--mute);padding:4px;cursor:pointer;display:grid;place-items:center;flex:none;opacity:.6}
+.ls-x .ic{width:16px;height:16px}
+.ls-home{display:flex;align-items:center;gap:12px;width:100%;margin-top:22px;padding:14px 16px;border:1.5px dashed var(--dash);border-radius:18px;background:none;color:var(--ink);text-align:left;cursor:pointer;font:inherit}
+.ls-home small{font-size:.85rem;line-height:1.3}
+.ls-hi{color:var(--sagefg);display:grid;place-items:center}
+.ls-done{width:100%;min-height:54px;margin-top:20px;border-radius:16px;justify-content:center;font-weight:700}
+
+body[data-tab="list"] header{display:none}
+.ls-hm{opacity:1;color:var(--sagefg)}
+body[data-tab="list"] main>h2.pt{display:none}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -2632,14 +2690,15 @@ function kdurs(t){const out=[],re=/(\d+)(?:\s*[-–]\s*(\d+))?\s*(minuten|minuut
  const sents=[];let pos=0;for(const s of t.split(/(?<=[.!?])\s+/)){const i=t.indexOf(s,pos);sents.push([i,i+s.length,s]);pos=i+s.length}
  while((m=re.exec(t))){const n=+(m[2]||m[1]),u=m[3].toLowerCase(),sec=u=="uur"?n*3600:u=="kwartier"?n*900:n*60;if(sec<=0)continue;const se=(sents.find(([a,b])=>m.index>=a&&m.index<b)||[0,0,t])[2];out.push({sec,sent:se})}
  return out}
-function kLab2(sent){let ms=[];try{ms=kmatch(sent)}catch(e){}const I=kIngs(),names=[];for(const tok of sent.toLowerCase().split(/[^a-zà-ÿ'-]+/)){const g=I.find(g=>kTok(tok,g));if(g){const n=tok;if(!names.includes(n))names.push(n)}}
+const KSEAS=new Set(["zout","peper","olie","olijfolie","boter","suiker","water","snuf","snufje"]);
+function kLab2(sent,full){let ms=[];try{ms=kmatch(sent)}catch(e){}const I=kIngs(),grab=txt=>{const out=[];for(const tok of txt.toLowerCase().split(/[^a-zà-ÿ'-]+/)){if(KSEAS.has(tok))continue;const g=I.find(g=>kTok(tok,g));if(g&&!out.includes(tok))out.push(tok)}return out};let names=grab(sent);if(!names.length&&full)names=grab(full);
  const ing=names.length?capF(names.slice(0,2).join(" en ")):kIngNames(ms),lw=sent.toLowerCase(),v=(KVERB.find(([re])=>re.test(lw))||[])[1]||"";return{label:(ing&&v?ing+" "+v:ing||capF(v)||"Timer"),ing:ing||capF(v)||"Timer"}}
 function startK(id,pers,si){const r=S.recipes.find(x=>x.id==id);if(!r)return;const st=ksteps(r);
  if(!st.length){ask("Dit recept heeft nog geen bereidingswijze. Voeg die toe via Aanpassen.",()=>{});return}
  if(!KR||KR.r.id!==id){KTM=[];KDUE=null;KSTEPT={}}
  KR={r,st,ing:false,si:si==null?null:si,pers:pers||r.pers||2};KI=-1;drawK();const d=$("kdlg");if(!d.open)d.showModal();
  try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(l=>KWL=l).catch(()=>{})}catch(e){}}
-function kstart(step,k){kAudio();const D=kdurs(KR.st[step])[k];if(!D)return;const L=kLab2(D.sent);KTM=KTM.filter(x=>x.step!==step);
+function kstart(step,k){kAudio();const D=kdurs(KR.st[step])[k];if(!D)return;const L=kLab2(D.sent,KR.st[step]);KTM=KTM.filter(x=>x.step!==step);
  KTM.push({id:++KTID,step,k,label:L.label,ing:L.ing,txt:D.sent,end:Date.now()+D.sec*1000,paused:false,left:0});kRun();drawK()}
 function kAdv(x){if(x)KSTEPT[x.step]=Math.max(KSTEPT[x.step]||0,(x.k||0)+1)}
 function kstop(id){const x=KTM.find(y=>y.id==id);kAdv(x);KTM=KTM.filter(y=>y.id!=id);if(KDUE&&KDUE.id==id)KDUE=KTM.find(y=>y.done)||null;drawK()}
@@ -2667,7 +2726,7 @@ function drawK(){const d=$("kdlg"),n=KR.st.length,p=KR.pers||KR.r.pers||2,r=KR.r
  const t=KR.st[KI],sc=kScan(t),D=kdurs(t),k=KSTEPT[KI]||0,run=KTM.find(x=>x.step==KI&&!x.done),others=KTM.some(x=>!x.done&&x.step!=KI);
  let timer="";
  if(run)timer=kRunCard(run);
- else if(k<D.length){const L=kLab2(D[k].sent);timer=`<div class="kx-tc"><span class="kx-ti">${ico("a_timer")}</span><span class="axt"><b>${kfmt(D[k].sec*1000)}</b><small>${esc(L.label)}${D.length>1?` · timer ${k+1} van ${D.length}`:""}</small></span><button class="kx-ts" onclick="kstart(${KI},${k})">${ico("a_tri")} Start</button></div>`}
+ else if(k<D.length){const L=kLab2(D[k].sent,t);timer=`<div class="kx-tc"><span class="kx-ti">${ico("a_timer")}</span><span class="axt"><b>${kfmt(D[k].sec*1000)}</b><small>${esc(L.label)}${D.length>1?` · timer ${k+1} van ${D.length}`:""}</small></span><button class="kx-ts" onclick="kstart(${KI},${k})">${ico("a_tri")} Start</button></div>`}
  else if(D.length)timer=`<p class="kx-note">${ico("a_check")} ${D.length>1?"Alle timers van deze stap zijn klaar.":"De timer van deze stap is klaar."}</p>`;
  d.innerHTML=`<div class="kx-top"><button class="kx-c" onclick="closeKAsk()" aria-label="Sluiten">${ico("a_x")}</button><span class="kx-tt"><small>${esc(r.name.length>24?r.name.split(/ (?:met|en|in|op|van|uit|à la) /i)[0].slice(0,30):r.name)}</small><b>Stap ${KI+1} van ${n}</b></span><button class="kx-c${KR.ing?" on":""}" onclick="ktog()" aria-label="Alle ingrediënten">${ico("a_list")}</button></div>
  <div class="kx-prog">${KR.st.map((_,i)=>`<i class="${i<=KI?"on":""}"></i>`).join("")}</div>
@@ -2757,6 +2816,91 @@ function vLogin(){const up=LM=="up",rs=LM=="reset";let kvf=null;try{kvf=localSto
  ${LMSG.err?`<p class="axerr" id="lerr">${esc(LMSG.err)}</p>`:`<p id="lerr" class="axerr" style="margin:0"></p>`}${LMSG.ok?`<div class="axok">${ico("a_check")}<span>${esc(LMSG.ok)}</span></div>`:""}
  <button class="btn lg-btn" ${LMSG.busy?"disabled":""} onclick="${up?"signup":rs?"lForgot":"login"}()">${LMSG.busy?"Bezig…":up?"Account maken":rs?"Stuur mail":"Inloggen"}</button>
  <p class="lg-sw">${LM=="in"?(LEGACY?"":`Nog geen account? <button class="lnk" onclick="lmSet('up')">Maak er een</button>`):`<button class="lnk" onclick="lmSet('in')">${up?"Ik heb al een account":"Terug naar inloggen"}</button>`}</p></div>`}
+// === BOODSCHAPPENLIJST (nieuw ontwerp, verpakkingen) ===
+Object.assign(ICP,{a_dots:'<circle cx="6" cy="12" r="1.600"/><circle cx="12" cy="12" r="1.600"/><circle cx="18" cy="12" r="1.600"/>',a_chevd:'<path d="M6.500 9.500L12 15l5.500-5.500"/>',a_store:'<path d="M4 9.500L5.500 5h13L20 9.500"/><path d="M4 9.500h16v1a2.700 2.700 0 0 1-5.300.700 2.700 2.700 0 0 1-5.400 0A2.700 2.700 0 0 1 4 10.500z"/><path d="M5.500 12.500V20h13v-7.500M10 20v-4h4v4"/>'});
+// [namen, soort (m=gram, v=ml, n=stuks), verpakkingen, [enkelvoud, meervoud] of null]
+const LPACK=[
+ [["kastanjechampignon","kastanjechampignons"],"m",[250],null],
+ [["champignon","champignons"],"m",[250,400],null],
+ [["kipfilet","kippenfilet","kipfilets"],"m",[300,500,1000],null],
+ [["kipdijfilet","kippendij","kipdij","kipdijen","kippendijen"],"m",[300,500],null],
+ [["gehakt","rundergehakt","half om half gehakt","kipgehakt"],"m",[300,500,1000],null],
+ [["spekjes","spekreepjes","bacon"],"m",[150,300],null],
+ [["rookworst"],"n",[1],null],
+ [["zalmfilet","zalm"],"m",[250,500],null],
+ [["boerenkool"],"m",[300,500],null],
+ [["spinazie"],"m",[300,400],null],
+ [["andijvie"],"m",[400],null],
+ [["aardappel","aardappelen","kruimige aardappelen","kruimige aardappel","vastkokende aardappelen","krieltjes"],"m",[1000,1500,2000,3000,5000],null],
+ [["winterpeen"],"m",[500,1000],null],
+ [["melk","halfvolle melk","volle melk"],"v",[500,1000,1500],null],
+ [["kookroom"],"v",[250,500],null],
+ [["slagroom"],"v",[250,500],null],
+ [["creme fraiche","crème fraîche","zure room"],"v",[125,200],null],
+ [["yoghurt","griekse yoghurt"],"v",[500,1000],null],
+ [["kwark"],"m",[500,1000],null],
+ [["geraspte kaas"],"m",[150,250],null],
+ [["parmezaan","parmezaanse kaas","grana padano"],"m",[100,150],null],
+ [["feta"],"m",[200],null],
+ [["mozzarella"],"m",[125],["bol","bollen"]],
+ [["eieren","ei"],"n",[6,10,12],null],
+ [["tomatenblokjes","tomaten in blik","gepelde tomaten"],"m",[400],["blik","blikken"]],
+ [["kokosmelk"],"v",[400],["blik","blikken"]],
+ [["pesto","groene pesto","rode pesto"],"m",[190],["potje","potjes"]],
+ [["currypasta","rode currypasta","groene currypasta","gele currypasta","rode curry pasta"],"m",[70],["potje","potjes"]],
+ [["bouillonblokje","bouillonblokjes","kippenbouillonblokje","groentebouillonblokje"],"n",[8],["pakje","pakjes"]],
+ [["wraps","tortilla","tortillas","tortillawraps"],"n",[6,8],["pak","pakken"]],
+ [["roomboter","boter"],"m",[250],null],
+ [["rijst","basmatirijst","pandanrijst","zilvervliesrijst","jasmijnrijst"],"m",[400,1000],null],
+ [["noedels","mie","udon","mienestjes"],"m",[250,400],null]];
+function lPack(name){const n=canon(String(name||"").toLowerCase()),w=n.split(" ");
+ for(const[ks,c,sz,lab]of LPACK)for(const k0 of ks){const k=canon(k0);if(n==k||w.includes(k)||(k.length>5&&n.includes(k)))return{c,sizes:sz,lab,id:"p:"+ks[0]}}
+ const p=packOf(name);return p?{c:p.c,sizes:[p.q],lab:null,id:"q:"+p.k}:null}
+function packFit(t,sizes){const S2=[...sizes].sort((a,b)=>a-b),mx=S2[S2.length-1];if(t>mx*6){const n=Math.ceil(t/mx);return{sum:n*mx,n}}
+ let best=null;const rec=(i,sum,n)=>{if(sum>=t-1e-9){if(!best||sum<best.sum-1e-9||(Math.abs(sum-best.sum)<1e-9&&n<best.n))best={sum,n};return}if(i>=S2.length||n>=8)return;for(let c=0;c<=8-n;c++){const s=sum+c*S2[i];rec(i+1,s,n+c);if(s>=t)break}};
+ rec(0,0,0);return best||{sum:Math.ceil(t/mx)*mx,n:Math.ceil(t/mx)}}
+function lAmt(o){const pk=lPack(o.name);
+ if(!pk)return o.parts.map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ");
+ let tot=0,fail=false;for(const p of o.parts){if(!p.a){fail=true;continue}let q=null;try{q=conv(p,pk.c)}catch(e){}if(q==null){fail=true;continue}tot+=q}
+ if(tot<=0){if(!fail)return"";tot=1e-6}
+ const b=packFit(tot,pk.sizes);
+ if(pk.lab)return b.n+" "+(b.n==1?pk.lab[0]:pk.lab[1]);
+ return pk.c=="n"?String(b.sum):fmt(b.sum,pk.c=="m"?"g":"ml")}
+const lShort=n=>n.length>22?n.split(/ (?:met|en|in|op|van|uit) /i)[0].split(" ").slice(-1)[0].toLowerCase():n;
+function lSrc(o){const srcs=[...o.src];if(!srcs.length)return"";
+ return srcs.map((n,i)=>{const r=S.recipes.find(x=>x.name==n),days=r?[...new Set(S.sel.filter(e=>!e.shopped&&e.rid==r.id&&e.day).map(e=>DN[pdk(e.day).getDay()]))]:[];let t=srcs.length>1?lShort(n):n;if(i>0&&srcs.length>1)t=t.toLowerCase();else t=capF(t);return t+(days.length?" · "+days.join(", "):"")}).join(", ")}
+function lExtraOf(o){const names=new Set(o.parts.map(p=>canon(p.name)));return(S.extra||[]).map((t,i)=>({t,i})).filter(({t})=>names.has(canon(parse(t).name)))}
+function shopGroups(){const L=list(),G=new Map();
+ for(const x of L){const pk=lPack(x.name),g=pk?pk.id:canon(x.name);if(!G.has(g))G.set(g,{g,parts:[],ai:x.ai,name:x.name,src:new Set()});const o=G.get(g);o.parts.push(x);(x.src||[]).forEach(s=>o.src.add(s));if(x.name.length<o.name.length)o.name=x.name}
+ return[...G.values()].map(o=>{o.ai=lAisle(o.name,o.ai);o.done=o.parts.every(p=>S.checked[p.k]);o.amt=lAmt(o);o.ex=lExtraOf(o);return o})}
+function lTick(i){const o=LGR[i];if(!o)return;const v=!o.done;COL={};S.ct=S.ct||{};for(const p of o.parts){S.checked[p.k]=v;S.ct[p.k]=Date.now()}save();draw()}
+let LGR=[],LMENU=false,LEDIT=false;
+const LAI=[[0,"champignon banaan bananen appel peer druif mango ananas avocado gember limoen citroen spinazie rucola tomaat aardappel kriel sperzieboon peterselie koriander basilicum bosui sjalot knoflook courgette aubergine biet pompoen wortel ui"],[4,"kookroom slagroom room creme crème yoghurt kwark eieren ei melk boter"],[3,"kaas mozzarella feta parmezaan burrata ricotta"],[2,"kipfilet kipdij kip gehakt spek bacon worst zalm vis garnaal tonijn"],[5,"penne pasta macaroni fusilli orzo tagliatelle lasagne rijst noedel mie bonen linzen kikkererwt kokosmelk tomatenblokjes passata bouillon"],[6,"currypasta pesto saus sambal ketjap sojasaus mayonaise ketchup azijn olie kruiden"],[1,"brood wrap tortilla pita naan"],[7,"diepvries"],[9,"sap koffie thee"],[10,"wc-papier toiletpapier keukenrol"]];
+function lAisle(name,ai){if(ai!=8)return ai;const n=String(name).toLowerCase();for(const[a,w]of LAI)for(const k of w.split(" "))if(k.length>2?n.includes(k):new RegExp("\\b"+k+"\\b").test(n))return a;return 8}
+const lWk=()=>dk(wStart(0));
+function lAsk(){if(!optOn("pantry"))return null;const ok=S.askOk||{},wk=lWk();
+ const H=homeList().filter(x=>(S.pantry||[]).includes(pn(x.name))&&!stCovers(x)&&ok[pn(x.name)]!=wk);return H[0]||null}
+function lAskYes(n){S.askOk=S.askOk||{};S.askOk[pn(n)]=lWk();save();draw()}
+function lAdd(){const e=$("xi");const v=(e&&e.value||"").trim();if(!v)return;S.extra.push(v);S.exBy=S.exBy||{};S.exBy[v]=uid||"local";save();draw();const f=$("xi");if(f)f.focus()}
+function lRmX(i){const t=S.extra[i];S.extra.splice(i,1);if(S.exBy)delete S.exBy[t];save();draw()}
+function vList(){const st=STORES[S.store]||STORES.ah;LGR=shopGroups();const N=LGR.length,D=LGR.filter(o=>o.done).length;
+ let price="";if(optOn("prices")){let t=0;for(const o of LGR){const q=priceOf(o.name);if(q)t+=q.p}if(t)price=`ca. ${eur(t).replace(/,\d\d$/,"")}`}
+ const days=[...new Set(S.sel.filter(e=>!e.shopped&&e.day).map(e=>e.day))].sort(),others=isMulti()?members().filter(m=>m.id!=uid).map(m=>(m.name||"").split(" ")[0]):[];
+ const wkTxt=days.length?(()=>{const a=pdk(days[0]),b=pdk(days[days.length-1]);return"voor het weekmenu van "+a.getDate()+(a.getMonth()!=b.getMonth()?" "+MON[a.getMonth()]:"")+"–"+b.getDate()+" "+MON[b.getMonth()]})():"";
+ const sub=[others.length?"Samen met "+others.join(" en "):"",wkTxt].filter(Boolean).join(" · ");
+ const head=`<div class="ls-head"><h1>Boodschappen</h1><div class="ls-menu"><button class="ls-dots" onclick="LMENU=!LMENU;draw()" aria-label="Meer acties">${ico("a_dots")}</button>${LMENU?`<div class="ls-dd"><button onclick="LMENU=false;doneL()">${ico("a_check")} Boodschappen afronden</button>${optOn("prices")?`<button onclick="LMENU=false;openB()">${ico("receipt")} Bon toevoegen</button>`:""}<button onclick="LMENU=false;copyL()">Lijst kopiëren</button><button onclick="LMENU=false;resetCk();save();draw()">Vinkjes wissen</button>${optOn("pantry")?`<button onclick="LMENU=false;LEDIT=!LEDIT;draw()">${ico("home")} ${LEDIT?"Klaar met aanpassen":"Meestal in huis aanpassen"}</button>`:""}</div>`:""}</div></div>
+ <label class="ls-store"><span class="ls-si">${ico("a_store")}</span><span class="axt"><small class="mute">Gesorteerd op looproute van</small><b>${esc(st[0])}</b></span>${ico("a_chevd")}<select aria-label="Supermarkt" onchange="S.store=this.value;save();draw()">${Object.entries(STORES).map(([k,v])=>`<option value="${k}"${S.store==k?" selected":""}>${v[0]}</option>`).join("")}</select></label>`;
+ const prog=N?`<div class="ls-prog"><div class="ls-pt"><b>${D} van ${N} in je mandje</b>${price?`<span>${price}</span>`:""}</div><div class="ls-dash">${LGR.map(o=>`<i class="${o.done?"on":""}"></i>`).join("")}</div>${sub?`<small>${ico("a_friends")} ${esc(sub)}</small>`:""}</div>`:"";
+ const add=`<datalist id="xdl">${sugList().map(n=>`<option value="${esc(n)}">`).join("")}</datalist><div class="ls-add"><input id="xi" list="xdl" autocomplete="off" autocapitalize="none" placeholder="Iets toevoegen, bijv. 6 eieren" aria-label="Iets toevoegen" onkeydown="if(event.key=='Enter')lAdd()"><button class="ls-plus" onclick="lAdd()" aria-label="Toevoegen">${ico("plus")}</button></div>`;
+ const q=lAsk();const ask=q?(()=>{const r=(q.src||[])[0],rr=r&&S.recipes.find(x=>x.name==r),e=rr&&S.sel.find(x=>!x.shopped&&x.rid==rr.id&&x.day);return`<div class="ls-ask"><span class="axt"><b>Heb je nog ${esc(q.name.toLowerCase())}?</b><small>${r?"Nodig voor de "+esc(lShort(r).toLowerCase())+(e?" van "+pdk(e.day).toLocaleDateString("nl-NL",{weekday:"long"}):""):"Staat meestal in huis"}</small></span><button class="ls-yes" onclick='lAskYes(${esc(JSON.stringify(q.name))})'>Ja</button><button class="ls-op" onclick='pNeed(${esc(JSON.stringify(q.name))})'>Op lijst</button></div>`})():"";
+ const H=homeList();
+ const homeC=H.length?`<button class="ls-home" onclick="HO=!HO;draw()"><span class="ls-hi">${ico("a_box")}</span><span class="axt"><b>${H.length} ${H.length==1?"ding heb":"dingen heb"} je al in huis</b><small class="mute">${esc(capF(H.map(x=>x.name.toLowerCase()).slice(0,4).join(", ")))}${H.length>4?" en meer":""} · niet op je lijst gezet</small></span>${ico(HO?"a_chevd":"chevr")}</button>${HO?homeBlock().replace("<details ","<details open "):""}`:(optOn("pantry")&&(S.pantry||[]).length&&HO?homeBlock():"");
+ if(!N)return`<div class="ls">${stCkBanner()}${head}${add}${ask}<div class="card axempty" style="margin-top:14px"><p>Je lijst is leeg. Zet recepten in je weekmenu of voeg hierboven iets toe.</p></div>${homeC}</div>`;
+ const secs=st[1].map(a=>{const it=LGR.map((o,i)=>({o,i})).filter(({o})=>o.ai==a);if(!it.length)return"";const todo=it.filter(({o})=>!o.done).length;
+  return`<div class="ls-sec"><div class="ls-sh"><span>${esc(AISLES[a].replace(/ & /g," en ").toUpperCase())}</span><small>${todo?todo+" te gaan":"klaar"}</small></div><div class="card ls-card">${it.map(({o,i})=>{const sr=lSrc(o),ex=o.ex,who=ex.length&&S.exBy?S.exBy[ex[0].t]:null,wm=who&&isMulti()?members().find(m=>m.id==who):null;
+   return`<div class="ls-row${o.done?" done":""}"><button class="ls-cb" onclick="lTick(${i})" role="checkbox" aria-checked="${o.done}" aria-label="${esc(o.name)}">${o.done?ico("a_check"):""}</button><button class="ls-tx" onclick="lTick(${i})"><b>${esc(capF(o.name))}</b><small>${esc(sr||(ex.length?"Zelf toegevoegd":""))}${sr&&ex.length?" + zelf toegevoegd":""}</small></button>${wm?`<span class="ls-who">${avHTML(wm.name,members().indexOf(wm),26,wm.p&&wm.p.photo)}</span>`:""}<span class="ls-amt">${esc(o.amt)}</span>${ex.length&&!sr?`<button class="ls-x" onclick="lRmX(${ex[0].i})" aria-label="${esc(o.name)} weghalen">${ico("a_x")}</button>`:optOn("pantry")&&sr&&LEDIT?`<button class="ls-x ls-hm" onclick='pAdd(${esc(JSON.stringify(o.name))})' aria-label="Meestal al in huis" title="Meestal al in huis">${ico("home")}</button>`:""}</div>`}).join("")}</div></div>`}).join("");
+ return`<div class="ls">${stCkBanner()}${head}${prog}${add}${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${secs}${homeC}<button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div>`}
+document.addEventListener("click",e=>{if(LMENU&&!e.target.closest(".ls-menu")){LMENU=false;draw()}});
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
