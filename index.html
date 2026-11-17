@@ -2342,6 +2342,13 @@ function stCkBanner(){if(!optOn("stock")||!(S.stock||[]).length)return"";if(S.st
  return`<button class="hx-ck" style="margin-bottom:12px" onclick="S.tab='stock';STV='check';CK=null;draw();scrollTo(0,0)"><span class="hx-cki">${ico("a_check")}</span><span class="axt"><b>Klopt je voorraad nog?</b><small>Even checken voor je boodschappen · 30 sec</small></span></button>`}
 // ---- Na het koken
 function eatAsk(rid,pers){}
+function doneS(i){const e=S.sel[i];if(!e)return;e.done=!e.done;
+ if(e.done){leftAsk(e.rid);stConsume(e,S.recipes.find(r=>r.id==e.rid));save();draw();eatOpen()}
+ else{undoCook(e);save();draw()}}
+function undoCook(e){stRevert(e);
+ if(e.lid){S.left=(S.left||[]).filter(x=>x.id!=e.lid);S.dx=(S.dx||[]).filter(x=>!(x.lid==e.lid&&!x.done));delete e.lid}
+ if(e.eat&&S.eaten){S.eaten=S.eaten.filter(x=>!e.eat.includes(x.id));delete e.eat}
+ delete e.met}
 function leftAsk(rid){vrCooked(rid);LQ={rid}}
 function kgo(d){const n=KI+d;if(n<0||n>KR.st.length)return;KI=n;
  if(n==KR.st.length){const e=KR.si!=null?S.sel[KR.si]:null;
@@ -2372,8 +2379,8 @@ function leftSave(){const e0=S.sel[LD.ei];const on=LD.eat.filter(x=>x.on);
  if(e0&&e0.rid==LD.rid)e0.met={hh:on.filter(x=>x.hh).map(x=>x.id),fr:on.filter(x=>x.fr).map(x=>({uid:x.id,naam:x.naam}))};
  if(optOn("nutri")){try{const r=S.recipes.find(x=>x.id==LD.rid),o=r&&nutOf(r);if(o){const N=nutS(),me=uid||"local",idx=[];
   for(const x of on.filter(x=>x.hh)){let k=N.people.findIndex(pp=>String(pp.name||"").trim().toLowerCase()==x.naam.toLowerCase());if(k<0&&x.id==me&&/^ik$/i.test((N.people[0]||{}).name||""))k=0;if(k<0&&x.id!=me&&/^partner$/i.test((N.people[1]||{}).name||""))k=1;if(k>=0&&!idx.includes(k))idx.push(k)}
-  const date=todayK();idx.forEach((k,j)=>S.eaten.push({id:Date.now()+j,date,rid:r.id,name:r.name,w:k,por:1,nut:{...o.nut},src:o.src}));if(idx.length)N.last=idx}}catch(err){}}
- if(LD.left&&LD.por>0){S.left=S.left||[];S.left.push({id:newId(),name:(LD.name||"Restje").trim(),por:LD.por,where:LD.where,date:todayK(),until:LD.until,rid:LD.rid||0})}
+  const date=todayK(),ids=[];idx.forEach((k,j)=>{const id=Date.now()+j;ids.push(id);S.eaten.push({id,date,rid:r.id,name:r.name,w:k,por:1,nut:{...o.nut},src:o.src})});if(idx.length)N.last=idx;if(e0&&e0.rid==LD.rid&&ids.length)e0.eat=ids}}catch(err){}}
+ if(LD.left&&LD.por>0){S.left=S.left||[];const lid=newId();if(e0&&e0.rid==LD.rid)e0.lid=lid;S.left.push({id:lid,name:(LD.name||"Restje").trim(),por:LD.por,where:LD.where,date:todayK(),until:LD.until,rid:LD.rid||0})}
  const back=LD.used.filter(u=>!u.on);if(back.length){for(const u of back)stAdd(u.name,u.c,u.q);const e=S.sel[LD.ei];if(e&&e.used)e.used=e.used.filter(u=>!back.some(b=>b.name==u.name&&b.q==u.q))}
  $("ldlg").close();save();draw()}
 // ---- Startpagina-blokken
