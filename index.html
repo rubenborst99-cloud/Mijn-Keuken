@@ -1090,6 +1090,18 @@ button.ls-amt{border:0;background:none;font:inherit;font-weight:700;font-size:.9
 
 .vr-seg{grid-template-columns:1fr 1fr;margin:0 0 10px}
 .vr-seg button{white-space:nowrap}
+
+.hx-insp{margin-top:24px}
+.hx-insp .dsec{margin:0 2px 10px;align-items:baseline}
+.hx-insp .dsec h3{font-size:1.25rem;margin:0}
+.hx-insp .dsec p{font-size:.85rem}
+.hx-rail{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -12px;padding:2px 12px 10px;scroll-padding:0 12px;scrollbar-width:none}
+.hx-rail::-webkit-scrollbar{display:none}
+.hx-rail>.dic{flex:0 0 74%;max-width:280px;scroll-snap-align:start}
+.hx-rail>.sk{flex:1 0 100%}
+.hx-rail .dit{height:120px}.hx-rail .dpl{top:84px}
+@media(min-width:1024px){.hx-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;margin:0;padding:0}.hx-rail>.dic{max-width:none}}
+.hx-insp .dsec .lnk{white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -2642,7 +2654,9 @@ function vHome2(){const nm=uname(),p=myP(),todo=homePick(),t=todayK();let hero;
  const L=list().length;
  const shop=`<button class="hx-shop" onclick="go('list')"><span class="hx-shi">${ico("cart")}</span><span class="axt"><b>Boodschappenlijst</b><small>${L?L+(L==1?" item":" items")+" · op volgorde van jouw supermarkt":"Nog leeg, vult zich met je menu"}</small></span>${ico("chevr")}</button>`;
  const more=`<div class="hx-more">${[["surprise()","Verras me"],["go('deals')","Aanbiedingen"],["go('log')","Logboek"],["go('trend')","Trends"]].concat(optOn("stock")||optOn("left")||optOn("pantry")?[["go('stock')","Voorraad"]]:[]).map(([js,l])=>`<button onclick="${js}">${l}</button>`).join("")}</div>`;
- return head+hero+wk+shop+dmoCard()+vrNewsCard()+inspSection()+more}
+ return head+hero+wk+shop+dmoCard()+vrNewsCard()+inspRail()+more}
+
+function inspRail(){return`<div class="hx-insp">${inspD().replace('<div class="dg4">','<div class="dg4 hx-rail">')}</div>`}
 // === KOOKSTAND (nieuw ontwerp, meerdere timers) ===
 Object.assign(ICP,{a_list:'<path d="M9 6.500h11M9 12h11M9 17.500h11"/><circle cx="4.500" cy="6.500" r="1"/><circle cx="4.500" cy="12" r="1"/><circle cx="4.500" cy="17.500" r="1"/>',a_sun:'<circle cx="12" cy="12" r="3.500"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.600 5.600l1.400 1.400M17 17l1.400 1.400M5.600 18.400L7 17M17 7l1.400-1.400"/>',a_pause:'<path d="M9 6v12M15 6v12"/>',a_tri:'<path d="M8 5.500v13l10-6.500z"/>',a_timer:'<circle cx="12" cy="13.500" r="7"/><path d="M12 13.500V10M10 3.500h4"/>'});
 let KTM=[],KDUE=null,KAC=null,KTID=0;
