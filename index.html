@@ -867,6 +867,19 @@ dialog.hx-cook{width:min(520px,96vw);max-height:92vh;overflow:auto;padding:22px 
 .hx-ck2{color:var(--sagefg);display:grid;place-items:center}
 .hx-used input{width:20px;height:20px;accent-color:var(--green);margin:0}
 .axrow.hx-fr>.axt,.axrow.hx-srow>.axt{flex:1 1 auto;min-width:0;white-space:normal}
+/* wie heeft er meegegeten */
+.hx-eat{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.hx-eater{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;border:0;background:none;cursor:pointer;padding:0;width:64px;color:var(--ink);font:500 .85rem "DM Sans",sans-serif}
+.hx-eater .axav{opacity:.45;border:2px solid transparent}
+.hx-eater.on .axav{opacity:1;border-color:var(--green)}
+.hx-eater>i{position:absolute;top:32px;right:6px;width:20px;height:20px;border-radius:50%;background:var(--green);color:var(--on);display:grid;place-items:center;border:2px solid var(--card)}
+.hx-eater>i .ic{width:12px;height:12px;stroke-width:3}
+.hx-eater span{max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hx-addc{width:48px;height:48px;border-radius:50%;border:2px dashed var(--dash);display:grid;place-items:center;color:var(--mute)}
+.hx-eater.add{color:var(--mute)}
+.hx-pick{margin-top:10px;padding:0;overflow:hidden;border:1px solid var(--line)}
+.hx-pick>p{padding:14px 16px}
+.hx-pick .axt small{display:block}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -2327,24 +2340,39 @@ function vStCheck(){if(!CK){CK={ids:ckIds(),i:0,ask:false}}const N=CK.ids.length
 function stCkBanner(){if(!optOn("stock")||!(S.stock||[]).length)return"";if(S.stCk&&daysTo(S.stCk)>-3)return"";
  return`<button class="hx-ck" style="margin-bottom:12px" onclick="S.tab='stock';STV='check';CK=null;draw();scrollTo(0,0)"><span class="hx-cki">${ico("a_check")}</span><span class="axt"><b>Klopt je voorraad nog?</b><small>Even checken voor je boodschappen · 30 sec</small></span></button>`}
 // ---- Na het koken
-function leftAsk(rid){vrCooked(rid);if(optOn("left")||optOn("stock"))LQ={rid}}
+function eatAsk(rid,pers){}
+function leftAsk(rid){vrCooked(rid);LQ={rid}}
+function kgo(d){const n=KI+d;if(n<0||n>KR.st.length)return;KI=n;
+ if(n==KR.st.length){const e=KR.si!=null?S.sel[KR.si]:null;
+  if(e&&e.rid==KR.r.id&&!e.done){e.done=true;leftAsk(e.rid);stConsume(e,KR.r);save()}else LQ={rid:KR.r.id,pers:KR.pers||KR.r.pers};
+  closeK();return}
+ drawK()}
 function leftOpen(){if(!LQ)return;const q=LQ;LQ=null;const r=S.recipes.find(x=>x.id==q.rid);if(!r)return;
  const es=S.sel.filter(x=>x.rid==q.rid&&x.done),e=es.find(x=>x.used&&x.used.length)||es[es.length-1];
- LD={name:r.name,por:0,where:"koelkast",rid:r.id,pers:e?e.pers:r.pers,until:addD(todayK(),3),uSet:false,ed:false,edit:false,
+ const me=uid||"local",ms=members().length?members():[{id:me,name:pName(myP())||uname()||"Ik",p:myP()}];
+ LD={name:r.name,por:0,where:"koelkast",rid:r.id,pers:q.pers||(e?e.pers:r.pers),eat:ms.map((m,i)=>({id:m.id,naam:(pName(m.p)||m.name||"?").split(" ")[0],foto:m.p&&m.p.photo,i,on:true,hh:1})),pick:false,until:addD(todayK(),3),uSet:false,ed:false,edit:false,
   used:optOn("stock")&&e&&e.used?e.used.map(u=>({...u,on:true})):[],ei:e?S.sel.indexOf(e):-1,left:optOn("left")};
- if(!LD.left&&!LD.used.length)return;leftDraw();$("ldlg").showModal()}
+ leftDraw();$("ldlg").showModal()}
 function ldWhere(w){LD.where=w;if(!LD.uSet)LD.until=addD(todayK(),w=="vriezer"?90:3);leftDraw()}
 function ldPor(n){LD.por=n;leftDraw()}
 function leftDraw(){const d=$("ldlg");d.className="hx-cook";
  const ch=(n,l)=>`<button class="${LD.por==n||(n==3&&LD.por>=3)?"on":""}" onclick="ldPor(${n==3&&LD.por>=3?LD.por:n})">${l}</button>`;
+ const F=VRON?vrFriends().filter(f=>!LD.eat.some(x=>x.id==f.uid)):[];
  d.innerHTML=`<div class="hx-cookh"><span class="hx-cookic">${ico("a_pot")}</span><h2>Smakelijk eten!</h2><p class="mute">${esc(LD.name)} · ${LD.pers} ${LD.pers==1?"persoon":"personen"}</p></div>
+ <h3 class="hx-h" style="margin-top:14px">Wie heeft er meegegeten?</h3><div class="hx-eat">${LD.eat.map((x,i)=>`<button class="hx-eater${x.on?" on":""}" onclick="LD.eat[${i}].on=!LD.eat[${i}].on;leftDraw()" aria-pressed="${x.on}">${avHTML(x.naam,x.hh?x.i:vrIdx(x.id),48,x.foto)}<span>${esc(x.naam)}</span>${x.on?`<i>${ico("a_check")}</i>`:""}</button>`).join("")}<button class="hx-eater add" onclick="LD.pick=!LD.pick;leftDraw()" aria-label="Vriend toevoegen"><span class="hx-addc">${ico(LD.pick?"a_x":"plus")}</span><span>${LD.pick?"Sluiten":"Vriend"}</span></button></div>
+ ${LD.pick?`<div class="card hx-pick">${!VRON?`<p class="mute" style="margin:0">Vrienden toevoegen kan zodra Vrienden aanstaat.</p>`:F.length?F.map(f=>`<button class="axrow hx-srow" onclick="LD.eat.push({id:'${f.uid}',naam:'${esc(f.naam.split(" ")[0]).replace(/'/g,"")}',foto:'${esc(f.foto||"")}',on:true,fr:1});LD.pick=false;leftDraw()">${avHTML(f.naam,vrIdx(f.uid),36,f.foto)}<span class="axt">${esc(f.naam)}${f.gnaam?`<small class="mute">@${esc(f.gnaam)}</small>`:""}</span>${ico("plus")}</button>`).join(""):`<p class="mute" style="margin:0">${vrFriends().length?"Al je vrienden staan er al bij.":"Je hebt nog geen vrienden. Voeg ze toe bij Account → Vrienden."}</p>`}</div>`:""}
  ${LD.left?`<h3 class="hx-h" style="margin-top:6px">Is er iets over?</h3><div class="hx-pors">${ch(0,"Niets")}${ch(1,"1 portie")}${ch(2,"2 porties")}${ch(3,LD.por>=3?LD.por+" porties":"Meer")}</div>${LD.por>=3?`<div class="row nw" style="justify-content:center;margin-top:8px"><button class="btn ghost sm" onclick="ldPor(Math.max(3,LD.por-1))">−</button><b style="min-width:70px;text-align:center">${LD.por} porties</b><button class="btn ghost sm" onclick="ldPor(LD.por+1)">+</button></div>`:""}
  ${LD.por>0?`<div class="axl">Waar bewaar je het?</div><div class="hx-where"><button class="${LD.where=="koelkast"?"on":""}" onclick="ldWhere('koelkast')"><span class="axic" style="background:var(--t-green);color:var(--sagefg)">${ico("a_fridge")}</span><b>Koelkast</b><small class="mute">ca. 3 dagen</small></button><button class="${LD.where=="vriezer"?"on":""}" onclick="ldWhere('vriezer')"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_snow")}</span><b>Vriezer</b><small class="mute">ca. 3 maanden</small></button></div>
  <div class="card hx-until"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_cal")}</span><span class="axt"><small class="mute">${LD.uSet?"Zelf ingesteld":"Automatisch ingesteld"} · goed tot</small>${LD.ed?`<input type="date" class="axin" value="${LD.until}" onchange="LD.until=this.value;LD.uSet=true;LD.ed=false;leftDraw()">`:`<b>${esc(dayNice(LD.until).replace(/ \d{4}$/,""))}</b>`}</span><button class="axkick" onclick="LD.ed=!LD.ed;leftDraw()" aria-label="Datum aanpassen">${ico("pen")}</button></div>
  <p class="axhelp">${LD.where=="koelkast"?"Kies je de vriezer, dan wordt het automatisch "+dayNice(addD(todayK(),90)).replace(/^\w+ /,"").replace(/ \d{4}$/,"")+". ":""}Het restje komt bij "Dit moet op" op je startpagina.</p>`:""}`:""}
  ${LD.used.length?`<div class="hx-sec" style="margin-top:20px"><h3 class="hx-h" style="margin:0">Van je voorraad gehaald</h3><button class="lnk axlk2" style="font-size:.95rem" onclick="LD.edit=!LD.edit;leftDraw()">${LD.edit?"Klaar met aanpassen":"Aanpassen"}</button></div><div class="card axlist">${LD.used.map((u,i)=>{const dd=stDisp(u);return`<${LD.edit?`label`:`div`} class="axrow hx-srow hx-used${u.on?"":" off"}">${LD.edit?`<input type="checkbox" ${u.on?"checked":""} onchange="LD.used[${i}].on=this.checked;leftDraw()">`:`<span class="hx-ck2">${ico("a_check")}</span>`}<span class="axt">${esc(capF(u.name))}</span><span class="mute">${String(+dd.v.toFixed(dd.u=="st"?1:0)).replace(".",",")} ${dd.u=="st"?"st":dd.u}</span></${LD.edit?"label":"div"}>`}).join("")}</div>${LD.edit?`<p class="axhelp">Zet uit wat je niet uit je voorraad hebt gebruikt.</p>`:""}`:""}
  <button class="btn axbig" onclick="leftSave()">Klaar</button>`}
-function leftSave(){if(LD.left&&LD.por>0){S.left=S.left||[];S.left.push({id:newId(),name:(LD.name||"Restje").trim(),por:LD.por,where:LD.where,date:todayK(),until:LD.until,rid:LD.rid||0})}
+function leftSave(){const e0=S.sel[LD.ei];const on=LD.eat.filter(x=>x.on);
+ if(e0&&e0.rid==LD.rid)e0.met={hh:on.filter(x=>x.hh).map(x=>x.id),fr:on.filter(x=>x.fr).map(x=>({uid:x.id,naam:x.naam}))};
+ if(optOn("nutri")){try{const r=S.recipes.find(x=>x.id==LD.rid),o=r&&nutOf(r);if(o){const N=nutS(),me=uid||"local",idx=[];
+  for(const x of on.filter(x=>x.hh)){let k=N.people.findIndex(pp=>String(pp.name||"").trim().toLowerCase()==x.naam.toLowerCase());if(k<0&&x.id==me&&/^ik$/i.test((N.people[0]||{}).name||""))k=0;if(k<0&&x.id!=me&&/^partner$/i.test((N.people[1]||{}).name||""))k=1;if(k>=0&&!idx.includes(k))idx.push(k)}
+  const date=todayK();idx.forEach((k,j)=>S.eaten.push({id:Date.now()+j,date,rid:r.id,name:r.name,w:k,por:1,nut:{...o.nut},src:o.src}));if(idx.length)N.last=idx}}catch(err){}}
+ if(LD.left&&LD.por>0){S.left=S.left||[];S.left.push({id:newId(),name:(LD.name||"Restje").trim(),por:LD.por,where:LD.where,date:todayK(),until:LD.until,rid:LD.rid||0})}
  const back=LD.used.filter(u=>!u.on);if(back.length){for(const u of back)stAdd(u.name,u.c,u.q);const e=S.sel[LD.ei];if(e&&e.used)e.used=e.used.filter(u=>!back.some(b=>b.name==u.name&&b.q==u.q))}
  $("ldlg").close();save();draw()}
 // ---- Startpagina-blokken
