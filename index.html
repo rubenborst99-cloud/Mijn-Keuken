@@ -957,6 +957,22 @@ dialog.hx-cook{width:min(520px,96vw);max-height:92vh;overflow:auto;padding:22px 
 .kx-ban.big b{font-size:2rem}
 .kx-ban.big .kx-bp{width:56px;height:56px}
 .kx-swh{margin-top:6px}
+/* === VASTE DAGEN === */
+.fx-row .axt{display:flex;flex-direction:column}
+.fx-n{font-weight:700}.fx-s{font-size:.88rem}
+.fx-list .fx-opt{border-top:1px solid var(--line)}.fx-list .fx-opt:first-child{border-top:0}
+.fx-list .axrad{border-top:0}
+.fx-sub{padding:0 16px 14px 54px}
+.fx-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.fx-days button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:13px 0;font:500 .95rem "DM Sans",sans-serif;cursor:pointer}
+.fx-days button.on{background:var(--green);border-color:var(--green);color:var(--on);font-weight:700}
+.fx-chosen{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:12px;padding:10px 12px;cursor:pointer;font:inherit;text-align:left}
+.fx-chosen span{font-weight:700}.fx-chosen small{color:var(--green);font-weight:700;flex:none}
+.fx-s2{margin-bottom:8px}.fx-s2 input{padding:10px 0}
+.fx-rl{max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.fx-rl button{display:flex;justify-content:space-between;gap:8px;width:100%;border:0;border-top:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 12px;text-align:left;cursor:pointer;font:inherit}
+.fx-rl button:first-child{border-top:0}.fx-rl button.on{background:var(--sage)}
+.fx-rl button small{flex:none}.fx-rl p{padding:10px 12px;margin:0}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -1260,7 +1276,7 @@ function list0(){const m={};
 function go(t){if(t=="account"){AP="";PD=null;AMSG={}}S.tab=t;save();draw()}
 let WL=null;
 async function wake(){const want=S.tab=="list"&&document.visibilityState=="visible";try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
-function draw(){document.body.classList.toggle("nutri-on",optOn("nutri"));document.body.classList.toggle("home-on",S.tab=="home");if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=vLogin();return}if(sb&&uid&&!HH){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=HHCK?vSetup():`<p class="mute" style="text-align:center;margin-top:40px">Laden…</p>`;return}
+function draw(){try{if((!sb||(uid&&HH))&&S.fixed&&S.fixed.length&&applyFixed())save()}catch(e){}document.body.classList.toggle("nutri-on",optOn("nutri"));document.body.classList.toggle("home-on",S.tab=="home");if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=vLogin();return}if(sb&&uid&&!HH){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=HHCK?vSetup():`<p class="mute" style="text-align:center;margin-top:40px">Laden…</p>`;return}
  document.getElementById("nav").innerHTML=[["home","Thuis","Thuis","home"],["rec","Recepten","Recepten","book"],["menu","Weekmenu","Menu","calendar"],["list","Boodschappen","Lijst","cart"]].map(([k,n,sh,io])=>`<button class="${S.tab==k||(k=="home"&&["deals","log","trend","stock"].includes(S.tab))?"on":""}" onclick="go('${k}')"><b class="ni" aria-hidden="true">${ico(io)}</b><span class="lf">${n}</span><span class="ls">${sh}</span>${k=="menu"&&S.sel.length?`<i class="bd">${S.sel.length}</i>`:""}</button>`).join("");
  navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="Mijn Keuken"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals","log","trend"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go('home')">${ico("chevl")} Thuis</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
 const greet=()=>{const h=new Date().getHours();return h<6?"Goedenacht":h<12?"Goedemorgen":h<18?"Goedemiddag":"Goedenavond"};
@@ -2107,7 +2123,7 @@ function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
 function vAccount(){const local=!sb;
  if(RECOV&&uid&&AP!="ww")AP="ww";
- const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
+ const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
  regMe();const p=myP(),ok=sb&&uid,st=ok?(statTxt||"Gesynchroniseerd"):"Alleen op dit apparaat",bad=/mislukt/i.test(st),ms=members();
  const mAv=(ms.length?ms:[{name:pName(p)||"?",p}]).slice(0,4).map((m,i)=>avHTML(pName(m.p)||m.name,i,42,m.p&&m.p.photo)).join("");
  const mNames=ms.length?ms.map(m=>pName(m.p)||m.name).join(" en "):"Alleen jij";
@@ -2190,14 +2206,14 @@ function vAHuis(){const ms=members(),me=uid;
  const undo=(()=>{try{return localStorage.getItem("kundo")}catch(e){return null}})();
  if(!isMulti())return`${aTop("Huishouden","aBack()")}<div class="card axempty" style="padding:18px"><b style="font:700 1.15rem Fraunces,serif">Je kookt nu alleen</b><p style="margin:6px 0 0">Je recepten, weekmenu en boodschappenlijst zijn van jou. Vorm een huishouden om het weekmenu en de lijst te delen en elkaars recepten te zien.</p></div>
  <h4 class="axh">STANDAARD AANTAL PERSONEN</h4><div class="card axpers"><span><b>Ik kook voor</b><small class="mute">Recepten en boodschappen passen zich hierop aan</small></span><span class="axstep"><button onclick="hhP(-1)" aria-label="Minder" ${dp()<=1?"disabled":""}>−</button><b>${dp()}</b><button class="on" onclick="hhP(1)" aria-label="Meer">+</button></span></div>
- ${sb&&uid&&!LEGACY?`<button class="axghost" onclick="hhInvite()">${ico("plus")} Iemand uitnodigen</button><button class="axghost" onclick="hhJoinDlg()">${ico("a_mail")} Ik heb een code</button>`:""}`;
+ ${fxSection()}${sb&&uid&&!LEGACY?`<h4 class="axh">SAMEN KOKEN</h4><button class="axghost" style="margin-top:0" onclick="hhInvite()">${ico("plus")} Iemand uitnodigen</button><button class="axghost" onclick="hhJoinDlg()">${ico("a_mail")} Ik heb een code</button>`:""}`;
  const U=unowned().length,auto=!!myP().autoAdd;
  return`${aTop("Huishouden","aBack()")}<div class="axhh big"><span class="axstack">${av}</span><span class="axhht"><b>${esc(hhName())}</b><button class="axren" onclick="hhRename()" aria-label="Naam wijzigen">${ico("pen")}</button></span><span class="axhhs">Jullie delen recepten, weekmenu en boodschappenlijst</span></div>
  <h4 class="axh">STANDAARD AANTAL PERSONEN</h4><div class="card axpers"><span><b>We koken voor</b><small class="mute">Recepten en boodschappen passen zich hierop aan</small></span><span class="axstep"><button onclick="hhP(-1)" aria-label="Minder" ${dp()<=1?"disabled":""}>−</button><b>${dp()}</b><button class="on" onclick="hhP(1)" aria-label="Meer">+</button></span></div>
  ${S.recipes.some(r=>r.pers&&r.pers!=dp())||undo?`<div class="row" style="margin-top:8px">${S.recipes.some(r=>r.pers&&r.pers!=dp())?`<button class="btn ghost sm" onclick="persOm()">Recepten omrekenen naar ${dp()} pers.</button>`:""}${undo?`<button class="btn ghost sm" onclick="persUndo()">Omrekenen ongedaan maken</button>`:""}</div>`:""}
  <h4 class="axh">RECEPTEN</h4><div class="card axlist"><label class="axtg"><span class="axic" style="background:var(--t-green);color:var(--sagefg)">${ico("book")}</span><span class="axtx"><b>Recepten van huisgenoten overnemen</b><small>Hun recepten worden ook van jou: je vrienden zien ze en je houdt ze als je vertrekt</small></span><input type="checkbox" class="axsw" ${auto?"checked":""} onchange="ownAuto(this.checked)" aria-label="Recepten van huisgenoten toevoegen"></label></div>
  ${U?`<div class="card axassign"><b>${U} ${U==1?"recept is":"recepten zijn"} nog van niemand</b><p class="mute" style="margin:4px 0 10px">Deze stonden er al voordat recepten per persoon werden bijgehouden. Van wie zijn ze?</p><div class="axchips">${ms.map(m=>`<button class="axchip" onclick="ownAssign('${m.id}')">Van ${esc((pName(m.p)||m.name||"?").split(" ")[0])}</button>`).join("")}<button class="axchip" onclick="ownAssign('all')">Van ons allemaal</button></div></div>`:""}
- <h4 class="axh">LEDEN · ${ms.length||1}</h4><div class="card axlist">${ms.length?ms.map((m,i)=>`<div class="axmem">${avHTML(pName(m.p)||m.name,i,44,m.p&&m.p.photo)}<span><b>${esc(pName(m.p)||m.name||m.email||"Lid")}${m.id==me?" (jij)":""}</b><small class="mute">${(m.rol?m.rol=="beheerder":i==0)?"Beheerder":"Lid"}</small></span>${HROL=="beheerder"&&!LEGACY&&m.id!=me?`<button class="axkick" onclick="hhKick('${m.id}','${esc(pName(m.p)||m.name||"dit lid").replace(/'/g,"")}')" aria-label="Verwijderen uit huishouden">${ico("a_x")}</button>`:""}</div>`).join(""):`<div class="axmem">${avHTML(pName(myP())||"?",0,44,myP().photo)}<span><b>${esc(pName(myP())||"Jij")} (jij)</b><small class="mute">Alleen op dit apparaat</small></span></div>`}</div>
+ ${fxSection()}<h4 class="axh">LEDEN · ${ms.length||1}</h4><div class="card axlist">${ms.length?ms.map((m,i)=>`<div class="axmem">${avHTML(pName(m.p)||m.name,i,44,m.p&&m.p.photo)}<span><b>${esc(pName(m.p)||m.name||m.email||"Lid")}${m.id==me?" (jij)":""}</b><small class="mute">${(m.rol?m.rol=="beheerder":i==0)?"Beheerder":"Lid"}</small></span>${HROL=="beheerder"&&!LEGACY&&m.id!=me?`<button class="axkick" onclick="hhKick('${m.id}','${esc(pName(m.p)||m.name||"dit lid").replace(/'/g,"")}')" aria-label="Verwijderen uit huishouden">${ico("a_x")}</button>`:""}</div>`).join(""):`<div class="axmem">${avHTML(pName(myP())||"?",0,44,myP().photo)}<span><b>${esc(pName(myP())||"Jij")} (jij)</b><small class="mute">Alleen op dit apparaat</small></span></div>`}</div>
  ${sb?`<button class="axghost" onclick="hhInvite()">${ico("plus")} Iemand uitnodigen</button>`:""}<p class="axhelp" style="margin-top:12px">Jullie delen het weekmenu en de boodschappenlijst, en zien elkaars recepten (${dedupR().length} samen). Vrienden zien alleen de recepten die van jou zijn.</p>${sb&&uid&&!LEGACY?`<button class="axleave" onclick="hhLeave()">Huishouden verlaten</button>`:""}`}
 // ---- Back-ups en app
 function vABk(){return`${aTop("Back-ups","aBack()")}<div class="card"><p class="mute" style="margin:0 0 10px">${sb?"Elke dag wordt automatisch een kopie bewaard (laatste 14 dagen).":"Sla af en toe een back-up op."}</p><div class="row">${sb?`<button class="btn ghost sm" onclick="bkOpen()">Automatische back-ups</button>`:""}<button class="btn ghost sm" onclick="backup()">Back-up opslaan</button><label class="btn ghost sm" style="cursor:pointer">Back-up terugzetten<input type="file" accept=".json" hidden onchange="restore(this)"></label></div></div>`}
@@ -2626,6 +2642,67 @@ function drawK(){const d=$("kdlg"),n=KR.st.length,p=KR.pers||KR.r.pers||2,r=KR.r
  ${timer}`}</div>
  <div class="kx-foot two"><button class="btn ghost kx-prev" onclick="kgo(-1)">${ico("chevl")} Vorige</button><button class="btn kx-go" onclick="kgo(1)">${KI==n-1?`${ico("a_check")} Klaar`:`Volgende stap ${ico("chevr")}`}</button></div>${kModal()}`;
  kSwInit()}
+// === VASTE DAGEN ===
+let VD=null;
+const FXD=[1,2,3,4,5,6,0],FXDS=["Ma","Di","Wo","Do","Vr","Za","Zo"],FXNTH={1:"eerste",2:"tweede",3:"derde",4:"vierde","-1":"laatste"};
+const fxDayName=d=>["zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"][d];
+function fxNext(dow,from){let k=from||todayK();for(let i=0;i<7;i++){if(pdk(k).getDay()==dow)return k;k=addD(k,1)}return k}
+function fxMatch(f,k){const d=pdk(k);if(d.getDay()!=f.dow)return false;
+ if(f.freq=="2week"){const a=f.anchor||k;return Math.abs(Math.round((pdk(k)-pdk(a))/864e5))%14==0}
+ if(f.freq=="month"){const n=f.nth||1,dm=d.getDate();if(n==-1){const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();return dm+7>last}return Math.ceil(dm/7)==n}
+ return true}
+function fxSum(f){const dn=fxDayName(f.dow);return f.freq=="2week"?"Om de week op "+dn:f.freq=="month"?capF(FXNTH[f.nth||1])+" "+dn+" van de maand":"Elke "+dn}
+function fxWhat(f){if(f.kind=="out")return"Niet koken";if(f.kind=="cat")return"Iets uit "+(f.cat||"een categorie");const r=S.recipes.find(x=>x.id==f.rid);return r?r.name:"Recept"}
+function applyFixed(){const F=S.fixed||[];if(!F.length)return false;const t=todayK();S.fxDone=S.fxDone||{};S.dx=S.dx||[];let ch=false;
+ for(const k of wDays(0).concat(wDays(1))){if(k<t)continue;
+  for(const f of F){if(!fxMatch(f,k))continue;const key=f.id+"|"+k;if(S.fxDone[key])continue;
+   if(S.sel.some(e=>e.day==k&&e.fx!=f.id)||S.dx.some(x=>x.day==k&&x.fx!=f.id))continue;
+   if(f.kind=="out"){S.dx.push({id:newId(),day:k,kind:"out",note:f.name,fx:f.id})}
+   else{let rid=null;if(f.kind=="rec")rid=S.recipes.some(r=>r.id==f.rid)?f.rid:null;
+    else{const pool=dedupR().filter(r=>(r.cat||"")==f.cat);if(pool.length){const recent=new Set(S.sel.filter(e=>e.fx==f.id).slice(-Math.min(pool.length-1,3)).map(e=>e.rid));const c=pool.filter(r=>!recent.has(r.id));const P=c.length?c:pool;rid=P[Math.floor(Math.random()*P.length)].id}}
+    if(rid==null)continue;S.sel.push({rid,pers:dp(),day:k,fx:f.id})}
+   S.fxDone[key]=1;ch=true}}
+ const old=addD(t,-21);for(const key in S.fxDone)if(key.split("|")[1]<old){delete S.fxDone[key];ch=true}
+ return ch}
+function fxClear(id){const t=todayK();S.sel=S.sel.filter(e=>!(e.fx==id&&!e.done&&e.day>=t));S.dx=(S.dx||[]).filter(x=>!(x.fx==id&&!x.done&&x.day>=t));for(const key in S.fxDone||{}){const[a,b]=key.split("|");if(a==String(id)&&b>=t)delete S.fxDone[key]}}
+// ---- Huishouden-pagina: lijst
+function fxSection(){const F=S.fixed||[],T=[AT_BEIGE,AT_PEACH,AT_LILAC,AT_GREEN];
+ return`<h4 class="axh">VASTE DAGEN</h4>${F.length?`<div class="card axlist">${F.map((f,i)=>aRow("a_cal",T[i%4],`<b class="fx-n">${esc(f.name)}</b><small class="mute fx-s">${esc(fxSum(f))}</small>`,"",`fxEdit(${f.id})`,"fx-row")).join("")}</div>`:""}
+ <button class="axghost" onclick="fxEdit(0)">${ico("plus")} Vaste dag toevoegen</button><p class="axhelp" style="margin-top:8px">Vaste dagen staan automatisch in ${isMulti()?"jullie":"je"} weekmenu. Het automatische menu vult alleen de andere dagen.</p>`}
+// ---- Bewerken
+function fxEdit(id){const f=(S.fixed||[]).find(x=>x.id==id);VD=f?JSON.parse(JSON.stringify(f)):{id:0,name:"",kind:"rec",rid:null,cat:"",dow:5,freq:"week",nth:1,anchor:""};VD._q="";VD._pick=false;VD._err="";AP="vast";draw();scrollTo(0,0)}
+function vdSet(k,v){VD[k]=v;VD._err="";if(k=="dow"||k=="freq"){if(VD.freq=="2week")VD.anchor=fxNext(VD.dow)}draw()}
+function vdPickR(id){VD.rid=id;VD._pick=false;if(!VD.name.trim()){const r=S.recipes.find(x=>x.id==id);if(r)VD.name=r.name}draw()}
+function vdSave(){VD.name=(VD.name||"").trim();
+ if(VD.kind=="rec"&&!S.recipes.some(r=>r.id==VD.rid)){VD._err="Kies een recept.";return draw()}
+ if(VD.kind=="cat"&&!VD.cat){VD._err="Kies een categorie.";return draw()}
+ if(!VD.name)VD.name=VD.kind=="out"?"Niet koken":VD.kind=="cat"?capF(VD.cat)+"-avond":fxWhat(VD);
+ if(VD.freq=="2week"&&!VD.anchor)VD.anchor=fxNext(VD.dow);
+ const f={id:VD.id||newId(),name:VD.name,kind:VD.kind,rid:VD.kind=="rec"?VD.rid:null,cat:VD.kind=="cat"?VD.cat:"",dow:VD.dow,freq:VD.freq,nth:VD.freq=="month"?VD.nth:null,anchor:VD.freq=="2week"?VD.anchor:""};
+ S.fixed=S.fixed||[];const i=S.fixed.findIndex(x=>x.id==f.id);if(i>=0){fxClear(f.id);S.fixed[i]=f}else S.fixed.push(f);
+ applyFixed();save();VD=null;AP="huis";draw();scrollTo(0,0)}
+function vdDel(){const id=VD.id;ask("Vaste dag "+(VD.name||"")+" verwijderen? Wat al in het weekmenu staat en nog niet gegeten is, wordt ook weggehaald.",()=>{fxClear(id);S.fixed=(S.fixed||[]).filter(x=>x.id!=id);save();VD=null;AP="huis";draw()},"Verwijderen")}
+function vAVast(){if(!VD)return vAHuis();const r=S.recipes.find(x=>x.id==VD.rid),cats=[...new Set(S.recipes.map(x=>x.cat).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ const rad=(on,js,t,sub,extra)=>`<div class="fx-opt${on?" on":""}"><label class="axrad"><input type="radio" ${on?"checked":""} onchange="${js}"><span><b>${t}</b><small class="mute">${sub}</small></span></label>${on&&extra?`<div class="fx-sub">${extra}</div>`:""}</div>`;
+ const q=(VD._q||"").toLowerCase(),RL=dedupR().filter(x=>!q||x.name.toLowerCase().includes(q)).slice(0,40);
+ const pickR=`${r&&!VD._pick?`<button class="fx-chosen" onclick="VD._pick=true;draw()"><span>${esc(r.name)}</span><small>Ander recept</small></button>`:`<label class="axsearch fx-s2">${ico("search")}<input id="vdq" type="search" placeholder="Zoek in je recepten…" value="${esc(VD._q||"")}" oninput="VD._q=this.value;clearTimeout(VRT);VRT=setTimeout(()=>{draw();const e=$('vdq');if(e){e.focus();e.setSelectionRange(e.value.length,e.value.length)}},200)"></label><div class="fx-rl">${RL.map(x=>`<button onclick="vdPickR(${x.id})"${x.id==VD.rid?' class="on"':""}>${esc(x.name)}<small class="mute">${esc(x.cat||"")}</small></button>`).join("")||`<p class="mute">Geen recepten gevonden.</p>`}</div>`}`;
+ const catX=`<div class="axchips">${cats.map(c=>`<button class="axchip${VD.cat==c?" on":""}" onclick="vdSet('cat','${esc(c).replace(/'/g,"")}')">${esc(c)}</button>`).join("")||`<p class="mute">Geef je recepten eerst een categorie.</p>`}</div><p class="axhelp">Elke keer kiest de app een ander recept uit deze categorie.</p>`;
+ const nthX=`<div class="axchips">${[1,2,3,4,-1].map(n=>`<button class="axchip${(VD.nth||1)==n?" on":""}" onclick="vdSet('nth',${n})">${capF(FXNTH[n])}</button>`).join("")}</div>`;
+ const twoX=`<button class="lnk axlk2" style="font-size:.9rem" onclick="VD.anchor=addD(VD.anchor||fxNext(VD.dow),${(VD.anchor&&VD.anchor>fxNext(VD.dow))?-7:7});draw()">${(VD.anchor&&VD.anchor>fxNext(VD.dow))?"Toch deze week beginnen":"Pas volgende week beginnen"}</button>`;
+ return`${aTop("Vaste dag","VD=null;aGo('huis')")}
+ <label class="axl" for="vdn" style="margin-top:0">Naam</label><input id="vdn" class="axin" value="${esc(VD.name)}" placeholder="bijv. Patatdag" oninput="VD.name=this.value">
+ <div class="axl">Wat eten ${isMulti()?"jullie":"je"}?</div><div class="card axlist fx-list">
+ ${rad(VD.kind=="rec","vdSet('kind','rec')","Een vast recept",r?esc(r.name)+" · uit "+(isMulti()?"jullie":"je")+" recepten":"Elke keer hetzelfde gerecht",pickR)}
+ ${rad(VD.kind=="cat","vdSet('kind','cat')","Iets uit een categorie",VD.cat?"Elke keer iets anders uit "+esc(VD.cat):"Bijv. elke keer een andere pizza",catX)}
+ ${rad(VD.kind=="out","vdSet('kind','out')","Niet koken","Uit eten, afhalen of bij familie","")}</div>
+ <div class="axl">Op welke dag?</div><div class="fx-days">${FXD.map((d,i)=>`<button class="${VD.dow==d?"on":""}" onclick="vdSet('dow',${d})">${FXDS[i]}</button>`).join("")}</div>
+ <div class="axl">Hoe vaak?</div><div class="card axlist fx-list">
+ ${rad(VD.freq=="week","vdSet('freq','week')","Elke week","Elke "+fxDayName(VD.dow),"")}
+ ${rad(VD.freq=="2week","vdSet('freq','2week')","Om de week",VD.freq=="2week"?"Eerstvolgende: "+esc(fxDayName(VD.dow)+" "+pdk(VD.anchor||fxNext(VD.dow)).getDate()+" "+pdk(VD.anchor||fxNext(VD.dow)).toLocaleDateString("nl-NL",{month:"long"})):"Eerstvolgende: "+esc(fxDayName(VD.dow)+" "+pdk(fxNext(VD.dow)).getDate()+" "+pdk(fxNext(VD.dow)).toLocaleDateString("nl-NL",{month:"long"})),twoX)}
+ ${rad(VD.freq=="month","vdSet('freq','month')","Eén keer per maand",VD.freq=="month"?"De "+FXNTH[VD.nth||1]+" "+fxDayName(VD.dow)+" van de maand":"Bijv. de eerste "+fxDayName(VD.dow),nthX)}</div>
+ ${VD._err?`<p class="axerr">${esc(VD._err)}</p>`:""}
+ <button class="btn axbig" onclick="vdSave()">Opslaan</button>
+ ${VD.id?`<button class="axleave" style="display:block;margin:18px auto 0" onclick="vdDel()">Vaste dag verwijderen</button>`:""}`}
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
