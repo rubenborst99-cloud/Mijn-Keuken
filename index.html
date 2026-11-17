@@ -1079,6 +1079,14 @@ button.ls-amt{border:0;background:none;font:inherit;font-weight:700;font-size:.9
 .pk-r{display:flex;gap:8px}.pk-r input{flex:1;min-width:0}.pk-r select{flex:0 0 96px}
 .pk input,.pk select{font:inherit;font-size:16px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
 .pk-b{margin-top:6px;width:100%}.pk-x{align-self:center;margin-top:2px}
+
+.pk-have{margin-top:0;font-weight:700}
+.pk-or{text-align:center;color:var(--mute);font-size:.8rem;margin:2px 0 -2px}
+.pk-cc{margin-top:0;justify-content:flex-start}.pk-cc.on{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.pk-cats .axrow:first-child,.pk-it:first-child{border-top:0}
+.pk-crow .axt{flex:1;min-width:0}.pk-crow small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pk-it{cursor:default;padding:10px 12px 10px 16px;gap:8px}.pk-it .axt{flex:1;min-width:0;overflow-wrap:anywhere}
+.pk-mv{flex:none;width:92px;font:inherit;font-size:.85rem;padding:6px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -2224,7 +2232,7 @@ const AT_BEIGE=["var(--t-beige)","var(--green)"],AT_LILAC=["var(--t-lilac)","var
 function aGo(p){AP=p;AMSG={};if(p=="vrienden"){VRRES=null;VRQ="";loadVR()}if(p=="profiel"){PD=JSON.parse(JSON.stringify(myP()))}draw();window.scrollTo(0,0)}
 function aBack(){if(AP){AP="";PD=null;AMSG={};draw();window.scrollTo(0,0)}else go("home")}
 const KOPT=[["ETEN EN GEZONDHEID",[["nutri","chart",AT_GREEN,"Macro's tonen","Eiwitten, koolhydraten, vetten en calorieën bij elk recept (schatting)"]]],
- ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Vers en houdbaar: afboeken na het koken, bijvullen na de boodschappen, en een korte check voor je nieuwe lijst"],["pantry","a_house",AT_BEIGE,"Misschien al in huis","Wat je meestal al hebt, staat apart onderaan je lijst"],["packs","a_store",AT_BEIGE,"Verpakkingen opzoeken","Kent de app de verpakking niet? Dan zoekt hij die gratis op bij Open Food Facts"]]],
+ ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Vers en houdbaar: afboeken na het koken, bijvullen na de boodschappen, en een korte check voor je nieuwe lijst"],["pantry","a_house",AT_BEIGE,"Kruiden en sauzen in huis","Wat je meestal hebt komt niet op je lijst. De lijst vraagt wel even of je het nog hebt"],["packs","a_store",AT_BEIGE,"Verpakkingen opzoeken","Kent de app de verpakking niet? Dan zoekt hij die gratis op bij Open Food Facts"]]],
  ["RESTJES",[["left","a_bowl",AT_PEACH,"Restjes bijhouden","Na het koken vragen we of er iets over is. Restjes komen bij Dit moet op"]]]];
 function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
@@ -2629,7 +2637,7 @@ function vHome2(){const nm=uname(),p=myP(),todo=homePick(),t=todayK();let hero;
   return n.length?`<button class="hx-day${k==t?" now":""}${k<t?" past":""}" onclick="MW=0;go('menu')"><small>${dd}</small><b>${esc(n.join(", "))}</b></button>`:`<button class="hx-day em${k==t?" now":""}${k<t?" past":""}" onclick="dsOpen('${k}')"><small>${dd}</small><b>${ico("plus")} Kies</b></button>`}).join("")}</div>`;
  const L=list().length;
  const shop=`<button class="hx-shop" onclick="go('list')"><span class="hx-shi">${ico("cart")}</span><span class="axt"><b>Boodschappenlijst</b><small>${L?L+(L==1?" item":" items")+" · op volgorde van jouw supermarkt":"Nog leeg, vult zich met je menu"}</small></span>${ico("chevr")}</button>`;
- const more=`<div class="hx-more">${[["surprise()","Verras me"],["go('deals')","Aanbiedingen"],["go('log')","Logboek"],["go('trend')","Trends"]].concat(optOn("stock")||optOn("left")?[["go('stock')","Voorraad"]]:[]).map(([js,l])=>`<button onclick="${js}">${l}</button>`).join("")}</div>`;
+ const more=`<div class="hx-more">${[["surprise()","Verras me"],["go('deals')","Aanbiedingen"],["go('log')","Logboek"],["go('trend')","Trends"]].concat(optOn("stock")||optOn("left")||optOn("pantry")?[["go('stock')","Voorraad"]]:[]).map(([js,l])=>`<button onclick="${js}">${l}</button>`).join("")}</div>`;
  return head+hero+wk+shop+dmoCard()+vrNewsCard()+inspSection()+more}
 // === KOOKSTAND (nieuw ontwerp, meerdere timers) ===
 Object.assign(ICP,{a_list:'<path d="M9 6.500h11M9 12h11M9 17.500h11"/><circle cx="4.500" cy="6.500" r="1"/><circle cx="4.500" cy="12" r="1"/><circle cx="4.500" cy="17.500" r="1"/>',a_sun:'<circle cx="12" cy="12" r="3.500"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.600 5.600l1.400 1.400M17 17l1.400 1.400M5.600 18.400L7 17M17 7l1.400-1.400"/>',a_pause:'<path d="M9 6v12M15 6v12"/>',a_tri:'<path d="M8 5.500v13l10-6.500z"/>',a_timer:'<circle cx="12" cy="13.500" r="7"/><path d="M12 13.500V10M10 3.500h4"/>'});
@@ -2943,7 +2951,7 @@ function vList(){const st=STORES[S.store]||STORES.ah;LGR=shopGroups();const N=LG
  const secs=st[1].map(a=>{const it=LGR.map((o,i)=>({o,i})).filter(({o})=>o.ai==a);if(!it.length)return"";const todo=it.filter(({o})=>!o.done).length;
   return`<div class="ls-sec"><div class="ls-sh"><span>${esc(AISLES[a].replace(/ & /g," en ").toUpperCase())}</span><small>${todo?todo+" te gaan":"klaar"}</small></div><div class="card ls-card">${it.map(({o,i})=>{const sr=lSrc(o),ex=o.ex,who=ex.length&&S.exBy?S.exBy[ex[0].t]:null,wm=who&&isMulti()?members().find(m=>m.id==who):null;
    return`<div class="ls-row${o.done?" done":""}"><button class="ls-cb" onclick="lTick(${i})" role="checkbox" aria-checked="${o.done}" aria-label="${esc(o.name)}">${o.done?ico("a_check"):""}</button><button class="ls-tx" onclick="lTick(${i})"><b>${esc(capF(o.name))}</b><small>${esc(sr||(ex.length?"Zelf toegevoegd":""))}${sr&&ex.length?" + zelf toegevoegd":""}</small></button>${wm?`<span class="ls-who">${avHTML(wm.name,members().indexOf(wm),26,wm.p&&wm.p.photo)}</span>`:""}<button class="ls-amt" onclick="lPk(${i})" aria-label="Verpakking van ${esc(o.name)} aanpassen">${o.amt?esc(o.amt):'<i class="ls-amt0">+</i>'}</button>${ex.length&&!sr?`<button class="ls-x" onclick="lRmX(${ex[0].i})" aria-label="${esc(o.name)} weghalen">${ico("a_x")}</button>`:optOn("pantry")&&sr&&LEDIT?`<button class="ls-x ls-hm" onclick='pAdd(${esc(JSON.stringify(o.name))})' aria-label="Meestal al in huis" title="Meestal al in huis">${ico("home")}</button>`:""}</div>`}).join("")}</div></div>`}).join("");
- return`<div class="ls">${stCkBanner()}${head}${prog}${add}${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${secs}<p class="ls-tip">Tik op een hoeveelheid om de verpakking aan te passen. De app onthoudt dat voor je hele huishouden.</p>${homeC}<button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div>`}
+ return`<div class="ls">${stCkBanner()}${head}${prog}${add}${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${secs}<p class="ls-tip">Tik op een hoeveelheid om aan te geven dat je het al hebt, of om de verpakking aan te passen.</p>${homeC}<button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div>`}
 document.addEventListener("click",e=>{if(LMENU&&!e.target.closest(".ls-menu")){LMENU=false;draw()}});
 
 /* ---- Verpakkingen: eigen keuze (S.packs) + Open Food Facts (S.offc) ---- */
@@ -2977,7 +2985,8 @@ function lPk(i){const o=LGR[i];if(!o)return;LPKG=o;const m=(S.packs||{})[o.g],pk
  const need=o.parts.map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ")||"geen hoeveelheid";
  const c0=m?m.c:pk&&pk.c!="k"&&pk.c!="b"?pk.c:"m",q0=m?m.q:pk&&pk.sizes&&pk.c!="k"&&pk.c!="b"?Math.min(...pk.sizes):"",l0=m?m.lab||"":pk&&pk.lab?pk.lab[0]:"";
  const labs=["","bakje","zak","zakje","pak","pot","potje","fles","flesje","blik","blikje","bosje","net","doos","tube","stuk"];
- actOpen(capF(o.name),"Verpakking",`<div class="pk">
+ const inB=o.parts.every(p=>(S.pantry||[]).includes(pn(p.name)))&&!o.parts.some(p=>(S.need||[]).includes(pn(p.name)));
+ actOpen(capF(o.name),"Op je lijst",`<div class="pk">${inB?"":`<button class="axghost pk-have" onclick="pkHave()">${ico("a_house")} Heb ik al, zet in voorraad</button><div class="pk-or">of pas de verpakking aan</div>`}
  <div class="pk-i"><span>Nodig volgens je recepten</span><b>${esc(need)}</b></div>
  <div class="pk-i"><span>Nu op je lijst</span><b>${esc(o.amt||"–")}</b><small>${esc(src)}</small></div>
  <label class="pk-l">Bij ons koop je dit meestal per</label>
@@ -2990,6 +2999,35 @@ function lPkSave(){const o=LPKG;if(!o)return;const q=parseFloat(String($("pkq").
 function lPkDel(){const o=LPKG;if(!o||!S.packs)return;delete S.packs[o.g];save();actClose();draw()}
 
 function lCnt(p){const u=(p.u||"").toLowerCase();return!LKITCH.test(u)&&u!="g"&&u!="ml"&&u!="kg"&&u!="l"&&u!="el"&&u!="tl"&&!/^(gram|liter|dl|cl)$/.test(u)}
+
+/* ---- Basisvoorraad: kruiden en sauzen (S.pantry + S.pcat) ---- */
+const PKC=[["kruiden","Kruiden en specerijen","Kruiden","a_leaf"],["sauzen","Sauzen en olie","Sauzen","a_bottle"],["overig","Overige basis","Overig","a_jar"]];
+const PKR_K=/(poeder|zaad|zaadjes|kruiden|kruidenmix|specerij|^zout|zeezout|peper|kaneel|nootmuskaat|oregano|tijm|rozemarijn|laurier|kurkuma|komijn|kerrie|garam masala|ras el hanout|za'?atar|sumak|kardemom|kruidnagel|steranijs|saffraan|dragon|salie|marjolein|chilivlok|cayenne|piment|foelie|dille gedroogd|gedroogde|bouillon|vanille)/;
+const PKR_S=/(saus|olie|azijn|balsamico|ketjap|ketchup|sambal|mosterd|mayonaise|mayo|pesto|currypasta|tomatenpuree|honing|siroop|stroop|dressing|mirin|sriracha|tahin|tahini|pindakaas|harissa|miso|worcester|tabasco|hoisin|teriyaki|vissaus|oestersaus|sojasaus|soja|ahornsiroop|agave)/;
+function pGuess(n){n=pn(n);return PKR_S.test(n)?"sauzen":PKR_K.test(n)?"kruiden":"overig"}
+function pCat(n){return(S.pcat||{})[pn(n)]||pGuess(n)}
+function pkHave(){const o=LPKG;if(!o)return;const g=pCat(o.name);
+ actOpen(capF(o.name),"Waar hoort dit bij?",`<div class="pk"><p class="mute" style="margin:0 0 4px;font-size:.9rem">Het komt niet meer op je lijst. Staat het in een recept, dan vraagt de app eerst of je het nog hebt.</p>${PKC.map(([k,t,,ic])=>`<button class="axghost pk-cc${k==g?" on":""}" onclick="pkHaveSet('${k}')">${ico(ic)} ${t}</button>`).join("")}</div>`)}
+function pkHaveSet(cat){const o=LPKG;if(!o)return;S.opt=S.opt||{};S.opt.pantry=true;S.pantry=S.pantry||[];S.pcat=S.pcat||{};S.askOk=S.askOk||{};const wk=lWk();
+ for(const n of new Set([o.name,...o.parts.map(p=>p.name)].map(pn))){if(!S.pantry.includes(n))S.pantry.push(n);S.pcat[n]=cat;S.askOk[n]=wk}
+ S.need=(S.need||[]).filter(x=>!o.parts.some(p=>pn(p.name)==x));save();actClose();draw()}
+function pkItems(cat){return[...new Set(S.pantry||[])].filter(n=>pCat(n)==cat).sort((a,b)=>a.localeCompare(b,"nl"))}
+function pkSection(){if(!optOn("pantry"))return"";const rows=PKC.map(([k,t,,ic],i)=>{const L=pkItems(k);if(k=="overig"&&!L.length)return"";const[bg,fg]=ATINT[i%4];
+  return`<button class="axrow pk-crow" onclick="STV='pk:${k}';draw();scrollTo(0,0)"><span class="axic" style="background:${bg};color:${fg}">${ico(ic)}</span><span class="axt"><b>${t}</b><small class="mute">${L.length?L.length+" · "+esc(L.slice(0,3).join(", "))+(L.length>3?"…":""):"Nog leeg"}</small></span>${ico("chevr")}</button>`}).join("");
+ return`<h3 class="hx-h">Kruiden en sauzen</h3><p class="hx-sub">Niet precies bijgehouden. Staat het in een recept, dan vraagt je lijst of je het nog hebt.</p><div class="card axlist pk-cats">${rows}</div>`}
+function pkView(cat){const c=PKC.find(x=>x[0]==cat)||PKC[0],L=pkItems(c[0]);
+ return`<div class="axw"><div class="axtop"><button class="axbk" onclick="STV='';draw()" aria-label="Terug">${ico("chevl")}</button><h2>${c[2]}</h2><span></span></div>
+ <p class="hx-sub" style="margin-top:4px">Wat je meestal in huis hebt. Komt niet op je boodschappenlijst; je krijgt daar de vraag of je het nog hebt.</p>
+ <div class="ls-add"><input id="pki" autocomplete="off" autocapitalize="none" placeholder="Toevoegen, bijv. ${c[0]=="sauzen"?"sojasaus":c[0]=="kruiden"?"komijn":"bouillonblokjes"}" aria-label="Toevoegen" onkeydown="if(event.key=='Enter')pkAddIn('${c[0]}')"><button class="ls-plus" onclick="pkAddIn('${c[0]}')" aria-label="Toevoegen">${ico("plus")}</button></div>
+ ${L.length?`<div class="card axlist" style="margin-top:14px">${L.map(n=>`<div class="axrow pk-it"><span class="axt"><b>${esc(capF(n))}</b></span><select class="pk-mv" aria-label="Verplaatsen" onchange='pkMove(${esc(JSON.stringify(n))},this.value)'>${PKC.map(([k,,s])=>`<option value="${k}"${k==c[0]?" selected":""}>${s}</option>`).join("")}</select><button class="axkick" onclick='pDel(${esc(JSON.stringify(n))})' aria-label="${esc(n)} weghalen">${ico("a_x")}</button></div>`).join("")}</div>`:`<div class="card axempty" style="margin-top:14px"><p>Nog niets. Voeg hierboven iets toe, of tik op je boodschappenlijst op een hoeveelheid en kies "Heb ik al".</p></div>`}</div>`}
+function pkAddIn(cat){const e=$("pki"),v=pn(e&&e.value);if(!v)return;S.opt=S.opt||{};S.opt.pantry=true;S.pantry=S.pantry||[];if(!S.pantry.includes(v))S.pantry.push(v);S.pcat=S.pcat||{};S.pcat[v]=cat;S.need=(S.need||[]).filter(x=>x!=v);save();draw();const f=$("pki");if(f)f.focus()}
+function pkMove(n,cat){S.pcat=S.pcat||{};S.pcat[pn(n)]=cat;save();draw()}
+{const _pd=pDel;pDel=function(n){if(S.pcat)delete S.pcat[pn(n)];_pd(n)}}
+{const _vs=vStock;vStock=function(){if(String(STV).startsWith("pk:"))return pkView(STV.slice(3));
+ if(!optOn("pantry"))return _vs();
+ if(!optOn("stock")&&!optOn("left")&&STV!="check")return`<div class="axw"><div class="axtop"><button class="axbk" onclick="STV='';go('home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2><span></span></div>${pkSection()}</div>`;
+ const h=_vs();return STV=="check"?h:h.replace(/<\/div>$/,pkSection()+"</div>")}}
+Object.assign(ICP,{a_leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19l8-8"/>',a_bottle:'<path d="M10 3h4v4l2 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10l2-3z"/><path d="M8 13h8"/>'});
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
