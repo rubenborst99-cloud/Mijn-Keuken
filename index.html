@@ -1066,6 +1066,18 @@ body[data-tab="login"] header{display:none}
 body[data-tab="list"] header{display:none}
 .ls-hm{opacity:1;color:var(--sagefg)}
 body[data-tab="list"] main>h2.pt{display:none}
+
+button.ls-amt{border:0;background:none;font:inherit;font-weight:700;font-size:.98rem;color:inherit;padding:6px 2px 6px 8px;cursor:pointer;text-decoration:underline dotted;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:4px}
+.ls-row.done button.ls-amt{color:var(--mute)}
+.ls-amt0{font-style:normal;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1px dashed var(--line);color:var(--mute);font-size:.9rem}
+.ls-tip{font-size:.8rem;color:var(--mute);text-align:center;margin:14px 12px 4px}
+.pk{display:flex;flex-direction:column;gap:10px;padding-bottom:8px}
+.pk-i{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;background:var(--card);border-radius:14px;padding:10px 14px}
+.pk-i span{font-size:.82rem;color:var(--mute);flex:1 1 100%}.pk-i b{font-size:1rem}.pk-i small{color:var(--mute);font-size:.78rem}
+.pk-l{font-size:.85rem;font-weight:700;margin-top:4px}
+.pk-r{display:flex;gap:8px}.pk-r input{flex:1;min-width:0}.pk-r select{flex:0 0 96px}
+.pk input,.pk select{font:inherit;font-size:16px;padding:11px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+.pk-b{margin-top:6px;width:100%}.pk-x{align-self:center;margin-top:2px}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -2211,7 +2223,7 @@ const AT_BEIGE=["var(--t-beige)","var(--green)"],AT_LILAC=["var(--t-lilac)","var
 function aGo(p){AP=p;AMSG={};if(p=="vrienden"){VRRES=null;VRQ="";loadVR()}if(p=="profiel"){PD=JSON.parse(JSON.stringify(myP()))}draw();window.scrollTo(0,0)}
 function aBack(){if(AP){AP="";PD=null;AMSG={};draw();window.scrollTo(0,0)}else go("home")}
 const KOPT=[["ETEN EN GEZONDHEID",[["nutri","chart",AT_GREEN,"Macro's tonen","Eiwitten, koolhydraten, vetten en calorieën bij elk recept (schatting)"]]],
- ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Vers en houdbaar: afboeken na het koken, bijvullen na de boodschappen, en een korte check voor je nieuwe lijst"],["pantry","a_house",AT_BEIGE,"Misschien al in huis","Wat je meestal al hebt, staat apart onderaan je lijst"]]],
+ ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Vers en houdbaar: afboeken na het koken, bijvullen na de boodschappen, en een korte check voor je nieuwe lijst"],["pantry","a_house",AT_BEIGE,"Misschien al in huis","Wat je meestal al hebt, staat apart onderaan je lijst"],["packs","a_store",AT_BEIGE,"Verpakkingen opzoeken","Kent de app de verpakking niet? Dan zoekt hij die gratis op bij Open Food Facts"]]],
  ["RESTJES",[["left","a_bowl",AT_PEACH,"Restjes bijhouden","Na het koken vragen we of er iets over is. Restjes komen bij Dit moet op"]]]];
 function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
@@ -2852,17 +2864,45 @@ const LPACK=[
  [["wraps","tortilla","tortillas","tortillawraps"],"n",[6,8],["pak","pakken"]],
  [["roomboter","boter"],"m",[250],null],
  [["rijst","basmatirijst","pandanrijst","zilvervliesrijst","jasmijnrijst"],"m",[400,1000],null],
- [["noedels","mie","udon","mienestjes"],"m",[250,400],null]];
+ [["noedels","mie","udon","mienestjes"],"m",[250,400],null],
+ [["knoflook","knoflookteen","knoflookteentjes","teentje knoflook","teentjes knoflook"],"k",[10],["bol","bollen"]],
+ [["sperziebonen","sperzieboon"],"m",[300,500],null],
+ [["broccoli"],"m",[500],["stuk","stuks"]],
+ [["bloemkool"],"m",[600],["stuk","stuks"]],
+ [["cherrytomaten","cherrytomaatjes","snoeptomaten","snoeptomaatjes"],"m",[250,500],null],
+ [["rucola"],"m",[75,125],null],
+ [["zuurkool"],"m",[500],null],
+ [["ham","hamreepjes"],"m",[100,150],null],
+ [["gerookte zalm"],"m",[100,200],null],
+ [["garnalen"],"m",[200,300],null],
+ [["halloumi"],"m",[225],null],
+ [["tofu"],"m",[375],["blok","blokken"]],
+ [["kikkererwten","kidneybonen","zwarte bonen","witte bonen","bruine bonen","linzen","mais","maïs"],"m",[400],["blik","blikken"]],
+ [["gnocchi"],"m",[500],null],
+ [["naanbrood","naan"],"n",[2],["pak","pakken"]],
+ [["pitabroodjes","pita"],"n",[6],["pak","pakken"]],
+ [["verse koriander","peterselie","basilicum","bieslook","munt","dille"],"b",[1],["bosje","bosjes"]],
+ [["gemberpoeder","sesamzaad","chilivlokken","laurierblad","laurierblaadjes","kardemom","garam masala","ras el hanout","za'atar","sumak","gerookte paprikapoeder","korianderzaad","venkelzaad","mosterdzaad","kruidnagel"],"m",[40],["potje","potjes"]],
+ [["vanille-extract","vanillearoma"],"v",[38],["flesje","flesjes"]]];
+const LSYN=new Set(["champignon","kipfilet","kipdijfilet","gehakt","aardappel","melk","eieren","knoflook","wraps","naanbrood","pitabroodjes","sperziebonen","cherrytomaten","tofu","rijst","noedels","roomboter","kastanjechampignon","spekjes","rookworst","zalmfilet","boerenkool","spinazie","kookroom","slagroom","yoghurt","kwark","geraspte kaas","parmezaan","mozzarella","tomatenblokjes","kokosmelk","winterpeen","broccoli","bloemkool","gnocchi","garnalen","ham","gerookte zalm","halloumi","feta","creme fraiche","andijvie","zuurkool","rucola"]);
+const LKITCH=/^(el|tl|snufje|snuf)$/i;
+const LPLAB=[[["paprikapoeder","knoflookpoeder","komijn","kerrie","kaneel","kurkuma","oregano","tijm","rozemarijn","nootmuskaat","chilipoeder","cayennepeper","koriander","italiaanse kruiden","fajitakruiden","tandoori","peper"],["potje","potjes"]],[["olijfolie","zonnebloemolie","olie","bakolie","sojasaus","soja","ketjap","azijn","balsamico","ketchup","mayonaise","oestersaus","oesterssaus","mirin","hoisin","teriyaki","vissaus","sriracha"],["fles","flessen"]],[["mosterd","honing","sambal"],["pot","potten"]],[["zout","suiker","bloem","paneermeel","havermout","muesli","couscous"],["pak","pakken"]],[["tomatenpuree"],["blikje","blikjes"]],[["passata"],["pak","pakken"]]];
 function lPack(name){const n=canon(String(name||"").toLowerCase()),w=n.split(" ");
- for(const[ks,c,sz,lab]of LPACK)for(const k0 of ks){const k=canon(k0);if(n==k||w.includes(k)||(k.length>5&&n.includes(k)))return{c,sizes:sz,lab,id:"p:"+ks[0]}}
- const p=packOf(name);return p?{c:p.c,sizes:[p.q],lab:null,id:"q:"+p.k}:null}
+ for(const[ks,c,sz,lab]of LPACK)for(const k0 of ks){const k=canon(k0);if(n==k||w.includes(k)||(k.length>5&&n.includes(k)))return{c,sizes:sz,lab,id:"p:"+(LSYN.has(ks[0])?ks[0]:k)}}
+ const p=packOf(name);if(!p)return lOff(n);const lb=(LPLAB.find(([ks])=>ks.includes(p.k))||[])[1]||null;return{c:p.c,sizes:[p.q],lab:lb,id:"q:"+n}}
 function packFit(t,sizes){const S2=[...sizes].sort((a,b)=>a-b),mx=S2[S2.length-1];if(t>mx*6){const n=Math.ceil(t/mx);return{sum:n*mx,n}}
  let best=null;const rec=(i,sum,n)=>{if(sum>=t-1e-9){if(!best||sum<best.sum-1e-9||(Math.abs(sum-best.sum)<1e-9&&n<best.n))best={sum,n};return}if(i>=S2.length||n>=8)return;for(let c=0;c<=8-n;c++){const s=sum+c*S2[i];rec(i+1,s,n+c);if(s>=t)break}};
  rec(0,0,0);return best||{sum:Math.ceil(t/mx)*mx,n:Math.ceil(t/mx)}}
-function lAmt(o){const pk=lPack(o.name);
- if(!pk)return o.parts.map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ");
- let tot=0,fail=false;for(const p of o.parts){if(!p.a){fail=true;continue}let q=null;try{q=conv(p,pk.c)}catch(e){}if(q==null){fail=true;continue}tot+=q}
- if(tot<=0){if(!fail)return"";tot=1e-6}
+function lAmt(o){const pk=lMine(o)||lPack(o.name);
+ if(pk&&pk.off&&o.parts.some(p=>{const u=(p.u||"").toLowerCase();if(LKITCH.test(u))return false;let q=null;try{q=p.a?conv(p,pk.c):null}catch(e){}return q==null}))return lPlain(o);
+ if(!pk){const P=o.parts.filter(p=>!LKITCH.test(p.u||""));return P.map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ")}
+ let tot=0,fail=false;const small=Math.min(...pk.sizes);
+ for(const p of o.parts){const u=(p.u||"").toLowerCase();
+  if(pk.c=="k"){tot+=u=="teen"||u==""?(p.a||1):(p.a||1)*10;continue}
+  if(pk.c=="b"){tot+=u=="bos"?(p.a||1):0;fail=fail||u!="bos";continue}
+  if(!p.a){fail=true;continue}let q=null;try{q=conv(p,pk.c)}catch(e){}
+  if(q==null){if(!u&&pk.lab){tot+=p.a*small;continue}fail=true;continue}tot+=q}
+ if(tot<=0){if(!fail)return pk.lab?"1 "+pk.lab[0]:"";tot=1e-6}
  const b=packFit(tot,pk.sizes);
  if(pk.lab)return b.n+" "+(b.n==1?pk.lab[0]:pk.lab[1]);
  return pk.c=="n"?String(b.sum):fmt(b.sum,pk.c=="m"?"g":"ml")}
@@ -2871,8 +2911,8 @@ function lSrc(o){const srcs=[...o.src];if(!srcs.length)return"";
  return srcs.map((n,i)=>{const r=S.recipes.find(x=>x.name==n),days=r?[...new Set(S.sel.filter(e=>!e.shopped&&e.rid==r.id&&e.day).map(e=>DN[pdk(e.day).getDay()]))]:[];let t=srcs.length>1?lShort(n):n;if(i>0&&srcs.length>1)t=t.toLowerCase();else t=capF(t);return t+(days.length?" · "+days.join(", "):"")}).join(", ")}
 function lExtraOf(o){const names=new Set(o.parts.map(p=>canon(p.name)));return(S.extra||[]).map((t,i)=>({t,i})).filter(({t})=>names.has(canon(parse(t).name)))}
 function shopGroups(){const L=list(),G=new Map();
- for(const x of L){const pk=lPack(x.name),g=pk?pk.id:canon(x.name);if(!G.has(g))G.set(g,{g,parts:[],ai:x.ai,name:x.name,src:new Set()});const o=G.get(g);o.parts.push(x);(x.src||[]).forEach(s=>o.src.add(s));if(x.name.length<o.name.length)o.name=x.name}
- return[...G.values()].map(o=>{o.ai=lAisle(o.name,o.ai);o.done=o.parts.every(p=>S.checked[p.k]);o.amt=lAmt(o);o.ex=lExtraOf(o);return o})}
+ for(const x of L){const pk=lPack(x.name),g=pk?pk.id:pkKey(x.name);if(!G.has(g))G.set(g,{g,parts:[],ai:x.ai,name:x.name,src:new Set()});const o=G.get(g);o.parts.push(x);(x.src||[]).forEach(s=>o.src.add(s));if(x.name.length<o.name.length)o.name=x.name}
+ return[...G.values()].map(o=>{o.ai=lAisle(o.name,o.ai);o.done=o.parts.every(p=>S.checked[p.k]);o.amt=lAmt(o);o.ex=lExtraOf(o);if(!lMine(o)&&!lPack(o.name))offQ(o.name);return o})}
 function lTick(i){const o=LGR[i];if(!o)return;const v=!o.done;COL={};S.ct=S.ct||{};for(const p of o.parts){S.checked[p.k]=v;S.ct[p.k]=Date.now()}save();draw()}
 let LGR=[],LMENU=false,LEDIT=false;
 const LAI=[[0,"champignon banaan bananen appel peer druif mango ananas avocado gember limoen citroen spinazie rucola tomaat aardappel kriel sperzieboon peterselie koriander basilicum bosui sjalot knoflook courgette aubergine biet pompoen wortel ui"],[4,"kookroom slagroom room creme crème yoghurt kwark eieren ei melk boter"],[3,"kaas mozzarella feta parmezaan burrata ricotta"],[2,"kipfilet kipdij kip gehakt spek bacon worst zalm vis garnaal tonijn"],[5,"penne pasta macaroni fusilli orzo tagliatelle lasagne rijst noedel mie bonen linzen kikkererwt kokosmelk tomatenblokjes passata bouillon"],[6,"currypasta pesto saus sambal ketjap sojasaus mayonaise ketchup azijn olie kruiden"],[1,"brood wrap tortilla pita naan"],[7,"diepvries"],[9,"sap koffie thee"],[10,"wc-papier toiletpapier keukenrol"]];
@@ -2898,9 +2938,52 @@ function vList(){const st=STORES[S.store]||STORES.ah;LGR=shopGroups();const N=LG
  if(!N)return`<div class="ls">${stCkBanner()}${head}${add}${ask}<div class="card axempty" style="margin-top:14px"><p>Je lijst is leeg. Zet recepten in je weekmenu of voeg hierboven iets toe.</p></div>${homeC}</div>`;
  const secs=st[1].map(a=>{const it=LGR.map((o,i)=>({o,i})).filter(({o})=>o.ai==a);if(!it.length)return"";const todo=it.filter(({o})=>!o.done).length;
   return`<div class="ls-sec"><div class="ls-sh"><span>${esc(AISLES[a].replace(/ & /g," en ").toUpperCase())}</span><small>${todo?todo+" te gaan":"klaar"}</small></div><div class="card ls-card">${it.map(({o,i})=>{const sr=lSrc(o),ex=o.ex,who=ex.length&&S.exBy?S.exBy[ex[0].t]:null,wm=who&&isMulti()?members().find(m=>m.id==who):null;
-   return`<div class="ls-row${o.done?" done":""}"><button class="ls-cb" onclick="lTick(${i})" role="checkbox" aria-checked="${o.done}" aria-label="${esc(o.name)}">${o.done?ico("a_check"):""}</button><button class="ls-tx" onclick="lTick(${i})"><b>${esc(capF(o.name))}</b><small>${esc(sr||(ex.length?"Zelf toegevoegd":""))}${sr&&ex.length?" + zelf toegevoegd":""}</small></button>${wm?`<span class="ls-who">${avHTML(wm.name,members().indexOf(wm),26,wm.p&&wm.p.photo)}</span>`:""}<span class="ls-amt">${esc(o.amt)}</span>${ex.length&&!sr?`<button class="ls-x" onclick="lRmX(${ex[0].i})" aria-label="${esc(o.name)} weghalen">${ico("a_x")}</button>`:optOn("pantry")&&sr&&LEDIT?`<button class="ls-x ls-hm" onclick='pAdd(${esc(JSON.stringify(o.name))})' aria-label="Meestal al in huis" title="Meestal al in huis">${ico("home")}</button>`:""}</div>`}).join("")}</div></div>`}).join("");
- return`<div class="ls">${stCkBanner()}${head}${prog}${add}${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${secs}${homeC}<button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div>`}
+   return`<div class="ls-row${o.done?" done":""}"><button class="ls-cb" onclick="lTick(${i})" role="checkbox" aria-checked="${o.done}" aria-label="${esc(o.name)}">${o.done?ico("a_check"):""}</button><button class="ls-tx" onclick="lTick(${i})"><b>${esc(capF(o.name))}</b><small>${esc(sr||(ex.length?"Zelf toegevoegd":""))}${sr&&ex.length?" + zelf toegevoegd":""}</small></button>${wm?`<span class="ls-who">${avHTML(wm.name,members().indexOf(wm),26,wm.p&&wm.p.photo)}</span>`:""}<button class="ls-amt" onclick="lPk(${i})" aria-label="Verpakking van ${esc(o.name)} aanpassen">${o.amt?esc(o.amt):'<i class="ls-amt0">+</i>'}</button>${ex.length&&!sr?`<button class="ls-x" onclick="lRmX(${ex[0].i})" aria-label="${esc(o.name)} weghalen">${ico("a_x")}</button>`:optOn("pantry")&&sr&&LEDIT?`<button class="ls-x ls-hm" onclick='pAdd(${esc(JSON.stringify(o.name))})' aria-label="Meestal al in huis" title="Meestal al in huis">${ico("home")}</button>`:""}</div>`}).join("")}</div></div>`}).join("");
+ return`<div class="ls">${stCkBanner()}${head}${prog}${add}${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${secs}<p class="ls-tip">Tik op een hoeveelheid om de verpakking aan te passen. De app onthoudt dat voor je hele huishouden.</p>${homeC}<button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div>`}
 document.addEventListener("click",e=>{if(LMENU&&!e.target.closest(".ls-menu")){LMENU=false;draw()}});
+
+/* ---- Verpakkingen: eigen keuze (S.packs) + Open Food Facts (S.offc) ---- */
+const pkKey=n=>canon(String(n||"").toLowerCase().replace(/['’`]s?\b/g,""));
+const LPL={bakje:"bakjes",zak:"zakken",zakje:"zakjes",pak:"pakken",pot:"potten",potje:"potjes",fles:"flessen",flesje:"flesjes",blik:"blikken",blikje:"blikjes",bosje:"bosjes",net:"netten",doos:"dozen",stuk:"stuks",tube:"tubes",bak:"bakken"};
+function lMine(o){const m=(S.packs||{})[o.g];if(!m||!(m.q>0))return null;return{c:m.c,sizes:[m.q],lab:m.lab?[m.lab,LPL[m.lab]||m.lab]:null,id:o.g,mine:1}}
+function lPlain(o){return o.parts.filter(p=>!LKITCH.test(p.u||"")).map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ")}
+function lOff(n){if(!optOn("packs"))return null;const r=(S.offc||{})[n];return r&&r.s&&r.s.length?{c:r.c,sizes:r.s,lab:null,id:n,off:1}:null}
+const OFFSKIP=/^(water|ijsblokje|ijs|kraanwater|heet water|koud water|lauw water)$/;
+let OFFQ=[],OFFBUSY=false,OFFN=0;
+function offQ(name){if(!optOn("packs")||!navigator.onLine)return;const n=pkKey(name);if(n.length<3||OFFSKIP.test(n))return;
+ const r=(S.offc||{})[n];if(r&&(r.s||Date.now()-(r.t||0)<30*864e5))return;if(OFFQ.includes(n)||OFFN>=20)return;OFFQ.push(n);if(!OFFBUSY)offRun()}
+function offSizes(n,P){const w=n.split(" "),head=w.filter(x=>x.length>=4).slice(-1)[0]||n;
+ const pick=k=>P.filter(p=>p&&p.product_name&&!/\d\s*x\s*\d/i.test(p.quantity||"")&&pkKey(p.product_name).includes(k)).map(p=>{let q=parseFloat(String(p.product_quantity||"").replace(",","."));let u=String(p.product_quantity_unit||"").toLowerCase();if(u=="kg"){q*=1000;u="g"}if(u=="l"){q*=1000;u="ml"}if(u=="cl"){q*=10;u="ml"}return{q,u}}).filter(x=>x.q>=5&&x.q<=5000&&(x.u=="g"||x.u=="ml"));
+ let M=pick(n);if(M.length<3&&head!=n)M=M.concat(pick(head));if(!M.length)return null;
+ const g=M.filter(x=>x.u=="g").length,u=g>=M.length/2?"g":"ml",V=M.filter(x=>x.u==u).map(x=>Math.round(x.q));
+ const F=new Map();V.forEach(v=>F.set(v,(F.get(v)||0)+1));const top=[...F.entries()].sort((a,b)=>b[1]-a[1]);
+ let s=top.filter(([,c])=>c>=Math.max(2,V.length*.2)).slice(0,3).map(([v])=>v);
+ if(!s.length){const so=[...V].sort((a,b)=>a-b);s=[so[Math.floor((so.length-1)/2)]]}
+ return{c:u=="g"?"m":"v",s:s.sort((a,b)=>a-b)}}
+async function offRun(){OFFBUSY=true;let ch=false;
+ while(OFFQ.length){const n=OFFQ.shift();OFFN++;let r={t:Date.now()};
+  try{const url="https://nl.openfoodfacts.org/cgi/search.pl?search_terms="+encodeURIComponent(n)+"&countries_tags_en=netherlands&fields=product_name,product_quantity,product_quantity_unit,quantity&page_size=40&json=1",ac=new AbortController(),tt=setTimeout(()=>ac.abort(),10000),res=await fetch(url,{signal:ac.signal});clearTimeout(tt);
+   if(!res.ok)throw 0;const j=await res.json();const z=offSizes(n,j.products||[]);if(z)r={...z,t:Date.now()}}catch(e){OFFQ=[];break}
+  S.offc=S.offc||{};S.offc[n]=r;ch=true;
+  if(OFFQ.length)await new Promise(f=>setTimeout(f,7000))}
+ OFFBUSY=false;if(ch){save();if(S.tab=="list"&&!typing()&&!document.querySelector("dialog[open]"))draw()}}
+let LPKG=null;
+function lPk(i){const o=LGR[i];if(!o)return;LPKG=o;const m=(S.packs||{})[o.g],pk=lMine(o)||lPack(o.name);
+ const src=m?"Jullie eigen keuze":pk&&pk.off?"Gevonden bij Open Food Facts":pk?"Standaardmaat van de app":"Nog geen verpakking bekend";
+ const need=o.parts.map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ")||"geen hoeveelheid";
+ const c0=m?m.c:pk&&pk.c!="k"&&pk.c!="b"?pk.c:"m",q0=m?m.q:pk&&pk.sizes&&pk.c!="k"&&pk.c!="b"?Math.min(...pk.sizes):"",l0=m?m.lab||"":pk&&pk.lab?pk.lab[0]:"";
+ const labs=["","bakje","zak","zakje","pak","pot","potje","fles","flesje","blik","blikje","bosje","net","doos","tube","stuk"];
+ actOpen(capF(o.name),"Verpakking",`<div class="pk">
+ <div class="pk-i"><span>Nodig volgens je recepten</span><b>${esc(need)}</b></div>
+ <div class="pk-i"><span>Nu op je lijst</span><b>${esc(o.amt||"–")}</b><small>${esc(src)}</small></div>
+ <label class="pk-l">Bij ons koop je dit meestal per</label>
+ <div class="pk-r"><input id="pkq" type="number" inputmode="decimal" min="0" step="any" value="${q0===""?"":esc(String(q0))}" placeholder="bijv. 400" aria-label="Hoeveelheid per verpakking"><select id="pkc" aria-label="Eenheid"><option value="m"${c0=="m"?" selected":""}>gram</option><option value="v"${c0=="v"?" selected":""}>ml</option><option value="n"${c0=="n"?" selected":""}>stuks</option></select></div>
+ <label class="pk-l" for="pkl">Soort verpakking <small class="mute">(mag leeg)</small></label>
+ <select id="pkl" class="pk-s">${labs.map(l=>`<option value="${l}"${l==l0?" selected":""}>${l?capF(l):"Geen, toon gewoon de hoeveelheid"}</option>`).join("")}</select>
+ <button class="btn pk-b" onclick="lPkSave()">Opslaan</button>${m?`<button class="lnk pk-x" onclick="lPkDel()">Terug naar standaard</button>`:""}</div>`)}
+function lPkSave(){const o=LPKG;if(!o)return;const q=parseFloat(String($("pkq").value||"").replace(",","."));if(!(q>0)){$("pkq").focus();return}
+ S.packs=S.packs||{};S.packs[o.g]={c:$("pkc").value,q,lab:$("pkl").value||""};save();actClose();draw()}
+function lPkDel(){const o=LPKG;if(!o||!S.packs)return;delete S.packs[o.g];save();actClose();draw()}
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
