@@ -2894,6 +2894,7 @@ function packFit(t,sizes){const S2=[...sizes].sort((a,b)=>a-b),mx=S2[S2.length-1
  let best=null;const rec=(i,sum,n)=>{if(sum>=t-1e-9){if(!best||sum<best.sum-1e-9||(Math.abs(sum-best.sum)<1e-9&&n<best.n))best={sum,n};return}if(i>=S2.length||n>=8)return;for(let c=0;c<=8-n;c++){const s=sum+c*S2[i];rec(i+1,s,n+c);if(s>=t)break}};
  rec(0,0,0);return best||{sum:Math.ceil(t/mx)*mx,n:Math.ceil(t/mx)}}
 function lAmt(o){const pk=lMine(o)||lPack(o.name);
+ if(pk&&pk.off&&o.parts.some(lCnt))return lPlain(o);
  if(pk&&pk.off&&o.parts.some(p=>{const u=(p.u||"").toLowerCase();if(LKITCH.test(u))return false;let q=null;try{q=p.a?conv(p,pk.c):null}catch(e){}return q==null}))return lPlain(o);
  if(!pk)return lPlain(o);
  let tot=0,fail=false;const small=Math.min(...pk.sizes);
@@ -2914,7 +2915,7 @@ const LSIZE=/\b(extra |zeer |heel )?(klein|kleine|kleintje|groot|grote|middelgro
 function lStrip(n){const t=String(n||"").replace(LSIZE,"").replace(/\s+/g," ").trim();return t||String(n||"")}
 function shopGroups(){const L=list(),G=new Map();
  for(const x of L){const nm=lStrip(x.name),pk=lPack(nm),g=pk?pk.id:pkKey(nm);if(!G.has(g))G.set(g,{g,parts:[],ai:x.ai,name:nm,src:new Set()});const o=G.get(g);o.parts.push(x);(x.src||[]).forEach(s=>o.src.add(s));if(nm.length<o.name.length)o.name=nm}
- return[...G.values()].map(o=>{o.ai=lAisle(o.name,o.ai);o.done=o.parts.every(p=>S.checked[p.k]);o.amt=lAmt(o);o.ex=lExtraOf(o);if(!lMine(o)&&!lPack(o.name))offQ(o.name);return o})}
+ return[...G.values()].map(o=>{o.ai=lAisle(o.name,o.ai);o.done=o.parts.every(p=>S.checked[p.k]);o.amt=lAmt(o);o.ex=lExtraOf(o);if(!lMine(o)&&!lPack(o.name)&&!o.parts.some(lCnt))offQ(o.name);return o})}
 function lTick(i){const o=LGR[i];if(!o)return;const v=!o.done;COL={};S.ct=S.ct||{};for(const p of o.parts){S.checked[p.k]=v;S.ct[p.k]=Date.now()}save();draw()}
 let LGR=[],LMENU=false,LEDIT=false;
 const LAI=[[0,"champignon banaan bananen appel peer druif mango ananas avocado gember limoen citroen spinazie rucola tomaat aardappel kriel sperzieboon peterselie koriander basilicum bosui sjalot knoflook courgette aubergine biet pompoen wortel ui"],[4,"kookroom slagroom room creme crème yoghurt kwark eieren ei melk boter"],[3,"kaas mozzarella feta parmezaan burrata ricotta"],[2,"kipfilet kipdij kip gehakt spek bacon worst zalm vis garnaal tonijn"],[5,"penne pasta macaroni fusilli orzo tagliatelle lasagne rijst noedel mie bonen linzen kikkererwt kokosmelk tomatenblokjes passata bouillon"],[6,"currypasta pesto saus sambal ketjap sojasaus mayonaise ketchup azijn olie kruiden"],[1,"brood wrap tortilla pita naan"],[7,"diepvries"],[9,"sap koffie thee"],[10,"wc-papier toiletpapier keukenrol"]];
@@ -2986,6 +2987,8 @@ function lPk(i){const o=LGR[i];if(!o)return;LPKG=o;const m=(S.packs||{})[o.g],pk
 function lPkSave(){const o=LPKG;if(!o)return;const q=parseFloat(String($("pkq").value||"").replace(",","."));if(!(q>0)){$("pkq").focus();return}
  S.packs=S.packs||{};S.packs[o.g]={c:$("pkc").value,q,lab:$("pkl").value||""};save();actClose();draw()}
 function lPkDel(){const o=LPKG;if(!o||!S.packs)return;delete S.packs[o.g];save();actClose();draw()}
+
+function lCnt(p){const u=(p.u||"").toLowerCase();return!LKITCH.test(u)&&u!="g"&&u!="ml"&&u!="kg"&&u!="l"&&u!="el"&&u!="tl"&&!/^(gram|liter|dl|cl)$/.test(u)}
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
