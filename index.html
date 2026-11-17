@@ -1095,13 +1095,32 @@ button.ls-amt{border:0;background:none;font:inherit;font-weight:700;font-size:.9
 .hx-insp .dsec{margin:0 2px 10px;align-items:baseline}
 .hx-insp .dsec h3{font-size:1.25rem;margin:0}
 .hx-insp .dsec p{font-size:.85rem}
-.hx-rail{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -12px;padding:2px 12px 10px;scroll-padding:0 12px;scrollbar-width:none}
+.hx-rail{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -10px;padding:2px 10px 10px;scroll-padding:0 10px;scrollbar-width:none}
 .hx-rail::-webkit-scrollbar{display:none}
 .hx-rail>.dic{flex:0 0 74%;max-width:280px;scroll-snap-align:start}
 .hx-rail>.sk{flex:1 0 100%}
 .hx-rail .dit{height:120px}.hx-rail .dpl{top:84px}
 @media(min-width:1024px){.hx-rail{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;margin:0;padding:0}.hx-rail>.dic{max-width:none}}
 .hx-insp .dsec .lnk{white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+/* ---- Meer ruimte tussen secties (alle pagina's) ---- */
+body .hx-head{margin-bottom:18px}
+body .hx-q{margin:4px 0 14px}
+body .hx-sec{margin:34px 2px 12px}
+body .hx-h{margin-top:34px}
+body .hx-sub{margin-bottom:12px}
+body .hx-shop{margin-top:30px}
+body .hx-insp{margin-top:34px}
+body .hx-insp .dsec{margin-bottom:12px}
+body .hx-more{margin-top:32px}
+body .axh{margin:30px 4px 12px}
+body .axtop{margin-bottom:20px}
+body .ls-sec{margin-top:30px}
+body .ls-sh{margin-bottom:10px}
+body .ls-add,body .ls-ask,body .ls-prog{margin-top:14px}
+body .ls-tip{margin-top:20px}
+body .mdg{margin-top:26px}
+main .grid{gap:12px}
+body .hx-sec.hx-wkh{margin-top:18px}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -2649,7 +2668,7 @@ function vHome2(){const nm=uname(),p=myP(),todo=homePick(),t=todayK();let hero;
  else if(first)hero=first.kind=="rec"?recH(first.i,first.day=="9999"?"Nog niet ingepland":"Eerstvolgende · "+upDay(first)):dxH(first.x,"Eerstvolgende · "+upDay(first),false);
  else if(todo>=0)hero=recH(todo,"Nog niet gekookt · "+(S.sel[todo].day?dayLbl(S.sel[todo].day).toLowerCase():""));
  else hero=`<div class="card hx-hero"><div class="hx-img">${ico("a_pot")}<span class="hx-pill">${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</span></div><div class="hx-hb"><h3>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h3><p class="mute">${S.sel.length?"Alles op je menu is gegeten.":"Kies een paar recepten voor deze week."}</p><button class="btn hx-cook" onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button><button class="btn ghost hx-cook" style="margin-top:8px" onclick="go('rec')">Zelf kiezen</button></div></div>`;
- const wk=`<div class="hx-sec"><h3>Deze week</h3><button class="lnk" onclick="MW=0;go('menu')">Weekmenu aanpassen</button></div><div class="hx-week">${wDays(0).map(k=>{const n=S.sel.filter(e=>e.day==k).map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).filter(Boolean).concat(dxOf(k).map(x=>x.kind=="out"?(x.fx?fxT(x):"Uit eten"):"Kliekje"));const dd=pdk(k).toLocaleDateString("nl-NL",{weekday:"short"}).replace(".","").slice(0,2).toUpperCase();
+ const wk=`<div class="hx-sec hx-wkh"><h3>Deze week</h3><button class="lnk" onclick="MW=0;go('menu')">Weekmenu aanpassen</button></div><div class="hx-week">${wDays(0).map(k=>{const n=S.sel.filter(e=>e.day==k).map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).filter(Boolean).concat(dxOf(k).map(x=>x.kind=="out"?(x.fx?fxT(x):"Uit eten"):"Kliekje"));const dd=pdk(k).toLocaleDateString("nl-NL",{weekday:"short"}).replace(".","").slice(0,2).toUpperCase();
   return n.length?`<button class="hx-day${k==t?" now":""}${k<t?" past":""}" onclick="MW=0;go('menu')"><small>${dd}</small><b>${esc(n.join(", "))}</b></button>`:`<button class="hx-day em${k==t?" now":""}${k<t?" past":""}" onclick="dsOpen('${k}')"><small>${dd}</small><b>${ico("plus")} Kies</b></button>`}).join("")}</div>`;
  const L=list().length;
  const shop=`<button class="hx-shop" onclick="go('list')"><span class="hx-shi">${ico("cart")}</span><span class="axt"><b>Boodschappenlijst</b><small>${L?L+(L==1?" item":" items")+" · op volgorde van jouw supermarkt":"Nog leeg, vult zich met je menu"}</small></span>${ico("chevr")}</button>`;
