@@ -2348,9 +2348,11 @@ function leftSave(){if(LD.left&&LD.por>0){S.left=S.left||[];S.left.push({id:newI
  const back=LD.used.filter(u=>!u.on);if(back.length){for(const u of back)stAdd(u.name,u.c,u.q);const e=S.sel[LD.ei];if(e&&e.used)e.used=e.used.filter(u=>!back.some(b=>b.name==u.name&&b.q==u.q))}
  $("ldlg").close();save();draw()}
 // ---- Startpagina-blokken
-function dmoCard(){const st=optOn("stock"),lf=optOn("left");if(!st&&!lf)return"";const R=[];
- if(lf)for(const l of S.left||[]){const d=lfDays(l);if(l.where=="koelkast"||d<=14)R.push({d,html:`<button class="axrow hx-srow" onclick="lfPlan(${l.id})"><span class="axt">${esc(l.name)}</span>${lfTag(l)}</button>`})}
- let vers=[];if(st){stEnsure();vers=(S.stock||[]).filter(s=>stKind(s)=="v"&&stDaysLeft(s)<=3);for(const s of vers)R.push({d:stDaysLeft(s),html:`<button class="axrow hx-srow" onclick="go('stock')"><span class="axt">${esc(capF(s.name))}</span>${stTag(s)}</button>`})}
+function plannedIng(){const out=new Set();for(const e of S.sel||[]){if(e.done)continue;const r=S.recipes.find(x=>x.id==e.rid);if(!r)continue;for(const l of r.ing||[]){try{const n=stKey(parse(l).name);if(n)out.add(n)}catch(err){}}}return[...out]}
+function inPlan(name,P){const k=stKey(name);if(!k)return false;const kw=k.split(" ");return P.some(n=>n==k||n.split(" ").includes(k)||kw.includes(n)||(k.length>4&&n.includes(k)))}
+function dmoCard(){const st=optOn("stock"),lf=optOn("left");if(!st&&!lf)return"";const R=[],P=plannedIng();
+ if(lf)for(const l of S.left||[]){if((S.dx||[]).some(x=>x.lid==l.id&&!x.done))continue;const d=lfDays(l);if(l.where=="koelkast"||d<=14)R.push({d,html:`<button class="axrow hx-srow" onclick="lfPlan(${l.id})"><span class="axt">${esc(l.name)}</span>${lfTag(l)}</button>`})}
+ let vers=[];if(st){stEnsure();vers=(S.stock||[]).filter(s=>stKind(s)=="v"&&stDaysLeft(s)<=3&&!inPlan(s.name,P));for(const s of vers)R.push({d:stDaysLeft(s),html:`<button class="axrow hx-srow" onclick="go('stock')"><span class="axt">${esc(capF(s.name))}</span>${stTag(s)}</button>`})}
  if(!R.length)return"";R.sort((a,b)=>a.d-b.d);
  let mk="";if(vers.length){const have=vers.map(s=>({label:s.name,vs:[stKey(s.name)]}));let best=null,bn=0;for(const r of dedupR()){let m=[];try{m=matchTerms(r,have)}catch(e){}if(m.length>bn){bn=m.length;best={r,m}}}
   if(best){const r=best.r,m=best.m,all=m.length==vers.length&&vers.length>1;mk=`<div class="hx-mk"><span class="hx-mki" style="background:var(--t-green);color:var(--sagefg)">${ico("a_bowl")}</span><span class="axt"><small class="hx-mkl">MAAK ER DIT VAN</small><b>${esc(r.name)}</b><small class="mute">${[r.time?r.time+" min":"",all?"gebruikt "+(vers.length==2?"ze allebei":vers.length==3?"alle drie":"ze allemaal"):"gebruikt "+m.join(" en ")].filter(Boolean).map(esc).join(" · ")}</small></span><button class="hx-mkp" onclick="pickR(${r.id})" aria-label="Op het menu zetten">${ico("plus")}</button></div>`}}
