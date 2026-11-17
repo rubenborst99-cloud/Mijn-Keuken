@@ -6,6 +6,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
 <meta name="theme-color" content="#faf6ee">
+<script>try{var t=localStorage.getItem("kthema");if(t=="light"||t=="dark")document.documentElement.dataset.theme=t;if(t=="dark")document.querySelector('meta[name="theme-color"]').content="#140F0C"}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="KookBuddy"><link rel="icon" type="image/png" href="icon-192.png"><meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1121,6 +1122,32 @@ body .ls-tip{margin-top:20px}
 body .mdg{margin-top:26px}
 main .grid{gap:12px}
 body .hx-sec.hx-wkh{margin-top:18px}
+
+/* ---- Lagere menubalk, plusje steekt uit ---- */
+#ft{display:none!important}
+@media(max-width:1023px){
+ body nav button{padding:7px 0 7px;gap:1px;font-size:.7rem}
+ body nav .ni .ic{width:21px;height:21px}
+ body nav .bd{top:1px}
+ body .navplus .ni{width:52px;height:52px;margin-top:-34px;border-width:4px}
+ body .navplus .ni .ic{width:24px!important;height:24px!important}
+}
+
+body nav .ls{padding:0;margin:0;max-width:none}
+
+.th-row .axt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.th-row small{font-size:.85rem}
+.th-rad{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;color:var(--on)}
+.th-row.on .th-rad{background:var(--green);border-color:var(--green)}.th-rad .ic{width:15px;height:15px;stroke-width:3}
+</style>
+<style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
+:root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
+:root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
+:root[data-theme="dark"]{--lav:#2e2838;--lavfg:#c4a8ee}
+:root[data-theme="dark"]{--pg:#244f3c;--tile:#352d25}
+:root[data-theme="dark"]{--bg:#140F0C;--card:#30271F;--tile:#3D3229;--line:#54473A;--dash:#7A6956;--ink:#FFF8EF;--mute:#D2C3B1;--ink2:#EADFD2;--green:#F2875C;--ahov:#FFA884;--on:#140F0C;--pg:#2F5A40;--sagefg:#A9D9B6;--sage:#2F5038;--ong:#FFF8EF;--ongm:#CFE3D3;--t-beige:#54452A;--t-peach:#613A28;--t-green:#2F5038;--t-lilac:#4A3A5E;--lilacline:#D4BCEC;--sunbg:#54452A;--lav:#4A3A5E;--lavfg:#D4BCEC;--shadow:0 6px 20px rgba(0,0,0,.35)}
+:root[data-theme="dark"] .lg-name span:last-child{color:var(--sagefg)}
+:root[data-theme="dark"] .ls-op{color:#1d1426}
+:root[data-theme="light"]{color-scheme:light}
 </style></head>
 <body>
 <div id="splash" aria-hidden="true"><div class="sp-c"><div class="sp-logo"><svg viewBox="14 8 92 104" role="img" aria-label="Chef Pieper"><g transform="translate(0 8)"><path d="M28 64c-3-24 16-40 36-39 20 1 30 16 28 33-2 21-18 36-38 36-16 0-24-12-26-30z" fill="#D9A86C" stroke="#6B4423" stroke-width="3"></path><circle cx="46" cy="50" r="2.5" fill="#A97842"></circle><circle cx="78" cy="56" r="2" fill="#A97842"></circle><circle cx="72" cy="84" r="2.5" fill="#A97842"></circle><circle cx="52" cy="68" r="4" fill="#2B2118"></circle><circle cx="70" cy="68" r="4" fill="#2B2118"></circle><path d="M54 77q7 6 14 0" fill="none" stroke="#2B2118" stroke-width="3.5" stroke-linecap="round"></path><circle cx="45" cy="76" r="4" fill="#F7C6B5"></circle><circle cx="77" cy="76" r="4" fill="#F7C6B5"></circle></g><path d="M44 34a9 9 0 0 1 3-17 11 11 0 0 1 22 0 9 9 0 0 1 3 17z" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></path><rect x="45" y="31" width="26" height="8" rx="2" fill="#FFF6EA" stroke="#6B4423" stroke-width="1.5"></rect></svg></div><div class="sp-name"><span>Kook</span><span>Buddy</span></div><p>Weten wat je eet,<br>zonder gedoe</p></div></div><script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.remove()},7000)</script>
@@ -1426,8 +1453,8 @@ function go(t){if(t=="account"){AP="";PD=null;AMSG={}}S.tab=t;save();draw()}
 let WL=null;
 async function wake(){const want=S.tab=="list"&&document.visibilityState=="visible";try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
 function draw(){try{if((!sb||(uid&&HH))&&S.fixed&&S.fixed.length&&applyFixed())save()}catch(e){}document.body.classList.toggle("nutri-on",optOn("nutri"));document.body.classList.toggle("home-on",S.tab=="home");if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=vLogin();return}if(sb&&uid&&!HH){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=HHCK?vSetup():`<p class="mute" style="text-align:center;margin-top:40px">Laden…</p>`;return}
- document.getElementById("nav").innerHTML=[["home","Thuis","Thuis","home"],["rec","Recepten","Recepten","book"],["menu","Weekmenu","Menu","calendar"],["list","Boodschappen","Lijst","cart"]].map(([k,n,sh,io])=>`<button class="${S.tab==k||(k=="home"&&["deals","log","trend","stock"].includes(S.tab))?"on":""}" onclick="go('${k}')"><b class="ni" aria-hidden="true">${ico(io)}</b><span class="lf">${n}</span><span class="ls">${sh}</span>${k=="menu"&&S.sel.length?`<i class="bd">${S.sel.length}</i>`:""}</button>`).join("");
- navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="KookBuddy"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals","log","trend"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go('home')">${ico("chevl")} Thuis</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
+ document.getElementById("nav").innerHTML=[["home","Home","Home","home"],["rec","Recepten","Recepten","book"],["menu","Weekmenu","Menu","calendar"],["list","Boodschappen","Lijst","cart"]].map(([k,n,sh,io])=>`<button class="${S.tab==k||(k=="home"&&["deals","log","trend","stock"].includes(S.tab))?"on":""}" onclick="go('${k}')"><b class="ni" aria-hidden="true">${ico(io)}</b><span class="lf">${n}</span><span class="ls">${sh}</span>${k=="menu"&&S.sel.length?`<i class="bd">${S.sel.length}</i>`:""}</button>`).join("");
+ navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="KookBuddy"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals","log","trend"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go(BKTO||'home')">${ico("chevl")} ${BKTO?"Account":"Home"}</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
 const greet=()=>{const h=new Date().getHours();return h<6?"Goedenacht":h<12?"Goedemorgen":h<18?"Goedemiddag":"Goedenavond"};
 function uname(){const pp=(S.prof||{})[uid||"local"];if(pp){const nm=(pp.name||pp.nick||"").trim();if(nm)return nm.split(/\s+/)[0]}if(S.userName)return S.userName;const m=String(uemail||"").split("@")[0].match(/^[a-zA-Z]+/);return m?m[0][0].toUpperCase()+m[0].slice(1).toLowerCase():""}
 let HS=null;
@@ -2272,7 +2299,7 @@ function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
 function vAccount(){const local=!sb;
  if(RECOV&&uid&&AP!="ww")AP="ww";
- const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
+ const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast,thema:vAThema}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
  regMe();const p=myP(),ok=sb&&uid,st=ok?(statTxt||"Gesynchroniseerd"):"Alleen op dit apparaat",bad=/mislukt/i.test(st),ms=members();
  const mAv=(ms.length?ms:[{name:pName(p)||"?",p}]).slice(0,4).map((m,i)=>avHTML(pName(m.p)||m.name,i,42,m.p&&m.p.photo)).join("");
  const mNames=ms.length?ms.map(m=>pName(m.p)||m.name).join(" en "):"Alleen jij";
@@ -2280,7 +2307,8 @@ function vAccount(){const local=!sb;
  <div class="card axprof">${avHTML(pName(p)||p.name||uname(),0,84,p.photo)}<div class="axpi"><h3>${esc(p.name||uname()||"Jouw naam")}</h3>${p.gnaam?`<div class="axgn">@${esc(p.gnaam)}</div>`:""}<div class="mute axem">${esc(ok?uemail:local?"Alleen op dit apparaat":"")}</div><button class="lnk axlk" onclick="aGo('profiel')">Profiel bewerken</button><div class="axst"><i id="sdot2" class="sd ${ok&&!bad?"ok":bad?"bad":"off"}"></i><span id="stat">${esc(st)}</span>${ok?` · <button class="lnk axlk2" onclick="pull().then(draw)">Nu bijwerken</button>`:""}</div></div></div>
  <h4 class="axh">HUISHOUDEN</h4>${isMulti()?`<button class="axhh" onclick="aGo('huis')"><span class="axhht"><b>${esc(hhName())}</b>${ico("chevr")}</span><span class="axhhb"><span class="axstack">${mAv}</span><span>${esc(mNames)} · koken voor ${dp()} · ${dedupR().length} recepten samen</span></span></button>`:`<button class="card axfr axfrb" onclick="aGo('huis')"><span class="axic" style="background:var(--t-green);color:var(--sagefg)">${ico("a_house")}</span><span class="axt"><b>Geen huishouden</b><small class="mute">Kook je samen? Deel je weekmenu en lijst</small></span><span class="axch">${ico("chevr")}</span></button>`}
  <h4 class="axh">VRIENDEN</h4>${vrCard()}
- <h4 class="axh">INSTELLINGEN</h4><div class="card axlist">${aRow("a_sliders",AT_LILAC,"Kookvoorkeuren",kCount()+" aan","aGo('kook')")}${aRow("a_bell",AT_BEIGE,"Meldingen","","aGo('meld')")}${aRow("a_save",AT_GREEN,"Back-ups","","aGo('bk')")}${aRow("a_phone",AT_PEACH,"Als app op je telefoon",isStandalone()?"geïnstalleerd":"","aGo('app')")}</div>
+ <h4 class="axh">JOUW KEUKEN</h4><div class="card axlist">${aRow("a_fridge",AT_GREEN,"Voorraad",optOn("stock")||optOn("left")||optOn("pantry")?"":"uit","BKTO='account';STV='';go('stock')")}${aRow("a_list",AT_BEIGE,"Logboek","","BKTO='account';go('log')")}${aRow("chart",AT_LILAC,"Trends","","BKTO='account';go('trend')")}</div>
+ <h4 class="axh">INSTELLINGEN</h4><div class="card axlist">${aRow("a_sliders",AT_LILAC,"Kookvoorkeuren",kCount()+" aan","aGo('kook')")}${aRow("a_bell",AT_BEIGE,"Meldingen","","aGo('meld')")}${aRow("a_sun",AT_PEACH,"Weergave",THEMES[thGet()][0],"aGo('thema')")}${aRow("a_save",AT_GREEN,"Back-ups","","aGo('bk')")}${aRow("a_phone",AT_PEACH,"Als app op je telefoon",isStandalone()?"geïnstalleerd":"","aGo('app')")}</div>
  ${ok?`<h4 class="axh">INLOGGEN EN BEVEILIGING</h4><div class="card axlist">${aRow("a_mail",AT_BEIGE,"E-mailadres",`<span class="axtrunc">${esc(uemail)}</span>`,"aGo('mail')")}${aRow("a_lock",AT_BEIGE,"Wachtwoord wijzigen","","aGo('ww')")}</div>
  <button class="axlogout" onclick="logout()">${ico("a_out")} Uitloggen</button>`:""}</div>`}
 // ---- Profiel
@@ -2346,7 +2374,7 @@ function vAPw(){return`${aTop(RECOV?"Nieuw wachtwoord":"Wachtwoord wijzigen",REC
  <button class="btn axbig" ${AMSG.busy?"disabled":""} onclick="aPw()">${ico("a_lock")} ${AMSG.busy?"Bezig…":"Wachtwoord opslaan"}</button>`}`}
 // ---- Kookvoorkeuren en meldingen
 function vAKook(){return`${aTop("Kookvoorkeuren","aBack()")}<p class="mute axintro">Zet aan wat je wilt bijhouden. Wat uit staat, zie je nergens in de app terug.</p>${KOPT.map(([h,rows])=>`<h4 class="axh">${h}</h4><div class="card axlist">${rows.map(tglRow).join("")}</div>`).join("")}<p class="axhelp" style="margin-top:12px">Deze voorkeuren gelden voor jullie hele huishouden.</p>`}
-function vAMeld(){return`${aTop("Meldingen","aBack()")}<p class="mute axintro">Wat je moet weten, zie je bovenaan op Thuis zodra je de app opent:</p><div class="card axlist"><div class="axtg" style="cursor:default"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_clock")}</span><span class="axtx"><b>Dit moet op</b><small>Restjes en verse voorraad die bijna over de datum zijn. Aan of uit via Kookvoorkeuren (Restjes en Voorraad bijhouden).</small></span></div><div class="axtg" style="cursor:default"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><span class="axtx"><b>Nieuw bij vrienden</b><small>Verzoeken, nieuwe recepten van vrienden en wie jouw recept heeft gekookt.</small></span></div></div>${VRON?`<h4 class="axh">DELEN MET VRIENDEN</h4><div class="card axlist"><label class="axtg"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_bell")}</span><span class="axtx"><b>Laat weten als je hun recept kookt</b><small>Je vriend ziet het dan bij Nieuw bij vrienden</small></span><input type="checkbox" class="axsw" ${myP().notifyCook!==false?"checked":""} onchange="vrNotify(this.checked)" aria-label="Laat weten als je hun recept kookt"></label></div>`:""}`}
+function vAMeld(){return`${aTop("Meldingen","aBack()")}<p class="mute axintro">Wat je moet weten, zie je bovenaan op Home zodra je de app opent:</p><div class="card axlist"><div class="axtg" style="cursor:default"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_clock")}</span><span class="axtx"><b>Dit moet op</b><small>Restjes en verse voorraad die bijna over de datum zijn. Aan of uit via Kookvoorkeuren (Restjes en Voorraad bijhouden).</small></span></div><div class="axtg" style="cursor:default"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><span class="axtx"><b>Nieuw bij vrienden</b><small>Verzoeken, nieuwe recepten van vrienden en wie jouw recept heeft gekookt.</small></span></div></div>${VRON?`<h4 class="axh">DELEN MET VRIENDEN</h4><div class="card axlist"><label class="axtg"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_bell")}</span><span class="axtx"><b>Laat weten als je hun recept kookt</b><small>Je vriend ziet het dan bij Nieuw bij vrienden</small></span><input type="checkbox" class="axsw" ${myP().notifyCook!==false?"checked":""} onchange="vrNotify(this.checked)" aria-label="Laat weten als je hun recept kookt"></label></div>`:""}`}
 // ---- Huishouden
 function hhRename(){const d=$("bkdlg");d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Naam van het huishouden</h2><input id="hhn" class="axin" value="${esc(hhName())}"><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost" onclick="bkdlg.close()">Annuleren</button><button class="btn" onclick="S.hhName=$('hhn').value.trim();save();bkdlg.close();draw()">Opslaan</button></div>`;d.showModal()}
 function hhP(d){S.defP=Math.max(1,Math.min(20,dp()+d));save();draw()}
@@ -2374,6 +2402,16 @@ function leftDue(){if(!optOn("left")||!optOn("leftRem"))return[];const t=pdk(tod
  return(S.left||[]).map(l=>{if(!l.date)return null;const age=Math.round((t-pdk(l.date))/864e5),max=l.where=="vriezer"?90:3,warn=l.where=="vriezer"?75:2,rest=max-age;return age>=warn?{l,rest}:null}).filter(Boolean).sort((a,b)=>a.rest-b.rest)}
 function remCard(){const D=leftDue();if(!D.length)return"";const st=r=>r<0?"over de datum":r==0?"vandaag opmaken":r==1?"nog 1 dag":r<14?"nog "+r+" dagen":"nog ±"+Math.round(r/7)+" weken";
  return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_bell")}</span><b>Restjes opmaken</b></div>${D.slice(0,3).map(({l,rest})=>`<div class="axreml"><span><b>${esc(l.name)}</b><small class="${rest<=0?"axerr":"mute"}">${l.where=="vriezer"?"Vriezer":"Koelkast"} · ${st(rest)}</small></span><button class="btn ghost sm" onclick="lfPlan(${l.id})">Inplannen</button></div>`).join("")}${D.length>3?`<button class="lnk axlk" onclick="go('stock')">Alle ${D.length} restjes bekijken</button>`:""}</div>`}
+
+// ---- Weergave: licht / donker / automatisch (per apparaat, localStorage "kthema")
+const THEMES={auto:["Automatisch","Volgt de instelling van je telefoon","a_phone"],light:["Licht","Altijd lichte kleuren","a_sun"],dark:["Donker","Altijd donkere kleuren","a_moon"]};
+function thGet(){try{const t=localStorage.getItem("kthema");return THEMES[t]?t:"auto"}catch(e){return"auto"}}
+function thApply(){const t=thGet(),r=document.documentElement;if(t=="auto")delete r.dataset.theme;else r.dataset.theme=t;
+ const dark=t=="dark"||(t=="auto"&&matchMedia("(prefers-color-scheme: dark)").matches),m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",dark?"#140F0C":"#faf6ee")}
+function thSet(t){try{if(t=="auto")localStorage.removeItem("kthema");else localStorage.setItem("kthema",t)}catch(e){}thApply();draw()}
+function vAThema(){const t=thGet();return`${aTop("Weergave","aBack()")}<p class="mute axintro">Kies hoe KookBuddy eruitziet op dit apparaat.</p><div class="card axlist">${Object.entries(THEMES).map(([k,[n,d,ic]])=>`<button class="axrow th-row${k==t?" on":""}" onclick="thSet('${k}')" role="radio" aria-checked="${k==t}"><span class="axic" style="background:var(--t-beige);color:var(--green)">${ico(ic)}</span><span class="axt"><b>${n}</b><small class="mute">${d}</small></span><span class="th-rad">${k==t?ico("a_check"):""}</span></button>`).join("")}</div>`}
+Object.assign(ICP,{a_moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'});
+try{thApply();matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(thGet()=="auto")thApply()})}catch(e){}
 // === VRIENDEN ===
 let FVNEW=false;let VR=null,VRON=false,MELD=[],FV=null,FVR=null,FVQ="",FVCAT="",FVF=false,VRQ="",VRRES=null,VRT=null;
 try{const u=new URL(location.href),c=u.searchParams.get("vriend");if(c){localStorage.setItem("kvf",c.trim().toUpperCase());u.searchParams.delete("vriend");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
@@ -2525,7 +2563,7 @@ function stRow(s){return`<button class="axrow hx-srow" onclick="stEdit(${s.id})"
 function lfDays(l){if(l.until)return daysTo(l.until);const age=Math.round((pdk(todayK())-pdk(l.date||todayK()))/864e5);return(l.where=="vriezer"?90:3)-age}
 function lfTag(l){const d=lfDays(l);return`<span class="hx-tag ${d<=1?"warm":"ok"}">${ico("a_clock")} restje · ${d<0?"over de datum":d==0?"vandaag op":d==1?"morgen op":d<21?"nog "+d+" dagen":"nog ±"+Math.round(d/7)+" weken"}</span>`}
 function vStock(){if(STV=="check")return vStCheck();const st=optOn("stock"),lf=optOn("left");
- const top=`<div class="axw">${`<div class="axtop"><button class="axbk" onclick="STV='';go('home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2>${st?`<button class="axplus" onclick="stAddDlg()" aria-label="Iets toevoegen">${ico("plus")}</button>`:"<span></span>"}</div>`}`;
+ const top=`<div class="axw">${`<div class="axtop"><button class="axbk" onclick="STV='';go(BKTO||'home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2>${st?`<button class="axplus" onclick="stAddDlg()" aria-label="Iets toevoegen">${ico("plus")}</button>`:"<span></span>"}</div>`}`;
  if(!st&&!lf)return top+`<div class="card axempty"><p>Voorraad en restjes bijhouden staan uit. Zet ze aan bij Account → Kookvoorkeuren.</p><button class="btn" style="margin-top:12px" onclick="go('account');aGo('kook')">Naar Kookvoorkeuren</button></div></div>`;
  let h="";
  if(st){stEnsure();h+=`<button class="axghost hx-bonb" onclick="stBon()">${ico("receipt")} Foto van bon</button>`;
@@ -2673,9 +2711,12 @@ function vHome2(){const nm=uname(),p=myP(),todo=homePick(),t=todayK();let hero;
  const L=list().length;
  const shop=`<button class="hx-shop" onclick="go('list')"><span class="hx-shi">${ico("cart")}</span><span class="axt"><b>Boodschappenlijst</b><small>${L?L+(L==1?" item":" items")+" · op volgorde van jouw supermarkt":"Nog leeg, vult zich met je menu"}</small></span>${ico("chevr")}</button>`;
  const more=`<div class="hx-more">${[["surprise()","Verras me"],["go('deals')","Aanbiedingen"],["go('log')","Logboek"],["go('trend')","Trends"]].concat(optOn("stock")||optOn("left")||optOn("pantry")?[["go('stock')","Voorraad"]]:[]).map(([js,l])=>`<button onclick="${js}">${l}</button>`).join("")}</div>`;
- return head+hero+wk+shop+dmoCard()+vrNewsCard()+inspRail()+more}
+ return head+hero+wk+shop+dmoCard()+vrNewsCard()+inspRail()}
 
 function inspRail(){return`<div class="hx-insp">${inspD().replace('<div class="dg4">','<div class="dg4 hx-rail">')}</div>`}
+
+let BKTO="";
+{const _go=go;go=function(t){if(!["log","trend","stock","deals"].includes(t))BKTO="";_go(t)}}
 // === KOOKSTAND (nieuw ontwerp, meerdere timers) ===
 Object.assign(ICP,{a_list:'<path d="M9 6.500h11M9 12h11M9 17.500h11"/><circle cx="4.500" cy="6.500" r="1"/><circle cx="4.500" cy="12" r="1"/><circle cx="4.500" cy="17.500" r="1"/>',a_sun:'<circle cx="12" cy="12" r="3.500"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.600 5.600l1.400 1.400M17 17l1.400 1.400M5.600 18.400L7 17M17 7l1.400-1.400"/>',a_pause:'<path d="M9 6v12M15 6v12"/>',a_tri:'<path d="M8 5.500v13l10-6.500z"/>',a_timer:'<circle cx="12" cy="13.500" r="7"/><path d="M12 13.500V10M10 3.500h4"/>'});
 let KTM=[],KDUE=null,KAC=null,KTID=0;
@@ -3062,10 +3103,10 @@ function pkMove(n,cat){S.pcat=S.pcat||{};S.pcat[pn(n)]=cat;save();draw()}
 {const _pd=pDel;pDel=function(n){if(S.pcat)delete S.pcat[pn(n)];_pd(n)}}
 {const _vs=vStock;vStock=function(){if(String(STV).startsWith("pk:"))return pkView(STV.slice(3));
  if(!optOn("pantry"))return _vs();
- if(!optOn("stock")&&!optOn("left")&&STV!="check")return`<div class="axw"><div class="axtop"><button class="axbk" onclick="STV='';go('home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2><span></span></div>${pkSection()}</div>`;
+ if(!optOn("stock")&&!optOn("left")&&STV!="check")return`<div class="axw"><div class="axtop"><button class="axbk" onclick="STV='';go(BKTO||'home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2><span></span></div>${pkSection()}</div>`;
  const h=_vs();return STV=="check"?h:h.replace(/<\/div>$/,pkSection()+"</div>")}}
 Object.assign(ICP,{a_leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19l8-8"/>',a_bottle:'<path d="M10 3h4v4l2 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10l2-3z"/><path d="M8 13h8"/>'});
-function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
+function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
   const{data}=await sb.from("huishouden").select("id").like("id",bkPre()+"%").order("id",{ascending:false});const old=(data||[]).slice(14).map(x=>x.id);if(old.length)await sb.from("huishouden").delete().in("id",old);return true}catch(e){return false}}
