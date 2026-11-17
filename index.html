@@ -2895,7 +2895,7 @@ function packFit(t,sizes){const S2=[...sizes].sort((a,b)=>a-b),mx=S2[S2.length-1
  rec(0,0,0);return best||{sum:Math.ceil(t/mx)*mx,n:Math.ceil(t/mx)}}
 function lAmt(o){const pk=lMine(o)||lPack(o.name);
  if(pk&&pk.off&&o.parts.some(p=>{const u=(p.u||"").toLowerCase();if(LKITCH.test(u))return false;let q=null;try{q=p.a?conv(p,pk.c):null}catch(e){}return q==null}))return lPlain(o);
- if(!pk){const P=o.parts.filter(p=>!LKITCH.test(p.u||""));return P.map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ")}
+ if(!pk)return lPlain(o);
  let tot=0,fail=false;const small=Math.min(...pk.sizes);
  for(const p of o.parts){const u=(p.u||"").toLowerCase();
   if(pk.c=="k"){tot+=u=="teen"||u==""?(p.a||1):(p.a||1)*10;continue}
@@ -2910,8 +2910,10 @@ const lShort=n=>n.length>22?n.split(/ (?:met|en|in|op|van|uit) /i)[0].split(" ")
 function lSrc(o){const srcs=[...o.src];if(!srcs.length)return"";
  return srcs.map((n,i)=>{const r=S.recipes.find(x=>x.name==n),days=r?[...new Set(S.sel.filter(e=>!e.shopped&&e.rid==r.id&&e.day).map(e=>DN[pdk(e.day).getDay()]))]:[];let t=srcs.length>1?lShort(n):n;if(i>0&&srcs.length>1)t=t.toLowerCase();else t=capF(t);return t+(days.length?" · "+days.join(", "):"")}).join(", ")}
 function lExtraOf(o){const names=new Set(o.parts.map(p=>canon(p.name)));return(S.extra||[]).map((t,i)=>({t,i})).filter(({t})=>names.has(canon(parse(t).name)))}
+const LSIZE=/\b(extra |zeer |heel )?(klein|kleine|kleintje|groot|grote|middelgroot|middelgrote|middel|flink|flinke|ruim|ruime|dik|dikke|dun|dunne|mooi|mooie|stevig|stevige)\b\s*/gi;
+function lStrip(n){const t=String(n||"").replace(LSIZE,"").replace(/\s+/g," ").trim();return t||String(n||"")}
 function shopGroups(){const L=list(),G=new Map();
- for(const x of L){const pk=lPack(x.name),g=pk?pk.id:pkKey(x.name);if(!G.has(g))G.set(g,{g,parts:[],ai:x.ai,name:x.name,src:new Set()});const o=G.get(g);o.parts.push(x);(x.src||[]).forEach(s=>o.src.add(s));if(x.name.length<o.name.length)o.name=x.name}
+ for(const x of L){const nm=lStrip(x.name),pk=lPack(nm),g=pk?pk.id:pkKey(nm);if(!G.has(g))G.set(g,{g,parts:[],ai:x.ai,name:nm,src:new Set()});const o=G.get(g);o.parts.push(x);(x.src||[]).forEach(s=>o.src.add(s));if(nm.length<o.name.length)o.name=nm}
  return[...G.values()].map(o=>{o.ai=lAisle(o.name,o.ai);o.done=o.parts.every(p=>S.checked[p.k]);o.amt=lAmt(o);o.ex=lExtraOf(o);if(!lMine(o)&&!lPack(o.name))offQ(o.name);return o})}
 function lTick(i){const o=LGR[i];if(!o)return;const v=!o.done;COL={};S.ct=S.ct||{};for(const p of o.parts){S.checked[p.k]=v;S.ct[p.k]=Date.now()}save();draw()}
 let LGR=[],LMENU=false,LEDIT=false;
@@ -2946,7 +2948,7 @@ document.addEventListener("click",e=>{if(LMENU&&!e.target.closest(".ls-menu")){L
 const pkKey=n=>canon(String(n||"").toLowerCase().replace(/['’`]s?\b/g,""));
 const LPL={bakje:"bakjes",zak:"zakken",zakje:"zakjes",pak:"pakken",pot:"potten",potje:"potjes",fles:"flessen",flesje:"flesjes",blik:"blikken",blikje:"blikjes",bosje:"bosjes",net:"netten",doos:"dozen",stuk:"stuks",tube:"tubes",bak:"bakken"};
 function lMine(o){const m=(S.packs||{})[o.g];if(!m||!(m.q>0))return null;return{c:m.c,sizes:[m.q],lab:m.lab?[m.lab,LPL[m.lab]||m.lab]:null,id:o.g,mine:1}}
-function lPlain(o){return o.parts.filter(p=>!LKITCH.test(p.u||"")).map(p=>fmt(p.a,p.u)).filter(Boolean).join(" + ")}
+function lPlain(o){const M=new Map();for(const p of o.parts){if(LKITCH.test(p.u||"")||!p.a)continue;const u=p.u||"";M.set(u,(M.get(u)||0)+p.a)}return[...M].map(([u,a])=>fmt(a,u)).filter(Boolean).join(" + ")}
 function lOff(n){if(!optOn("packs"))return null;const r=(S.offc||{})[n];return r&&r.s&&r.s.length?{c:r.c,sizes:r.s,lab:null,id:n,off:1}:null}
 const OFFSKIP=/^(water|ijsblokje|ijs|kraanwater|heet water|koud water|lauw water)$/;
 let OFFQ=[],OFFBUSY=false,OFFN=0;
