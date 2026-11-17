@@ -693,6 +693,46 @@ body[data-tab="account"] #ft{display:none}
 .axcode b{font:700 1.6rem/1.2 "DM Sans",sans-serif;letter-spacing:.15em;color:var(--ink)}
 .axkick{margin-left:auto;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--mute);display:grid;place-items:center;cursor:pointer;flex:none}
 .axleave{display:block;background:none;border:0;padding:0;margin:22px 4px 0;color:var(--danger);font:700 1rem "DM Sans",sans-serif;cursor:pointer}
+/* === VRIENDEN === */
+.axplus{width:46px;height:46px;border-radius:50%;border:0;background:var(--green);color:var(--on);display:grid;place-items:center;cursor:pointer;justify-self:end;padding:0}
+.axplus .ic{width:22px;height:22px}
+.axsearch{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:0 16px;color:var(--mute);margin:0;font-weight:400}
+.axsearch input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;font-size:1rem;padding:13px 0;outline:none}
+.axres{margin:10px 6px 0;font-size:.9rem}
+.axresl{margin-top:10px}
+.axtag{margin-left:auto;font-size:.8rem;font-weight:700;color:var(--mute);background:var(--tile);border-radius:99px;padding:5px 11px;flex:none}
+.axmem>.btn{margin-left:auto;flex:none}
+.axreq{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--green);margin-bottom:10px}
+.axno,.axyes{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.axno{border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.axyes{border:0;background:var(--green);color:var(--on)}
+.axempty{border:1px solid var(--line);padding:16px}.axempty p{margin:0;color:var(--mute)}
+.axfrb{width:100%;cursor:pointer;font:inherit;color:var(--ink);text-align:left;background:var(--card)}
+.axstack.fr .axav{border-color:var(--card)}
+.axdot{width:10px;height:10px;border-radius:50%;background:var(--green);flex:none}
+.axfhead{text-align:center;margin-bottom:16px}
+.axfhead h3{font:700 1.5rem/1.2 Fraunces,serif;margin:10px 0 2px}
+.axfhead p{margin:0}
+.axabout{margin-top:8px!important;color:var(--ink2);font-style:italic}
+.axfsrch{display:flex;gap:10px;margin-bottom:10px}
+.axfsrch .axsearch{flex:1;min-width:0}
+.axfbtn{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:0 16px;font:700 .95rem "DM Sans",sans-serif;cursor:pointer;flex:none}
+.axfbtn.on{border-color:var(--green);color:var(--green)}
+.axcnt{margin:0 4px 10px;font-size:.88rem}
+.axgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.axrc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.axrct{height:112px;border:0;display:grid;place-items:center;cursor:pointer;padding:0;overflow:hidden}
+.axrct .ic{width:46px;height:46px;stroke-width:1.5}
+.axrct img{width:100%;height:100%;object-fit:cover}
+.axrcadd{position:absolute;right:10px;top:76px;width:46px;height:46px;border-radius:50%;border:3px solid var(--card);background:var(--green);color:var(--on);display:grid;place-items:center;cursor:pointer;padding:0}
+.axrcadd.ok{background:var(--pg);color:var(--ong);cursor:default}
+.axrcb{border:0;background:none;text-align:left;padding:12px 12px 12px;cursor:pointer;color:var(--ink);font:inherit;display:flex;flex-direction:column;gap:4px;flex:1}
+.axrcb b{font:700 1.02rem/1.25 Fraunces,serif;padding-right:4px;overflow-wrap:anywhere}
+.axrcb small{display:flex;align-items:center;gap:4px;font-size:.85rem}
+.axrimg{width:100%;max-height:200px;object-fit:cover;border-radius:12px}
+.axing{margin:0;padding-left:20px}.axing li{margin:2px 0}
+.axsteps{margin:0;white-space:normal;line-height:1.5}
+@media(min-width:1024px){.axgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 </style></head>
 <body>
 <header><h1>Mijn Keuken</h1><p>Kies je recepten, kies je winkel, en loop de lijst van voor naar achter af.</p></header>
@@ -1017,7 +1057,7 @@ function vHome(){if(DESK())return vHomeD();const nm=uname(),todo=homePick();let 
  const shop=`<button class="hlist" onclick="go('list')"><span class="hi">${ico("cart")}</span><span><b>Boodschappenlijst</b><span class="mute">${L.length?L.length+" items"+(dn?" · "+dn+" afgevinkt":""):"Nog leeg, vult zich met je menu"}</span></span><i>›</i></button>`;
  const tiles=`<div class="hsec"><h3>Snel naar</h3></div><div class="tg"><button onclick="openR()"><b>${ico("plus")}</b>Recept toevoegen</button><button onclick="surprise()"><b>${ico("shuffle")}</b>Verras me</button><button onclick="go('deals')"><b>${ico("tag")}</b>Aanbiedingen</button><button onclick="go('log')"><b>${ico("list")}</b>Logboek</button><button onclick="go('trend')"><b>${ico("chart")}</b>Trends</button>${optOn("stock")||optOn("left")?`<button onclick="go('stock')"><b>${ico("fridge")}</b>Voorraad</button>`:`<button onclick="S.tab='rec';draw();setTimeout(()=>{const q=document.getElementById('rq');if(q)q.focus()},50)"><b>${ico("search")}</b>Zoeken</button>`}</div>`;
  const sug=inspSection();
- return`<div class="hg"><p>${greet()}${nm?",":""}</p>${nm?`<h2>${esc(nm)}</h2>`:""}</div><h3 class="hq">Wat eten we vanavond?</h3>${remCard()}${hero}${wk}${shop}${tiles}${sug}`}
+ return`<div class="hg"><p>${greet()}${nm?",":""}</p>${nm?`<h2>${esc(nm)}</h2>`:""}</div><h3 class="hq">Wat eten we vanavond?</h3>${meldCard()}${remCard()}${hero}${wk}${shop}${tiles}${sug}`}
 const ICP={"home": "<path d=\"M3 11l9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><path d=\"M10 20v-6h4v6\"/>", "book": "<path d=\"M2.5 5c3-1 6-1 9.5 1 3.5-2 6.500-2 9.5-1v14c-3-1-6-1-9.5 1-3.500-2-6.500-2-9.500-1z\"/><path d=\"M12 6v14\"/>", "calendar": "<rect x=\"3.5\" y=\"5\" width=\"17\" height=\"15.5\" rx=\"2.5\"/><path d=\"M8 3v4M16 3v4M3.5 10h17\"/>", "cart": "<path d=\"M3 4h2.500l2 11h10.500l2-8H6.500\"/><circle cx=\"9.500\" cy=\"19.500\" r=\"1.300\"/><circle cx=\"17\" cy=\"19.500\" r=\"1.300\"/>", "plus": "<path d=\"M12 5v14M5 12h14\"/>", "shuffle": "<path d=\"M3 7h3.500c4 0 5 10 9 10H21M3 17h3.500c1.500 0 2.500-1.500 3.500-3M14 8c.8-.7 1.500-1 2.500-1H21\"/><path d=\"M18.500 4.500L21 7l-2.500 2.500M18.500 14.500L21 17l-2.500 2.500\"/>", "tag": "<path d=\"M3 12V4h8l10 10-8 8z\"/><circle cx=\"7.500\" cy=\"8.500\" r=\"1.200\"/>", "list": "<rect x=\"5\" y=\"3.500\" width=\"14\" height=\"17\" rx=\"2\"/><path d=\"M9 8h6M9 12h6M9 16h4\"/>", "chart": "<path d=\"M5 20V10M12 20V4M19 20v-7\"/>", "search": "<circle cx=\"11\" cy=\"11\" r=\"6.500\"/><path d=\"M16 16l4.500 4.500\"/>", "play": "<path d=\"M8 5.500v13l11-6.500z\"/>", "swap": "<path d=\"M4 8h14l-3-3M20 16H6l3 3\"/>", "sparkle": "<path d=\"M12 3l1.800 5.200L19 10l-5.200 1.800L12 17l-1.800-5.200L5 10l5.200-1.800z\"/><path d=\"M19 16v4M17 18h4\"/>", "receipt": "<path d=\"M6 3h12v18l-3-2-3 2-3-2-3 2z\"/><path d=\"M9 8h6M9 12h6\"/>", "link": "<path d=\"M10 14a4 4 0 0 0 5.600 0l3-3a4 4 0 0 0-5.600-5.600l-1 1\"/><path d=\"M14 10a4 4 0 0 0-5.600 0l-3 3a4 4 0 0 0 5.600 5.600l1-1\"/>", "camera": "<path d=\"M4 8h3l1.500-2.500h7L17 8h3v11H4z\"/><circle cx=\"12\" cy=\"13\" r=\"3.500\"/>", "pen": "<path d=\"M4 20l1-4L16.500 4.500a2 2 0 0 1 3 3L8 19z\"/>"};
 const ico=n=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICP[n]}</svg>`;
 // === DAGEN, RESTJES EN VOORRAAD ===
@@ -1040,7 +1080,7 @@ function dxEat(id){const x=(S.dx||[]).find(y=>y.id==id);if(!x)return;S.left=S.le
  save();draw()}
 // ---- Restjes
 let LQ=null,LD=null;
-function leftAsk(rid){if(optOn("left"))LQ={rid}}
+function leftAsk(rid){vrCooked(rid);if(optOn("left"))LQ={rid}}
 function leftOpen(){if(!LQ)return;const q=LQ;LQ=null;const r=S.recipes.find(x=>x.id==q.rid);if(!r)return;LD={name:r.name,por:0,where:"vriezer",rid:r.id};leftDraw();document.getElementById("ldlg").showModal()}
 function leftDraw(){const d=document.getElementById("ldlg");
  d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:6px">Is er iets over?</h2><label for="ldn" class="mute" style="margin:0 0 4px">Wat</label><input id="ldn" value="${esc(LD.name)}" style="width:100%" oninput="LD.name=this.value"><div class="er" style="display:flex;align-items:center;gap:10px;padding:10px 0"><span style="flex:1;font-weight:600">Porties over</span><span class="stp"><button onclick="leftStep(-.5)" aria-label="Minder">−</button><b>${String(LD.por).replace(".",",")}</b><button onclick="leftStep(.5)" aria-label="Meer">+</button></span></div><div class="row" style="margin-bottom:6px"><button class="btn sm ${LD.where=="vriezer"?"":"ghost"}" onclick="LD.where='vriezer';leftDraw()">Vriezer</button><button class="btn sm ${LD.where=="koelkast"?"":"ghost"}" onclick="LD.where='koelkast';leftDraw()">Koelkast</button></div><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn ghost" onclick="ldlg.close()">Niets over</button><button class="btn" ${LD.por>0?"":"disabled"} onclick="leftSave()">Opslaan</button></div>`}
@@ -1363,7 +1403,7 @@ function vHomeD(){const nm=uname(),todo=homePick(),t=todayK(),WD=wDays(0);let he
   return n.length?`<button class="dwr${k==t?" now":""}" onclick="MW=0;go('menu')"><span>${WDL(k)}</span><b>${esc(n.join(", "))}</b></button>`:`<button class="dwr em" onclick="dsOpen('${k}')"><span>${WDL(k)}</span><b>+ Kies iets</b></button>`}).join("")}</div>`;
  const tl=(c,ic,txt,js)=>`<button class="dtl ${c}" onclick="${js}"><span class="ti">${ico(ic)}</span>${txt}</button>`;
  const more=[["deals","Aanbiedingen"],["log","Logboek"],["trend","Trends"]].concat(optOn("stock")||optOn("left")?[["stock","Voorraad"]]:[]).map(([k,n])=>`<button class="dpill" onclick="go('${k}')">${n}</button>`).join("");
- return`<div class="dh1"><div><p class="mute" style="margin:0">${greet()}${nm?", "+esc(nm):""}</p><h2 class="pt" style="margin:2px 0 0;font-size:2.2rem">Wat eten we vanavond?</h2></div><label class="dsrch">${ico("search")}<input placeholder="Zoek een recept…" aria-label="Zoek een recept" onkeydown="if(event.key=='Enter'){Q=this.value;S.tab='rec';draw()}"></label></div><div class="axremd">${remCard()}</div><div class="dg2">${hero}${wk}</div><div class="dg3">${shopCardD("Boodschappenlijst")}<div><h3 class="dsq2">Snel naar</h3><div class="dtg">${tl("c1","plus","Recept toevoegen","openR()")}${tl("c2","star","Verras me","surprise()")}${tl("c3","calendar","Weekmenu maken","cfOpen()")}${tl("c4","list","Mijn recepten","go('rec')")}</div><div class="dpills">${more}</div></div></div>${inspD()}`}
+ return`<div class="dh1"><div><p class="mute" style="margin:0">${greet()}${nm?", "+esc(nm):""}</p><h2 class="pt" style="margin:2px 0 0;font-size:2.2rem">Wat eten we vanavond?</h2></div><label class="dsrch">${ico("search")}<input placeholder="Zoek een recept…" aria-label="Zoek een recept" onkeydown="if(event.key=='Enter'){Q=this.value;S.tab='rec';draw()}"></label></div><div class="axremd">${meldCard()}${remCard()}</div><div class="dg2">${hero}${wk}</div><div class="dg3">${shopCardD("Boodschappenlijst")}<div><h3 class="dsq2">Snel naar</h3><div class="dtg">${tl("c1","plus","Recept toevoegen","openR()")}${tl("c2","star","Verras me","surprise()")}${tl("c3","calendar","Weekmenu maken","cfOpen()")}${tl("c4","list","Mijn recepten","go('rec')")}</div><div class="dpills">${more}</div></div></div>${inspD()}`}
 function ideeRows(day){if(!DIDS||DIDS.day!=day||DIDS.rows.some(x=>!S.recipes.some(r=>r.id==x.r.id)||S.sel.some(e=>e.rid==x.r.id&&!e.done))){DIDS={day,rows:dsCalc().filter(x=>x.you&&x.why!="Al op je menu").sort((a,b)=>b.sc-a.sc).slice(0,3)}}return DIDS.rows}
 function ideeAdd(id,k){S.sel.push({rid:id,pers:dp(),day:k});DIDS=null;save();draw()}
 function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
@@ -1738,22 +1778,22 @@ async function pull(){if(!HH)return;const{data,error}=await sb.from("huishouden"
  if(error){setStat("Ophalen mislukt: "+error.message);return}
  if(data&&data.data&&data.data.recipes){S={...data.data,tab:S.tab,cat:S.cat};const chg=fixS();if(chg)push();try{localStorage.setItem("keuken",JSON.stringify(S))}catch(e){}setStat("Gesynchroniseerd");autoBackup()}else{if(!data&&!LEGACY){const ok=await loadHH();if(!ok){draw();return}}push()}}
 // === HUISHOUDENS (losse huishoudens, accounts, uitnodigingen) ===
-let HH=null,HROL="",LEDEN=null,LEGACY=false,UNAAM="",LM="in",LMSG={},INV=null,SMSG={};
+let HHERR="",HH=null,HROL="",LEDEN=null,LEGACY=false,UNAAM="",LM="in",LMSG={},INV=null,SMSG={};
 try{const u=new URL(location.href),c=u.searchParams.get("uitnodiging");if(c){localStorage.setItem("kinv",c.trim().toUpperCase());u.searchParams.delete("uitnodiging");history.replaceState(null,"",u.pathname+u.search+u.hash)}INV=localStorage.getItem("kinv")}catch(e){}
 function freshS(){const n={recipes:JSON.parse(JSON.stringify(SEED)),menu:{},store:"ah",checked:{},tab:"home",cat:"Alles",next:10};const o=S;S=n;fixS();const r=S;S=o;return r}
 function setHHLocal(h){try{if(h)localStorage.setItem("khh",h);else localStorage.removeItem("khh")}catch(e){}}
 function hhRow(d,id){const r={id:id||HH,data:d,updated_at:new Date().toISOString()};if(!LEGACY)r.hh=HH;return r}
 const bkPre=()=>HH=="main"||LEGACY?"backup-":HH+"-backup-";
-async function loadHH(){HH=null;HROL="";LEDEN=null;LEGACY=false;
+async function loadHH(){HHERR="";HH=null;HROL="";LEDEN=null;LEGACY=false;
  const{data,error}=await sb.from("leden").select("hh,rol").eq("uid",uid).maybeSingle();
- if(error){if(/42P01|PGRST205|schema cache|does not exist/i.test((error.message||"")+(error.code||""))){LEGACY=true;HH="main";return true}setStat("Huishouden ophalen mislukt: "+error.message);return false}
+ if(error){if(/42P01|PGRST205|schema cache|does not exist/i.test((error.message||"")+(error.code||""))){LEGACY=true;HH="main";return true}HHERR=error.message||"onbekende fout";return false}
  if(!data){setHHLocal(null);return false}
  HH=data.hh;HROL=data.rol;let last=null;try{last=localStorage.getItem("khh")}catch(e){}
  if(last&&last!==HH){S={...freshS(),tab:S.tab}}setHHLocal(HH);loadLeden();return true}
 async function loadLeden(){if(LEGACY||!HH)return;try{const{data,error}=await sb.rpc("ledenlijst");if(!error&&data){LEDEN=data;if(S.tab=="account"&&!typing())draw()}}catch(e){}}
 let HHCK=false;
 async function afterLogin(user){uid=user.id;uemail=user.email||"";UNAAM=(user.user_metadata&&user.user_metadata.naam)||"";
- const ok=await loadHH();HHCK=true;if(!ok){draw();return}await pull();regMe();draw();
+ const ok=await loadHH();HHCK=true;if(!ok){draw();return}await pull();regMe();draw();loadVR();
  if(INV&&!LEGACY){const code=INV;ask("Je bent uitgenodigd voor een ander huishouden. Wil je overstappen? Je ziet dan niet meer de recepten en lijsten van "+hhName()+".",()=>joinHH(code),"Overstappen");try{localStorage.removeItem("kinv")}catch(e){}INV=null}}
 // ---- Inlogscherm: inloggen, account maken, wachtwoord vergeten
 function lmSet(m){LM=m;LMSG={};draw()}
@@ -1768,7 +1808,7 @@ async function lForgot(){const em=$("em").value.trim();if(!/^\S+@\S+\.\S+$/.test
  const{error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:appUrl()});LM="in";LMSG=error?{err:"Versturen mislukt: "+error.message,em}:{ok:"We hebben een mail gestuurd naar "+em+". Klik op de link om een nieuw wachtwoord te kiezen.",em};draw()}
 function vLogin(){const t={in:"Inloggen",up:"Account maken",reset:"Wachtwoord vergeten"}[LM];
  return`<div class="axw axlogin"><div class="axbrand"><h1>Mijn Keuken</h1><p class="mute">Recepten, weekmenu en boodschappen, samen met je huishouden.</p></div>
- ${INV?`<div class="axok">${ico("a_mail")}<span>Je bent uitgenodigd voor een huishouden. ${LM=="up"?"Maak een account":"Log in of maak een account"} om lid te worden.</span></div>`:""}
+ ${(()=>{try{return localStorage.getItem("kvf")}catch(e){return null}})()&&!INV?`<div class="axok">${ico("a_friends")}<span>Je bent uitgenodigd om vrienden te worden. Log in of maak een account.</span></div>`:""}${INV?`<div class="axok">${ico("a_mail")}<span>Je bent uitgenodigd voor een huishouden. ${LM=="up"?"Maak een account":"Log in of maak een account"} om lid te worden.</span></div>`:""}
  <div class="card axlcard"><h2>${t}</h2>
  ${LM=="up"?`<label class="axl" for="lnm">Je naam</label><input id="lnm" class="axin" autocomplete="name" value="${esc(LMSG.n||"")}">`:""}
  <label class="axl" for="em">E-mailadres</label><input id="em" class="axin" type="email" autocomplete="username" value="${esc(LMSG.em||"")}">
@@ -1779,16 +1819,16 @@ function vLogin(){const t={in:"Inloggen",up:"Account maken",reset:"Wachtwoord ve
  <p class="axswitch">${LM=="in"?(LEGACY?"":`Nog geen account? <button class="lnk axlk" onclick="lmSet('up')">Account maken</button>`):`<button class="lnk axlk" onclick="lmSet('in')">Terug naar inloggen</button>`}</p></div>`}
 async function login(){const em=$("em").value.trim(),pw=$("pw").value;LMSG={busy:1,em};draw();const{data,error}=await sb.auth.signInWithPassword({email:em,password:pw});
  if(error){LMSG={err:/confirm/i.test(error.message)?"Je moet eerst je e-mailadres bevestigen. Kijk in je mail.":"Inloggen mislukt. Controleer je e-mailadres en wachtwoord.",em};return draw()}LMSG={};await afterLogin(data.user)}
-async function logout(){await sb.auth.signOut();uid=null;HH=null;LEDEN=null;HROL="";S={...freshS(),tab:"home"};try{localStorage.removeItem("keuken");localStorage.removeItem("khh")}catch(e){}LM="in";LMSG={};draw()}
+async function logout(){await sb.auth.signOut();uid=null;HH=null;LEDEN=null;HROL="";S={...freshS(),tab:"home"};try{localStorage.removeItem("keuken");localStorage.removeItem("khh");localStorage.removeItem("kprof")}catch(e){}VR=null;VRON=false;MELD=[];FV=null;LM="in";LMSG={};draw()}
 // ---- Geen huishouden: maken of lid worden
 async function createHH(){const n=($("shn").value||"").trim()||"Ons huishouden";SMSG={busy:1};draw();
  const{data,error}=await sb.rpc("maak_huishouden");if(error){SMSG={err:"Maken mislukt: "+error.message};return draw()}
- HH=data;HROL="beheerder";setHHLocal(HH);S={...freshS(),tab:"home",hhName:n};regMe();push();loadLeden();SMSG={};draw()}
+ HH=data;HROL="beheerder";setHHLocal(HH);S={...freshS(),tab:"home",hhName:n};regMe();push();loadLeden();SMSG={};draw();loadVR()}
 async function joinHH(code){code=String(code||"").trim().toUpperCase();if(!code){SMSG={err:"Vul de code in."};return draw()}SMSG={busy:1};if(!HH)draw();
  const{data,error}=await sb.rpc("accepteer_uitnodiging",{p_code:code});try{localStorage.removeItem("kinv")}catch(e){}INV=null;
  if(error){SMSG={err:/verlopen|bestaat niet/i.test(error.message)?"Deze uitnodiging bestaat niet of is verlopen. Vraag om een nieuwe link.":"Lid worden mislukt: "+error.message};if(HH){ask(SMSG.err,()=>{});SMSG={}}return draw()}
- S={...freshS(),tab:"home"};setHHLocal(data);await loadHH();await pull();regMe();SMSG={};S.tab="home";AP="";draw()}
-function vSetup(){const sug=(()=>{const w=(UNAAM||"").trim().split(/\s+/);return w.length>1?"Huize "+w[w.length-1]:""})();
+ S={...freshS(),tab:"home"};setHHLocal(data);await loadHH();await pull();regMe();SMSG={};S.tab="home";AP="";draw();loadVR()}
+function vSetup(){if(HHERR)return`<div class="axw axlogin"><div class="axbrand"><h1>Even geduld</h1><p class="mute">Je huishouden kon niet worden opgehaald.</p></div><div class="card axlcard"><p class="axerr" style="margin:0 0 6px">${esc(HHERR)}</p><p class="mute" style="margin:0">Maak géén nieuw huishouden. Probeer het opnieuw, of stuur deze melding door.</p><button class="btn axbig" onclick="location.reload()">Opnieuw proberen</button></div><p class="axswitch"><button class="lnk axlk" onclick="logout()">Uitloggen</button></p></div>`;const sug=(()=>{const w=(UNAAM||"").trim().split(/\s+/);return w.length>1?"Huize "+w[w.length-1]:""})();
  return`<div class="axw axlogin"><div class="axbrand"><h1>Welkom${UNAAM?", "+esc(UNAAM.split(" ")[0]):""}!</h1><p class="mute">Je account is klaar. Kies hoe je begint.</p></div>
  ${SMSG.err?`<p class="axerr" style="margin:0 0 12px">${esc(SMSG.err)}</p>`:""}
  <div class="card axlcard"><h2>Ik ben uitgenodigd</h2><p class="mute" style="margin:0">Vul de code uit de uitnodiging in, of open de link die je kreeg.</p><input id="shc" class="axin" style="margin-top:12px;text-transform:uppercase" placeholder="bijv. 7F3K9Q2A" value="${esc(INV||"")}"><button class="btn axbig" style="margin-top:12px" ${SMSG.busy?"disabled":""} onclick="joinHH($('shc').value)">Lid worden</button></div>
@@ -1824,7 +1864,7 @@ function hhName(){if(S.hhName)return S.hhName;const ms=members();const full=(ms.
 function aTop(title,back){return`<div class="axtop"><button class="axbk" onclick="${back}" aria-label="Terug">${ico("chevl")}</button><h2>${esc(title)}</h2><span></span></div>`}
 function aRow(ic,tint,t,right,js,cls){const[bg,fg]=tint;return`<button class="axrow ${cls||""}" onclick="${js}"><span class="axic" style="background:${bg};color:${fg}">${ico(ic)}</span><span class="axt">${t}</span>${right?`<span class="axr">${right}</span>`:""}<span class="axch">${ico("chevr")}</span></button>`}
 const AT_BEIGE=["var(--t-beige)","var(--green)"],AT_LILAC=["var(--t-lilac)","var(--lilacline)"],AT_GREEN=["var(--t-green)","var(--sagefg)"],AT_PEACH=["var(--t-peach)","var(--green)"];
-function aGo(p){AP=p;AMSG={};if(p=="profiel"){PD=JSON.parse(JSON.stringify(myP()))}draw();window.scrollTo(0,0)}
+function aGo(p){AP=p;AMSG={};if(p=="vrienden"){VRRES=null;VRQ="";loadVR()}if(p=="profiel"){PD=JSON.parse(JSON.stringify(myP()))}draw();window.scrollTo(0,0)}
 function aBack(){if(AP){AP="";PD=null;AMSG={};draw();window.scrollTo(0,0)}else go("home")}
 const KOPT=[["ETEN EN GEZONDHEID",[["nutri","chart",AT_GREEN,"Macro's tonen","Eiwitten, koolhydraten, vetten en calorieën bij elk recept (schatting)"]]],
  ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Wat je al in huis hebt, komt niet op je boodschappenlijst"],["pantry","a_house",AT_BEIGE,"Misschien al in huis","Wat je meestal al hebt, staat apart onderaan je lijst"]]],
@@ -1833,14 +1873,14 @@ function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)&&(k!="left
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
 function vAccount(){const local=!sb;
  if(RECOV&&uid&&AP!="ww")AP="ww";
- const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
+ const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
  regMe();const p=myP(),ok=sb&&uid,st=ok?(statTxt||"Gesynchroniseerd"):"Alleen op dit apparaat",bad=/mislukt/i.test(st),ms=members();
  const mAv=(ms.length?ms:[{name:pName(p)||"?",p}]).slice(0,4).map((m,i)=>avHTML(pName(m.p)||m.name,i,42,m.p&&m.p.photo)).join("");
  const mNames=ms.length?ms.map(m=>pName(m.p)||m.name).join(" en "):"Alleen jij";
  return`<div class="axw">${aTop("Account","aBack()")}
  <div class="card axprof">${avHTML(pName(p)||p.name||uname(),0,84,p.photo)}<div class="axpi"><h3>${esc(p.name||uname()||"Jouw naam")}</h3><div class="mute axem">${esc(ok?uemail:local?"Alleen op dit apparaat":"")}</div><button class="lnk axlk" onclick="aGo('profiel')">Profiel bewerken</button><div class="axst"><i id="sdot2" class="sd ${ok&&!bad?"ok":bad?"bad":"off"}"></i><span id="stat">${esc(st)}</span>${ok?` · <button class="lnk axlk2" onclick="pull().then(draw)">Nu bijwerken</button>`:""}</div></div></div>
  <h4 class="axh">HUISHOUDEN</h4><button class="axhh" onclick="aGo('huis')"><span class="axhht"><b>${esc(hhName())}</b>${ico("chevr")}</span><span class="axhhb"><span class="axstack">${mAv}</span><span>${esc(mNames)} · koken voor ${dp()} · ${S.recipes.length} gedeelde recepten</span></span></button>
- <h4 class="axh">VRIENDEN</h4><div class="card axfr"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><span class="axt"><b>Delen met vrienden</b><small class="mute">Elkaars recepten bekijken</small></span><span class="axsoon">Binnenkort</span></div>
+ <h4 class="axh">VRIENDEN</h4>${vrCard()}
  <h4 class="axh">INSTELLINGEN</h4><div class="card axlist">${aRow("a_sliders",AT_LILAC,"Kookvoorkeuren",kCount()+" aan","aGo('kook')")}${aRow("a_bell",AT_BEIGE,"Meldingen",optOn("leftRem")&&optOn("left")?"aan":"","aGo('meld')")}${aRow("a_save",AT_GREEN,"Back-ups","","aGo('bk')")}${aRow("a_phone",AT_PEACH,"Als app op je telefoon",isStandalone()?"geïnstalleerd":"","aGo('app')")}</div>
  ${ok?`<h4 class="axh">INLOGGEN EN BEVEILIGING</h4><div class="card axlist">${aRow("a_mail",AT_BEIGE,"E-mailadres",`<span class="axtrunc">${esc(uemail)}</span>`,"aGo('mail')")}${aRow("a_lock",AT_BEIGE,"Wachtwoord wijzigen","","aGo('ww')")}</div>
  <button class="axlogout" onclick="logout()">${ico("a_out")} Uitloggen</button>`:""}</div>`}
@@ -1850,8 +1890,8 @@ const VIS=[["all","Iedereen","Ook mensen die je nog niet kent"],["friends","Alle
 function pdTog(f,v){const a=PD[f]=PD[f]||[];const i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.push(v);draw()}
 function pdOwnAdd(){const e=$("pdown");const v=e?e.value.trim():"";if(v&&!PD.own.includes(v))PD.own.push(v);PD._add=false;draw()}
 function pdPhoto(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const z=192,c=document.createElement("canvas");c.width=c.height=z;const m=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);PD.photo=c.toDataURL("image/jpeg",.8);draw()};im.src=r.result};r.readAsDataURL(f)}
-function pdSave(){const p=myP();PD.about=String(PD.about||"").slice(0,150);delete PD._add;Object.assign(p,PD);regMe();save();AP="";PD=null;draw();window.scrollTo(0,0)}
-function pdPreview(){const p=PD,d=$("bkdlg");d.innerHTML=`<div class="axpv">${avHTML(pName(p)||"?",0,88,p.photo)}<h2>${esc(pName(p)||"Jouw naam")}</h2>${p.about?`<p>${esc(p.about)}</p>`:""}<div class="axchips c">${(p.kitchens||[]).map(k=>`<span class="axchip on">${esc(k)}</span>`).join("")}</div><p class="mute" style="margin:10px 0 0">${esc(p.level||"")}${(p.diet||[]).concat(p.own||[]).length?" · "+esc((p.diet||[]).concat(p.own||[]).join(", ")):""}</p></div><p class="mute" style="font-size:.85rem;text-align:center">Zo zien vrienden je straks, zodra Vrienden beschikbaar is.</p><div class="row" style="justify-content:center"><button class="btn" onclick="bkdlg.close()">Sluiten</button></div>`;d.showModal()}
+function pdSave(){const p=myP();PD.about=String(PD.about||"").slice(0,150);delete PD._add;Object.assign(p,PD);regMe();save();syncProf();AP="";PD=null;draw();window.scrollTo(0,0)}
+function pdPreview(){const p=PD,d=$("bkdlg");d.innerHTML=`<div class="axpv">${avHTML(pName(p)||"?",0,88,p.photo)}<h2>${esc(pName(p)||"Jouw naam")}</h2>${p.about?`<p>${esc(p.about)}</p>`:""}<div class="axchips c">${(p.kitchens||[]).map(k=>`<span class="axchip on">${esc(k)}</span>`).join("")}</div><p class="mute" style="margin:10px 0 0">${esc(p.level||"")}${(p.diet||[]).concat(p.own||[]).length?" · "+esc((p.diet||[]).concat(p.own||[]).join(", ")):""}</p></div><p class="mute" style="font-size:.85rem;text-align:center">${VRON?"Zo zien je vrienden je.":"Zo zien vrienden je straks, zodra Vrienden beschikbaar is."}</p><div class="row" style="justify-content:center"><button class="btn" onclick="bkdlg.close()">Sluiten</button></div>`;d.showModal()}
 function vAProf(){const p=PD||(PD=JSON.parse(JSON.stringify(myP())));p.own=p.own||[];
  const chip=(f,v)=>{const on=(p[f]||[]).includes(v);return`<button class="axchip${on?" on":""}" onclick="pdTog('${f}','${esc(v)}')" aria-pressed="${on}">${on?ico("a_check"):""}${esc(v)}</button>`};
  return`${aTop("Profiel","aBack()")}
@@ -1862,7 +1902,7 @@ function vAProf(){const p=PD||(PD=JSON.parse(JSON.stringify(myP())));p.own=p.own
  <div class="axl">Favoriete keukens</div><div class="axchips">${KITCH.map(k=>chip("kitchens",k)).join("")}</div>
  <div class="axl">Dieetwensen</div><div class="axchips">${DIETS.map(k=>chip("diet",k)).join("")}${p._add?`<span class="axaddw"><input id="pdown" class="axin" placeholder="bijv. Geen koriander" onkeydown="if(event.key=='Enter')pdOwnAdd()"><button class="btn sm" onclick="pdOwnAdd()">Toevoegen</button></span>`:`<button class="axchip dash" onclick="PD._add=true;draw();setTimeout(()=>{const e=$('pdown');if(e)e.focus()},30)">${ico("plus")}Eigen wens</button>`}</div>${p.own.length?`<div class="axchips" style="margin-top:8px">${p.own.map((w,i)=>`<span class="axchip own">${esc(w)}<button onclick="PD.own.splice(${i},1);draw()" aria-label="${esc(w)} verwijderen">${ico("a_x")}</button></span>`).join("")}</div>`:""}
  <div class="axl">Kookniveau</div><div class="axseg">${ALEVELS.map(l=>`<button class="${p.level==l?"on":""}" onclick="PD.level='${l}';draw()">${l}</button>`).join("")}</div>
- <div class="axl">Wie mag je recepten zien?</div><div class="card axlist">${VIS.map(([k,t,d])=>`<label class="axrad"><input type="radio" name="pdvis" ${p.vis==k?"checked":""} onchange="PD.vis='${k}'"><span><b>${t}</b><small class="mute">${d}</small></span></label>`).join("")}</div><p class="axhelp">Geldt zodra Vrienden beschikbaar is.</p>
+ <div class="axl">Wie mag je recepten zien?</div><div class="card axlist">${VIS.map(([k,t,d])=>`<label class="axrad"><input type="radio" name="pdvis" ${p.vis==k?"checked":""} onchange="PD.vis='${k}'"><span><b>${t}</b><small class="mute">${d}</small></span></label>`).join("")}</div>${VRON?"":`<p class="axhelp">Geldt zodra Vrienden beschikbaar is.</p>`}
  <button class="axghost" onclick="pdPreview()">${ico("a_user")} Bekijk je profiel zoals vrienden het zien</button>
  <button class="btn axbig" onclick="pdSave()">Opslaan</button>`}
 // ---- E-mailadres
@@ -1919,6 +1959,94 @@ function leftDue(){if(!optOn("left")||!optOn("leftRem"))return[];const t=pdk(tod
  return(S.left||[]).map(l=>{if(!l.date)return null;const age=Math.round((t-pdk(l.date))/864e5),max=l.where=="vriezer"?90:3,warn=l.where=="vriezer"?75:2,rest=max-age;return age>=warn?{l,rest}:null}).filter(Boolean).sort((a,b)=>a.rest-b.rest)}
 function remCard(){const D=leftDue();if(!D.length)return"";const st=r=>r<0?"over de datum":r==0?"vandaag opmaken":r==1?"nog 1 dag":r<14?"nog "+r+" dagen":"nog ±"+Math.round(r/7)+" weken";
  return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_bell")}</span><b>Restjes opmaken</b></div>${D.slice(0,3).map(({l,rest})=>`<div class="axreml"><span><b>${esc(l.name)}</b><small class="${rest<=0?"axerr":"mute"}">${l.where=="vriezer"?"Vriezer":"Koelkast"} · ${st(rest)}</small></span><button class="btn ghost sm" onclick="lfPlan(${l.id})">Inplannen</button></div>`).join("")}${D.length>3?`<button class="lnk axlk" onclick="go('stock')">Alle ${D.length} restjes bekijken</button>`:""}</div>`}
+// === VRIENDEN ===
+let VR=null,VRON=false,MELD=[],FV=null,FVR=null,FVQ="",FVCAT="",FVF=false,VRQ="",VRRES=null,VRT=null;
+try{const u=new URL(location.href),c=u.searchParams.get("vriend");if(c){localStorage.setItem("kvf",c.trim().toUpperCase());u.searchParams.delete("vriend");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
+const VRMND=["januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"];
+const vrF=id=>(VR||[]).find(f=>f.uid==id);
+const vrFriends=()=>(VR||[]).filter(f=>f.status=="vrienden");
+const vrIn=()=>(VR||[]).filter(f=>f.status=="inkomend");
+const vrOut=()=>(VR||[]).filter(f=>f.status=="uitgaand");
+const vrIdx=id=>{let h=0;for(const c of String(id))h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)};
+const vrMissing=e=>/PGRST202|42883|Could not find the function|does not exist/i.test(((e&&e.message)||"")+((e&&e.code)||""));
+async function loadVR(){if(!sb||!uid||!HH||LEGACY)return;let r;try{r=await sb.rpc("vriendenlijst")}catch(e){return}
+ if(!r)return;if(r.error){if(vrMissing(r.error)){VRON=false;VR=null}return}
+ VRON=true;VR=r.data||[];
+ try{const m=await sb.from("meldingen").select("id,tekst,gemaakt").eq("gelezen",false).order("gemaakt",{ascending:false}).limit(10);MELD=(m&&m.data)||[]}catch(e){}
+ syncProf();vrPending();if(["home","account"].includes(S.tab)&&!typing()&&!document.querySelector("dialog[open]"))draw()}
+function syncProf(){if(!sb||!uid||!VRON)return;const p=myP(),row={uid,naam:(pName(p)||p.name||uname()||"").trim(),over:p.about||"",foto:p.photo||"",vis:p.vis||"friends"};
+ const k=JSON.stringify(row);let old=null;try{old=localStorage.getItem("kprof")}catch(e){}if(old===k)return;
+ sb.from("profielen").upsert({...row,updated_at:new Date().toISOString()}).then(r=>{if(r&&!r.error){try{localStorage.setItem("kprof",k)}catch(e){}}})}
+async function vrPending(){let c=null;try{c=localStorage.getItem("kvf")}catch(e){}if(!c||!VRON)return;try{localStorage.removeItem("kvf")}catch(e){}
+ const{data,error}=await sb.rpc("accepteer_vriendlink",{p_code:c});
+ if(error){ask(/verlopen|bestaat niet/i.test(error.message)?"Deze vriendenlink bestaat niet of is verlopen. Vraag om een nieuwe.":"Vrienden worden mislukt: "+error.message,()=>{});return}
+ if(data){ask("Je bent nu vrienden met "+data+"! Je vindt elkaars recepten bij Account → Vrienden.",()=>{go("account");aGo("vrienden")},"Bekijken")}await loadVR()}
+function vrCooked(rid){try{const r=S.recipes.find(x=>x.id==rid);if(!r||!r.src||!r.src.uid||!VRON||myP().notifyCook===false)return;sb.rpc("meld_gekookt",{p_uid:r.src.uid,p_recept:r.name}).then(()=>{})}catch(e){}}
+// ---- Account-kaart
+function vrCard(){if(!VRON)return`<div class="card axfr"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><span class="axt"><b>Delen met vrienden</b><small class="mute">Elkaars recepten bekijken</small></span><span class="axsoon">Binnenkort</span></div>`;
+ const F=vrFriends(),I=vrIn();
+ const av=F.length?`<span class="axstack fr">${F.slice(0,4).map(f=>avHTML(f.naam,vrIdx(f.uid),40,f.foto)).join("")}</span>`:`<span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span>`;
+ return`<button class="card axfr axfrb" onclick="aGo('vrienden')">${av}<span class="axt"><b>${F.length?F.length+(F.length==1?" vriend":" vrienden"):"Nog geen vrienden"}</b><small class="mute">${I.length?I.length+(I.length==1?" nieuw verzoek":" nieuwe verzoeken"):F.length?"Bekijk hun recepten":"Zoek of nodig iemand uit"}</small></span>${I.length?`<i class="axdot"></i>`:""}<span class="axch">${ico("chevr")}</span></button>`}
+// ---- Vrienden-pagina
+function vrResHTML(){if(VRRES==null)return"";if(VRRES=="busy")return`<p class="mute axres">Zoeken…</p>`;
+ if(!VRRES.length)return`<p class="mute axres">Niemand gevonden. Zoek op het <b>volledige e-mailadres</b>, of stuur een uitnodigingslink.</p>`;
+ return`<div class="card axlist axresl">${VRRES.map(p=>`<div class="axmem">${avHTML(p.naam,vrIdx(p.uid),44,p.foto)}<span><b>${esc(p.naam)}</b></span>${p.relatie=="vrienden"?`<span class="axtag">Vrienden</span>`:p.relatie=="uitgaand"?`<span class="axtag">Verstuurd</span>`:p.relatie=="inkomend"?`<button class="btn sm" onclick="vrAnswer('${p.uid}',true)">Accepteren</button>`:`<button class="btn sm" onclick="vrAdd('${p.uid}')">${ico("plus")} Toevoegen</button>`}</div>`).join("")}</div>`}
+function vrType(v){VRQ=v;clearTimeout(VRT);if(v.trim().length<2){VRRES=null;const e=$("vrres");if(e)e.innerHTML="";return}VRT=setTimeout(vrSearch,450)}
+async function vrSearch(){const q=VRQ.trim();if(q.length<2)return;VRRES="busy";const e=$("vrres");if(e)e.innerHTML=vrResHTML();
+ const{data,error}=await sb.rpc("zoek_mensen",{q});if(q!==VRQ.trim())return;VRRES=error?[]:(data||[]);const e2=$("vrres");if(e2)e2.innerHTML=vrResHTML()}
+async function vrAdd(id){const{data,error}=await sb.rpc("vriend_verzoek",{p_uid:id});if(error){ask("Verzoek sturen mislukt: "+error.message,()=>{});return}
+ if(Array.isArray(VRRES)){const p=VRRES.find(x=>x.uid==id);if(p)p.relatie=data}await loadVR();draw()}
+async function vrAnswer(id,ok){const{error}=await sb.rpc("vriend_antwoord",{p_uid:id,p_ok:ok});if(error){ask("Mislukt: "+error.message,()=>{});return}
+ if(Array.isArray(VRRES)){const p=VRRES.find(x=>x.uid==id);if(p)p.relatie=ok?"vrienden":null}await loadVR();draw()}
+function vrRemove(id,back){const f=vrF(id),n=f?f.naam:"deze persoon";ask(f&&f.status=="vrienden"?"Vriendschap met "+n+" verbreken? Jullie zien dan elkaars recepten niet meer. Recepten die je al hebt toegevoegd, blijven staan.":"Verzoek aan "+n+" intrekken?",async()=>{await sb.rpc("vriend_verwijderen",{p_uid:id});await loadVR();if(back){AP="vrienden";FV=null}draw()},f&&f.status=="vrienden"?"Verbreken":"Intrekken")}
+async function vrLink(){const d=$("bkdlg");d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Vriend uitnodigen</h2><p class="mute">Link maken…</p>`;d.showModal();
+ const{data,error}=await sb.rpc("maak_vriendlink");if(error){d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Vriend uitnodigen</h2><p class="axerr">Mislukt: ${esc(error.message)}</p><div class="row" style="justify-content:flex-end"><button class="btn" onclick="bkdlg.close()">Sluiten</button></div>`;return}
+ const link=appUrl()+"?vriend="+data;
+ d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Vriend uitnodigen</h2><p style="margin:0 0 12px">Stuur deze link. Wie hem opent en inlogt (of een account maakt), is meteen je vriend. Jullie zien dan elkaars recepten, niet elkaars weekmenu of lijst.</p><p class="axhelp" style="margin:0 0 14px">7 dagen geldig.</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button><button class="btn" id="shbtn" onclick="vrShare('${esc(link)}')">${ico("a_share")} Link delen</button></div>`}
+async function vrShare(u){try{if(navigator.share){await navigator.share({title:"Mijn Keuken",text:"Word mijn vriend op Mijn Keuken, dan kunnen we elkaars recepten zien.",url:u});return}}catch(e){return}try{await navigator.clipboard.writeText(u);const b=$("shbtn");if(b)b.textContent="Link gekopieerd ✓"}catch(e){prompt("Kopieer deze link:",u)}}
+function vrNotify(v){const p=myP();p.notifyCook=!!v;save()}
+function vAVr(){const F=vrFriends(),I=vrIn(),O=vrOut(),p=myP();
+ const sub=f=>f.recepten==null?"Deelt geen recepten":f.recepten+(f.recepten==1?" recept":" recepten");
+ return`<div class="axtop"><button class="axbk" onclick="aBack()" aria-label="Terug">${ico("chevl")}</button><h2>Vrienden</h2><button class="axplus" onclick="vrLink()" aria-label="Vriend uitnodigen">${ico("plus")}</button></div>
+ <label class="axsearch">${ico("search")}<input id="vrq" type="search" placeholder="Zoek op naam of e-mail…" value="${esc(VRQ)}" oninput="vrType(this.value)" onkeydown="if(event.key=='Enter'){clearTimeout(VRT);vrSearch()}" autocomplete="off"></label>
+ <div id="vrres">${vrResHTML()}</div>
+ ${I.length?`<h4 class="axh">VERZOEKEN</h4>${I.map(f=>`<div class="card axreq">${avHTML(f.naam,vrIdx(f.uid),48,f.foto)}<span class="axt"><b>${esc(f.naam)}</b><small class="mute">wil vrienden worden</small></span><button class="axno" onclick="vrAnswer('${f.uid}',false)" aria-label="Weigeren">${ico("a_x")}</button><button class="axyes" onclick="vrAnswer('${f.uid}',true)" aria-label="Accepteren">${ico("a_check")}</button></div>`).join("")}`:""}
+ <h4 class="axh">JOUW VRIENDEN · ${F.length}</h4>${F.length?`<div class="card axlist">${F.map(f=>`<button class="axrow" onclick="vrOpen('${f.uid}')">${avHTML(f.naam,vrIdx(f.uid),46,f.foto)}<span class="axt"><b>${esc(f.naam)}</b><small class="mute">${sub(f)}</small></span><span class="axch">${ico("chevr")}</span></button>`).join("")}</div>`:`<div class="card axempty"><p>Nog geen vrienden. Zoek iemand op e-mailadres, of stuur een uitnodigingslink.</p></div>`}
+ ${O.length?`<div class="card axlist" style="margin-top:10px">${O.map(f=>`<div class="axmem">${avHTML(f.naam,vrIdx(f.uid),40,f.foto)}<span><b>${esc(f.naam)}</b><small class="mute">Verzoek verstuurd</small></span><button class="lnk axlk2" style="margin-left:auto" onclick="vrRemove('${f.uid}')">Intrekken</button></div>`).join("")}</div>`:""}
+ <button class="axghost" onclick="vrLink()">${ico("link")} Nodig iemand uit via een link</button>
+ <h4 class="axh">DELEN MET VRIENDEN</h4><div class="card axlist"><label class="axtg"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_bell")}</span><span class="axtx"><b>Laat weten als je hun recept kookt</b><small>Je vriend krijgt een berichtje als jij zijn of haar recept hebt gekookt</small></span><input type="checkbox" class="axsw" ${p.notifyCook!==false?"checked":""} onchange="vrNotify(this.checked)" aria-label="Laat weten als je hun recept kookt"></label></div>
+ <p class="axhelp" style="margin-top:12px">Wie je recepten mag zien, stel je in bij Profiel bewerken. Vrienden zien nooit je weekmenu of boodschappenlijst.</p>`}
+// ---- Pagina van één vriend
+async function vrOpen(id){FV=id;FVR=null;FVQ="";FVCAT="";FVF=false;AP="vriend";draw();window.scrollTo(0,0);
+ const{data,error}=await sb.rpc("vriend_recepten",{p_uid:id});if(FV!==id)return;FVR=error?{err:error.message}:(Array.isArray(data)?data:[]);draw()}
+const vrHas=r=>S.recipes.some(x=>x.src&&x.src.uid==FV&&x.src.rid==r.id);
+function vrAddRec(i){const r=Array.isArray(FVR)&&FVR[i];if(!r||vrHas(r))return;const f=vrF(FV),c=JSON.parse(JSON.stringify(r));
+ c.id=S.next++;c.src={uid:FV,naam:f?f.naam:"",rid:r.id};toDp(c);S.recipes.push(c);save();
+ const d=$("bkdlg");if(d.open)d.close();draw()}
+function vrRec(i){const r=FVR[i];if(!r)return;const d=$("bkdlg"),has=vrHas(r);
+ d.innerHTML=`${r.img?`<img class="axrimg" src="${esc(r.img)}" alt="">`:""}<h2 style="font-size:1.3rem;margin:4px 0 2px">${esc(r.name)}</h2><p class="mute" style="margin:0 0 10px">${[r.time?r.time+" min":"",r.pers?r.pers+" pers.":"",r.cat||r.type||""].filter(Boolean).map(esc).join(" · ")}</p>
+ <h3 style="font-size:1rem;margin:10px 0 4px">Ingrediënten</h3><ul class="axing">${(r.ing||[]).map(l=>`<li>${esc(String(l).split("|")[0])}</li>`).join("")}</ul>
+ ${r.steps?`<h3 style="font-size:1rem;margin:12px 0 4px">Bereiding</h3><p class="axsteps">${esc(String(r.steps)).replace(/\n/g,"<br>")}</p>`:""}
+ <div class="row" style="justify-content:flex-end;margin-top:14px;position:sticky;bottom:0;background:var(--card);padding-top:8px"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button>${has?`<button class="btn" disabled>${ico("a_check")} Toegevoegd</button>`:`<button class="btn" onclick="vrAddRec(${i})">${ico("plus")} Aan mijn recepten toevoegen</button>`}</div>`;d.showModal()}
+function vAVriend(){const f=vrF(FV);if(!f)return`${aTop("Vriend","aGo('vrienden')")}<p class="mute">Deze vriend staat niet meer in je lijst.</p>`;
+ const d=f.sinds?new Date(f.sinds):null,since=d?"vrienden sinds "+VRMND[d.getMonth()]+(d.getFullYear()!=new Date().getFullYear()?" "+d.getFullYear():""):"";
+ let body="";
+ if(FVR==null)body=`<p class="mute" style="text-align:center;margin-top:20px">Recepten laden…</p>`;
+ else if(FVR.err)body=`<p class="axerr">Recepten laden mislukt: ${esc(FVR.err)}</p>`;
+ else if(!FVR.length)body=`<div class="card axempty"><p>${f.recepten==null?esc(f.naam)+" deelt geen recepten met vrienden.":esc(f.naam)+" heeft nog geen recepten."}</p></div>`;
+ else{const cats=[...new Set(FVR.map(r=>r.cat||r.type).filter(Boolean))].sort();const q=FVQ.trim().toLowerCase();
+  const L=FVR.map((r,i)=>[r,i]).reverse().filter(([r])=>(!q||String(r.name).toLowerCase().includes(q)||(r.ing||[]).some(l=>String(l).toLowerCase().includes(q)))&&(!FVCAT||(r.cat||r.type)==FVCAT));
+  body=`<div class="axfsrch"><label class="axsearch">${ico("search")}<input id="fvq" type="search" placeholder="Zoek in recepten…" value="${esc(FVQ)}" oninput="FVQ=this.value;clearTimeout(VRT);VRT=setTimeout(()=>{draw();const e=$('fvq');if(e){e.focus();e.setSelectionRange(e.value.length,e.value.length)}},250)"></label>${cats.length?`<button class="axfbtn${FVF||FVCAT?" on":""}" onclick="FVF=!FVF;draw()">${ico("a_sliders")} Filter</button>`:""}</div>
+  ${FVF&&cats.length?`<div class="axchips" style="margin:0 0 12px">${["",...cats].map(c=>`<button class="axchip${FVCAT==c?" on":""}" onclick="FVCAT='${esc(c).replace(/'/g,"")}';draw()">${c?esc(c):"Alles"}</button>`).join("")}</div>`:""}
+  <p class="mute axcnt">${L.length} ${L.length==1?"recept":"recepten"} · nieuwste eerst</p>
+  <div class="axgrid">${L.map(([r,i])=>{const has=vrHas(r),[bg,fg]=ATINT[i%4];return`<div class="axrc"><button class="axrct" onclick="vrRec(${i})" style="background:${bg};color:${fg}">${r.img?`<img src="${esc(r.img)}" alt="" loading="lazy" onerror="this.remove()">`:ico("a_bowl")}</button><button class="axrcadd${has?" ok":""}" onclick="${has?"":`vrAddRec(${i})`}" aria-label="${has?"Al toegevoegd":"Aan mijn recepten toevoegen"}">${ico(has?"a_check":"plus")}</button><button class="axrcb" onclick="vrRec(${i})"><b>${esc(r.name)}</b>${r.time?`<small class="mute">${ico("a_clock")} ${r.time} min</small>`:""}</button></div>`}).join("")}</div>`}
+ return`${aTop(f.naam,"aGo('vrienden')")}<div class="axfhead">${avHTML(f.naam,vrIdx(f.uid),110,f.foto)}<h3>${esc(f.naam)}</h3><p class="mute">${[f.recepten!=null?f.recepten+(f.recepten==1?" recept":" recepten"):"",since].filter(Boolean).join(" · ")}</p>${f.over?`<p class="axabout">${esc(f.over)}</p>`:""}</div>${body}
+ <button class="axleave" style="color:var(--mute)" onclick="vrRemove('${f.uid}',true)">Vriendschap verbreken</button>`}
+// ---- Meldingen op Thuis
+async function vrMeldWeg(id){MELD=MELD.filter(m=>m.id!=id);draw();try{await sb.from("meldingen").update({gelezen:true}).eq("id",id)}catch(e){}}
+function meldCard(){if(!VRON)return"";const I=vrIn();if(!I.length&&!MELD.length)return"";
+ return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><b>Vrienden</b></div>${I.slice(0,3).map(f=>`<div class="axreml"><span><b>${esc(f.naam)}</b><small class="mute">wil vrienden worden</small></span><button class="btn ghost sm" onclick="go('account');aGo('vrienden')">Bekijken</button></div>`).join("")}${MELD.slice(0,3).map(m=>`<div class="axreml"><span><small style="color:var(--ink);font-size:.92rem">${esc(m.tekst)}</small></span><button class="axkick" onclick="vrMeldWeg(${m.id})" aria-label="Weghalen">${ico("a_x")}</button></div>`).join("")}</div>`}
+Object.assign(ICP,{a_clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.500 2"/>'});
 function ft(){$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
@@ -1956,6 +2084,6 @@ async function init(){if(!SB_URL||!SB_KEY||!window.supabase){draw();return}
  if(!data.session){try{const r=await sb.from("leden").select("hh").limit(1);if(r.error&&/42P01|PGRST205|schema cache|does not exist/i.test((r.error.message||"")+(r.error.code||"")))LEGACY=true}catch(e){}}
  if(data.session){await afterLogin(data.session.user);if(RECOV){S.tab="account";AP="ww"}}
  draw()}
-document.addEventListener("visibilitychange",async()=>{if(document.visibilityState=="visible"&&sb&&uid&&!dlg.open&&!$("cdlg").open){await pull();draw()}else wake()});
+document.addEventListener("visibilitychange",async()=>{if(document.visibilityState=="visible"&&sb&&uid&&!dlg.open&&!$("cdlg").open){await pull();draw();loadVR()}else wake()});
 init();
 </script></body></html>
