@@ -1414,6 +1414,10 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .ob-art[data-s="0"].go .ob-tap{opacity:0}
 .ob-phh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}.ob-phh small{font-size:.66rem;color:var(--mute)}
 .ob-art.still .ob-ph{transform:none}.ob-art.still .ob-src{display:none}
+
+.rx-b h3{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;line-height:1.22;overflow-wrap:anywhere;hyphens:auto}
+.rx-card.open .rx-b h3{display:block;-webkit-line-clamp:unset}
+.axrcb b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;hyphens:auto}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -2818,7 +2822,7 @@ function vAVriend(){const f=vrF(FV);if(!f)return`${aTop("Vriend","aGo('vrienden'
   ${FVF&&cats.length?`<div class="axchips" style="margin:0 0 12px">${["",...cats].map(c=>`<button class="axchip${FVCAT==c?" on":""}" onclick="FVCAT='${esc(c).replace(/'/g,"")}';draw()">${c?esc(c):"Alles"}</button>`).join("")}</div>`:""}
   <div class="axseg vr-seg"><button class="${FVNEW?"":"on"}" onclick="FVNEW=false;draw()">Alle recepten</button><button class="${FVNEW?"on":""}" onclick="FVNEW=true;draw()">Nog niet opgeslagen${nNew?" · "+nNew:""}</button></div>
   <p class="mute axcnt">${L.length} ${L.length==1?"recept":"recepten"} · nieuwste eerst</p>${FVNEW&&!L.length?`<div class="card axempty"><p>${nNew?"Geen recepten die passen bij je zoekopdracht.":"Je hebt alle recepten van "+esc(f.naam)+" al."}</p></div>`:""}
-  <div class="axgrid">${L.map(([r,i])=>{const has=vrHas(r),[bg,fg]=ATINT[i%4];return`<div class="axrc"><button class="axrct" onclick="vrRec(${i})" style="background:${bg};color:${fg}">${r.img?`${ico("a_bowl")}<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:ico("a_bowl")}</button><button class="axrcadd${has?" ok":""}" onclick="${has?"":`vrAddRec(${i})`}" aria-label="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}" title="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}">${ico(has?"a_check":"plus")}</button><button class="axrcb" onclick="vrRec(${i})"><b>${esc(r.name)}</b>${r.time?`<small class="mute">${ico("a_clock")} ${r.time} min</small>`:""}</button></div>`}).join("")}</div>`}
+  <div class="axgrid">${L.map(([r,i])=>{const has=vrHas(r),[bg,fg]=ATINT[i%4];return`<div class="axrc"><button class="axrct" onclick="vrRec(${i})" style="background:${bg};color:${fg}">${r.img?`${ico("a_bowl")}<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:ico("a_bowl")}</button><button class="axrcadd${has?" ok":""}" onclick="${has?"":`vrAddRec(${i})`}" aria-label="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}" title="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}">${ico(has?"a_check":"plus")}</button><button class="axrcb" onclick="vrRec(${i})"><b title="${esc(r.name)}">${esc(rTitle(r.name))}</b>${r.time?`<small class="mute">${ico("a_clock")} ${r.time} min</small>`:""}</button></div>`}).join("")}</div>`}
  return`${aTop(f.naam,"aGo('vrienden')")}<div class="axfhead">${avHTML(f.naam,vrIdx(f.uid),110,f.foto)}<h3>${esc(f.naam)}</h3>${f.gnaam?`<div class="axgn">@${esc(f.gnaam)}</div>`:""}${isChef(f)?`<div class="axchef">${ico("a_check")} Receptenbank van KookBuddy</div>`:""}<p class="mute">${[f.recepten!=null?f.recepten+(f.recepten==1?" recept":" recepten"):"",since].filter(Boolean).join(" · ")}</p>${f.over?`<p class="axabout">${esc(f.over)}</p>`:""}</div>${body}
  ${isChef(f)?"":`<button class="axleave" style="color:var(--mute)" onclick="vrRemove('${f.uid}',true)">Vriendschap verbreken</button>`}`}
 // ---- Meldingen op Thuis
@@ -3593,7 +3597,7 @@ function rCard2(r){const o=OPEN[r.id],fav=isFav(r),meta=[mainCat(r),r.time?r.tim
  const ids=rOwners(r),M=members(),sh=ids.slice(0,3),rest=ids.length-sh.length;
  const av=ids.length?`<span class="rx-own">${sh.map(id=>{const i=M.findIndex(m=>m.id==id),m=M[i]||{},nm=m.name||mName(id);return`<span class="rown-a" title="${esc(nm)}">${avHTML(nm,i<0?0:i,26,m.p&&m.p.photo)}</span>`}).join("")}${rest>0?`<span class="rown-a rown-more rx-more">+${rest}</span>`:""}</span>`:"";
  return`<div class="rx-card rc${o?" open":""}"><div class="rx-top" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}${av}${collOn()?`<button class="rx-fav${fav?" on":""}" onclick="event.stopPropagation();favTog(${r.id})" aria-pressed="${fav}" aria-label="${fav?"Uit favorieten":"Aan favorieten toevoegen"}">${ico(fav?"a_heartf":"a_heart")}</button>`:""}</div>
- <div class="rx-b" onclick="tog(${r.id})"><h3>${esc(r.name)}</h3><p>${meta}</p></div>
+ <div class="rx-b" onclick="tog(${r.id})"><h3${o?"":` title="${esc(r.name)}"`}>${esc(o?r.name:rTitle(r.name))}</h3><p>${meta}</p></div>
  ${o?`<div class="rx-x">${detail(r)}${labelsHtml(r,1)}<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">${ico("play")} Start koken</button><button class="btn ghost sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button>${collOn()?`<button class="btn ghost sm" onclick="collPick(${r.id})">${ico("a_bookmark")} Collectie</button>`:""}<button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div></div>`:""}</div>`}
 function rxList(){const L=recShown();return L.length?`<div class="rx-grid">${L.map(rCard2).join("")}</div>`:`<div class="empty">${S.recipes.length?(COLL&&!RQ&&!rfCount(RF)?"Nog geen recepten in deze collectie. Open een recept en kies Collectie.":"Geen recepten gevonden."):"Nog geen recepten. Voeg je eerste recept toe met de oranje +."}</div>`}
 function rxSetQ(v){RQ=v;const e=$("rxl");if(e)e.innerHTML=rxList()}
@@ -3612,6 +3616,8 @@ function vRec2(){const multi=isMulti(),all=dedupR(S.recipes||[]).length,me=meK()
 Object.assign(ICP,{a_heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',a_heartf:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="currentColor"/>',
  a_sliders:'<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',a_users:'<circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5"/><path d="M16 5a3 3 0 0 1 0 6M18 14c2 .6 3 2.3 3 5"/>',
  a_bookmark:'<path d="M7 4h10v16l-5-4-5 4z"/>',a_chevu:'<path d="M6 15l6-6 6 6"/>'});
+
+function rTitle(n){const t=String(n||"").replace(/\s*[\(\[][^\)\]]*[\)\]]/g,"").replace(/\s{2,}/g," ").replace(/\s+([,.:;])/g,"$1").trim();return t||String(n||"")}
 // ================= Rondleiding na het aanmaken van een account =================
 let ONB=null,ONBT=[],USERCRT="";
 const ONBS=[
