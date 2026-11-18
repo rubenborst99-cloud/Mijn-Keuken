@@ -1546,6 +1546,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .st-chip{white-space:nowrap}
 .hx-kmv .hx-mk{margin:12px 12px 0}.hx-kmv .st-rsn b{font-size:1.05rem}
 .hx-kmvc{margin:10px 14px 14px}
+.kx-dtt,.kx-awake{display:none}
 </style>
 <style id="desk">/* ================= Webversie (ontwerp app-ontwerp.pdf) ================= */
 @media(min-width:1024px){
@@ -1696,7 +1697,6 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 }
 @media(min-width:1024px){
  #kdlg.kx:has(.kx-L)>.kx-top{display:flex!important;flex-wrap:nowrap;align-items:center;padding:20px 0 14px}
- #kdlg.kx:has(.kx-L)>.kx-top>.kx-c:last-child{display:none}
  #kdlg.kx:has(.kx-L) .kx-awake{white-space:nowrap;margin-left:auto}
 }
 @media(min-width:1024px){
@@ -1813,6 +1813,10 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 @media(min-width:1024px){.st-g .hx-srow{width:calc(100% - 44px)!important;box-sizing:border-box}.st-plan .lnk{font-family:"DM Sans",sans-serif;font-weight:700;font-size:.95rem}}
 @media(min-width:1024px){.st-R>:first-child{margin-top:0!important}.st-L>.st-empty{margin-top:0!important}}
 @media(min-width:1024px){.st-back{display:none}}
+@media(min-width:1024px){
+ #kdlg.kx:has(.kx-L):not(:has(.kx-R))>.kx-body{grid-column:2/4}
+ #kdlg.kx:has(.kx-L)>.kx-top>.kx-c:last-child{margin-left:12px}
+}
 </style>
 <style id="add">/* ---- Recept toevoegen (telefoon eerst) */
 #dlg.ad{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
@@ -2013,6 +2017,135 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
  #dlg.ad[data-mode=choice][open]{animation:kbup .26s ease-out}
 }
 @keyframes kbup{from{transform:translateY(40%);opacity:.4}to{transform:none;opacity:1}}
+</style><style id="ds2">/* ---- Wat eten we? (nieuw ontwerp) */
+#dsh .dsh1{margin:6px 0 16px}
+.ds2d{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px}
+.ds2d button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 0 8px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.ds2d button span{font-size:.78rem;color:var(--mute)}.ds2d button b{font:700 1.15rem "DM Sans"}
+.ds2d button i{width:6px;height:6px;border-radius:50%;margin-top:3px}
+.ds2d i.p{background:#3E6B4E}.ds2d i.o{background:#E0A526}.ds2d i.e{background:var(--line)}
+.ds2d button.on{background:var(--green);border-color:var(--green);color:#fff}.ds2d button.on span{color:#fff;opacity:.85}.ds2d button.on i{background:#fff}
+.ds2d button.past:not(.on){opacity:.6}
+.ds2ts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.ds2t{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:12px;border-radius:16px;border:2px solid transparent;background:var(--tb);color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+.ds2t.on{border-color:var(--green)}
+.ds2ti{width:32px;height:32px;border-radius:9px;background:var(--card);color:var(--tf);display:grid;place-items:center;margin-bottom:8px}
+.ds2ti .ic{width:16px;height:16px}
+.ds2t b{font-size:.92rem}.ds2t small{font-size:.74rem;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.ds2s{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.ds2s .dsq{flex:1;margin:0}
+.ds2fb{position:relative;width:50px;height:50px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.ds2fb .ic{width:20px;height:20px}.ds2fb.on{border-color:var(--green);color:var(--green)}
+.ds2fb i{position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.ds2flt{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
+.ds2flt>span{font-size:.78rem;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.ds2flt>div{display:flex;flex-wrap:wrap;gap:6px}.ds2flt .lnk{align-self:flex-start;margin-top:4px}
+.ds2c{border:1.5px solid var(--line);background:none;border-radius:99px;padding:7px 12px;font:inherit;font-size:.86rem;color:var(--ink);cursor:pointer}
+.ds2c.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.ds2tab{display:grid;grid-template-columns:repeat(3,1fr);background:var(--tile,#EFE6DA);border-radius:16px;padding:4px;margin-bottom:16px}
+.ds2tab button{border:0;background:none;padding:11px 4px;border-radius:12px;font:inherit;font-size:.95rem;color:var(--mute);cursor:pointer}
+.ds2tab button.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.ds2h{margin:4px 2px 12px}.ds2h h3{font:600 1.3rem "Fraunces",serif;margin:0;display:flex;align-items:center;gap:8px}.ds2h h3 .ic{width:16px;height:16px;color:var(--mute)}
+.ds2h p{margin:2px 0 0;color:var(--mute);font-size:.88rem}
+.ds2hr{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ds2sort select{border:0;background:none;color:var(--mute);font:inherit;font-size:.88rem;padding:4px 2px;cursor:pointer;width:auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ds2col{display:flex;gap:10px;overflow-x:auto;margin:0 -20px 18px;padding:0 20px 4px;scrollbar-width:none}
+.ds2col::-webkit-scrollbar{display:none}
+.ds2col button{flex:0 0 140px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;background:var(--cb);border:2px solid transparent;border-radius:16px;padding:12px;font:inherit;color:var(--ink);cursor:pointer}
+.ds2col button.on{border-color:var(--green)}
+.ds2col button>span{width:30px;height:30px;border-radius:9px;background:var(--card);color:var(--cf);display:grid;place-items:center;margin-bottom:14px}
+.ds2col button>span .ic{width:16px;height:16px}.ds2col b{font-size:.95rem}.ds2col small{color:var(--mute);font-size:.8rem}
+.ds2g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ds2r{position:relative;display:flex;flex-direction:column;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:0;overflow:hidden;font:inherit;color:var(--ink);cursor:pointer}
+.ds2r.on{border-color:var(--green)}
+.ds2im{position:relative;display:grid;place-items:center;height:104px;background:var(--tb);color:var(--tf)}
+.ds2im>.ic{width:44px;height:44px}
+.ds2im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ds2av{position:absolute;left:10px;bottom:-12px;display:flex;z-index:1}
+.ds2av>*{margin-right:-6px;border:2px solid var(--card);border-radius:50%}
+.ds2avm{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:.66rem;font-weight:700;display:grid;place-items:center}
+.ds2pl{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:var(--card);color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:1}
+.ds2pl .ic{width:16px;height:16px}
+.ds2r.on .ds2pl{background:var(--green);color:#fff}
+.ds2b{display:flex;flex-direction:column;gap:2px;padding:20px 12px 12px}
+.ds2b b{font:600 1.02rem/1.2 "Fraunces",serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ds2b small{color:var(--mute);font-size:.8rem;line-height:1.35}
+.ds2b em{font-style:normal;font-weight:700;font-size:.8rem;color:var(--sagefg);margin-top:3px}
+.ds2more{display:block;margin:14px auto 6px;border:0;background:none;color:var(--green);font:inherit;font-weight:700;cursor:pointer;padding:8px 12px}
+.ds2ppl{display:flex;gap:8px;overflow-x:auto;margin:0 -20px 16px;padding:0 20px 4px;scrollbar-width:none}
+.ds2ppl::-webkit-scrollbar{display:none}
+.ds2ppl button{flex:none;display:flex;align-items:center;gap:7px;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:5px 14px 5px 5px;font:inherit;font-size:.9rem;color:var(--ink);cursor:pointer}
+.ds2ppl button.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.ds2all{width:24px;height:24px;border-radius:50%;background:var(--tile,#EFE6DA);color:var(--ink);display:grid;place-items:center}.ds2all .ic{width:14px;height:14px}
+.ds2e{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;text-align:center;color:var(--mute)}.ds2e p{margin:0 0 6px}
+.ds2lh{display:flex;align-items:center;gap:6px;font:700 .9rem "DM Sans";margin:16px 2px 8px}.ds2lh .ic{width:16px;height:16px}
+.ds2ll{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.ds2lr{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:none;padding:12px 14px;font:inherit;color:var(--ink);cursor:pointer}
+.ds2lr:first-child{border-top:0}
+.ds2lr.on{background:rgba(184,68,31,.05)}
+.ds2li{width:52px;height:52px;border-radius:12px;background:var(--tb);color:var(--tf);display:grid;place-items:center;flex:none}.ds2li .ic{width:24px;height:24px}
+.ds2lo{width:40px;height:40px;background:var(--tile,#EFE6DA);color:var(--ink)}.ds2lo .ic{width:18px;height:18px}
+.ds2lb{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+.ds2lb b{font:600 1.02rem "Fraunces",serif}.ds2lr .ds2lb b:only-child{font-family:"DM Sans"}
+.ds2lb small{color:var(--mute);font-size:.82rem}
+.ds2lb em{font-style:normal;font-size:.76rem;font-weight:700;border-radius:8px;padding:2px 8px;margin-top:4px}
+.ds2lb em.warm{background:#FBE7B5;color:#7A5300}.ds2lb em.ok{background:var(--sage);color:var(--sagefg)}
+.ds2rad{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;box-sizing:border-box}
+.ds2lr.on .ds2rad{border:6px solid var(--green)}
+.ds2info{display:flex;gap:10px;align-items:flex-start;background:var(--t-beige);border-radius:16px;padding:14px;margin-top:14px;font-size:.9rem;line-height:1.45}
+.ds2info .ic{width:18px;height:18px;flex:none;margin-top:2px}
+.ds2add{display:block;margin:16px 2px 8px;font-weight:700}
+.ds2nl{display:block;font-weight:700;font-size:.92rem;margin:18px 2px 7px}
+.ds2ni{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;padding:13px 14px}
+.dsft button .ic{width:18px;height:18px;vertical-align:-3px}
+:root[data-theme="dark"] .ds2lb em.warm{background:#5A4210;color:#F6D58A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ds2lb em.warm{background:#5A4210;color:#F6D58A}}
+@media(min-width:1024px){
+ dialog#dsh.sheet{max-width:720px;width:min(720px,92vw)}
+ .ds2g{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .ds2col,.ds2ppl{margin:0 0 16px;padding:0 0 4px}
+}
+.ds2t{padding:10px 10px 11px}
+.ds2t b{font-size:.88rem;line-height:1.2;white-space:nowrap}
+.ds2t small{white-space:normal;line-height:1.25;font-size:.72rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ds2ti{width:30px;height:30px;margin-bottom:6px}
+@media(max-width:360px){.ds2t b{font-size:.8rem}}
+/* telefoon: tabbladen onder de zoekregel */
+.ds2s{flex-wrap:wrap}
+.ds2s .ds2tab{order:3;flex:0 0 100%;margin:4px 0 4px}
+.ds2fl{display:none}
+.ds2cancel{display:none}
+.ds2lc>div:first-child .ds2lh{margin-top:4px}
+/* computer: zoals het web-ontwerp */
+@media(min-width:1024px){
+ dialog#dsh.sheet{max-width:920px;width:min(920px,92vw);height:auto;max-height:90dvh}
+ #dsh .dsg{display:none}
+ #dsh .dsb2{padding:26px 28px 8px}
+ .ds2d{gap:8px}.ds2d button{flex-direction:column;padding:10px 0}
+ .ds2ts{gap:12px}.ds2t{padding:12px 14px}.ds2t b{font-size:.95rem}
+ .ds2s{flex-wrap:nowrap;gap:12px}
+ .ds2s .dsq{flex:1 1 300px;height:46px}
+ .ds2s .ds2tab{order:0;flex:0 0 auto;margin:0;padding:3px}
+ .ds2s .ds2tab button{padding:9px 22px}
+ .ds2fb{order:2;width:auto;height:46px;border-radius:14px;padding:0 16px;display:flex;align-items:center;gap:8px;font:inherit;font-weight:700}
+ .ds2fl{display:inline}
+ .ds2fb i{top:6px;right:6px}
+ .ds2g{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .ds2im{height:96px}
+ .ds2col{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}
+ .ds2col button{flex-direction:row;align-items:center;gap:12px;flex:none}
+ .ds2col button>span{margin:0;flex:none}
+ .ds2col button b,.ds2col button small{display:block}
+ .ds2col button{display:grid;grid-template-columns:auto 1fr;column-gap:12px}
+ .ds2col button>span{grid-row:1/3}
+ .ds2lc{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+ .ds2lc .ds2lh{margin-top:4px}
+ #dsh .dsft{display:flex;justify-content:flex-end;gap:10px;padding:16px 28px 22px;border-top:1px solid var(--line);margin:0}
+ #dsh .dsft button{width:auto;height:48px;padding:0 22px;border-radius:14px}
+ #dsh .dsft .ds2cancel{display:block;background:var(--card);color:var(--ink);border:1px solid var(--line)}
+ #dsh .dsft button:disabled{background:var(--green);color:#fff;opacity:.45}
+}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -4145,8 +4278,8 @@ function drawK(){const d=$("kdlg"),n=KR.st.length,p=KR.pers||KR.r.pers||2,r=KR.r
 function kDeskCols(sc,p){const r=KR.r,need=new Set(sc.need.map(q=>String(q.n).toLowerCase()));
  const L=`<aside class="kx-L"><h4 class="axh">ALLE STAPPEN</h4><ol class="kx-sl">${KR.st.map((s,i)=>`<li class="${i<KI?"done":i==KI?"cur":""}"><button onclick="KI=${i};drawK()"><span class="kx-sn">${i<KI?ico("a_check"):i+1}</span><span class="kx-st2">${esc(s.length>90?s.slice(0,88)+"…":s)}</span></button></li>`).join("")}</ol></aside>`;
  const ban=kBanners();
- const R=`<aside class="kx-R">${ban?`<h4 class="axh">LOOPT NU</h4>${ban}`:""}${sc.need.length?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${sc.need.map(q=>kRow(q.a,q.n)).join("")}</div>`:""}
-  <h4 class="axh">ALLE INGREDIËNTEN</h4><ul class="kx-all">${r.ing.map(l=>{const q=kparts(l);const on=need.has(String(q.n).toLowerCase());return`<li class="${on?"on":""}">${esc([q.a,q.n].filter(Boolean).join(" "))}</li>`}).join("")}</ul></aside>`;
+ const inner=`${ban?`<h4 class="axh">LOOPT NU</h4>${ban}`:""}${sc.need.length?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${sc.need.map(q=>kRow(q.a,q.n)).join("")}</div>`:""}`;
+ const R=inner?`<aside class="kx-R">${inner}</aside>`:"";
  return L+R}
 // === VASTE DAGEN ===
 let VD=null;
@@ -4919,6 +5052,115 @@ function socHelp(u){const h=socHost(u),st=document.getElementById("f-st"),soc=SO
 {const _pp=parsePaste;parsePaste=function(){const t=document.getElementById("f-paste");if(!t||/^⁣|^$/.test(t.value)||t.dataset.tidy=="1")return _pp.apply(this,arguments);
  const raw=t.value;let clean=raw;try{const c=raw.split(/\r?\n/).map(l=>l.replace(/^[\s\p{Extended_Pictographic}️‍]+/u,"").replace(/[\s\p{Extended_Pictographic}️‍]+$/u,"")).join("\n");const OT=ocrTidy([c]);if(OT.text.split("\n").length>=3){clean=OT.text;if(OT.name&&!f("name").value.trim())f("name").value=OT.name}}catch(e){}
  t.value=clean;t.dataset.tidy="1";try{return _pp.apply(this,arguments)}finally{t.value=raw;t.dataset.tidy=""}}}
+
+// ================= "Wat eten we?" – nieuw ontwerp (Voor jou / Huishouden / Vrienden, Restjes, Niet koken) =================
+let DSV={};// recepten van vrienden: uid -> lijst | {err} | "laden"
+const DSTINT=[["var(--t-peach)","var(--green)"],["var(--t-green)","var(--sagefg)"],["var(--t-lilac)","var(--lilacline)"],["var(--t-beige)","var(--green)"]];
+function dsReset(k){return{day:k,sel:null,selF:null,q:"",f:"you",tab:"you",mode:"rec",pin:null,rows:[],rep:null,n:12,coll:"",sort:"last",fr:"",flt:false,ft:0,fl:"",fty:"",lid:null,out:"afhalen",note:""}}
+function dsOpen(k){DS=dsReset(k);DSFROM=false;dsBuild();const d=document.getElementById("dsh");
+ d.innerHTML=`<div class="dsg"><i></i></div><div class="dsb2" id="dsb"><div id="dsH"></div><div id="dsM"></div><div id="dsP"></div></div><div class="dsft" id="dsC"></div>`;
+ dsHead();dsDraw();d.showModal();document.getElementById("dsb").scrollTop=0}
+function dsDraw(){dsTiles();dsBody();dsCta()}
+// ---- Kop met dagen
+function dsHead(){const k=DS.day,d=pdk(k),W=wDays(wOff(k)),t=todayK();
+ const full=d.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"});
+ document.getElementById("dsH").innerHTML=`<div class="dsh1"><div><small>${esc(full)}</small><h2>Wat eten we?</h2></div><button class="dsx" aria-label="Sluiten" onclick="dsClose()">${ico("close")}</button></div>
+ <div class="ds2d" role="tablist" aria-label="Dag kiezen">${W.map(x=>{const dd=pdk(x),rec=S.sel.some(e=>e.day==x)||dxOf(x).some(y=>y.kind!="out"),out=dxOf(x).some(y=>y.kind=="out");
+  return`<button role="tab" aria-selected="${x==k}" class="${x==k?"on":""}${x<t?" past":""}" onclick="dsDay('${x}')" aria-label="${esc(dd.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"}))}${rec?", gepland":out?", niet koken":", nog leeg"}"><span>${DN[dd.getDay()]}</span><b>${dd.getDate()}</b><i class="${rec?"p":out?"o":"e"}"></i></button>`}).join("")}</div>`}
+function dsDay(k){DS.day=k;dsHead();dsDraw()}
+// ---- De drie tegels
+function dsTiles(){const nl=optOn("left")?(S.left||[]).length:0;
+ const t=(m,ic,b,s,bg,fg,js)=>`<button class="ds2t${DS.mode==m?" on":""}" style="--tb:${bg};--tf:${fg}" onclick="${js}" aria-pressed="${DS.mode==m}"><span class="ds2ti">${ico(ic)}</span><b>${b}</b><small>${s}</small></button>`;
+ document.getElementById("dsM").innerHTML=`<div class="ds2ts">${t("sur","star","Verras me","Past bij je week","var(--t-lilac)","var(--lilacline)","dsSurprise()")}${t("left","box","Restjes eten",nl?nl+" beschikbaar":"Geen restjes","var(--t-beige)","var(--green)","dsMode('left')")}${t("out","home","Niet koken","Afhalen, uit eten…","var(--tile,#EFE6DA)","var(--ink)","dsMode('out')")}</div>`}
+function dsMode(m){DS.mode=DS.mode==m?"rec":m;dsDraw();const b=document.getElementById("dsb");if(b&&DS.mode!="rec")b.scrollTo({top:0,behavior:"smooth"})}
+// ---- Inhoud
+function dsBody(){const P=document.getElementById("dsP");const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"});
+ if(DS.mode=="left"){P.innerHTML=dsLeftHtml(dn);return}
+ if(DS.mode=="out"){P.innerHTML=dsOutHtml(dn);return}
+ const tabs=[["you","Voor jou"],["hh","Huishouden"],["vr","Vrienden"]];
+ const fon=DS.ft||DS.fl||DS.fty;
+ P.innerHTML=`<div class="ds2s"><label class="dsq">${ico("search")}<input id="dsq" type="search" placeholder="Zoek recept of ingrediënt" value="${esc(DS.q)}" oninput="DS.q=this.value;DS.n=12;dsList()" autocomplete="off" aria-label="Zoek een recept"></label><button class="ds2fb${DS.flt||fon?" on":""}" onclick="DS.flt=!DS.flt;dsBody()" aria-expanded="${DS.flt}" aria-label="Filter">${ico("a_sliders")}<span class="ds2fl">Filter</span>${fon?"<i></i>":""}</button><div class="ds2tab" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${DS.tab==k}" class="${DS.tab==k?"on":""}" onclick="dsTab('${k}')">${n}</button>`).join("")}</div></div>
+ ${DS.flt?dsFltHtml():""}
+ <div id="dsTop"></div><div id="dsL"></div>`;dsList()}
+function dsTab(k){DS.tab=k;DS.n=12;DS.coll="";dsBody();if(k=="vr")dsVrLoad()}
+function dsFltHtml(){const ch=(on,txt,js)=>`<button class="ds2c${on?" on":""}" onclick="${js}">${txt}</button>`;
+ const types=[...new Set(dedupR().map(r=>mainCat(r)).filter(Boolean))];
+ return`<div class="ds2flt"><span>Tijd</span><div>${[20,30,45].map(m=>ch(DS.ft==m,"Max "+m+" min",`DS.ft=DS.ft==${m}?0:${m};dsBody()`)).join("")}</div>
+ <span>Moeilijkheid</span><div>${LEVELS.map(l=>ch(DS.fl==l,esc(l),`DS.fl=DS.fl=='${l}'?'':'${l}';dsBody()`)).join("")}</div>
+ ${types.length>1?`<span>Soort</span><div>${types.map(t=>ch(DS.fty==t,esc(t),`DS.fty=DS.fty==${esc(JSON.stringify(t))}?'':${esc(JSON.stringify(t))};dsBody()`)).join("")}</div>`:""}
+ ${DS.ft||DS.fl||DS.fty?`<button class="lnk" onclick="DS.ft=0;DS.fl='';DS.fty='';dsBody()">Filters wissen</button>`:""}</div>`}
+function dsPass(r){const q=DS.q.trim().toLowerCase();
+ if(q&&!(String(r.name||"").toLowerCase().includes(q)||(r.ing||[]).some(l=>String(l).toLowerCase().includes(q))))return false;
+ if(DS.ft&&!(r.time&&r.time<=DS.ft))return false;if(DS.fl&&r.level!=DS.fl)return false;if(DS.fty&&mainCat(r)!=DS.fty)return false;return true}
+function dsList(){const top=document.getElementById("dsTop"),L=document.getElementById("dsL");if(!L)return;let items=[],head="",more=false;
+ if(DS.tab=="you"){let rows=DS.rows.filter(x=>x.you&&dsPass(x.r));rows.sort((a,b)=>(b.r.id==DS.pin)-(a.r.id==DS.pin)||b.sc-a.sc);
+  head=`<div class="ds2h"><h3>Voor jou</h3><p>Past bij wat je de rest van de week eet</p></div>`;more=rows.length>DS.n;items=rows.slice(0,DS.n).map(x=>dsCard(x.r,x.why));top.innerHTML=""}
+ else if(DS.tab=="hh"){const C=collOn()?collList():[];
+  top.innerHTML=C.length?`<div class="ds2h"><h3>Mijn collecties ${ico("a_lock")}</h3></div><div class="ds2col">${C.map(c=>`<button class="${DS.coll==c.id?"on":""}" style="--cb:${c.bg};--cf:${c.fg}" onclick="DS.coll=DS.coll=='${c.id}'?'':'${c.id}';DS.n=12;dsList()" aria-pressed="${DS.coll==c.id}"><span>${ico(c.ic)}</span><b>${esc(c.name)}</b><small>${collCount(c)} recepten</small></button>`).join("")}</div>`:"";
+  const st=dsStats();let rs=dedupR().filter(dsPass);const c=C.find(x=>x.id==DS.coll);if(c)rs=rs.filter(r=>inColl(r,c));
+  const S2={last:(a,b)=>String(st.last[b.name]||"").localeCompare(String(st.last[a.name]||""))||a.name.localeCompare(b.name),az:(a,b)=>a.name.localeCompare(b.name),fast:(a,b)=>(a.time||999)-(b.time||999),often:(a,b)=>(st.n[b.name]||0)-(st.n[a.name]||0)||a.name.localeCompare(b.name)};
+  rs.sort(S2[DS.sort]||S2.last);
+  head=`<div class="ds2h ds2hr"><h3>${c?esc(c.name):"Alle recepten"}</h3><label class="ds2sort"><span class="sr-only">Sorteren</span><select onchange="DS.sort=this.value;dsList()">${[["last","Laatst gekookt"],["az","A tot Z"],["fast","Snelst klaar"],["often","Vaakst gekookt"]].map(([k,n])=>`<option value="${k}"${DS.sort==k?" selected":""}>${n}</option>`).join("")}</select></label></div>`;
+  more=rs.length>DS.n;items=rs.slice(0,DS.n).map(r=>dsCard(r,""))}
+ else{const F=vrFriends();
+  if(!VRON||!F.length){top.innerHTML="";L.innerHTML=`<div class="ds2e"><p>${VRON?"Je hebt nog geen vrienden in KookBuddy.":"Vrienden staan nog niet aan."}</p><button class="lnk" onclick="dsClose();go('account');aGo('vrienden')">Naar Vrienden</button></div>`;return}
+  top.innerHTML=`<div class="ds2ppl">${[{uid:"",naam:"Iedereen"},...F].map(f=>`<button class="${DS.fr==f.uid?"on":""}" onclick="DS.fr='${f.uid}';DS.n=12;dsList()">${f.uid?avHTML(f.naam,vrIdx(f.uid)%6,22,f.foto):`<span class="ds2all">${ico("a_friends")}</span>`}<span>${esc(f.naam)}</span></button>`).join("")}</div>`;
+  const busy=F.some(f=>DSV[f.uid]=="laden"||DSV[f.uid]==null);let all=[];
+  for(const f of F){const v=DSV[f.uid];if(Array.isArray(v)&&(!DS.fr||DS.fr==f.uid))v.forEach((r,i)=>all.push({r,f,i}))}
+  const tot=all.length,nf=new Set(all.map(x=>x.f.uid)).size;all=all.filter(x=>dsPass(x.r));
+  head=`<div class="ds2h"><h3>Van vrienden</h3><p>${busy&&!tot?"Recepten laden…":tot+" recepten van "+nf+" "+(nf==1?"vriend":"vrienden")}</p></div>`;
+  more=all.length>DS.n;items=all.slice(0,DS.n).map(x=>dsCardF(x))}
+ L.innerHTML=head+(items.length?`<div class="ds2g">${items.join("")}</div>`:`<p class="dse">${DS.q||DS.ft||DS.fl||DS.fty?"Niets gevonden.":DS.tab=="hh"&&DS.coll?"Deze collectie is nog leeg.":"Nog geen recepten."}</p>`)+(more?`<button class="ds2more" onclick="DS.n+=12;dsList()">Meer laden</button>`:"")}
+function dsTileHtml(r){const i=r.id%4,[bg,fg]=DSTINT[i];return`<span class="ds2im" style="--tb:${bg};--tf:${fg}">${ico(DSI[i])}${r.img?`<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:""}`}
+function dsAv(r){const ids=rOwners(r),M=members();if(!ids.length)return"";const sh=ids.slice(0,3),rest=ids.length-sh.length;
+ return`<span class="ds2av">${sh.map(id=>{const i=M.findIndex(m=>m.id==id),m=M[i]||{},nm=m.name||mName(id);return avHTML(nm,i<0?0:i,24,m.p&&m.p.photo)}).join("")}${rest>0?`<span class="ds2avm">+${rest}</span>`:""}</span>`}
+function dsCard(r,why){const on=DS.sel==r.id&&!DS.selF,meta=[mainCat(r),r.time?tMin(r):"",r.level].filter(Boolean).map(esc).join(" · ");
+ return`<button class="ds2r${on?" on":""}" onclick="dsSel(${r.id})" aria-pressed="${on}">${dsTileHtml(r)}${dsAv(r)}</span><span class="ds2pl">${ico(on?"check":"plus")}</span><span class="ds2b"><b>${esc(r.name)}</b><small>${meta}</small>${why&&why!="Al op je menu"?`<em>${esc(why)}</em>`:""}</span></button>`}
+function dsCardF(x){const r=x.r,on=DS.selF&&DS.selF.u==x.f.uid&&DS.selF.i==x.i,meta=[mainCat(r),r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ");
+ const fake={...r,id:Math.abs(vrIdx(x.f.uid+":"+r.id))};
+ return`<button class="ds2r${on?" on":""}" onclick="dsSelF('${x.f.uid}',${x.i})" aria-pressed="${on}">${dsTileHtml(fake)}<span class="ds2av">${avHTML(x.f.naam,vrIdx(x.f.uid)%6,24,x.f.foto)}</span></span><span class="ds2pl">${ico(on?"check":"plus")}</span><span class="ds2b"><b>${esc(r.name)}</b><small>${meta}</small></span></button>`}
+async function dsVrLoad(){if(!sb||!VRON)return;for(const f of vrFriends()){if(DSV[f.uid]!=null)continue;DSV[f.uid]="laden";
+  sb.rpc("vriend_recepten",{p_uid:f.uid}).then(({data,error})=>{DSV[f.uid]=error?{err:error.message}:(Array.isArray(data)?data:[]);if(DS.tab=="vr")dsList()}).catch(e=>{DSV[f.uid]={err:String(e)};if(DS.tab=="vr")dsList()})}dsList()}
+function dsSel(id){DS.selF=null;DS.sel=DS.sel==id?null:id;dsList();dsCta()}
+function dsSelF(u,i){const on=DS.selF&&DS.selF.u==u&&DS.selF.i==i;DS.sel=null;DS.selF=on?null:{u,i};dsList();dsCta()}
+function dsSurprise(){let id=null;try{id=suggest(1,[],[])[0]}catch(e){}if(id==null){const x=DS.rows.filter(y=>y.you&&!S.sel.some(e=>e.rid==y.r.id&&!e.done))[0];if(x)id=x.r.id}if(id==null)return;
+ DS.mode="rec";DS.tab="you";DS.q="";DS.ft=0;DS.fl="";DS.fty="";DS.sel=id;DS.selF=null;DS.pin=id;DS.n=12;dsDraw();
+ const e=document.querySelector("#dsL .ds2r.on");if(e)e.scrollIntoView({block:"center",behavior:"smooth"})}
+// ---- Restjes
+function dsLeftHtml(dn){const L=optOn("left")?[...(S.left||[])].sort((a,b)=>lfDays(a)-lfDays(b)):[];const fr=L.filter(l=>l.where!="vriezer"),fz=L.filter(l=>l.where=="vriezer");
+ if(DS.lid!=null&&!L.some(l=>l.id==DS.lid))DS.lid=null;if(DS.lid==null&&L.length)DS.lid=(fr[0]||fz[0]).id;
+ const dt=k=>pdk(k).toLocaleDateString("nl-NL",{weekday:"short",day:"numeric",month:"short"}).replace(".",""),dm=k=>pdk(k).toLocaleDateString("nl-NL",{day:"numeric",month:"short"}).replace(".","");
+ const since=l=>{const k=l.date||todayK(),a=Math.round((pdk(todayK())-pdk(k))/864e5);return a<=0?"van vandaag":a==1?"van gisteren":a<7?"van "+pdk(k).toLocaleDateString("nl-NL",{weekday:"long"}):(l.where=="vriezer"?"ingevroren ":"van ")+dm(k)};
+ const row=l=>{const d=lfDays(l),until=addD(todayK(),Math.max(0,d)),on=DS.lid==l.id,i=l.id%4,[bg,fg]=DSTINT[i];
+  return`<button class="ds2lr${on?" on":""}" onclick="DS.lid=${l.id};dsBody();dsCta()" role="radio" aria-checked="${on}"><span class="ds2li" style="--tb:${bg};--tf:${fg}">${ico(DSI[i])}</span><span class="ds2lb"><b>${esc(l.name)}</b><small>${String(l.por).replace(".",",")} ${l.por==1?"portie":"porties"} · ${esc(since(l))}</small><em class="${l.where=="vriezer"?"ok":"warm"}">${d<0?"Over de datum":l.where=="vriezer"?"Tot "+dm(until):"Op vóór "+dt(until)}</em></span><span class="ds2rad"></span></button>`};
+ const sel=L.find(l=>l.id==DS.lid),n=dp();
+ const grp=["alleen","met z'n tweeën","met z'n drieën","met z'n vieren","met z'n vijven","met z'n zessen"][n-1]||"met "+n+" personen";
+ const info=sel?(sel.por>=n?`${n==1?"Je eet alleen":"Jullie eten "+grp}, dus ${String(sel.por).replace(".",",")} ${sel.por==1?"portie":"porties"} ${esc(sel.name.toLowerCase())} is ${sel.por==n?"precies genoeg":"genoeg (er blijft wat over)"}. Na het eten halen we het restje uit je voorraad.`:`Er ${sel.por==1?"is":"zijn"} ${String(sel.por).replace(".",",")} ${sel.por==1?"portie":"porties"} en ${n==1?"je eet alleen":"jullie eten "+grp}. Vul eventueel aan met iets kleins.`):"";
+ return`<div class="ds2h"><h3>Restjes op ${esc(dn)}</h3><p>Er komen dan geen boodschappen voor deze dag op je lijst</p></div>
+ ${L.length?`<div class="ds2lc">${fr.length?`<div><h4 class="ds2lh">${ico("box")} In de koelkast</h4><div class="ds2ll" role="radiogroup">${fr.map(row).join("")}</div></div>`:""}${fz.length?`<div><h4 class="ds2lh">✱ In de vriezer</h4><div class="ds2ll" role="radiogroup">${fz.map(row).join("")}</div></div>`:""}</div>${info?`<div class="ds2info">${ico("a_friends")}<span>${info}</span></div>`:""}`:`<div class="ds2e"><p>${optOn("left")?"Er staan geen restjes in je koelkast of vriezer.":"Restjes bijhouden staat uit. Zet het aan bij Kookvoorkeuren."}</p></div>`}
+ <button class="lnk ds2add" onclick="dsLeft()">Staat je restje er niet bij? Voeg het toe</button>`}
+// ---- Niet koken
+const DSOUT=[["afhalen","Afhalen","Bijv. pizza, sushi of de snackbar","cart"],["uit","Uit eten","Restaurant of eetcafé","home"],["bij","Bij iemand eten","Bij familie of vrienden","a_friends"]];
+function dsOutHtml(dn){return`<div class="ds2h"><h3>Niet koken op ${esc(dn)}</h3><p>Er komen dan geen boodschappen voor deze dag op je lijst</p></div>
+ <div class="ds2ll" role="radiogroup">${DSOUT.map(([k,t,s,ic])=>`<button class="ds2lr${DS.out==k?" on":""}" role="radio" aria-checked="${DS.out==k}" onclick="DS.out='${k}';dsBody();dsCta()"><span class="ds2li ds2lo">${ico(ic)}</span><span class="ds2lb"><b>${t}</b><small>${s}</small></span><span class="ds2rad"></span></button>`).join("")}</div>
+ <label class="ds2nl" for="dsnote">Notitie (optioneel)</label><input id="dsnote" class="ds2ni" placeholder="Bijv. pizza van Luigi's of bij oma" value="${esc(DS.note)}" oninput="DS.note=this.value">
+ <button class="lnk ds2add" onclick="dsFixed()">Dit elke week? Maak er een vaste dag van</button>`}
+function dsFixed(){const d=pdk(DS.day),o=DSOUT.find(x=>x[0]==DS.out)||DSOUT[0];dsClose();go("account");fxEdit(0);VD.kind="out";VD.dow=d.getDay();VD.name=(DS.note||o[1]).trim();draw()}
+// ---- Knop onderaan
+function dsCta(){const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),w=s=>{let x=String(s||"").split(/[\s,]+/)[0].toLowerCase();return x.length>14?x.slice(0,13)+"…":x};
+ let lbl="",ok=false;
+ if(DS.mode=="left"){const l=(S.left||[]).find(x=>x.id==DS.lid);ok=!!l;lbl=l?"Zet "+w(l.name)+" op "+dn:"Kies een restje"}
+ else if(DS.mode=="out"){const o=DSOUT.find(x=>x[0]==DS.out)||DSOUT[0];ok=true;lbl="Zet "+o[1].toLowerCase()+" op "+dn}
+ else{const r=DS.selF?((DSV[DS.selF.u]||[])[DS.selF.i]):DS.sel!=null?S.recipes.find(x=>x.id==DS.sel):null;ok=!!r;lbl=r?"Zet "+w(r.name)+" op "+dn:"Kies een recept"}
+ document.getElementById("dsC").innerHTML=`<button class="ds2cancel" onclick="dsClose()">Annuleren</button><button onclick="dsGo()"${ok?"":" disabled"}>${ok?ico("check")+" ":""}${esc(lbl)}</button>`}
+{const _go=dsGo;dsGo=function(){const k=DS.day;
+ if(DS.mode=="left"){const l=(S.left||[]).find(x=>x.id==DS.lid);if(!l)return;S.dx=S.dx||[];S.dx.push({id:newId(),day:k,kind:"left",lid:l.id,por:Math.min(l.por||1,dp()),note:l.name});MW=wOff(k);dsClose();save();draw();return}
+ if(DS.mode=="out"){const o=DSOUT.find(x=>x[0]==DS.out)||DSOUT[0],nt=DS.note.trim();S.dx=S.dx||[];S.dx.push({id:newId(),day:k,kind:"out",how:o[0],note:nt?(o[0]=="afhalen"&&!/afha/i.test(nt)?"Afhalen: "+nt:nt):o[1]});MW=wOff(k);dsClose();save();draw();return}
+ if(DS.selF){const v=DSV[DS.selF.u],r=Array.isArray(v)&&v[DS.selF.i];if(!r)return;const f=vrF(DS.selF.u);
+  let mine=S.recipes.find(x=>x.src&&x.src.uid==DS.selF.u&&x.src.rid==r.id);
+  if(!mine){const c=JSON.parse(JSON.stringify(r));delete c.own;c.id=S.next++;c.src={uid:DS.selF.u,naam:f?f.naam:"",rid:r.id};toDp(c);S.recipes.push(c);mine=c}
+  DS.sel=mine.id;DS.selF=null}
+ return _go.apply(this,arguments)}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
