@@ -2003,6 +2003,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
  .ad-del{width:24px}
  .ad-sr{grid-template-columns:28px minmax(0,1fr) 22px;gap:8px}
 }
+.ad-est{margin:8px 2px 0;font-size:.84rem;color:var(--mute)}
 </style><style id="modal">/* ---- Vensters: telefoon = van onderen met greepje */
 @media(max-width:1023px){
  dialog:not(.kk):not(.ad):not(.sheet){margin:auto 0 0!important;width:100%!important;max-width:100%!important;height:fit-content;max-height:90dvh;border-radius:24px 24px 0 0!important;padding-top:30px!important;padding-bottom:calc(22px + env(safe-area-inset-bottom))!important;box-sizing:border-box}
@@ -2094,7 +2095,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
      <label for="f-pers" class="ad-l">Personen</label>
      <div class="ad-step"><button type="button" onclick="adPers(-1)" aria-label="Minder personen">−</button><input id="f-pers" type="number" min="1" value="2" inputmode="numeric"><button type="button" onclick="adPers(1)" aria-label="Meer personen">+</button></div>
      <span class="ad-l">Moeilijkheid</span>
-     <div class="ad-seg" id="ad-lvl" role="radiogroup" aria-label="Moeilijkheid"></div><select id="f-level" hidden><option value="">Kies…</option></select>
+     <div class="ad-seg" id="ad-lvl" role="radiogroup" aria-label="Moeilijkheid"></div><p class="ad-est" id="ad-est" hidden></p><select id="f-level" hidden><option value="">Kies…</option></select>
      <span class="ad-l">Labels</span>
      <div class="ad-labs" id="ad-labs"></div>
      <input id="f-cat" type="hidden">
@@ -4500,7 +4501,7 @@ function rfTog(k,v){const a=RFD[k],i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.p
 function rfApply(){RF=RFD;rfClose();draw()}
 function rfClose(){const o=$("rfs");if(o)o.remove();document.documentElement.style.overflow="";RFD=null}
 // ---- Kaart + pagina
-function rCard2(r){const o=OPEN[r.id],fav=isFav(r),meta=[mainCat(r),r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ");
+function rCard2(r){const o=OPEN[r.id],fav=isFav(r),meta=[mainCat(r),r.time?tMin(r):"",r.level].filter(Boolean).map(esc).join(" · ");
  const ids=rOwners(r),M=members(),sh=ids.slice(0,3),rest=ids.length-sh.length;
  const av=ids.length?`<span class="rx-own">${sh.map(id=>{const i=M.findIndex(m=>m.id==id),m=M[i]||{},nm=m.name||mName(id);return`<span class="rown-a" title="${esc(nm)}">${avHTML(nm,i<0?0:i,26,m.p&&m.p.photo)}</span>`}).join("")}${rest>0?`<span class="rown-a rown-more rx-more">+${rest}</span>`:""}</span>`:"";
  return`<div class="rx-card rc${o?" open":""}"><div class="rx-top" role="button" tabindex="0" aria-label="${esc(r.name)} openen" onclick="rdOpen(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();rdOpen(${r.id})}">${imgHtml(r)}${av}${collOn()?`<button class="rx-fav${fav?" on":""}" onclick="event.stopPropagation();favTog(${r.id})" aria-pressed="${fav}" aria-label="${fav?"Uit favorieten":"Aan favorieten toevoegen"}">${ico(fav?"a_heartf":"a_heart")}</button>`:""}</div>
@@ -4588,7 +4589,7 @@ function rdDraw(){const o=$("rdet");if(!o||!RD)return;const r=S.recipes.find(x=>
  let stats={};try{stats=dsStats()}catch(e){}const nCook=(stats.n||{})[r.name]||0,last=(stats.last||{})[r.name];
  const ids=rOwners(r),M=members(),own=ids.map(id=>{const m=M.find(x=>x.id==id);return id==(uid||"local")?"jou":((m&&m.name)||mName(id)).split(" ")[0]});
  const oi=ids.length?Math.max(0,M.findIndex(m=>m.id==ids[0])):0,om=M[oi]||{};
- const meta=[mainCat(r),r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ");
+ const meta=[mainCat(r),r.time?tMin(r):"",r.level].filter(Boolean).map(esc).join(" · ");
  const by=[own.length?`Van <b>${esc(own.length>1?own.slice(0,-1).join(", ")+" en "+own[own.length-1]:own[0])}</b>`:"",nCook?nCook+"× gekookt"+(last?", laatst "+rdAgo(last):""):"Nog niet gekookt"].filter(Boolean).join(" · ");
  let nut="";if(optOn("nutri")){const x=nutOf(r);if(x&&x.nut&&x.nut.kcal!=null){const v=k=>x.nut[k]!=null?String(Math.round(x.nut[k])):"–";
   nut=`<div class="rd-nut">${[["kcal","kcal",""],["p","eiwit"," g"],["c","koolh."," g"],["f","vet"," g"]].map(([k,l,u])=>`<div><b>${v(k)}${x.nut[k]!=null?u:""}</b><span>${l}</span></div>`).join("")}</div>`}}
@@ -4834,6 +4835,42 @@ document.addEventListener("click",e=>{const d=e.target;if(!(d instanceof HTMLDia
   d.style.transition="transform .2s ease-out";if(go){d.style.transform="translateY(100%)";setTimeout(()=>{d.style.transition="";d.style.transform="";kbClose(d)},190)}
   else{d.style.transform="";setTimeout(()=>{d.style.transition=""},220)}};
  document.addEventListener("touchend",end);document.addEventListener("touchcancel",end)}
+
+// ================= Bereidingstijd en moeilijkheid inschatten =================
+const EST_TECH=/kneed|kneden|\bdeeg\b|laat .{0,30}rijzen|rijzen|tempere|flambe|roux|b[eé]chamel|hollandaise|bain[- ]marie|sous[- ]vide|frituur|frituren|karamel|stijve pieken|stijf(ge)?klop|souffl|filete|uitbenen|emulge|door een zeef|passeer|spuitzak|bladerdeeg zelf|vacu/gi;
+const EST_CUT=/\b(snijd|snij|snipper|hak|rasp|schil|pel|plet|julienne|blancheer|klop|kneed|meng|marineer|paneer|rol)\w*/gi;
+function estOf(r){const st=(typeof ksteps=="function"?ksteps(r):String(r.steps||"").split(/\n+/)).filter(Boolean),ing=(r.ing||[]).filter(Boolean);
+ if(!st.length&&!ing.length)return null;
+ let total=0,prev=0,act=0,tech=new Set();
+ for(const s of st){let d=0;try{d=kdurs(s).reduce((a,x)=>a+Math.min(x.sec/60,600),0)}catch(e){}
+  if(!d){if(/\b(pasta|spaghetti|penne|macaroni|tagliatelle|fusilli|orzo|noedels|mie)\b/i.test(s)&&/kook|verpakking/i.test(s))d=10;
+   else if(/\brijst\b/i.test(s)&&/kook|gaar/i.test(s))d=15;else if(/aardappel|krieltje/i.test(s)&&/kook|gaar/i.test(s))d=20;
+   else if(/\boven\b/i.test(s)&&!/verwarm|voorverwarm/i.test(s))d=25;else if(/\b(bak|braad|fruit|smoor|stoof|roerbak|gril)\w*/i.test(s))d=5;
+   else if(/inkoken|laat .{0,20}(sudderen|pruttelen|koken)/i.test(s))d=5}
+  if(/nacht\b/i.test(s))d+=480;
+  if(/\b(intussen|ondertussen|tegelijk|terwijl)\b/i.test(s)){total+=Math.max(0,d-prev);prev=Math.max(prev,d)}else{total+=d;prev=d}
+  act+=2+Math.min(3,(s.match(EST_CUT)||[]).length)*2;(s.match(EST_TECH)||[]).forEach(t=>tech.add(t.toLowerCase().slice(0,5)))}
+ act+=ing.length*.5;
+ const time=Math.max(10,Math.round((Math.max(total,act)+Math.min(total,act)*.4)/5)*5);
+ const sc=st.length*.8+ing.length*.25+tech.size*3+(act>45?3:0)+(time>90?2:0);
+ const level=sc<=10?"Makkelijk":sc<=17?"Gemiddeld":"Uitdagend";
+ return{time,level}}
+// ---- In het receptformulier: lege velden invullen met een schatting
+function adEst(force){const t=f("time"),lv=f("level");if(!t||!lv)return;const e=estOf({ing:f("ing").value.split("\n"),steps:f("steps").value});
+ const ti=t.dataset.est=="1"||(!t.value&&force),li=lv.dataset.est=="1"||(!lv.value&&force);
+ if(e&&ti){t.value=e.time;t.dataset.est="1"}if(e&&li){lv.value=e.level;lv.dataset.est="1";adLvlDraw()}
+ const h=document.getElementById("ad-est");if(h){const a=t.dataset.est=="1",b=lv.dataset.est=="1";h.hidden=!(a||b);h.textContent="✨ "+(a&&b?"Tijd en moeilijkheid":a?"Tijd":"Moeilijkheid")+" geschat door KookBuddy. Klopt het niet? Pas het aan."}}
+{const _l=adLoad;adLoad=function(){f("time").dataset.est="";f("level").dataset.est="";_l.apply(this,arguments);adEst(true)}}
+{const _a=adIngSync;adIngSync=function(){_a.apply(this,arguments);adEst(false)}}
+{const _s=adStSync;adStSync=function(n){_s.apply(this,arguments);if(n!==true)adEst(false)}}
+{const _v=adLvl;adLvl=function(x){const l=f("level");if(l.dataset.est=="1"&&l.value==x){l.dataset.est="";adLvlDraw();adEst(false);return}l.dataset.est="";_v(x);adEst(false)}}
+document.addEventListener("input",e=>{if(e.target&&e.target.id=="f-time"){e.target.dataset.est="";adEst(false)}});
+{const _ap=adApply;adApply=function(r){_ap(r);const E=[];if(f("time").dataset.est=="1")E.push("time");if(f("level").dataset.est=="1")E.push("level");if(E.length)r.est=E;else delete r.est}}
+// ---- Bestaande recepten zonder tijd of moeilijkheid: één keer schatten
+function estFill(){let ch=false;for(const r of S.recipes||[]){if(r.est||(r.time&&r.level))continue;const e=estOf(r);if(!e)continue;const E=[];
+  if(!r.time){r.time=e.time;E.push("time")}if(!r.level){r.level=e.level;E.push("level")}if(E.length){r.est=E;ch=true}}return ch}
+{const _d=draw;let busy=false;draw=function(){if(!busy){busy=true;try{if(estFill())save()}catch(e){console.error(e)}busy=false}return _d.apply(this,arguments)}}
+function tMin(r){const n=+r.time||0;if(!n)return"";const t=n<90?n+" min":Math.floor(n/60)+" u"+(n%60?" "+n%60+" min":"");return(Array.isArray(r.est)&&r.est.includes("time")?"± ":"")+t}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
