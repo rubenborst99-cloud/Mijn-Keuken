@@ -1217,6 +1217,71 @@ button.rlab:hover{border-color:var(--green)}
 .rown-a .axav{--s:22px;width:22px;height:22px;font-size:.62rem}
 .rown-more{width:22px;height:22px;align-items:center;justify-content:center;background:var(--t-beige);color:var(--ink);font-size:.62rem;font-weight:700}
 .rown-a .axav{border:0}
+
+/* ================= Receptenpagina (ontwerp) ================= */
+body[data-tab="rec"] h2.pt{margin-bottom:2px}
+.rx-sub{display:flex;align-items:center;gap:6px;color:var(--mute);margin:0 2px 16px;font-size:.92rem}.rx-sub .ic{width:16px;height:16px}
+.rx-search{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+.rx-q{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 16px;height:50px}
+.rx-q .ic{width:20px;height:20px;color:var(--ink);flex:none}.rx-q input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:16px;color:var(--ink);outline:none;padding:0;height:100%}
+.rx-q:focus-within{border-color:var(--green)}
+.rx-fbtn{position:relative;width:50px;height:50px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;flex:none;cursor:pointer}
+.rx-fbtn.on{border-color:var(--ink)}.rx-fbtn .ic{width:22px;height:22px}
+.rx-fn{position:absolute;top:-3px;right:-3px;min-width:20px;height:20px;border-radius:10px;background:var(--green);color:#fff;font-size:.72rem;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.rx-seg{display:grid;grid-template-columns:1fr 1fr;margin:0 0 26px}
+.rx-seg button{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap}.rx-seg button span:not(.axav){color:var(--mute);font-weight:500}
+.rx-seg .ic{width:17px;height:17px}.rx-seg .axav{--s:20px;border:0;font-size:.6rem}
+.rx-sh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 2px 12px}
+.rx-sh h2{font-family:Fraunces,serif;font-size:1.45rem;margin:0;display:flex;align-items:center;gap:6px;min-width:0}
+.rx-new{color:var(--green);font-weight:700;font-size:.92rem;white-space:nowrap}
+.rx-coll{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -10px 28px;padding:2px 10px 4px;scrollbar-width:none}.rx-coll::-webkit-scrollbar{display:none}
+.rx-ct{flex:0 0 150px;scroll-snap-align:start;border:0;border-radius:20px;padding:14px;min-height:108px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;color:var(--ink);cursor:pointer;font:inherit;box-shadow:inset 0 0 0 2px transparent}
+.rx-ct.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.rx-ci{width:36px;height:36px;border-radius:10px;background:var(--card);display:grid;place-items:center;margin-bottom:auto}.rx-ci .ic{width:18px;height:18px}
+.rx-ct b{font-size:1rem;margin-top:14px;line-height:1.2}.rx-ct small{font-size:.82rem;color:var(--ink);opacity:.75}
+.rx-allh{align-items:center}.rx-clr{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--card);border:1px solid var(--line)}.rx-clr .ic{width:14px;height:14px}
+.rx-sort{position:relative;display:inline-flex;align-items:center;color:var(--mute);font-size:.9rem;margin-left:auto}
+.rx-sort select{appearance:none;-webkit-appearance:none;border:0;background:none;font:inherit;color:inherit;padding:4px 18px 4px 4px;cursor:pointer;text-align:right}
+.rx-sort .ic{position:absolute;right:0;width:14px;height:14px;pointer-events:none}
+.rx-act{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:-4px 2px 12px}.rx-ach{background:var(--ink);color:var(--bg);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:600}.rx-act .lnk{font-size:.85rem;color:var(--green);margin-left:4px}
+.rx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:700px){.rx-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}}
+.rx-card.rc{display:block;padding:0;border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line);box-shadow:none}
+.rx-card.open{grid-column:1/-1}
+.rx-top{position:relative;cursor:pointer}
+.rx-card .ph,.rx-card .rh .ph{width:100%!important;height:auto!important;aspect-ratio:16/10!important;max-height:none!important;border-radius:0!important;margin:0!important}
+.rx-card.open .ph{aspect-ratio:16/7!important}
+.rx-card .ph.pi>.ic{width:34%;height:34%;max-width:72px;max-height:72px}
+.rx-fav{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:0;background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.rx-fav .ic{width:20px;height:20px}.rx-fav.on{color:var(--green)}
+.rx-own{position:absolute;left:10px;bottom:10px;display:flex}
+.rx-own .axav{--s:26px;width:26px;height:26px;font-size:.7rem;border:0}.rx-own .rown-a{box-shadow:0 0 0 2px var(--card)}
+.rx-more{width:26px;height:26px;background:var(--ink);color:var(--bg);font-size:.68rem}
+.rx-b{padding:12px 14px 14px;cursor:pointer}
+.rx-b h3{font-family:Fraunces,serif;font-size:1.02rem;font-weight:700;margin:0 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rx-card.open .rx-b h3{white-space:normal;font-size:1.25rem}
+.rx-b p{margin:0;color:var(--mute);font-size:.82rem;line-height:1.4}
+.rx-x{padding:0 14px 14px}.rx-x .ex{flex-wrap:wrap;gap:8px}
+/* Filter-sheet */
+#rfs{position:fixed;inset:0;z-index:9000;display:flex;flex-direction:column;justify-content:flex-end}
+.rfs-scrim{position:absolute;inset:0;background:rgba(43,33,24,.55);animation:rfs-f .2s ease}
+.rfs-sheet{position:relative;background:var(--bg);border-radius:28px 28px 0 0;max-height:92vh;display:flex;flex-direction:column;animation:rfs-u .25s cubic-bezier(.2,.8,.3,1);width:100%;max-width:640px;margin:0 auto}
+.rfs-grab{width:44px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 0;flex:none}
+.rfs-body{overflow-y:auto;padding:8px 22px 18px;overscroll-behavior:contain}
+.rfs-h{display:flex;align-items:center;justify-content:space-between;margin:10px 0 8px}
+.rfs-h h2{font-family:Fraunces,serif;font-size:1.8rem;margin:0}
+.rfs-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer}.rfs-x .ic{width:20px;height:20px}
+.rfs-body h3{font-family:inherit;font-size:1rem;font-weight:700;margin:20px 0 10px}
+.rfw{display:flex;flex-wrap:wrap;gap:8px}
+.rfc{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:9px 16px;font:inherit;font-size:.95rem;cursor:pointer}
+.rfc.on{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:700}.rfc .ic{width:15px;height:15px;stroke-width:3}
+.rfs-more{display:inline-flex;align-items:center;gap:6px;border:0;background:none;color:var(--green);font:inherit;font-weight:700;margin-top:12px;padding:4px 0;cursor:pointer}.rfs-more .ic{width:16px;height:16px}
+.rfs-note{color:var(--mute);font-size:.8rem;margin:18px 0 0}
+.rfs-foot{display:flex;gap:10px;padding:12px 22px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
+.rfs-clear{flex:0 0 auto;border-radius:16px;padding:14px 20px}.rfs-go{flex:1;border-radius:16px;padding:14px;font-size:1rem}
+@keyframes rfs-u{from{transform:translateY(100%)}to{transform:none}}@keyframes rfs-f{from{opacity:0}}
+.cl-row{cursor:pointer}.cl-row .axt{flex:1}.cl-row input{width:22px;height:22px;accent-color:var(--green)}
+.rx-new,.rx-sort,.rx-sort select{font-family:"DM Sans",system-ui,sans-serif}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -1327,7 +1392,7 @@ const PRESET_IMG={
 "Yaki udon (gebakken udon noedels)":"https://www.cookerru.com/wp-content/uploads/2021/04/yaki-udon-feature-4-feature-scaled.jpg",
 "Romige courgettesoep met speltbrood":"https://chickslovefood.com/app/uploads/2018/10/romige-courgettesoep-bovenkant-chickslovefood-1.jpg",
 "Vegetarische shepherd's pie":"https://static.ah.nl/static/recepten/img_065497_1024x748_JPG.jpg"};
-const TYPES=["Voorgerecht","Hoofdgerecht","Bijgerecht","Nagerecht","Gebak","Ontbijt & lunch","Snack"],LEVELS=["Makkelijk","Gemiddeld","Uitdagend"];
+const TYPES=["Voorgerecht","Hoofdgerecht","Tussengerecht","Bijgerecht","Nagerecht","Gebak","Ontbijt & lunch","Snack"],LEVELS=["Makkelijk","Gemiddeld","Uitdagend"];
 const PRESET_META={"Orzo met tomaat en spinazie":["Hoofdgerecht","Makkelijk",30],"Griekse tomatenrijst met feta":["Hoofdgerecht","Makkelijk",35],"Gnocchi-ovenschotel met romige kip":["Hoofdgerecht","Makkelijk",40],"Kip, spinazie en kaas met penne":["Hoofdgerecht","Makkelijk",30],"Macaroni met ham en kaas":["Hoofdgerecht","Makkelijk",25],"Spaghetti met gehaktsaus":["Hoofdgerecht","Makkelijk",30],"Wraps met kip en groenten":["Hoofdgerecht","Makkelijk",25],"Kip tandoori met rijst":["Hoofdgerecht","Gemiddeld",45],"Pasta carbonara":["Hoofdgerecht","Makkelijk",20],"Pasta pesto":["Hoofdgerecht","Makkelijk",15],"Pasta met kaassaus":["Hoofdgerecht","Makkelijk",20],"Rode pesto pasta":["Hoofdgerecht","Makkelijk",20],"Pasta met prei, champignons, kip en slagroom":["Hoofdgerecht","Makkelijk",30],"Carpaccio met gember, cashewnoten en wasabimayo":["Voorgerecht","Makkelijk",15],"BLT pastasalade met avocado":["Lunch","Makkelijk",25],"Yaki udon (gebakken udon noedels)":["Hoofdgerecht","Gemiddeld",25],"Romige courgettesoep met speltbrood":["Soep","Makkelijk",30],"Vegetarische shepherd's pie":["Hoofdgerecht","Gemiddeld",60]};
 function fixS(){S.dx=S.dx||[];S.left=S.left||[];S.stock=S.stock||[];{const lim=dk(new Date(Date.now()-14*864e5));S.sel=(S.sel||[]).filter(e=>!(e.done&&e.shopped&&e.day&&e.day<lim))}S.extra=S.extra||[];S.log=S.log||[];S.checked=S.checked||{};S.sel=S.sel||[];S.deals=S.deals||[];if(S.menu){for(const d in S.menu)for(const e of S.menu[d])S.sel.push(e);delete S.menu}let ch=false;for(const r of S.recipes||[]){if(r.img===undefined&&PRESET_IMG[r.name]){r.img=PRESET_IMG[r.name];ch=true}if(r.type===undefined&&r.level===undefined&&r.time===undefined&&PRESET_META[r.name]){[r.type,r.level,r.time]=PRESET_META[r.name];ch=true}}return ch}
 fixS();
@@ -1733,7 +1798,7 @@ function rcard(r){const o=OPEN[r.id];return`<div class="card rc${o?" open":""}">
 function rlist(){const q=Q.trim().toLowerCase();const rs=recView().filter(r=>(S.cat=="Alles"||mainCat(r)==S.cat)&&(!q||(r.name||"").toLowerCase().includes(q)||rLabTxt(r).toLowerCase().includes(q)||(r.ing||[]).some(l=>String(l).toLowerCase().includes(q)))&&(!FL||r.level==FL)&&(!FM||(r.time>0&&r.time<=FM)));
  return rs.length?`<div class="grid">${rs.map(rcard).join("")}</div>`:`<div class="empty">${S.recipes.length?"Geen recepten gevonden.":"Nog geen recepten. Voeg je eerste recept toe."}</div>`}
 function setQ(v){Q=v;document.getElementById("rl").innerHTML=rlist()}
-function vRec(){
+function vRec(){return vRec2();
  const cs=MAINCATS.filter(c=>recView().some(r=>mainCat(r)==c));if(S.cat!="Alles"&&!cs.includes(S.cat))S.cat="Alles";
  const cnt=c=>recView().filter(r=>c=="Alles"||mainCat(r)==c).length;
  return `<div class="bar rbar"><select id="catsel" aria-label="Categorie" onchange="S.cat=this.value;save();draw()">${["Alles",...cs].map(x=>`<option value="${esc(x)}"${S.cat==x?" selected":""}>${esc(x)} (${cnt(x)})</option>`).join("")}</select><input id="rq" type="search" placeholder="Zoek recept of label…" aria-label="Zoek recept" value="${esc(Q)}" oninput="setQ(this.value)"><button class="btn" onclick="openR()">+ Nieuw</button></div>${ownChips()}${recFilters()}<div id="rl">${rlist()}</div>`}
@@ -2373,7 +2438,7 @@ const AT_BEIGE=["var(--t-beige)","var(--green)"],AT_LILAC=["var(--t-lilac)","var
 function aGo(p){AP=p;AMSG={};if(p=="vrienden"){VRRES=null;VRQ="";loadVR()}if(p=="profiel"){PD=JSON.parse(JSON.stringify(myP()))}draw();window.scrollTo(0,0)}
 function aBack(){if(AP){AP="";PD=null;AMSG={};draw();window.scrollTo(0,0)}else go("home")}
 const KOPT=[["ETEN EN GEZONDHEID",[["nutri","chart",AT_GREEN,"Macro's tonen","Eiwitten, koolhydraten, vetten en calorieën bij elk recept (schatting)"]]],
- ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Vers en houdbaar: afboeken na het koken, bijvullen na de boodschappen, en een korte check voor je nieuwe lijst"],["pantry","a_house",AT_BEIGE,"Kruiden en sauzen in huis","Wat je meestal hebt komt niet op je lijst. De lijst vraagt wel even of je het nog hebt"],["packs","a_store",AT_BEIGE,"Verpakkingen opzoeken","Kent de app de verpakking niet? Dan zoekt hij die gratis op bij Open Food Facts"]]],
+ ["BOODSCHAPPEN",[["prices","a_euro",AT_BEIGE,"Prijzen bijhouden","Zie wat een recept en je weekmenu ongeveer kosten"],["stock","a_box",AT_BEIGE,"Voorraad bijhouden","Vers en houdbaar: afboeken na het koken, bijvullen na de boodschappen, en een korte check voor je nieuwe lijst"],["coll","a_heart",AT_PEACH,"Favorieten en collecties","Hartjes en eigen collecties op je receptenpagina"],["pantry","a_house",AT_BEIGE,"Kruiden en sauzen in huis","Wat je meestal hebt komt niet op je lijst. De lijst vraagt wel even of je het nog hebt"],["packs","a_store",AT_BEIGE,"Verpakkingen opzoeken","Kent de app de verpakking niet? Dan zoekt hij die gratis op bij Open Food Facts"]]],
  ["RESTJES",[["left","a_bowl",AT_PEACH,"Restjes bijhouden","Na het koken vragen we of er iets over is. Restjes komen bij Dit moet op"]]]];
 function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
@@ -2674,7 +2739,7 @@ async function startSolo(rs,keep){const{data,error}=await sb.rpc("maak_huishoude
 function hhJoinDlg(){const d=$("bkdlg");d.innerHTML=`<h2 style="font-size:1.2rem;margin-bottom:8px">Lid worden van een huishouden</h2><p style="margin:0 0 10px">Vul de code uit de uitnodiging in.</p><input id="jcode" class="axin" style="text-transform:uppercase" placeholder="bijv. 7F3K9Q2A"><p class="axhelp" style="margin:8px 0 14px">Je recepten gaan mee en horen daarna bij het huishouden (dubbele worden samengevoegd). Je huidige weekmenu en boodschappenlijst gaan niet mee.</p><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="bkdlg.close()">Annuleren</button><button class="btn" onclick="const c=$('jcode').value;bkdlg.close();joinHH(c)">Lid worden</button></div>`;d.showModal()}
 
 // ---- Hoofdcategorie + automatische labels
-const MAINCATS=["Voorgerecht","Hoofdgerecht","Bijgerecht","Nagerecht","Gebak","Ontbijt & lunch","Snack"];
+const MAINCATS=["Voorgerecht","Hoofdgerecht","Tussengerecht","Bijgerecht","Nagerecht","Gebak","Ontbijt & lunch","Snack"];
 const RX_GEBAK=/\b(taart|taartje|cake|gebak|koek|koekjes|cookies?|brownies?|muffins?|cupcakes?|cheesecake|scones?|bananenbrood|appelflappen?|tompoucen?|bokkenpootjes|kwarktaart)\b|taart\b|cake\b/;
 const RX_DESSERT=/(toetje|dessert|mousse|tiramisu|pudding|panna cotta|vla\b|crumble|ijs\b|sorbet|parfait|trifle|crème brûlée|creme brulee|kwarkbol|yoghurt met)/;
 function mainCat(r){const t=String((r&&r.type)||"").trim(),n=String((r&&r.name)||"").toLowerCase();
@@ -2683,9 +2748,9 @@ function mainCat(r){const t=String((r&&r.type)||"").trim(),n=String((r&&r.name)|
  if(/^(ontbijt|lunch)$/i.test(t))return"Ontbijt & lunch";
  if(/^soep$/i.test(t))return"Voorgerecht";
  if(/^(snack|borrel)$/i.test(t))return RX_GEBAK.test(n)?"Gebak":"Snack";
- if(/^bijgerecht$/i.test(t))return"Bijgerecht";if(/^voorgerecht$/i.test(t))return"Voorgerecht";
+ if(/^bijgerecht$/i.test(t))return"Bijgerecht";if(/^voorgerecht$/i.test(t))return"Voorgerecht";if(/^tussengerecht$/i.test(t))return"Tussengerecht";
  if(RX_GEBAK.test(n))return"Gebak";if(RX_DESSERT.test(n))return"Nagerecht";return"Hoofdgerecht"}
-function typeMig(){if(!S||!Array.isArray(S.recipes))return false;let ch=false;for(const r of S.recipes){const m=mainCat(r);if(r.type!==m){r.type=m;ch=true}}return ch}
+function typeMig(){if(!S||!Array.isArray(S.recipes))return false;let ch=false;S.opt=S.opt||{};if(S.opt.coll===undefined){S.opt.coll=true;ch=true}for(const r of S.recipes){const m=mainCat(r);if(r.type!==m){r.type=m;ch=true}}return ch}
 {const _of=ownFix;ownFix=function(){return _of()|typeMig()}}
 const LKEUKEN=[
  ["Indonesisch",/\b(nasi|bami|saté|sate|satay|rendang|gado|ketjap|sambal|seroendeng|atjar|kroepoek|indonesisch|indisch)\b/],
@@ -3314,6 +3379,95 @@ function pkMove(n,cat){S.pcat=S.pcat||{};S.pcat[pn(n)]=cat;save();draw()}
  if(!optOn("stock")&&!optOn("left")&&STV!="check")return`<div class="axw"><div class="axtop"><button class="axbk" onclick="STV='';go(BKTO||'home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2><span></span></div>${pkSection()}</div>`;
  const h=_vs();return STV=="check"?h:h.replace(/<\/div>$/,pkSection()+"</div>")}}
 Object.assign(ICP,{a_leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14z"/><path d="M5 19l8-8"/>',a_bottle:'<path d="M10 3h4v4l2 3v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10l2-3z"/><path d="M8 13h8"/>'});
+// ================= Receptenpagina (ontwerp "startpagina app-selection 5") =================
+let RQ="",RSORT="last",COLL="",RF={types:[],labels:[],time:0,levels:[],diet:[]},RFD=null,RFALL=false;
+const collOn=()=>!(S.opt&&S.opt.coll===false);
+const meK=()=>uid||"local";
+function favs(){S.favs=S.favs||{};return S.favs[meK()]||[]}
+function isFav(r){return favs().includes(nkey(r))}
+function favTog(id){const r=S.recipes.find(x=>x.id==id);if(!r)return;S.favs=S.favs||{};const k=nkey(r),L=favs().slice(),i=L.indexOf(k);if(i>=0)L.splice(i,1);else L.push(k);S.favs[meK()]=L;save();draw()}
+// ---- Dieet (afgeleid uit ingrediënten)
+const DMEAT=/\b(kip|kipfilet|kippen\w*|kipdij\w*|gehakt\w*|rund\w*|biefstuk|varken\w*|spek\w*|ham|hamlap\w*|bacon|worst\w*|rookworst|chorizo|salami|lam|lams\w*|kalkoen|eend|shoarma|speklap\w*|ossenhaas|riblap|draadjesvlees|vlees|pancetta|prosciutto|drumsticks?|schnitzel|gyros|kalfs\w*|hachee|saucijs\w*|frikandel\w*|kipgehakt|merguez|cervelaat|pastrami|carpaccio|rosbief)\b/;
+const DFISH=/\b(vis|zalm\w*|tonijn|garnalen|garnaal|kabeljauw|ansjovis|mosselen|scampi|pangasius|koolvis|makreel|haring|forel|tilapia|inktvis|krab|kreeft|vissaus|oestersaus|schelvis|heek|zeebaars|dorade|sardines?|surimi|vis\w*)\b/;
+const DDAIRY=/\b(melk|room|boter|kaas|yoghurt|kwark|crème fraîche|creme fraiche|mascarpone|mozzarella|parmezaan|parmigiano|feta|ricotta|slagroom|karnemelk|roomkaas|halloumi|geitenkaas|brie|cheddar|gouda|ghee|vla|kookroom|zure room|ijs|burrata|emmentaler|gruyère|gruyere|pecorino)\b|kaas\b|melk\b|room\b|boter\b/;
+const DPLANT=/\b(kokosmelk|kokosroom|amandelmelk|havermelk|sojamelk|rijstmelk|plantaardige?\s+\w+|haverroom|sojaroom|pindakaas|notenboter|cacaoboter|vegan\w*|kokosyoghurt|sojayoghurt)\b/g;
+const DEGG=/\b(ei|eieren|eidooier\w*|eiwit\w*|mayonaise|mayo)\b/;
+const DGLUTEN=/\b(bloem|pasta|spaghetti|penne|macaroni|tagliatelle|fusilli|orzo|lasagne\w*|noedels?|mie|brood\w*|wraps?|tortilla\w*|pita\w*|naan|couscous|bulgur|paneermeel|tarwe\w*|gerst|rogge|spelt|bladerdeeg|deeg|gnocchi|crackers?|beschuit|sojasaus|ketjap|seitan|bier|koekjes?|cake|croutons?|farfalle|rigatoni|ravioli|tortellini|linguine|panko|zelfrijzend\w*|bami|udon|ramen|pizzadeeg|bloemkoolrijst-vrij)\b/;
+const DGFREE=/\b(glutenvrij\w*|rijstnoedel\w*|rijstvermicelli|tamari|maiszetmeel|rijstmeel)\b/g;
+function rDiet(r){const t=(r.ing||[]).map(l=>String(l).split("|")[0].toLowerCase()).join(" | ")+" | "+String(r.name||"").toLowerCase();
+ const tp=t.replace(DPLANT," "),tg=t.replace(DGFREE," ");const out=[];
+ const veg=!DMEAT.test(t)&&!DFISH.test(t);if(veg)out.push("Vegetarisch");
+ if(veg&&!DDAIRY.test(tp)&&!DEGG.test(t)&&!/\bhoning\b/.test(t))out.push("Veganistisch");
+ if(!DGLUTEN.test(tg))out.push("Glutenvrij");if(!DDAIRY.test(tp))out.push("Lactosevrij");return out}
+// ---- Collecties
+function colls(){return S.colls=S.colls||[]}
+const CTINT=[["var(--t-lilac)","var(--lilacline)"],["var(--t-beige)","var(--green)"],["var(--t-green)","var(--sagefg)"],["var(--t-peach)","var(--green)"]];
+function collList(){const L=[];L.push({id:"fav",name:"Favorieten",ic:"a_heartf",bg:"var(--t-peach)",fg:"var(--green)",keys:favs()});
+ colls().forEach((c,i)=>{const[bg,fg]=CTINT[(i+2)%4];L.push({id:c.id,name:c.name,ic:"a_bookmark",bg,fg,keys:c.keys||[],own:1})});return L}
+function inColl(r,c){return c.auto?c.auto(r):(c.keys||[]).includes(nkey(r))}
+function collCount(c){return recView().filter(r=>inColl(r,c)).length}
+function collNew(after){actOpen("Nieuwe collectie","Collecties",`<div class="pk"><label class="pk-l" for="cnm">Naam</label><input id="cnm" class="axin" maxlength="30" placeholder="bijv. Zondagkoken" onkeydown="if(event.key=='Enter')collNewSave(${after?JSON.stringify(after).replace(/"/g,"&quot;"):"null"})"><button class="btn pk-b" onclick="collNewSave(${after?JSON.stringify(after).replace(/"/g,"&quot;"):"null"})">Collectie maken</button></div>`);setTimeout(()=>{const e=$("cnm");if(e)e.focus()},50)}
+function collNewSave(rid){const v=($("cnm")&&$("cnm").value||"").trim();if(!v){$("cnm").focus();return}const c={id:"c"+Date.now().toString(36),name:v,keys:[]};
+ if(rid!=null){const r=S.recipes.find(x=>x.id==rid);if(r)c.keys.push(nkey(r))}colls().push(c);save();actClose();if(rid==null){COLL=c.id}draw()}
+function collEdit(id){const c=colls().find(x=>x.id==id);if(!c)return;actOpen(c.name,"Collectie",`<div class="pk"><label class="pk-l" for="cnm">Naam</label><input id="cnm" class="axin" maxlength="30" value="${esc(c.name)}"><button class="btn pk-b" onclick="collRen('${id}')">Opslaan</button><button class="lnk pk-x" style="color:var(--danger)" onclick="collDel('${id}')">Collectie verwijderen</button><p class="mute" style="font-size:.85rem;margin:6px 0 0">De recepten zelf blijven bewaard.</p></div>`)}
+function collRen(id){const c=colls().find(x=>x.id==id),v=($("cnm").value||"").trim();if(c&&v){c.name=v;save()}actClose();draw()}
+function collDel(id){S.colls=colls().filter(x=>x.id!=id);if(COLL==id)COLL="";save();actClose();draw()}
+function collPick(rid){const r=S.recipes.find(x=>x.id==rid);if(!r)return;const k=nkey(r),L=colls();
+ actOpen(r.name,"Toevoegen aan collectie",`<div class="pk">${L.length?`<div class="card axlist">${L.map(c=>`<label class="axrow cl-row"><span class="axt"><b>${esc(c.name)}</b><small class="mute">${(c.keys||[]).length} recepten</small></span><input type="checkbox" ${(c.keys||[]).includes(k)?"checked":""} onchange="collTog('${c.id}',${rid},this.checked)"></label>`).join("")}</div>`:`<p class="mute" style="margin:0">Je hebt nog geen eigen collecties.</p>`}
+ <button class="axghost" onclick="collNew(${rid})">${ico("plus")} Nieuwe collectie</button></div>`)}
+function collTog(cid,rid,on){const c=colls().find(x=>x.id==cid),r=S.recipes.find(x=>x.id==rid);if(!c||!r)return;const k=nkey(r);c.keys=(c.keys||[]).filter(x=>x!=k);if(on)c.keys.push(k);save();draw()}
+// ---- Filter
+function rfCount(f){return(f.types.length?1:0)+(f.labels.length?1:0)+(f.time?1:0)+(f.levels.length?1:0)+(f.diet.length?1:0)}
+function rfMatch(r,f){if(f.types.length&&!f.types.includes(mainCat(r)))return false;if(f.labels.length){const L=rLabels(r);if(!f.labels.some(x=>L.includes(x)))return false}
+ if(f.time&&!(r.time>0&&r.time<=f.time))return false;if(f.levels.length&&!f.levels.includes(r.level))return false;if(f.diet.length){const d=rDiet(r);if(!f.diet.every(x=>d.includes(x)))return false}return true}
+function rSearch(r,q){if(!q)return true;q=q.toLowerCase();return(r.name||"").toLowerCase().includes(q)||(r.ing||[]).some(l=>String(l).toLowerCase().includes(q))||rLabTxt(r).toLowerCase().includes(q)}
+function lastCooked(){try{return dsStats().last||{}}catch(e){return{}}}
+function recShown(f){f=f||RF;const c=COLL?collList().find(x=>x.id==COLL):null;let L=recView().filter(r=>(!c||inColl(r,c))&&rSearch(r,RQ.trim())&&rfMatch(r,f));
+ const lc=lastCooked(),nm=(a,b)=>String(a.name||"").localeCompare(String(b.name||""),"nl");
+ if(RSORT=="name")L.sort(nm);else if(RSORT=="new")L.sort((a,b)=>(b.id||0)-(a.id||0));else if(RSORT=="fast")L.sort((a,b)=>(a.time||999)-(b.time||999)||nm(a,b));
+ else L.sort((a,b)=>String(lc[b.name]||"").localeCompare(String(lc[a.name]||""))||nm(a,b));return L}
+function rfOpen(){RFD=JSON.parse(JSON.stringify(RF));RFALL=false;rfDraw()}
+function rfDraw(){let o=$("rfs");if(!o){o=document.createElement("div");o.id="rfs";o.innerHTML=`<div class="rfs-scrim" onclick="rfClose()"></div><div class="rfs-sheet" role="dialog" aria-modal="true" aria-labelledby="rfs-t"><div class="rfs-grab"></div><div class="rfs-body" id="rfsb"></div><div class="rfs-foot" id="rfsf"></div></div>`;document.body.appendChild(o);document.documentElement.style.overflow="hidden"}
+ const f=RFD,chip=(on,txt,js)=>`<button class="rfc${on?" on":""}" aria-pressed="${on}" onclick="${js}">${on?ico("a_check"):""}${esc(txt)}</button>`;
+ const T=["Voorgerecht","Hoofdgerecht","Nagerecht","Tussengerecht","Ontbijt & lunch","Snack","Gebak","Bijgerecht"];
+ const cnt={};recView().forEach(r=>rLabels(r).forEach(l=>cnt[l]=(cnt[l]||0)+1));const labs=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||a.localeCompare(b,"nl"));
+ let shown=RFALL?labs:labs.slice(0,6);f.labels.forEach(l=>{if(!shown.includes(l))shown=[...shown,l]});
+ const tg=(k,v)=>`rfTog('${k}',${esc(JSON.stringify(v))})`;
+ $("rfsb").innerHTML=`<div class="rfs-h"><h2 id="rfs-t">Filter</h2><button class="rfs-x" onclick="rfClose()" aria-label="Sluiten">${ico("a_x")}</button></div>
+ <h3>Type</h3><div class="rfw">${T.map(t=>chip(f.types.includes(t),t,tg("types",t))).join("")}</div>
+ ${labs.length?`<h3>Label</h3><div class="rfw">${shown.map(t=>chip(f.labels.includes(t),t,tg("labels",t))).join("")}</div>${labs.length>6?`<button class="rfs-more" onclick="RFALL=!RFALL;rfDraw()">${RFALL?"Toon minder labels":"Toon alle "+labs.length+" labels"} ${ico(RFALL?"a_chevu":"a_chevd")}</button>`:""}`:""}
+ <h3>Tijd</h3><div class="rfw">${[[20,"Tot 20 min"],[30,"Tot 30 min"],[45,"Tot 45 min"],[0,"Maakt niet uit"]].map(([v,t])=>chip(f.time==v,t,`RFD.time=${v};rfDraw()`)).join("")}</div>
+ <h3>Moeilijkheid</h3><div class="rfw">${LEVELS.map(t=>chip(f.levels.includes(t),t,tg("levels",t))).join("")}</div>
+ <h3>Dieet</h3><div class="rfw">${["Vegetarisch","Veganistisch","Glutenvrij","Lactosevrij"].map(t=>chip(f.diet.includes(t),t,tg("diet",t))).join("")}</div>
+ <p class="rfs-note">Dieet en labels bepaalt de app zelf aan de hand van de ingrediënten. Kijk bij allergieën altijd zelf even na.</p>`;
+ const n=recShown(f).length;$("rfsf").innerHTML=`<button class="btn ghost rfs-clear" onclick="RFD={types:[],labels:[],time:0,levels:[],diet:[]};rfDraw()">Wis alles</button><button class="btn rfs-go" onclick="rfApply()">${n?"Toon "+n+(n==1?" recept":" recepten"):"Geen recepten"}</button>`}
+function rfTog(k,v){const a=RFD[k],i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.push(v);const sc=$("rfsb")?$("rfsb").scrollTop:0;rfDraw();if($("rfsb"))$("rfsb").scrollTop=sc}
+function rfApply(){RF=RFD;rfClose();draw()}
+function rfClose(){const o=$("rfs");if(o)o.remove();document.documentElement.style.overflow="";RFD=null}
+// ---- Kaart + pagina
+function rCard2(r){const o=OPEN[r.id],fav=isFav(r),meta=[mainCat(r),r.time?r.time+" min":"",r.level].filter(Boolean).map(esc).join(" · ");
+ const ids=rOwners(r),M=members(),sh=ids.slice(0,3),rest=ids.length-sh.length;
+ const av=ids.length?`<span class="rx-own">${sh.map(id=>{const i=M.findIndex(m=>m.id==id),m=M[i]||{},nm=m.name||mName(id);return`<span class="rown-a" title="${esc(nm)}">${avHTML(nm,i<0?0:i,26,m.p&&m.p.photo)}</span>`}).join("")}${rest>0?`<span class="rown-a rown-more rx-more">+${rest}</span>`:""}</span>`:"";
+ return`<div class="rx-card rc${o?" open":""}"><div class="rx-top" role="button" tabindex="0" aria-expanded="${o?"true":"false"}" onclick="tog(${r.id})" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();tog(${r.id})}">${imgHtml(r)}${av}${collOn()?`<button class="rx-fav${fav?" on":""}" onclick="event.stopPropagation();favTog(${r.id})" aria-pressed="${fav}" aria-label="${fav?"Uit favorieten":"Aan favorieten toevoegen"}">${ico(fav?"a_heartf":"a_heart")}</button>`:""}</div>
+ <div class="rx-b" onclick="tog(${r.id})"><h3>${esc(r.name)}</h3><p>${meta}</p></div>
+ ${o?`<div class="rx-x">${detail(r)}${labelsHtml(r,1)}<div class="row ex"><button class="btn sm" onclick="startK(${r.id})">${ico("play")} Start koken</button><button class="btn ghost sm" onclick="pickR(${r.id})">${pickLbl(r.id)}</button>${collOn()?`<button class="btn ghost sm" onclick="collPick(${r.id})">${ico("a_bookmark")} Collectie</button>`:""}<button class="btn ghost sm" onclick="openR(${r.id})">Aanpassen</button><button class="btn ghost sm del" onclick="delR(${r.id})">Verwijderen</button><button class="btn ghost sm" onclick="tog(${r.id})">Sluiten</button></div></div>`:""}</div>`}
+function rxList(){const L=recShown();return L.length?`<div class="rx-grid">${L.map(rCard2).join("")}</div>`:`<div class="empty">${S.recipes.length?(COLL&&!RQ&&!rfCount(RF)?"Nog geen recepten in deze collectie. Open een recept en kies Collectie.":"Geen recepten gevonden."):"Nog geen recepten. Voeg je eerste recept toe met de oranje +."}</div>`}
+function rxSetQ(v){RQ=v;const e=$("rxl");if(e)e.innerHTML=rxList()}
+function vRec2(){const multi=isMulti(),all=dedupR(S.recipes||[]).length,me=meK();if(OWNF&&OWNF!=me&&OWNF!="none")OWNF="";
+ const mine=multi?dedupR((S.recipes||[]).filter(r=>ownerIds(r).includes(me))).length:all,M=members(),mi=Math.max(0,M.findIndex(m=>m.id==me)),mm=M[mi]||{};
+ const nF=rfCount(RF),CL=collOn()?collList():[],cur=COLL?CL.find(c=>c.id==COLL):null;if(COLL&&!cur)COLL="";
+ const sorts=[["last","Laatst gekookt"],["name","Naam (A–Z)"],["new","Nieuwste eerst"],["fast","Snelste eerst"]];
+ return`<p class="rx-sub">${ico("a_users")} ${all} ${all==1?"recept":"recepten"}${multi?" in "+esc(hhName()):""}</p>
+ <div class="rx-search"><label class="rx-q">${ico("search")}<input type="search" placeholder="Zoek naam of ingrediënt…" aria-label="Zoek op naam of ingrediënt" value="${esc(RQ)}" oninput="rxSetQ(this.value)"></label><button class="rx-fbtn${nF?" on":""}" onclick="rfOpen()" aria-label="Filter${nF?" ("+nF+" actief)":""}">${ico("a_sliders")}${nF?`<span class="rx-fn">${nF}</span>`:""}</button></div>
+ ${multi?`<div class="axseg rx-seg"><button class="${OWNF?"":"on"}" onclick="OWNF='';draw()">${ico("a_users")} Huishouden <span>${all}</span></button><button class="${OWNF==me?"on":""}" onclick="OWNF='${me}';draw()">${avHTML(mm.name||uname()||"?",mi,20,mm.p&&mm.p.photo)} Alleen van mij <span>${mine}</span></button></div>`:""}
+ ${collOn()?`<div class="rx-sh"><h2>Collecties</h2><button class="lnk rx-new" onclick="collNew()">Nieuwe collectie</button></div>
+ <div class="rx-coll">${CL.map(c=>`<button class="rx-ct${COLL==c.id?" on":""}" style="background:${c.bg}" onclick="COLL=COLL=='${c.id}'?'':'${c.id}';draw()" aria-pressed="${COLL==c.id}"><span class="rx-ci" style="color:${c.fg}">${ico(c.ic)}</span><b>${esc(c.name)}</b><small>${collCount(c)} ${collCount(c)==1?"recept":"recepten"}</small></button>`).join("")}</div>`:""}
+ <div class="rx-sh rx-allh"><h2>${cur?esc(cur.name):"Alle recepten"}${cur?`<button class="lnk rx-clr" onclick="COLL='';draw()" aria-label="Collectie sluiten">${ico("a_x")}</button>`:""}</h2>${cur&&cur.own?`<button class="lnk rx-new" onclick="collEdit('${cur.id}')">Wijzig</button>`:""}<label class="rx-sort"><select aria-label="Sorteren" onchange="RSORT=this.value;draw()">${sorts.map(([v,t])=>`<option value="${v}"${RSORT==v?" selected":""}>${t}</option>`).join("")}</select>${ico("a_chevd")}</label></div>
+ ${nF?`<div class="rx-act">${[...RF.types,...RF.labels,RF.time?"Tot "+RF.time+" min":"",...RF.levels,...RF.diet].filter(Boolean).map(t=>`<span class="rx-ach">${esc(t)}</span>`).join("")}<button class="lnk" onclick="RF={types:[],labels:[],time:0,levels:[],diet:[]};draw()">Wis filters</button></div>`:""}
+ <div id="rxl">${rxList()}</div>`}
+Object.assign(ICP,{a_heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',a_heartf:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="currentColor"/>',
+ a_sliders:'<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',a_users:'<circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5"/><path d="M16 5a3 3 0 0 1 0 6M18 14c2 .6 3 2.3 3 5"/>',
+ a_bookmark:'<path d="M7 4h10v16l-5-4-5 4z"/>',a_chevu:'<path d="M6 15l6-6 6 6"/>'});
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
