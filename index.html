@@ -1544,6 +1544,8 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .st-chip{display:inline-flex;align-items:center;border-radius:99px;padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--bg);color:var(--ink);border:1px solid var(--line)}
 .st-chip.warm{background:var(--t-peach);color:var(--green);border-color:transparent;font-weight:700}
 .st-chip{white-space:nowrap}
+.hx-kmv .hx-mk{margin:12px 12px 0}.hx-kmv .st-rsn b{font-size:1.05rem}
+.hx-kmvc{margin:10px 14px 14px}
 </style>
 <style id="desk">/* ================= Webversie (ontwerp app-ontwerp.pdf) ================= */
 @media(min-width:1024px){
@@ -3769,6 +3771,9 @@ function inspRail(){return`<div class="hx-insp">${inspD().replace('<div class="d
 
 let BKTO="";
 {const _go=go;go=function(t){if(!["log","trend","stock","deals"].includes(t))BKTO="";_go(t);try{window.scrollTo({top:0,left:0,behavior:"instant"})}catch(e){window.scrollTo(0,0)}}}
+{const _dm=dmoCard;dmoCard=function(){const h=_dm.apply(this,arguments);if(h||!optOn("stock"))return h;
+ let E=[];try{E=stEo(1)}catch(e){}if(!E.length)return"";const{r,items}=E[0];
+ return`<div class="hx-sec"><h3>Kook met je voorraad</h3><button class="lnk" onclick="go('stock')">Voorraad</button></div><div class="card axlist hx-dmo hx-kmv"><div class="hx-mk"><span class="hx-mki" style="background:var(--t-green);color:var(--sagefg)">${ico("a_bowl")}</span><button class="axt st-rsn" onclick="rdOpen(${r.id})"><small class="hx-mkl">MAAK ER DIT VAN</small><b>${esc(rTitle?rTitle(r.name):r.name)}</b><small class="mute">${[r.time?r.time+" min":"","gebruikt "+items.length+" uit je voorraad"].filter(Boolean).join(" · ")}</small></button><button class="hx-mkp" onclick="pickR(${r.id})" aria-label="${esc(r.name)} op het menu zetten">${ico("plus")}</button></div><div class="st-chips hx-kmvc">${items.slice(0,5).map(stChip).join("")}</div></div>`}}
 // === KOOKSTAND (nieuw ontwerp, meerdere timers) ===
 Object.assign(ICP,{a_list:'<path d="M9 6.500h11M9 12h11M9 17.500h11"/><circle cx="4.500" cy="6.500" r="1"/><circle cx="4.500" cy="12" r="1"/><circle cx="4.500" cy="17.500" r="1"/>',a_sun:'<circle cx="12" cy="12" r="3.500"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.600 5.600l1.400 1.400M17 17l1.400 1.400M5.600 18.400L7 17M17 7l1.400-1.400"/>',a_pause:'<path d="M9 6v12M15 6v12"/>',a_tri:'<path d="M8 5.500v13l10-6.500z"/>',a_timer:'<circle cx="12" cy="13.500" r="7"/><path d="M12 13.500V10M10 3.500h4"/>'});
 let KTM=[],KDUE=null,KAC=null,KTID=0;
