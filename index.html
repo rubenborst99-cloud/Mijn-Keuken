@@ -3122,7 +3122,7 @@ function phCanvas(fl){return new Promise((ok,no)=>{const rd=new FileReader();rd.
 async function phRead(){const st=document.getElementById("f-pst"),n=PHS.length,go=document.getElementById("f-phgo");if(!n)return;go.disabled=true;let w=null,cur=0;
  try{st.textContent="Tekstlezer laden (de eerste keer duurt dit even)...";await loadTess();
   w=await window.Tesseract.createWorker("nld+eng",1,{logger:m=>{if(m.status)st.textContent="Foto "+(cur+1)+" van "+n+": "+(m.status=="recognizing text"?"tekst lezen ":"voorbereiden ")+Math.round((m.progress||0)*100)+"%"}});
-  const parts=[];for(cur=0;cur<n;cur++){st.textContent="Foto "+(cur+1)+" van "+n+": laden...";const cv=await phCanvas(PHS[cur].fl);const res=await w.recognize(cv);parts.push((res.data.text||"").trim())}
+  const parts=[];for(cur=0;cur<n;cur++){st.textContent="Foto "+(cur+1)+" van "+n+": laden...";const cv=await phCanvas(PHS[cur].fl);const res=await w.recognize(cv,{},{text:true,tsv:true,blocks:true});let g="";try{g=ocrGeo(res.data)}catch(e){}parts.push(g||(res.data.text||"").trim())}
   await w.terminate();w=null;const OT=ocrTidy(parts),txt=OT.text.trim();if(OT.name&&!f("name").value.trim())f("name").value=OT.name;
   if(txt.length<20){st.textContent="Ik kon bijna geen tekst lezen. Probeer scherpere foto's met meer licht.";return}
   document.getElementById("f-paste").value=txt;
@@ -4679,20 +4679,28 @@ function ocrTidy(parts){
  let name="";const out=[];
  let sec="";parts.forEach((raw,pi)=>{
   // 1. regels als één doorlopende stroom; lege regels tellen niet (de tekstlezer zet ze soms na elke regel)
-  const lines=String(raw||"").split(/\r?\n/).map(l=>l.trim()).filter(t=>t&&!OCR_JUNK.test(t)&&ocrLetters(t)>=.6&&t.replace(/[^a-zà-ÿ]/gi,"").length>=(/^[\s•·▪*+\-–]*\d/.test(t)?2:3));
+  const GEO=String(raw||"").startsWith("\u2063GEO"),LN=[];let blank=false;
+  for(let t of String(raw||"").replace("\u2063GEO","").split(/\r?\n/)){t=t.trim();if(!t){blank=true;continue}const hard=/\u23CE$/.test(t);t=t.replace(/\s*\u23CE$/,"").trim();
+   if(!t||OCR_JUNK.test(t)||ocrLetters(t)<.6||t.replace(/[^a-zà-ÿ]/gi,"").length<(/^[\s•·▪*+\-–]*\d/.test(t)?2:3)){blank=GEO?blank:false;continue}
+   LN.push({t,hard,brk:GEO&&blank});blank=false}
+  const maxLen=Math.max(30,...LN.map(x=>x.t.length));
+  // zonder posities: een regel die op een punt eindigt en duidelijk korter is dan de rest, is een harde enter
+  if(!GEO)LN.forEach(x=>{x.hard=x.t.length<.72*maxLen&&/[.!?:]$/.test(x.t)});
+  const lines=LN.map(x=>x.t);
   const items=[];let it=null;const push=()=>{if(it){it.t=it.t.replace(/\s+/g," ").trim();if(it.t){if(it.kind=="bul"&&OCR_STEPISH(it.t,sec)){it.kind="step";it.n=null}items.push(it)}}it=null};
-  for(let l of lines){const bul=OCR_BUL.test(l),num=l.match(/^(\d{1,2}|[lI])\s*[.),]\s+([A-ZÀ-Ý]\S*.*)$/)||l.match(/^(\d{1,2})\s*[.)]\s+(\S.*)$/);if(num&&/^[lI]$/.test(num[1]))num[1]="1";
+  for(let li=0;li<lines.length;li++){let l=lines[li];const newPart=li>0&&(LN[li].brk||LN[li-1].hard);const bul=OCR_BUL.test(l),num=l.match(/^(\d{1,2}|[lI])\s*[.),]\s+([A-ZÀ-Ý]\S*.*)$/)||l.match(/^(\d{1,2})\s*[.)]\s+(\S.*)$/);if(num&&/^[lI]$/.test(num[1]))num[1]="1";
    l=l.replace(OCR_BUL,"").replace(/^(\d+(?:[.,]\d+)?)(el|tl|gr|g|kg|ml|cl|dl|l)\b/i,"$1 $2").trim();
    if(num){push();it={t:num[2],kind:"step",n:+num[1]};continue}
    if(bul){push();it={t:l,kind:"bul"};continue}
    l=l.replace(/\s+[^\w\s.,!?:;)%°½¼¾-]{1,2}$/,"").trim();
    if(/^(voor \d+\s*(personen|pers|porties|stuks)|ingredi[eë]nten|benodigdheden|bereiding(swijze)?|zo maak je het|instructies)\b/i.test(l)){push();sec=/^(bereiding|zo maak|instructies)/i.test(l)?"st":/^(ingredi|benodigd|voor \d)/i.test(l)?"ing":sec;it={t:l,kind:"txt",hd:1};push();continue}
    const low=/^[a-zà-ÿ(]/.test(l),dig=/^[\d½¼¾]/.test(l);
+   if(it&&it.kind=="step"&&it.n==null&&newPart&&!low){push();it={t:l,kind:"step",n:null};continue}
    if(it&&it.kind=="step"&&!/^(tip|let op|bewaar|weetje|serveertip|variatie)\b/i.test(l)&&!/^voor \d/i.test(l)){it.t+=" "+l;continue}
    if(it&&it.kind=="bul"&&!dig&&(sec=="st"||OCR_STEPISH(it.t,sec)||it.t.split(" ").length>=6&&!/^[\d½¼¾]/.test(it.t))&&(low||!/[.!?]$/.test(it.t))){it.t+=" "+l;continue}
    if(it&&it.kind=="bul"&&low&&(it.t.length>=34||/[-,(]$/.test(it.t))&&l.split(" ").length<=4){it.t+=" "+l;continue}
-   if(it&&it.kind=="txt"&&!dig&&!/^voor \d/i.test(it.t)&&!/:$/.test(it.t)&&(low||(it.t.length>=40&&!/[.!?]$/.test(it.t)))){it.t+=" "+l;continue}
-   push();it={t:l,kind:dig&&l.length<70?"bul":"txt"}}
+   if(it&&it.kind=="txt"&&!dig&&!/^voor \d/i.test(it.t)&&!/:$/.test(it.t)&&(GEO?!newPart:(low||(it.t.length>=40&&!/[.!?]$/.test(it.t)&&!newPart)))){it.t+=" "+l;continue}
+   push();it={t:l,kind:dig&&l.length<70?"bul":sec=="st"?"step":"txt"};if(it.kind=="step")it.n=null}
   push();
   // titel in hoofdletters (Instagram: "gebruikersnaam TITEL IN HOOFDLETTERS")
   if(!name)for(let k=0;k<items.length;k++){const x=items[k];if(x.kind!="txt")continue;const m=x.t.match(/((?:[A-ZÀ-Ý][A-ZÀ-Ý'’&-]*[,]?\s+){2,}[A-ZÀ-Ý][A-ZÀ-Ý'’&-]+)(?![a-zà-ÿA-ZÀ-Ý])/);
@@ -4715,12 +4723,27 @@ function ocrTidy(parts){
   if(x.kind=="txt"){
    if(/^voor \d+\s*(personen|pers|porties)|^(ingredi[eë]nten|benodigdheden)\b/i.test(x.t)){body.push(x.t.replace(/:?$/,":"));continue}
    if(x.hd&&/^(bereiding|zo maak|instructies)/i.test(x.t))continue;
-   if(!sawIng&&firstIng>i&&x.t.length>40)continue;// inleidend verhaaltje overslaan
+   if(!sawIng&&firstIng>i&&!(name==""&&!body.length&&x.t.length<=60))continue;// inleidend verhaaltje overslaan (eerste korte regel kan de titel zijn)
    if(steps.length&&x.t.length>40&&/[.!?]$/.test(x.t)&&sawIng)continue;}
   if(x.kind=="bul")sawIng=true;
   body.push(x.t)}
  const text=[name,...body,...(steps.length?["Bereiding:"]:[]),...steps.map((s,i)=>(i+1)+". "+s.t)].filter(Boolean).join("\n");
  return{name,text}}
+// ---- Posities van regels gebruiken: witregel of harde enter = nieuw onderdeel, afgebroken regel = zelfde onderdeel
+function ocrGeo(data){if(!data)return"";let L=[];
+ if(data.tsv){const M=new Map();for(const row of String(data.tsv).split("\n")){const c=row.split("\t");if(c.length<12||c[0]!="5")continue;const tx=c.slice(11).join("\t").trim();if(!tx)continue;
+   const k=c[2]+"|"+c[3]+"|"+c[4],x0=+c[6],y0=+c[7],x1=x0+ +c[8],y1=y0+ +c[9];const o=M.get(k);if(o){o.w.push(tx);o.x0=Math.min(o.x0,x0);o.x1=Math.max(o.x1,x1);o.y0=Math.min(o.y0,y0);o.y1=Math.max(o.y1,y1)}else M.set(k,{w:[tx],x0,x1,y0,y1})}
+  L=[...M.values()].map(o=>({t:o.w.join(" "),x0:o.x0,x1:o.x1,y0:o.y0,y1:o.y1}))}
+ else if(Array.isArray(data.lines))L=data.lines.map(l=>({t:String(l.text||"").trim(),x0:l.bbox.x0,x1:l.bbox.x1,y0:l.bbox.y0,y1:l.bbox.y1})).filter(l=>l.t);
+ else if(Array.isArray(data.blocks))for(const b of data.blocks)for(const p of b.paragraphs||[])for(const l of p.lines||[]){const t=String(l.text||"").trim();if(t)L.push({t,x0:l.bbox.x0,x1:l.bbox.x1,y0:l.bbox.y0,y1:l.bbox.y1})}
+ if(L.length<3)return"";L.sort((a,b)=>a.y0-b.y0||a.x0-b.x0);
+ const q=(a,p)=>{const s=[...a].sort((x,y)=>x-y);return s[Math.min(s.length-1,Math.max(0,Math.floor(p*(s.length-1))))]};
+ const wide=L.filter(l=>l.t.split(" ").length>=5);if(wide.length<2)return"";
+ const right=q(wide.map(l=>l.x1),.9),left=q(wide.map(l=>l.x0),.1),cw=Math.max(1,right-left);
+ const pitch=q(L.slice(1).map((l,i)=>l.y0-L[i].y0).filter(d=>d>0),.35)||q(L.map(l=>l.y1-l.y0),.5)*1.4;
+ let out="\u2063GEO";
+ L.forEach((l,i)=>{if(i){const p=L[i-1],gap=l.y0-p.y0>1.45*pitch,hard=right-p.x1>.15*cw;out+=(hard&&!gap?" \u23CE":"")+(gap?"\n\n":"\n")}out+=l.t});
+ return out}
 
 // ================= Recept toevoegen (ontwerp "app-ontwerp selection") =================
 let ADSRC=null,ADL=[],ADLOFF=new Set(),ADLT=false,ADFLAG=[];
