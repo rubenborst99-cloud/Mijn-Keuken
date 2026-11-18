@@ -1184,6 +1184,23 @@ body nav .ls{padding:0;margin:0;max-width:none}
 
 .axchef{display:inline-flex;align-items:center;gap:6px;margin:8px auto 0;padding:5px 12px;border-radius:999px;background:var(--t-beige);color:var(--green);font-weight:700;font-size:.82rem}
 .axchef .ic{width:14px;height:14px;stroke-width:3}
+
+/* ---- Foto bijsnijden ---- */
+#crop{position:fixed;inset:0;z-index:9999;background:#120d0a;color:#fff;display:flex;flex-direction:column;align-items:center;padding:env(safe-area-inset-top) 0 calc(20px + env(safe-area-inset-bottom))}
+.cr-top{width:100%;max-width:520px;display:flex;align-items:center;justify-content:space-between;padding:12px 8px}
+.cr-top b{font-family:Fraunces,serif;font-size:1.1rem;font-weight:600}
+.cr-tb{background:none;border:0;color:#fff;font:inherit;font-size:1rem;padding:10px 12px;cursor:pointer}
+.cr-ok{color:#F2875C;font-weight:700}
+.cr-stage{position:relative;width:min(88vw,380px);aspect-ratio:1;margin:auto 0 0;overflow:hidden;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.cr-stage:active{cursor:grabbing}
+.cr-stage img{position:absolute;left:0;top:0;max-width:none;transform-origin:0 0;pointer-events:none;-webkit-user-drag:none}
+.cr-mask{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 100vmax rgba(18,13,10,.62);border:2px solid rgba(255,255,255,.85);pointer-events:none}
+#crop .cr-stage{overflow:visible}
+.cr-hint{color:rgba(255,255,255,.7);font-size:.88rem;margin:22px 16px 10px;text-align:center}
+.cr-zoom{display:flex;align-items:center;gap:12px;width:min(80vw,340px);margin-bottom:auto;color:rgba(255,255,255,.8)}
+.cr-zoom input{flex:1;accent-color:#F2875C}
+.cr-top,.cr-hint,.cr-zoom{position:relative;z-index:2}.cr-stage{z-index:1}
+.cr-top{background:#120d0a}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -2363,7 +2380,28 @@ const KITCH=["Hollands","Italiaans","Aziatisch","Mexicaans","Midden-Oosters","Ba
 const VIS=[["all","Iedereen","Ook mensen die je nog niet kent"],["friends","Alleen vrienden","Je vrienden en je huishouden"],["home","Alleen mijn huishouden","Niemand anders ziet je recepten"]];
 function pdTog(f,v){const a=PD[f]=PD[f]||[];const i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.push(v);draw()}
 function pdOwnAdd(){const e=$("pdown");const v=e?e.value.trim():"";if(v&&!PD.own.includes(v))PD.own.push(v);PD._add=false;draw()}
-function pdPhoto(inp){const f=inp.files&&inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const z=192,c=document.createElement("canvas");c.width=c.height=z;const m=Math.min(im.width,im.height);c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,z,z);PD.photo=c.toDataURL("image/jpeg",.8);draw()};im.src=r.result};r.readAsDataURL(f)}
+function pdPhoto(inp){const f=inp.files&&inp.files[0];inp.value="";if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>cropOpen(im);im.src=r.result};r.readAsDataURL(f)}
+// ---- Foto bijsnijden (rond, slepen + zoomen)
+let CR=null;
+function cropOpen(im){cropClose();const o=document.createElement("div");o.id="crop";o.setAttribute("role","dialog");o.setAttribute("aria-label","Foto bijsnijden");
+ o.innerHTML=`<div class="cr-top"><button class="cr-tb" onclick="cropClose()">Annuleren</button><b>Foto bijsnijden</b><button class="cr-tb cr-ok" onclick="cropUse()">Gebruiken</button></div>
+ <div class="cr-stage" id="crst"><img id="crim" src="${im.src}" alt="" draggable="false"><div class="cr-mask"></div></div>
+ <p class="cr-hint">Sleep om te verplaatsen, knijp of schuif om te zoomen</p>
+ <div class="cr-zoom"><span aria-hidden="true">${ico("a_zoomout")}</span><input id="crz" type="range" min="1" max="4" step="0.01" value="1" aria-label="Zoomen" oninput="cropZoom(+this.value)"><span aria-hidden="true">${ico("a_zoomin")}</span></div>`;
+ document.body.appendChild(o);document.documentElement.style.overflow="hidden";
+ const st=$("crst"),S0=st.clientWidth;CR={im,S:S0,base:Math.max(S0/im.width,S0/im.height),z:1,x:0,y:0,P:new Map(),d0:0,z0:1};cropDraw();
+ st.addEventListener("pointerdown",e=>{st.setPointerCapture(e.pointerId);CR.P.set(e.pointerId,{x:e.clientX,y:e.clientY});if(CR.P.size==2){const[a,b]=[...CR.P.values()];CR.d0=Math.hypot(a.x-b.x,a.y-b.y);CR.z0=CR.z}});
+ st.addEventListener("pointermove",e=>{if(!CR||!CR.P.has(e.pointerId))return;const p=CR.P.get(e.pointerId),dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
+  if(CR.P.size==1){CR.x+=dx;CR.y+=dy;cropDraw()}else if(CR.P.size==2&&CR.d0){const[a,b]=[...CR.P.values()];cropZoom(CR.z0*Math.hypot(a.x-b.x,a.y-b.y)/CR.d0);CR.x+=dx/2;CR.y+=dy/2;cropDraw()}});
+ const up=e=>{if(!CR)return;CR.P.delete(e.pointerId);if(CR.P.size<2)CR.d0=0};st.addEventListener("pointerup",up);st.addEventListener("pointercancel",up);
+ st.addEventListener("wheel",e=>{e.preventDefault();cropZoom(CR.z*(e.deltaY<0?1.08:1/1.08))},{passive:false})}
+function cropZoom(z){if(!CR)return;const n=Math.min(4,Math.max(1,z)),k=n/CR.z;CR.x*=k;CR.y*=k;CR.z=n;const r=$("crz");if(r&&+r.value!==n)r.value=n;cropDraw()}
+function cropDraw(){const c=CR,s=c.base*c.z,w=c.im.width*s,h=c.im.height*s,mx=(w-c.S)/2,my=(h-c.S)/2;c.x=Math.max(-mx,Math.min(mx,c.x));c.y=Math.max(-my,Math.min(my,c.y));
+ const i=$("crim");if(i){i.style.width=w+"px";i.style.height=h+"px";i.style.transform=`translate(${(c.S-w)/2+c.x}px,${(c.S-h)/2+c.y}px)`}}
+function cropUse(){const c=CR;if(!c)return;const s=c.base*c.z,w=c.im.width*s,h=c.im.height*s,left=(c.S-w)/2+c.x,top=(c.S-h)/2+c.y,z=320,cv=document.createElement("canvas");cv.width=cv.height=z;
+ const g=cv.getContext("2d");g.imageSmoothingQuality="high";g.drawImage(c.im,-left/s,-top/s,c.S/s,c.S/s,0,0,z,z);PD.photo=cv.toDataURL("image/jpeg",.85);cropClose();draw()}
+function cropClose(){const o=$("crop");if(o)o.remove();document.documentElement.style.overflow="";CR=null}
+Object.assign(ICP,{a_zoomin:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5M8 11h6M11 8v6"/>',a_zoomout:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5M8 11h6"/>'});
 let GNT=null,GNV={};
 const gnSug=()=>{const n=String((PD&&PD.name)||myP().name||uname()||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"");return(n||"kok").slice(0,14)+"kookt"};
 function gnStat(){const v=(PD&&PD.gnaam)||"",cur=myP().gnaam||"";if(!v)return"3 tot 20 tekens: kleine letters, cijfers en _. Hiermee vinden vrienden je.";if(v.length<3)return"Minstens 3 tekens";if(v==cur)return`<span class="axgok">✓ Dit is je gebruikersnaam</span>`;if(GNV[v]===true)return`<span class="axgok">✓ @${esc(v)} is nog vrij</span>`;if(GNV[v]===false)return`<span class="axgno">✕ @${esc(v)} is al bezet</span>`;return"Controleren…"}
