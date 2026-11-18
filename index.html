@@ -1536,6 +1536,14 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .st-eoi{min-width:0}.st-eoi b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .st-eoi .hx-tag{font-size:.74rem;padding:3px 8px}
 .st-mk b{white-space:normal!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.st-rsh{display:flex;align-items:center;gap:12px}
+.st-rsn{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;border:0;background:none;padding:0;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.st-rsn b{font:700 1.15rem/1.25 Fraunces,serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.st-rsn small{font-size:.85rem;margin-top:2px}
+.st-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.st-chip{display:inline-flex;align-items:center;border-radius:99px;padding:5px 11px;font-size:.82rem;font-weight:600;background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.st-chip.warm{background:var(--t-peach);color:var(--green);border-color:transparent;font-weight:700}
+.st-chip{white-space:nowrap}
 </style>
 <style id="desk">/* ================= Webversie (ontwerp app-ontwerp.pdf) ================= */
 @media(min-width:1024px){
@@ -3583,28 +3591,30 @@ let STV="",CK=null,SE=null,BONST=false;
 function stRow(s){return`<button class="axrow hx-srow" onclick="stEdit(${s.id})"><span class="axt"><b>${esc(capF(s.name))}</b></span>${stTag(s)}<span class="st-dots" aria-hidden="true">${ico("a_dots")}</span></button>`}
 function lfDays(l){if(l.until)return daysTo(l.until);const age=Math.round((pdk(todayK())-pdk(l.date||todayK()))/864e5);return(l.where=="vriezer"?90:3)-age}
 function lfTag(l){const d=lfDays(l);return`<span class="hx-tag ${d<=1?"warm":"ok"}">${ico("a_clock")} restje · ${d<0?"over de datum":d==0?"vandaag op":d==1?"morgen op":d<21?"nog "+d+" dagen":"nog ±"+Math.round(d/7)+" weken"}</span>`}
-function stEo(){if(!optOn("stock"))return[];stEnsure();const P=(S.sel||[]).map(e=>e.rid);
- let left=(S.stock||[]).filter(s=>stKind(s)=="v"&&stDaysLeft(s)<=2).sort((a,b)=>stDaysLeft(a)-stDaysLeft(b));const T=[],used=new Set(),R=dedupR();
- while(left.length){const have=left.map(s=>({label:s.name,vs:[stKey(s.name)],s}));let best=null;
-  for(const r of R){if(used.has(r.id))continue;let m=[];try{m=matchTerms(r,have)}catch(e){}if(!m.length)continue;
-   const c={r,m,pl:P.includes(r.id),t:r.time||99};
-   if(!best||c.m.length>best.m.length||(c.m.length==best.m.length&&(best.pl&&!c.pl||(best.pl==c.pl&&c.t<best.t))))best=c}
-  if(!best)break;used.add(best.r.id);const its=left.filter(s=>best.m.includes(s.name));T.push({r:best.r,items:its});left=left.filter(s=>!its.includes(s))}
- for(const s of left)T.push({r:null,items:[s]});
- return T}
-function stPlanAll(){const E=stEo().filter(x=>x.r&&!(S.sel||[]).some(e=>e.rid==x.r.id));if(!E.length){go('menu');return}
+function stW(s){if(stKind(s)!="v")return 1;const d=stDaysLeft(s);return d<=0?10:d==1?8:d==2?6:d<=4?4:2}
+function stEo(n){if(!optOn("stock"))return[];stEnsure();const P=new Set((S.sel||[]).filter(e=>!e.done).map(e=>e.rid)),PI=plannedIng(),ST=(S.stock||[]).filter(s=>(s.q==null||s.q>0)&&!inPlan(s.name,PI));if(!ST.length)return[];
+ const have=ST.map(s=>({label:s.name,vs:[stKey(s.name)]})),C=[];
+ for(const r of dedupR()){if(P.has(r.id))continue;let m=[];try{m=matchTerms(r,have)}catch(e){}if(!m.length)continue;C.push({r,items:ST.filter(s=>m.includes(s.name))})}
+ const out=[],done=new Set();n=n||5;
+ while(out.length<n&&C.length){let bi=-1,bs=0;
+  C.forEach((c,k)=>{const sc=c.items.reduce((t,s)=>t+stW(s)*(done.has(s.name)?.35:1),0)-((c.r.time||40)/400);if(sc>bs){bs=sc;bi=k}});
+  if(bi<0)break;const c=C.splice(bi,1)[0];if(!c.items.some(s=>!done.has(s.name))&&out.length)continue;
+  c.items.sort((a,b)=>stW(b)-stW(a));out.push(c);c.items.forEach(s=>done.add(s.name))}
+ return out}
+function stPlanAll(){const E=stEo(DESK()?2:5).filter(x=>!(S.sel||[]).some(e=>e.rid==x.r.id));if(!E.length){go('menu');return}
  const free=nextDays(7).filter(k=>!(S.sel||[]).some(x=>x.day==k));
  for(const x of E){const k=free.shift();S.sel.push(k?{rid:x.r.id,pers:dp(),day:k}:{rid:x.r.id,pers:dp()})}
  save();go('menu')}
+function stChip(s){const d=stKind(s)=="v"?stDaysLeft(s):99,w=d<=2;return`<span class="st-chip${w?" warm":""}">${esc(capF(s.name))}${w?` · ${d<0?"over de datum":d==0?"vandaag op":d==1?"nog 1 dag":"nog 2 dagen"}`:""}</span>`}
 function vStock(){if(STV=="check")return vStCheck();const st=optOn("stock"),lf=optOn("left"),pk=optOn("pantry");
  const shared=sb&&uid&&isMulti()?`<p class="st-shared">${ico("a_friends")} Gedeeld met ${esc(hhName())}</p>`:"";
  const bk=BKTO&&BKTO!="stock"&&BKTO!="home"?`<button class="st-back" onclick="STV='';go(BKTO)">${ico("chevl")} ${BKTO=="account"?"Account":"Terug"}</button>`:"";
  const hd=`${bk}<div class="st-hd"><div class="st-ht"><h1>Voorraad</h1>${shared}</div><div class="st-act">${st?`<button class="st-bon" onclick="stBon()">${ico("receipt")} Foto van bon</button><button class="btn st-addb" onclick="stAddDlg()">${ico("plus")} Toevoegen</button><button class="st-plus" onclick="stAddDlg()" aria-label="Iets toevoegen">${ico("plus")}</button>`:""}</div></div>`;
  if(!st&&!lf&&!pk)return`<div class="axw st2">${hd}<div class="card axempty"><p>Voorraad en restjes bijhouden staan uit. Zet ze aan bij Account → Kookvoorkeuren.</p><button class="btn" style="margin-top:12px" onclick="go('account');aGo('kook')">Naar Kookvoorkeuren</button></div></div>`;
  let eo="",L="",R="";
- if(st){const E=stEo();
-  if(E.length)eo=`<section class="st-eo"><div class="st-h"><h2>Eerst opmaken</h2><small>Binnen 2 dagen over de datum</small></div><div class="st-eol">${E.map(({items,r})=>`<div class="st-eoc">${items.length==1?`<div class="st-eot"><b>${esc(capF(items[0].name))}</b>${stTag(items[0])}</div>`:`<div class="st-eom"><small class="st-eoml">${r?"Gebruikt "+(items.length==2?"ze allebei":items.length+" dingen"):""}</small>${items.map(s=>`<div class="st-eoi"><b>${esc(capF(s.name))}</b>${stTag(s)}</div>`).join("")}</div>`}${r?`<div class="hx-mk st-mk"><span class="hx-mki" style="background:var(--t-green);color:var(--sagefg)">${ico("a_bowl")}</span><span class="axt"><small class="hx-mkl">MAAK ER DIT VAN</small><b>${esc(rTitle?rTitle(r.name):r.name)}</b>${r.time?`<small class="mute">${r.time} min</small>`:""}</span><button class="hx-mkp" onclick="pickR(${r.id})" aria-label="${esc(r.name)} op het menu zetten">${ico("plus")}</button></div>`:`<p class="mute st-nor">Geen recept gevonden. Zoek er een bij Recepten.</p>`}</div>`).join("")}
-   ${E.some(x=>x.r)?`<div class="st-eoc st-plan"><b>Plan alles in</b><p>KookBuddy zet recepten met deze producten op je weekmenu.</p><button class="lnk" onclick="stPlanAll()">Vul weekmenu aan ${ico("chevr")}</button></div>`:""}</div></section>`;
+ if(st){const E=stEo(DESK()?2:5);
+  if(E.length)eo=`<section class="st-eo"><div class="st-h"><h2>Kook met je voorraad</h2><small>Recepten die zoveel mogelijk opmaken. Wat het eerst over de datum gaat, telt het zwaarst.</small></div><div class="st-eol">${E.map(({items,r})=>`<div class="st-eoc st-rs"><div class="st-rsh"><span class="hx-mki" style="background:var(--t-green);color:var(--sagefg)">${ico("a_bowl")}</span><button class="axt st-rsn" onclick="rdOpen(${r.id})"><b>${esc(rTitle?rTitle(r.name):r.name)}</b><small class="mute">${[r.time?r.time+" min":"","gebruikt "+items.length+" uit je voorraad"].filter(Boolean).join(" · ")}</small></button><button class="hx-mkp" onclick="pickR(${r.id})" aria-label="${esc(r.name)} op het menu zetten">${ico("plus")}</button></div><div class="st-chips">${items.map(stChip).join("")}</div></div>`).join("")}
+   <div class="st-eoc st-plan"><b>Plan ${E.length==1?"dit":E.length==2?"ze allebei":"ze"} in</b><p>KookBuddy zet ${E.length==1?"dit recept":"deze recepten"} op de vrije dagen van je weekmenu.</p><button class="lnk" onclick="stPlanAll()">Vul weekmenu aan ${ico("chevr")}</button></div></div></section>`;
   const V=(S.stock||[]).filter(s=>stKind(s)=="v").sort((a,b)=>stDaysLeft(a)-stDaysLeft(b)),H=(S.stock||[]).filter(s=>stKind(s)=="h").sort((a,b)=>stLvl(a)-stLvl(b)||a.name.localeCompare(b.name));
   const grp=(cls,ic,t,n,sub,subw,rows)=>`<div class="st-g ${cls}"><div class="st-gh"><span class="st-gi">${ico(ic)}</span><span><b>${t}</b> <em>${n}</em><small>${sub}<span class="st-subw"> · ${subw}</span></small></span></div>${rows}</div>`;
   if(!V.length&&!H.length){const names=["rijst","pasta","olijfolie","zout","peper","bloem","suiker","kokosmelk","tomatenblokjes","bouillonblokje","sojasaus","boter"];
