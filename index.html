@@ -1381,6 +1381,39 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .ob-who{left:auto;right:-26px}
 .ob-list{left:9%;right:13%}
 .ob-art[data-s="0"].fly .ob-tap,.ob-art[data-s="1"].chef .ob-tap,.ob-art[data-s="1"].pickdo:not(.tapchef) .ob-tap{opacity:0}
+
+/* 1 (nieuw): recept toevoegen + door de receptenlijst scrollen */
+.ob-ph{position:absolute;left:11%;right:11%;top:78px;bottom:-1px;background:var(--bg);border-radius:22px 22px 0 0;box-shadow:0 -4px 22px rgba(43,33,24,.08);padding:12px 12px 0;display:flex;flex-direction:column;overflow:hidden}
+.ob-phh b{font-family:Fraunces,serif;font-size:1.05rem;color:var(--ink)}
+.ob-url{display:flex;align-items:center;gap:7px;margin:8px 0 10px;background:var(--card);border:1px solid var(--line);border-radius:999px;height:32px;padding:0 4px 0 10px;flex:none}
+.ob-ui{color:var(--green);display:grid}.ob-ui .ic{width:14px;height:14px}
+.ob-ut{flex:1;min-width:0;font-size:.72rem;color:var(--ink);white-space:nowrap;overflow:hidden;width:0;max-width:0;transition:max-width 1s steps(22,end)}
+.ob-art.url .ob-ut{max-width:100%;width:auto}
+.ob-ua{width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;flex:none;transition:transform .2s}.ob-ua .ic{width:13px;height:13px}
+.ob-art.tap .ob-ua{transform:scale(.85)}
+.ob-art[data-s="0"].add .ob-tap{opacity:0}
+.ob-art.add .ob-ut{color:var(--mute)}
+.ob-gw{flex:1;overflow:hidden;position:relative}
+.ob-g{display:grid;grid-template-columns:1fr 1fr;gap:8px;transition:transform 2.2s cubic-bezier(.45,0,.25,1)}
+.ob-art.scroll .ob-g{transform:translateY(-62%)}
+.ob-art.back .ob-g{transform:none;transition-duration:1.2s}
+.ob-rc{background:var(--card);border-radius:12px;overflow:hidden;border:1px solid var(--line);position:relative}
+.ob-rc span{height:46px;display:grid;place-items:center}.ob-rc span .ic{width:22px;height:22px}
+.ob-rc b{display:block;font-family:Fraunces,serif;font-size:.72rem;color:var(--ink);padding:6px 8px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ob-new{border:1.5px dashed color-mix(in srgb,var(--ink) 25%,transparent);background:transparent}
+.ob-new>*{opacity:0;transform:scale(.6);transition:all .45s cubic-bezier(.2,.9,.3,1.4)}
+.ob-new em{position:absolute;top:5px;left:5px;font-style:normal;font-size:.58rem;font-weight:700;background:var(--green);color:#fff;border-radius:6px;padding:1px 6px}
+.ob-art.add .ob-new{background:var(--card);border:1.5px solid var(--green);animation:ob-drop .55s cubic-bezier(.2,.9,.3,1.3)}
+.ob-art.add .ob-new>*{opacity:1;transform:none}
+@keyframes ob-drop{0%{transform:translateY(-40px) scale(.7);opacity:0}100%{transform:none;opacity:1}}
+.ob-art.still .ob-ut{max-width:100%}.ob-art.still .ob-new>*{opacity:1;transform:none}.ob-art.still .ob-new{background:var(--card);border:1.5px solid var(--green)}
+
+.ob-ph{transform:translateY(105%);transition:transform .6s cubic-bezier(.2,.8,.3,1)}
+.ob-art.go .ob-ph{transform:none}
+.ob-art.go .ob-src{opacity:0;transform:translateY(-20px) scale(.95)}
+.ob-art[data-s="0"].go .ob-tap{opacity:0}
+.ob-phh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}.ob-phh small{font-size:.66rem;color:var(--mute)}
+.ob-art.still .ob-ph{transform:none}.ob-art.still .ob-src{display:none}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -3583,11 +3616,12 @@ Object.assign(ICP,{a_heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 
 let ONB=null,ONBT=[],USERCRT="";
 const ONBS=[
  {bg:"var(--t-beige)",t:"Al je recepten op één plek",d:"Bewaar recepten van internet, maak een foto uit een kookboek of typ oma's recept zelf in. KookBuddy maakt er stap-voor-stap kookinstructies van.",
-  art:()=>`<div class="ob-src">${[["a_link","var(--t-beige)","var(--green)","Link van een website"],["camera","var(--t-green)","var(--sagefg)","Foto uit een kookboek"],["a_pen","var(--t-lilac)","var(--lilacline)","Zelf intypen"]].map(([ic,b,c,t],i)=>`<div class="ob-opt" data-i="${i}"><span style="background:${b};color:${c}">${ico(ic)}</span><b>${t}</b></div>`).join("")}</div>
-   <div class="ob-fly"><span class="ob-fph">${ico("bowl")}</span><b>Pasta pesto</b><small>Hoofdgerecht · 20 min</small></div>
-   <div class="ob-nav">${[["home","Home"],["book","Recepten"],["",""],["a_cal","Menu"],["cart","Lijst"]].map(([ic,t],i)=>i==2?`<i class="ob-plus">${ico("plus")}</i>`:`<span class="${i==1?"ob-tab":""}">${ico(ic)}<small>${t}</small>${i==1?`<em class="ob-badge">1</em>`:""}</span>`).join("")}</div>
-   <div class="ob-tap"></div>`,
-  play:[[600,"s1"],[900,"s2"],[900,"s3"],[1000,"tap"],[500,"press"],[700,"fly"],[1100,"land"],[1800,"reset"]]},
+  art:()=>{const R=[["Boerenkool","bowl","var(--t-beige)","var(--green)"],["Kipcurry","cloche","var(--t-lilac)","var(--lilacline)"],["Tomatensoep","bowl","var(--t-green)","var(--sagefg)"],["Shakshuka","bake","var(--t-peach)","var(--green)"],["Lasagne","bake","var(--t-beige)","var(--green)"],["Nasi goreng","plate","var(--t-green)","var(--sagefg)"],["Appeltaart","cloche","var(--t-lilac)","var(--lilacline)"],["Pizza","plate","var(--t-peach)","var(--green)"],["Wraps","bowl","var(--t-beige)","var(--green)"],["Risotto","plate","var(--t-green)","var(--sagefg)"],["Linzensoep","bowl","var(--t-peach)","var(--green)"]];
+   const card=([n,ic,b,c])=>`<div class="ob-rc"><span style="background:${b};color:${c}">${ico(ic)}</span><b>${n}</b></div>`;
+   const src=`<div class="ob-src">${[["a_link","var(--t-beige)","var(--green)","Link van een website"],["camera","var(--t-green)","var(--sagefg)","Foto uit een kookboek"],["a_pen","var(--t-lilac)","var(--lilacline)","Zelf intypen"]].map(([ic,b,c,t],i)=>`<div class="ob-opt" data-i="${i}"><span style="background:${b};color:${c}">${ico(ic)}</span><b>${t}</b></div>`).join("")}</div>`;
+   return src+`<div class="ob-ph"><div class="ob-phh"><b>Recepten</b><small>12 recepten</small></div>
+   <div class="ob-gw"><div class="ob-g"><div class="ob-rc ob-new"><span style="background:var(--t-green);color:var(--sagefg)">${ico("plate")}</span><b>Pasta pesto</b><em>Nieuw</em></div>${R.map(card).join("")}</div></div></div><div class="ob-tap"></div>`},
+  play:[[500,"s1"],[350,"s2"],[350,"s3"],[1000,"tap"],[450,"press"],[500,"go"],[700,"add"],[1600,"scroll"],[2600,"back"],[2000,"reset"]]},
  {bg:"var(--t-green)",t:"Je weekmenu in een paar tikken",d:"Kies zelf wat je wanneer eet, of laat Chef Pieper je week vullen met recepten die bij jullie passen.",
   art:()=>`<div class="ob-week">${[["MA","Stamppot",1],["DI","Pesto",1],["WO","Shakshuka",0],["DO","Curry",0],["VR","Pizza",0]].map(([d,n,f],i)=>`<div class="ob-day${f?" full":""}${i==0?" today":""}" data-d="${d}"><b>${d}</b><span class="ob-dn">${n}</span><span class="ob-de">+ Kies iets</span></div>`).join("")}</div>
    <button class="ob-chef" tabindex="-1">${ico("sparkle")} Laat Chef Pieper kiezen</button><div class="ob-tap"></div>`,
