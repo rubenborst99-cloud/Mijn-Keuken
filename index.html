@@ -1162,6 +1162,25 @@ body nav .ls{padding:0;margin:0;max-width:none}
 /* Woordmerk: altijd donkeroranje + lichtoranje, geen groen */
 .lg-name span:first-child{color:#B8441F!important}
 .lg-name span:last-child{color:#F2875C!important}
+
+.ax-delacc{display:block;margin:18px auto 4px;color:var(--danger);font-size:.9rem}
+.axdel{background:#FBEDEA;border:1px solid #F0C9C2;border-radius:20px;padding:20px 18px 18px}
+.axdel h3{font-family:Fraunces,serif;font-size:1.3rem;color:#9B1C1C;margin:0 0 10px;line-height:1.2}
+.axdel p{margin:0 0 12px;color:var(--ink)}
+.axdel-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.axdel-l li{display:flex;gap:12px;align-items:flex-start;line-height:1.4;color:var(--ink)}
+.axdel-x{color:#C0392B;flex:none;margin-top:1px}.axdel-x .ic{width:18px;height:18px;stroke-width:2.4}
+.axdel-n{color:var(--mute);margin:16px 4px 18px;line-height:1.45}.axdel-n b{color:var(--ink)}
+.axdel-c{display:flex;gap:14px;align-items:flex-start;margin:0 0 20px;cursor:pointer;line-height:1.4;font-weight:400}
+.axdel-c input{appearance:none;-webkit-appearance:none;flex:none;width:24px;height:24px;margin:1px 0 0;border:1.5px solid var(--mute);border-radius:6px;background:var(--card);display:grid;place-items:center;cursor:pointer}
+.axdel-c input:checked{background:#B3261E;border-color:#B3261E}
+.axdel-c input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.axdel-pl{display:block;font-weight:700;margin:0 0 8px}
+.axdel-pw{border-radius:16px;padding:14px 16px}
+.ax-delbtn{width:100%;margin-top:22px;background:#B3261E;border-color:#B3261E;color:#fff;border-radius:16px;padding:15px;font-size:1rem}
+.ax-delbtn:disabled{opacity:.45}
+.ax-delno{width:100%;margin-top:10px;border-radius:16px;padding:14px;background:var(--card)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .axdel{background:#3A1F1C;border-color:#5C2E28}:root:not([data-theme="light"]) .axdel h3{color:#FF9C8F}:root:not([data-theme="light"]) .axdel-x{color:#FF8A80}:root:not([data-theme="light"]) .ax-delbtn{background:#C9372C;border-color:#C9372C}}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -1171,6 +1190,7 @@ body nav .ls{padding:0;margin:0;max-width:none}
 :root[data-theme="dark"]{--bg:#140F0C;--card:#30271F;--tile:#3D3229;--line:#54473A;--dash:#7A6956;--ink:#FFF8EF;--mute:#D2C3B1;--ink2:#EADFD2;--green:#F2875C;--ahov:#FFA884;--on:#140F0C;--pg:#2F5A40;--sagefg:#A9D9B6;--sage:#2F5038;--ong:#FFF8EF;--ongm:#CFE3D3;--t-beige:#54452A;--t-peach:#613A28;--t-green:#2F5038;--t-lilac:#4A3A5E;--lilacline:#D4BCEC;--sunbg:#54452A;--lav:#4A3A5E;--lavfg:#D4BCEC;--shadow:0 6px 20px rgba(0,0,0,.35)}
 :root[data-theme="dark"] .lg-name span:last-child{color:var(--sagefg)}
 :root[data-theme="dark"] .ls-op{color:#1d1426}
+:root[data-theme="dark"] .axdel{background:#3A1F1C;border-color:#5C2E28}:root[data-theme="dark"] .axdel h3{color:#FF9C8F}:root[data-theme="dark"] .axdel-x{color:#FF8A80}:root[data-theme="dark"] .ax-delbtn{background:#C9372C;border-color:#C9372C}
 :root[data-theme="light"]{color-scheme:light}
 </style></head>
 <body>
@@ -2323,7 +2343,7 @@ function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
 function vAccount(){const local=!sb;
  if(RECOV&&uid&&AP!="ww")AP="ww";
- const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast,thema:vAThema}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
+ const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast,thema:vAThema,weg:vAWeg}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
  regMe();const p=myP(),ok=sb&&uid,st=ok?(statTxt||"Gesynchroniseerd"):"Alleen op dit apparaat",bad=/mislukt/i.test(st),ms=members();
  const mAv=(ms.length?ms:[{name:pName(p)||"?",p}]).slice(0,4).map((m,i)=>avHTML(pName(m.p)||m.name,i,42,m.p&&m.p.photo)).join("");
  const mNames=ms.length?ms.map(m=>pName(m.p)||m.name).join(" en "):"Alleen jij";
@@ -2334,7 +2354,7 @@ function vAccount(){const local=!sb;
  <h4 class="axh">JOUW KEUKEN</h4><div class="card axlist">${aRow("a_fridge",AT_GREEN,"Voorraad",optOn("stock")||optOn("left")||optOn("pantry")?"":"uit","BKTO='account';STV='';go('stock')")}${aRow("a_list",AT_BEIGE,"Logboek","","BKTO='account';go('log')")}${aRow("chart",AT_LILAC,"Trends","","BKTO='account';go('trend')")}</div>
  <h4 class="axh">INSTELLINGEN</h4><div class="card axlist">${aRow("a_sliders",AT_LILAC,"Kookvoorkeuren",kCount()+" aan","aGo('kook')")}${aRow("a_bell",AT_BEIGE,"Meldingen","","aGo('meld')")}${aRow("a_sun",AT_PEACH,"Weergave",THEMES[thGet()][0],"aGo('thema')")}${aRow("a_save",AT_GREEN,"Back-ups","","aGo('bk')")}${aRow("a_phone",AT_PEACH,"Als app op je telefoon",isStandalone()?"geïnstalleerd":"","aGo('app')")}</div>
  ${ok?`<h4 class="axh">INLOGGEN EN BEVEILIGING</h4><div class="card axlist">${aRow("a_mail",AT_BEIGE,"E-mailadres",`<span class="axtrunc">${esc(uemail)}</span>`,"aGo('mail')")}${aRow("a_lock",AT_BEIGE,"Wachtwoord wijzigen","","aGo('ww')")}</div>
- <button class="axlogout" onclick="logout()">${ico("a_out")} Uitloggen</button>`:""}</div>`}
+ <button class="axlogout" onclick="logout()">${ico("a_out")} Uitloggen</button><button class="lnk ax-delacc" onclick="DELQ='';DELERR='';DELOK=false;aGo('weg')">Account verwijderen</button>`:""}</div>`}
 // ---- Profiel
 const KITCH=["Hollands","Italiaans","Aziatisch","Mexicaans","Midden-Oosters","Bakken"],DIETS=["Vegetarisch","Veganistisch","Glutenvrij","Lactosevrij"],ALEVELS=["Beginner","Thuiskok","Keukenprof"];
 const VIS=[["all","Iedereen","Ook mensen die je nog niet kent"],["friends","Alleen vrienden","Je vrienden en je huishouden"],["home","Alleen mijn huishouden","Niemand anders ziet je recepten"]];
@@ -2436,6 +2456,33 @@ function thSet(t){try{if(t=="auto")localStorage.removeItem("kthema");else localS
 function vAThema(){const t=thGet();return`${aTop("Weergave","aBack()")}<p class="mute axintro">Kies hoe KookBuddy eruitziet op dit apparaat.</p><div class="card axlist">${Object.entries(THEMES).map(([k,[n,d,ic]])=>`<button class="axrow th-row${k==t?" on":""}" onclick="thSet('${k}')" role="radio" aria-checked="${k==t}"><span class="axic" style="background:var(--t-beige);color:var(--green)">${ico(ic)}</span><span class="axt"><b>${n}</b><small class="mute">${d}</small></span><span class="th-rad">${k==t?ico("a_check"):""}</span></button>`).join("")}</div>`}
 Object.assign(ICP,{a_moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'});
 try{thApply();matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(thGet()=="auto")thApply()})}catch(e){}
+
+// ---- Account verwijderen
+let DELQ="",DELERR="",DELBUSY=false,DELOK=false;
+function delReady(){return DELOK&&DELQ.length>0&&!DELBUSY}
+function delUpd(){const b=$("delbtn");if(b)b.disabled=!delReady()}
+function vAWeg(){const multi=isMulti(),others=multi?(LEDEN||[]).filter(l=>l.uid!=uid).map(l=>(S.members&&S.members[l.uid]&&S.members[l.uid].name)||String(l.email||"").split("@")[0]).filter(Boolean):[];
+ const X=t=>`<li><span class="axdel-x">${ico("a_x")}</span><span>${t}</span></li>`;
+ return`${aTop("Account verwijderen","aBack()")}
+ <div class="axdel"><h3>Dit kun je niet ongedaan maken</h3><p>Als je je account verwijdert, ben je dit kwijt:</p><ul class="axdel-l">
+ ${X("Je eigen recepten, weekmenu's en boodschappenlijsten")}${X("Je vrienden en wat je met hen hebt gedeeld")}${X("Je profiel en voorkeuren")}</ul></div>
+ <p class="axdel-n">${multi?`Recepten die je in <b>${esc(hhName())}</b> hebt gedeeld, blijven in het huishouden staan${others.length?" voor "+esc(others.join(" en ")):""}.`:`Wil je je recepten bewaren? Maak dan eerst een <button class="lnk" onclick="aGo('bk')">back-up</button>.`}</p>
+ <label class="axdel-c"><input type="checkbox" ${DELOK?"checked":""} onchange="DELOK=this.checked;delUpd()"><span>Ik begrijp dat mijn account en gegevens definitief verdwijnen</span></label>
+ <label class="axdel-pl" for="delq">Je wachtwoord</label>
+ <input id="delq" class="axin axdel-pw" type="password" autocomplete="current-password" value="${esc(DELQ)}" oninput="DELQ=this.value;delUpd()" onkeydown="if(event.key=='Enter')delAcc()">
+ ${DELERR?`<p class="axerr" style="margin-top:10px">${esc(DELERR)}</p>`:""}
+ <button id="delbtn" class="btn ax-delbtn" ${delReady()?"":"disabled"} onclick="delAcc()">${DELBUSY?"Bezig…":"Account definitief verwijderen"}</button>
+ <button class="btn ghost ax-delno" onclick="aBack()">Annuleren</button>`}
+async function delAcc(){if(!delReady())return;DELBUSY=true;DELERR="";draw();
+ try{const{error}=await sb.auth.signInWithPassword({email:uemail,password:DELQ});if(error){DELBUSY=false;DELERR=/invalid|credentials/i.test(error.message||"")?"Dit wachtwoord klopt niet.":"Controleren mislukt: "+error.message;DELQ="";draw();const f=$("delq");if(f)f.focus();return}}catch(e){DELBUSY=false;DELERR="Controleren mislukt. Probeer het opnieuw.";draw();return}
+ try{if(isMulti()&&S.prof&&S.prof[uid]){delete S.prof[uid];await pushNow()}}catch(e){}
+ let r;try{r=await sb.rpc("verwijder_account")}catch(e){r={error:e}}
+ DELBUSY=false;
+ if(r&&r.error){const m=String(r.error.message||r.error);DELERR=/verwijder_account|function|PGRST202|schema cache/i.test(m+(r.error.code||""))?"Account verwijderen is nog niet ingesteld. Ruben moet eerst account-verwijderen.sql uitvoeren in Supabase.":"Verwijderen mislukt: "+m;draw();return}
+ try{await sb.auth.signOut({scope:"local"})}catch(e){}
+ uid=null;HH=null;LEDEN=null;HROL="";S={...freshS(),tab:"home"};AP="";DELQ="";DELOK=false;
+ try{["keuken","khh","kprof","kgn","kvf","kinv"].forEach(k=>localStorage.removeItem(k))}catch(e){}
+ VR=null;VRON=false;MELD=[];FV=null;LM="in";LMSG={ok:"Je account is verwijderd. Bedankt voor het koken met KookBuddy!"};draw();window.scrollTo(0,0)}
 // === VRIENDEN ===
 let FVNEW=false;let VR=null,VRON=false,MELD=[],FV=null,FVR=null,FVQ="",FVCAT="",FVF=false,VRQ="",VRRES=null,VRT=null;
 try{const u=new URL(location.href),c=u.searchParams.get("vriend");if(c){localStorage.setItem("kvf",c.trim().toUpperCase());u.searchParams.delete("vriend");history.replaceState(null,"",u.pathname+u.search+u.hash)}}catch(e){}
