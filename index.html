@@ -2335,6 +2335,86 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .tr2bt{font-size:.82rem!important;margin:10px 0 0!important}
 .rd-cost{color:var(--mute);font-size:.85em}
 @media(max-width:1023px){.lb2sum{flex-wrap:wrap}.lb2k{width:100%;justify-content:space-between}}
+</style><style id="bn">/* ---- Bon toevoegen / controleren */
+#bndlg.bn{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
+#bndlg .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.bn-hd{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:var(--bg)}
+.bn-bk,.bn-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+.bn-x{display:none}
+.bn-tt{flex:1;min-width:0;text-align:center;padding-right:54px}.bn-tt h2{font:600 1.5rem "Fraunces",serif;margin:0}.bn-tt p{margin:4px 0 0;color:var(--mute);font-size:.92rem}
+.bn-b{padding:4px 18px 18px}
+.bn-drop{border:2px dashed var(--dash,#D9CCBB);border-radius:24px;padding:24px 22px;text-align:center;background:var(--card)}
+.bn-drop.on{border-color:var(--green)}
+.bn-pic{display:grid;place-items:center;width:132px;height:132px;border-radius:50%;background:var(--t-beige);margin:0 auto 14px}.bn-pic svg{width:58px;height:74px}
+.bn-spin svg{animation:bnp 1.2s ease-in-out infinite}@keyframes bnp{50%{transform:translateY(-6px)}}
+.bn-drop h3{font:600 1.45rem "Fraunces",serif;margin:0}.bn-drop p{color:var(--mute);margin:6px 0 16px;line-height:1.45}
+.bn-pb{width:100%;justify-content:center;display:flex;align-items:center;gap:8px;border-radius:16px;padding:15px;font-size:1rem;margin-top:10px}
+.bn-th{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0 0 6px}
+.bn-th span{position:relative;width:70px;height:92px;border-radius:10px;overflow:hidden;border:1px solid var(--line)}.bn-th img{width:100%;height:100%;object-fit:cover}
+.bn-th span button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:.7rem;cursor:pointer;padding:0}
+.bn-thp{width:70px;height:92px;border-radius:10px;border:1.5px dashed var(--line);background:none;color:var(--mute);display:grid;place-items:center;cursor:pointer}
+.bn-err{color:var(--danger,#B23A2A);margin:12px 4px 0;font-size:.92rem}
+.bn-dig{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;font:inherit;color:var(--ink);cursor:pointer}
+.bn-dig>span:nth-child(2){flex:1}.bn-dig b{display:block}.bn-dig small{color:var(--mute);font-size:.86rem}
+.bn-di{width:40px;height:40px;border-radius:12px;background:var(--tile,#EFE6DA);display:grid;place-items:center}.bn-di .ic{width:18px;height:18px}
+.bn-paste{margin-top:10px}.bn-paste textarea{width:100%;min-height:110px;box-sizing:border-box;margin-bottom:8px}
+.bn-h{font:700 1rem "DM Sans";margin:20px 2px 10px}.bn-h span{font-weight:400;color:var(--mute)}
+.bn-at{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.bn-at button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:none;padding:14px;font:inherit;color:var(--ink);cursor:pointer}
+.bn-at button:first-child{border-top:0}.bn-at button.on{background:rgba(184,68,31,.05)}
+.bn-ai{width:42px;height:42px;border-radius:12px;background:var(--t-green);color:var(--sagefg);display:grid;place-items:center;flex:none}.bn-ai.n{background:var(--tile,#EFE6DA);color:var(--ink)}.bn-ai .ic{width:18px;height:18px}
+.bn-at2{flex:1;min-width:0}.bn-at2 b{display:block}.bn-at2 small{color:var(--mute);font-size:.86rem}
+.bn-at button i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;box-sizing:border-box}.bn-at button.on i{border:6px solid var(--green)}
+.bn-note{color:var(--mute);font-size:.86rem;margin:8px 4px 0}
+.bn-tips{background:var(--t-beige);border-radius:18px;padding:16px;margin-top:16px}.bn-tips b{display:block;margin-bottom:6px}
+.bn-tips ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.bn-tips li{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}.bn-tips .ic{width:16px;height:16px;color:#3E6B4E;margin-top:2px}
+.bn-ft{position:sticky;bottom:0;z-index:3;display:flex;gap:10px;padding:12px 18px calc(14px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line)}
+.bn-can{display:none}.bn-go{flex:1;justify-content:center;display:inline-flex;align-items:center;gap:8px;border-radius:16px;padding:15px;font-size:1.02rem}.bn-go .ic{width:18px;height:18px}
+#bndlg[data-step="add"] .bn-ft{position:static}
+.bn-pv{display:none}
+.bn-sum{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.bn-sh{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.bn-rc{width:68px;height:80px;border-radius:12px;background:var(--tile,#EFE6DA);display:grid;place-items:center;flex:none}.bn-rc svg{width:40px;height:52px}
+.bn-sh>div{flex:1;min-width:0}.bn-sh b{display:block;font:600 1.25rem "Fraunces",serif}.bn-sh small{color:var(--mute);font-size:.86rem}
+.bn-ed{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:grid;place-items:center;cursor:pointer;color:var(--ink);padding:0;flex:none}.bn-ed .ic{width:16px;height:16px}
+.bn-ef{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.bn-ef label{display:flex;flex-direction:column;gap:4px;font-size:.82rem;color:var(--mute)}.bn-ef label:first-child{grid-column:1/-1}.bn-ef input{width:100%;box-sizing:border-box}.bn-ef .btn{grid-column:1/-1}
+.bn-ss{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.bn-ss small{display:block;color:var(--mute);font-size:.82rem}.bn-ss b{font-size:1.15rem}
+.bn-bar{height:8px;border-radius:4px;background:var(--tile,#EFE6DA);overflow:hidden;margin-top:12px}.bn-bar i{display:block;height:100%;background:#3E6B4E;border-radius:4px}
+.bn-bt{color:#3E6B4E;font-weight:700;font-size:.88rem;margin:8px 0 0}
+.bn-chk{background:var(--card);border:1px solid var(--line);border-left:4px solid #D69A1E;border-radius:18px;overflow:hidden}
+.bn-ci{padding:14px;border-top:1px solid var(--line)}.bn-ci:first-child{border-top:0}
+.bn-ct{display:flex;justify-content:space-between;align-items:center;gap:10px}.bn-ct code{background:var(--tile,#EFE6DA);border-radius:6px;padding:3px 8px;font-size:.82rem;max-width:72%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bn-ct em{font-style:normal;color:var(--mute);font-size:.9rem}
+.bn-cq{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}.bn-cq b{flex:1;min-width:140px}.bn-cq .mute{flex:1}
+.bn-cq input{flex:1;min-width:0;box-sizing:border-box}
+.bn-ja{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:12px;background:#3E6B4E;color:#fff;padding:9px 14px;font:inherit;font-weight:700;cursor:pointer}.bn-ja .ic{width:15px;height:15px}
+.bn-wz{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:9px 14px;font:inherit;font-weight:700;cursor:pointer}.bn-wz .ic{width:15px;height:15px}
+.bn-oks{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.bn-ok{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:none;padding:12px 14px;font:inherit;color:var(--ink);cursor:pointer}.bn-ok:first-child{border-top:0}
+.bn-ok>span{flex:1;min-width:0}.bn-ok b{display:block;font-weight:600}.bn-ok small{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:.86rem;margin-top:3px}
+.bn-ok em{font-style:normal;font-weight:700;font-size:.76rem;border-radius:99px;padding:2px 9px;display:inline-flex;align-items:center;gap:4px}.bn-ok em .ic{width:12px;height:12px}
+.bn-ok em.on{background:var(--sage);color:var(--sagefg)}.bn-ok em.ex{background:var(--t-peach);color:var(--green)}
+.bn-ok strong{flex:none}
+.bn-more{display:block;margin:12px auto 0}
+.bn-sws{margin-top:18px}
+@media(min-width:1024px){
+ #bndlg.bn{width:min(780px,94vw);height:auto;max-height:92vh;margin:auto;border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+ #bndlg[data-step="check"].bn{width:min(880px,94vw)}
+ .bn-hd{position:static;padding:26px 28px 6px;background:none}.bn-bk{display:none}.bn-x{display:grid}
+ .bn-tt{text-align:left;padding:0}.bn-tt h2{font-size:1.9rem}
+ .bn-b{padding:10px 28px 6px}
+ .bn-cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+ .bn-cc{grid-template-columns:240px 1fr}
+ .bn-pv{display:block;position:sticky;top:0;background:var(--t-beige);border-radius:22px;padding:16px}
+ .bn-pvi{background:#fff;border-radius:12px;min-height:260px;display:grid;place-items:center;overflow:hidden}.bn-pvi img{width:100%;display:block}.bn-pvi svg{width:90px;height:112px}
+ .bn-pvb{display:flex;gap:8px;margin-top:12px}.bn-pvb .btn{flex:1;justify-content:center;display:inline-flex;align-items:center;gap:6px}
+ .bn-h:first-child{margin-top:0}
+ .bn-cols>div>.bn-h:first-child{margin-top:4px}
+ .bn-ft{position:static!important;justify-content:flex-end;margin:12px 28px 0;padding:18px 0 26px;background:none}
+ .bn-can{display:inline-flex;border-radius:14px;padding:12px 20px}.bn-go{flex:none;padding:12px 22px;border-radius:14px}
+}
+.bn-cq{flex-wrap:nowrap}.bn-cq b{min-width:0;flex:1}
+.bn-ja,.bn-wz{padding:8px 11px;flex:none}
+@media(max-width:360px){.bn-cq{flex-wrap:wrap}}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -5595,6 +5675,114 @@ async function logPhOpen(id){const d=await bonGet(id);if(!d)return;const g=$("bk
   const hit=pw.some(w=>w==k||sing(w)==sing(k)||(k.length>=4&&w==kw[kw.length-1]))||kw.some(w=>w.length>=4&&(w==key||sing(w)==sing(key)));
   if(!hit)continue;const h=e.h.find(x=>x.store==S.store)||e.h[0];if(!best||String(h.d)>bd){best=h;bd=String(h.d)}}
  return best}}
+
+// ================= Bon toevoegen / Bon controleren (nieuw ontwerp) =================
+let BN=null;
+(function(){if(document.getElementById("bndlg"))return;const d=document.createElement("dialog");d.id="bndlg";d.className="bn ad";d.setAttribute("aria-label","Bon toevoegen");document.body.appendChild(d)})();
+{const _k=kbSkip;kbSkip=function(d){return _k(d)||(!!d&&d.id=="bndlg"&&!DESK())}}
+const BNCH=[[/albert ?heijn|\bah\b/i,"Albert Heijn"],[/jumbo/i,"Jumbo"],[/\blidl\b/i,"Lidl"],[/\baldi\b/i,"Aldi"],[/\bplus\b/i,"PLUS"],[/\bdirk\b/i,"Dirk"],[/\bcoop\b/i,"Coop"],[/\bspar\b/i,"Spar"],[/vomar/i,"Vomar"],[/hoogvliet/i,"Hoogvliet"],[/ekoplaza/i,"Ekoplaza"],[/picnic/i,"Picnic"]];
+function bnAttachOpts(){const O=[],L=list(),t=todayK();
+ if(L.length)O.push({k:"list",t:"Je boodschappenlijst",s:"Lijst met "+L.length+" producten · wordt afgevinkt",ic:"cart"});
+ (S.log||[]).forEach((g,i)=>{const d=trK(g.date);if(d<addD(t,-14))return;if((S.receipts||[]).some(r=>trK(r.date)==d))return;const dd=pdk(d);
+  O.push({k:"log:"+i,day:d,t:capF(DN[dd.getDay()])+" "+dd.getDate()+" "+MON[dd.getMonth()],s:((g.meals||[]).length?"Weekmenu · ":"")+"lijst met "+(g.items||[]).length+" producten",ic:"cart"})});
+ O.push({k:"new",t:"Nieuw boodschappenmoment",s:"Voor tussendoor of zonder lijst",ic:"plus"});return O.slice(0,5)}
+openB=function(){const O=bnAttachOpts();let at=O[0].k;if(BONDATE){const d=trK(BONDATE),o=O.find(x=>x.day==d);if(o)at=o.k}
+ BN={step:"add",files:[],at,lines:[],store:"",date:BONDATE||new Date().toISOString(),total:0,stock:optOn("stock"),spend:true,more:false,edit:false,err:"",prog:"",paste:false};bnDraw();const d=$("bndlg");if(!d.open)d.showModal();d.scrollTop=0};
+function bnClose(){const d=$("bndlg");if(d.open)d.close();BN=null;BONDATE=null;BONIMG=null}
+// ---- tekenen
+function bnDraw(){const d=$("bndlg");if(!BN)return;d.dataset.step=BN.step;d.innerHTML=BN.step=="check"?bnCheckHtml():bnAddHtml();if(BN.step=="check")setTimeout(bnThumb,0)}
+function bnHd(t,sub){return`<div class="bn-hd"><button class="bn-bk" onclick="${BN.step=="check"?"BN.step='add';bnDraw()":"bnClose()"}" aria-label="Terug">${ico("chevl")}</button><div class="bn-tt"><h2>${t}</h2>${sub?`<p>${sub}</p>`:""}</div><button class="bn-x" onclick="bnClose()" aria-label="Sluiten">${ico("close")}</button></div>`}
+const BNRECEIPT=`<svg viewBox="0 0 64 80" aria-hidden="true"><path d="M8 4h48v66l-6-4-6 4-6-4-6 4-6-4-6 4-6-4-6 4z" fill="#fff"/><rect x="22" y="12" width="20" height="4" rx="2" fill="#CDBFAE"/><g fill="#DCCFC0"><rect x="14" y="24" width="24" height="3" rx="1.5"/><rect x="44" y="24" width="8" height="3" rx="1.5"/><rect x="14" y="31" width="20" height="3" rx="1.5"/><rect x="44" y="31" width="8" height="3" rx="1.5"/><rect x="14" y="38" width="26" height="3" rx="1.5"/><rect x="44" y="38" width="8" height="3" rx="1.5"/><rect x="14" y="45" width="18" height="3" rx="1.5"/><rect x="44" y="45" width="8" height="3" rx="1.5"/></g><rect x="14" y="54" width="14" height="3" rx="1.5" fill="#6B5A4A"/><rect x="42" y="54" width="10" height="3" rx="1.5" fill="#6B5A4A"/></svg>`;
+function bnAddHtml(){const O=bnAttachOpts(),busy=BN.step=="read",n=BN.files.length;
+ const thumbs=n?`<div class="bn-th">${BN.files.map((f,i)=>`<span><img src="${f.u}" alt="Foto ${i+1} van de bon"><button onclick="BN.files.splice(${i},1);bnDraw()" aria-label="Foto ${i+1} weghalen">✕</button></span>`).join("")}<button class="bn-thp" onclick="$('bn-in').click()" aria-label="Nog een foto toevoegen">${ico("plus")}</button></div>`:"";
+ return`${bnHd("Bon toevoegen",DESK()?"Chef Pieper leest de producten en prijzen voor je uit.":"")}
+ <div class="bn-b"><div class="bn-cols"><div>
+  <div class="bn-drop" id="bn-drop">${busy?`<span class="bn-pic bn-spin">${BNRECEIPT}</span><h3>Bon lezen…</h3><p>${esc(BN.prog||"Even geduld")}</p>`:`<span class="bn-pic">${BNRECEIPT}</span><h3>${DESK()?"Sleep je bon hierheen":"Maak een foto van je bon"}</h3><p>${DESK()?"Een foto of screenshot van je bon":"Chef Pieper leest de producten en prijzen voor je uit."}</p>${thumbs}
+   ${DESK()?`<button class="btn bn-pb" onclick="$('bn-in').click()">${ico("plus")} ${n?"Nog een foto":"Kies een bestand"}</button>`:`<button class="btn bn-pb" onclick="$('bn-cam').click()">${ico("camera")} ${n?"Nog een foto maken":"Foto maken"}</button><button class="btn ghost bn-pb" onclick="$('bn-in').click()">${ico("a_list")} Kies uit je foto's</button>`}`}
+   <input type="file" accept="image/*" id="bn-in" multiple hidden onchange="bnFiles(this)"><input type="file" accept="image/*" capture="environment" id="bn-cam" hidden onchange="bnFiles(this)"></div>
+  ${BN.err?`<p class="bn-err">${esc(BN.err)}</p>`:""}
+  <button class="bn-dig" onclick="BN.paste=!BN.paste;bnDraw()"><span class="bn-di">${ico("book")}</span><span><b>Digitale bon?</b><small>Upload een screenshot uit je supermarkt-app, of plak de tekst</small></span>${ico(BN.paste?"a_chevd":"chevr")}</button>
+  ${BN.paste?`<div class="bn-paste"><textarea id="bn-tx" placeholder="Plak hier de regels van je bon"></textarea><button class="btn ghost sm" onclick="bnRead($('bn-tx').value)">Verwerken</button></div>`:""}
+ </div><div>
+  <h3 class="bn-h">Bij welke boodschappen hoort de bon?</h3>
+  <div class="bn-at" role="radiogroup">${O.map(o=>`<button role="radio" aria-checked="${BN.at==o.k}" class="${BN.at==o.k?"on":""}" onclick="BN.at='${o.k}';bnDraw()"><span class="bn-ai${o.k=="new"?" n":""}">${ico(o.ic)}</span><span class="bn-at2"><b>${esc(o.t)}</b><small>${esc(o.s)}</small></span><i></i></button>`).join("")}</div>
+  <p class="bn-note">${BN.at=="list"?"Dan vinken we je lijst af met wat er echt op de bon staat.":BN.at=="new"?"De producten van de bon komen als nieuw moment in je logboek.":"De bon komt bij die boodschappen in je logboek."}</p>
+  <div class="bn-tips"><b>Tips voor een goede foto</b><ul><li>${ico("check")} Leg de bon plat op een donkere ondergrond</li><li>${ico("check")} Zorg dat de hele bon in beeld is</li><li>${ico("check")} Lange bon? Maak er gerust twee foto's van</li></ul></div>
+ </div></div></div>
+ <div class="bn-ft"><button class="btn ghost bn-can" onclick="bnClose()">Annuleren</button><button class="btn bn-go" ${n&&!busy?"":"disabled"} onclick="bnOcr()">${ico("star")} ${busy?"Bon lezen…":n>1?"Lees "+n+" foto's uit":"Bon uitlezen"}</button></div>`}
+function bnFiles(inp){for(const f of inp.files||[])if(/^image\//.test(f.type))BN.files.push({f,u:URL.createObjectURL(f)});inp.value="";BN.err="";bnDraw()}
+// slepen op de computer
+document.addEventListener("dragover",e=>{if(BN&&BN.step=="add"&&e.target.closest&&e.target.closest("#bndlg")){e.preventDefault();const z=$("bn-drop");if(z)z.classList.add("on")}});
+document.addEventListener("drop",e=>{if(!(BN&&BN.step=="add"&&e.target.closest&&e.target.closest("#bndlg")))return;e.preventDefault();for(const f of e.dataTransfer.files||[])if(/^image\//.test(f.type))BN.files.push({f,u:URL.createObjectURL(f)});bnDraw()});
+// ---- uitlezen
+async function bnOcr(){if(!BN||!BN.files.length)return;BN.step="read";BN.prog="Foto laden…";bnDraw();const texts=[];
+ try{await loadTess();
+  for(let i=0;i<BN.files.length;i++){const cv=await new Promise((ok,no)=>{const im=new Image();im.onload=()=>{const k=Math.min(1,2200/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext("2d");x.filter="grayscale(1) contrast(1.5)";x.drawImage(im,0,0,c.width,c.height);ok(c)};im.onerror=()=>no(new Error("foto"));im.src=BN.files[i].u});
+   const res=await window.Tesseract.recognize(cv,"nld+eng",{logger:m=>{if(m.status&&BN){BN.prog=(BN.files.length>1?"Foto "+(i+1)+" van "+BN.files.length+" · ":"")+(m.status=="recognizing text"?"lezen ":"voorbereiden ")+Math.round((m.progress||0)*100)+"%";const p=document.querySelector("#bn-drop p");if(p)p.textContent=BN.prog}}});texts.push(res.data.text||"")}
+  try{const im=new Image();im.onload=()=>{const k=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);BONIMG=c.toDataURL("image/jpeg",.65)};im.src=BN.files[0].u}catch(e){}
+  const seen=new Set();bnRead(texts.join("\n").split("\n").filter(l=>{const k=l.trim();if(!k)return true;if(seen.has(k))return false;seen.add(k);return true}).join("\n"))
+ }catch(err){BN.step="add";BN.err="Bon lezen is niet gelukt. Is er internet? Je kunt ook de tekst van een digitale bon plakken.";bnDraw()}}
+function bnRead(text){if(!BN)return;const r=parseBon(String(text||""));
+ const skip=[];for(let raw of String(text||"").split(/\r?\n/)){raw=raw.replace(/\s+/g," ").trim();const m=raw.match(/(statiegeld|emballage|draagtas|tas|zakje)\b.*?(\d{1,3}[.,]\d{2})/i);if(m)skip.push({raw:raw.replace(/\s*-?\d{1,3}[.,]\d{2}.*$/,""),name:m[1].toLowerCase(),price:+m[2].replace(",","."),st:"skip"})}
+ if(!r.lines.length&&!skip.length){BN.step="add";BN.err="Ik vond geen regels met een prijs. Probeer een scherpere foto, of plak de tekst van de bon.";bnDraw();return}
+ const ch=BNCH.find(([re])=>re.test(text));BN.store=ch?ch[1]:"Jouw supermarkt";
+ const dm=String(text).match(/(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/),tm=String(text).match(/\b(\d{1,2}):(\d{2})\b/);
+ if(BN.at.startsWith("log:")){const g=S.log[+BN.at.slice(4)];if(g)BN.date=g.date}else if(dm){const y=+dm[3]<100?2000+ +dm[3]:+dm[3],d=new Date(y,+dm[2]-1,+dm[1],tm?+tm[1]:12,tm?+tm[2]:0);if(!isNaN(d)&&Math.abs(d-Date.now())<90*864e5)BN.date=d.toISOString()}
+ BN.lines=r.lines.map(l=>bnMatch(l)).concat(skip);BN.total=r.total||Math.round(BN.lines.filter(l=>l.st!="skip").reduce((s,l)=>s+l.price,0)*100)/100;BN.step="check";BN.more=false;bnDraw();const d=$("bndlg");d.scrollTop=0}
+// ---- herkennen
+function bnCands(){const C=[],add=(n,on,k)=>{const c=canon(String(n||"").toLowerCase());if(c&&!C.some(x=>x.c==c))C.push({n:capF(n),c,on,k})};
+ for(const x of list())add(x.name,true,x.k);for(const r of S.recipes)for(const l of r.ing||[]){try{add(parse(l).name,false)}catch(e){}}for(const k in S.prices||{})add(S.prices[k].name,false);for(const s of S.stock||[])add(s.name,false);return C}
+function bnSubseq(t,w){if(t[0]!=w[0])return false;let j=0;for(const ch of w){if(ch==t[j])j++;if(j==t.length)return true}return false}
+const BNAB={hv:"halfvolle",vv:"volle",vl:"volle",mlk:"melk",mk:"melk",brd:"brood",vlk:"volkoren",kpfil:"kipfilet",kipf:"kipfilet",yogh:"yoghurt",ygh:"yoghurt",aardap:"aardappelen",aardapp:"aardappelen",tom:"tomaten",kmkr:"komkommer",knfl:"knoflook",boter:"roomboter",gr:"gram",pnd:"pindakaas",rundgeh:"rundergehakt",gehkt:"gehakt",kaas48:"kaas",jg:"jong",bg:"belegen",sl:"sla",ijsbsl:"ijsbergsla",zuurk:"zuurkool",bnkl:"boerenkool",rkwrst:"rookworst",spagh:"spaghetti",maca:"macaroni",slagr:"slagroom",kkrm:"kookroom",crf:"crème fraîche",mozz:"mozzarella",parm:"parmezaan",chips:"chips"};
+function bnMatch(l){const C=bnCands(),q=bonQty(l.raw);let ab=false;const tk=canon(l.name).split(" ").filter(w=>w.length>=2&&!/^(bio|ah|jumbo|huismerk|biologisch|\d+\w*)$/.test(w)).map(w=>{if(BNAB[w]&&BNAB[w]!=w){ab=true;return BNAB[w]}return w}).join(" ").split(" ");
+ let best=null,bs=0;
+ for(const c of C){const cw=c.c.split(" ");let sc=0;for(const t of tk){let v=0;for(const w of cw){if(w==t||w.replace(/(en|s)$/,"")==t.replace(/(en|s)$/,""))v=Math.max(v,1);else if(t.length>=4&&w.length>=4&&(w.startsWith(t.slice(0,4))||t.startsWith(w.slice(0,4))))v=Math.max(v,.8);else if(t.length>=2&&t.length<w.length&&bnSubseq(t,w))v=Math.max(v,.55)}sc+=v}
+  const conf=tk.length?sc/Math.max(tk.length,1):0,cov=Math.min(1,sc/Math.max(1,cw.length));const s=cov*.6+conf*.4+(c.on?.05:0);if(s>bs){bs=s;best=c}}
+ const o={...l,q,prod:best?best.n:capF(l.name),on:!!(best&&best.on),k:best&&best.k,st:"ok"};
+ const abbr=tk.length&&tk.every(w=>w.length<=3||!/[aeiou]/.test(w.slice(1)));
+ const full=capF(tk.join(" "));
+ if(!best||bs<.35){o.prod=ab?full:capF(l.name);o.on=false;o.k=null;o.st=ab?"ask":(abbr||!tk.length?"unk":"ok")}else{if(ab&&!o.on&&full.toLowerCase().includes(best.c))o.prod=full;if(bs<.75||ab)o.st="ask"}
+ return o}
+// ---- controleren
+function bnQtyTxt(l){const q=l.q||{};if(!q.q)return"";return q.c=="m"?(q.q>=1000?(q.q/1000).toString().replace(".",",")+" kg":q.q+" g"):q.c=="v"?(q.q>=1000?(q.q/1000).toString().replace(".",",")+" liter":q.q+" ml"):q.q+(q.q==1?" stuk":" stuks")}
+function bnCheckHtml(){const L=BN.lines,prod=L.filter(l=>l.st!="skip"),ok=L.filter(l=>l.st=="ok"),chk=L.filter(l=>l.st!="ok"),n=prod.length,dd=new Date(BN.date),O=bnAttachOpts(),at=O.find(o=>o.k==BN.at)||O[O.length-1];
+ const when=capF(DN[dd.getDay()])+" "+dd.getDate()+" "+MON[dd.getMonth()]+" · "+String(dd.getHours()).padStart(2,"0")+":"+String(dd.getMinutes()).padStart(2,"0")+" · "+(BN.at=="list"?"bij je lijst":BN.at=="new"?"nieuw moment":"bij "+at.t);
+ const onl=ok.filter(l=>l.on).length;
+ const sum=`<div class="bn-sum"><div class="bn-sh"><span class="bn-rc">${BNRECEIPT}</span><div><b>${esc(BN.store)}</b><small>${esc(when)}</small></div><button class="bn-ed" onclick="BN.edit=!BN.edit;bnDraw()" aria-label="Winkel, datum en totaal aanpassen">${ico("a_pen")}</button></div>
+  ${BN.edit?`<div class="bn-ef"><label>Winkel<input value="${esc(BN.store)}" oninput="BN.store=this.value"></label><label>Datum<input type="date" value="${trK(BN.date)}" onchange="BN.date=new Date(this.value+'T12:00').toISOString()"></label><label>Totaal<input inputmode="decimal" value="${String(BN.total).replace(".",",")}" oninput="BN.total=num(this.value)"></label><button class="btn sm" onclick="BN.edit=false;bnDraw()">Klaar</button></div>`:""}
+  <div class="bn-ss"><div><small>Totaal</small><b>${eur(BN.total||0)}</b></div><div><small>Producten</small><b>${n}</b></div><div><small>Herkend</small><b>${ok.filter(l=>l.st=="ok").length}</b></div></div>
+  <div class="bn-bar"><i style="width:${n?ok.length/n*100:0}%"></i></div><p class="bn-bt">${ok.length} van ${n} herkend${BN.at=="list"&&onl?", "+onl+" afgevinkt op je lijst":""}</p></div>`;
+ const row=(l,i)=>{const ix=BN.lines.indexOf(l);const top=`<div class="bn-ct"><code>${esc(l.raw)}</code><em>${eur(l.price)}</em></div>`;
+  if(l.edit)return`<div class="bn-ci">${top}<div class="bn-cq"><input id="bnq${ix}" list="bn-dl" value="${esc(l.prod)}" placeholder="Welk product?" onkeydown="if(event.key=='Enter')bnSet(${ix})"><button class="btn sm" onclick="bnSet(${ix})">Oké</button></div></div>`;
+  if(l.st=="ask")return`<div class="bn-ci">${top}<div class="bn-cq"><b>${esc(l.prod)}${bnQtyTxt(l)?", "+esc(bnQtyTxt(l)):""}?</b><button class="bn-ja" onclick="BN.lines[${ix}].st='ok';bnDraw()">${ico("check")} Ja</button><button class="bn-wz" onclick="BN.lines[${ix}].edit=true;bnDraw();setTimeout(()=>$('bnq${ix}').focus(),0)">Wijzig</button></div></div>`;
+  if(l.st=="unk")return`<div class="bn-ci">${top}<div class="bn-cq"><b>Welk product is dit?</b><button class="bn-wz" onclick="BN.lines[${ix}].edit=true;BN.lines[${ix}].prod='';bnDraw();setTimeout(()=>$('bnq${ix}').focus(),0)">${ico("search")} Zoek product</button></div></div>`;
+  return`<div class="bn-ci">${top}<div class="bn-cq"><span class="mute">Geen product, wordt overgeslagen</span><button class="lnk" onclick="BN.lines[${ix}].st='ok';BN.lines[${ix}].prod=capF(BN.lines[${ix}].name);bnDraw()">Toch meetellen</button></div></div>`};
+ const shown=BN.more?ok:ok.slice(0,6);
+ const okRow=l=>{const ix=BN.lines.indexOf(l);return l.edit?`<div class="bn-ok"><div class="bn-cq" style="flex:1"><input id="bnq${ix}" list="bn-dl" value="${esc(l.prod)}" onkeydown="if(event.key=='Enter')bnSet(${ix})"><button class="btn sm" onclick="bnSet(${ix})">Oké</button></div></div>`:`<button class="bn-ok" onclick="BN.lines[${ix}].edit=true;bnDraw();setTimeout(()=>$('bnq${ix}').focus(),0)" aria-label="${esc(l.prod)} aanpassen"><span><b>${esc(l.prod)}</b><small>${esc(bnQtyTxt(l)||"1")}<em class="${l.on?"on":"ex"}">${l.on?ico("check")+" Op je lijst":"Extra gekocht"}</em></small></span><strong>${eur(l.price)}</strong></button>`};
+ const sw=(on,js,ic,b,s)=>`<label class="cf3sw"><span class="cf3si">${ico(ic)}</span><span class="cf3rt"><b>${b}</b><small>${s}</small></span><input type="checkbox" ${on?"checked":""} onchange="${js}"><i></i></label>`;
+ const C=bnCands();
+ return`${bnHd("Bon controleren",DESK()?"Klopt alles? Dan slaan we de bon op bij je boodschappen.":"")}
+ <div class="bn-b"><div class="bn-cols bn-cc"><div class="bn-pv"><div class="bn-pvi" id="bn-pvi">${BNRECEIPT}</div><div class="bn-pvb"><button class="btn ghost sm" onclick="BN.step='add';BN.files=[];bnDraw()">${ico("camera")} Opnieuw</button><button class="btn ghost sm" onclick="bnBig()">${ico("search")} Vergroot</button></div></div><div>
+ ${sum}
+ ${chk.length?`<h3 class="bn-h">Even checken <span>${chk.length}</span></h3><div class="bn-chk">${chk.map(row).join("")}</div>`:""}
+ <h3 class="bn-h">Herkend <span>${ok.length}</span></h3><div class="bn-oks">${shown.map(okRow).join("")||`<p class="tr2e" style="padding:12px 14px">Nog niets herkend.</p>`}</div>
+ ${ok.length>6?`<button class="lnk bn-more" onclick="BN.more=!BN.more;bnDraw()">${BN.more?"Minder tonen":"Toon alle "+ok.length+" producten"}</button>`:""}
+ <div class="cf3card cf3sws bn-sws">${optOn("stock")?sw(BN.stock,"BN.stock=this.checked","box","Zet producten in je voorraad","Houdbaarheid vullen we automatisch in"):""}${sw(BN.spend,"BN.spend=this.checked","chart","Tel mee in je uitgaven","Zie je terug bij Trends")}</div>
+ <datalist id="bn-dl">${C.slice(0,300).map(c=>`<option value="${esc(c.n)}">`).join("")}</datalist>
+ </div></div></div>
+ <div class="bn-ft"><button class="btn ghost bn-can" onclick="bnClose()">Annuleren</button><button class="btn bn-go" onclick="bnSave()">${ico("check")} Bon opslaan</button></div>`}
+function bnSet(ix){const l=BN.lines[ix],v=($("bnq"+ix)||{}).value||"";if(!v.trim())return;const c=bnCands().find(x=>x.c==canon(v.toLowerCase()));l.prod=capF(v.trim());l.on=!!(c&&c.on);l.k=c&&c.k;l.st="ok";l.edit=false;bnDraw()}
+function bnThumb(){if(!BN||!BN.files.length)return;const b=$("bn-pvi");if(b)b.innerHTML=`<img src="${BN.files[0].u}" alt="Foto van de bon">`}
+function bnBig(){if(!BN||!BN.files.length)return;const g=$("bkdlg");g.innerHTML=`<h2 style="font-size:1.2rem;margin:0 0 10px">Foto van de bon</h2>${BN.files.map(f=>`<img src="${f.u}" alt="Foto van de bon" style="width:100%;border-radius:12px;display:block;margin-bottom:8px">`).join("")}<div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button></div>`;g.showModal()}
+// ---- opslaan
+function bnSave(){if(!BN)return;const ok=BN.lines.filter(l=>l.st=="ok"&&l.prod),date=BN.date,store=S.store;
+ for(const l of ok)addPrice(l.prod.toLowerCase(),l.price,store,date,l.q);
+ let rid=null;if(BN.spend){S.receipts=S.receipts||[];rid=Date.now();S.receipts.unshift({id:rid,date,store:BN.store,total:Math.round((BN.total||0)*100)/100,n:ok.length,by:uid||"local",...(BONIMG?{img:1}:{})});if(BONIMG)bonPut(rid,BONIMG)}
+ if(BN.at=="list"){for(const l of ok)if(l.on&&l.k)S.checked[l.k]=true}
+ else if(BN.at=="new"){S.log=S.log||[];S.log.unshift({date,store:BN.store,meals:[],items:ok.map(l=>({n:l.prod.toLowerCase(),q:bnQtyTxt(l),ok:true,from:[]})),by:uid||"local"})}
+ if(BN.stock&&optOn("stock"))for(const l of ok){try{stBuyName(l.prod.toLowerCase())}catch(e){}}
+ if(!optOn("prices"))setOpt("prices",true);
+ bnClose();save();draw()}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
