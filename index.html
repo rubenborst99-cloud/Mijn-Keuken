@@ -1461,6 +1461,246 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .rd-note{background:#2E2614;border-color:#4A3D1C;color:#E8D9B0}:root:not([data-theme="light"]) .rd-note b{color:#E9C46A}}
 .hx-open{cursor:pointer}
 .rd-bar .btn,.rd-shop{white-space:nowrap}.rd-shop{font-size:.92rem}@media(max-width:360px){.rd-shop{font-size:.85rem}.rd-bar .btn{font-size:.92rem}}
+.rd-scrim{display:none}.rd-panel{max-width:640px;margin:0 auto}
+.rd-bar2,.rd-nav,.rd-x,.rx-addd,.rx-fl{display:none}
+.rx-search.has-seg{flex-wrap:wrap}.rx-search.has-seg .rx-seg{order:3;flex:1 1 100%;margin:0}
+.rx-search.has-seg{margin-bottom:26px}
+.rd-cols{display:block}
+/* lijst: kolommen (mobiel: oude volgorde) */
+.ls-cols{display:flex;flex-direction:column}.ls-side,.ls-main,.ls-addc{display:contents}
+.ls-cols .ls-prog{order:1}.ls-cols .ls-add{order:2}.ls-cols .ls-ask{order:3}.ls-cols .ls-sec{order:4}.ls-cols .ls-tip{order:5}.ls-cols .ls-home{order:6}.ls-cols .ls-done{order:7}
+.ls-addh{display:none}
+</style>
+<style id="desk">/* ================= Webversie (ontwerp app-ontwerp.pdf) ================= */
+@media(min-width:1024px){
+ body::before{background:var(--card)}
+ header{padding:26px 22px 0!important}
+ .dk-brand{display:flex;align-items:center;gap:10px}
+ .dk-ic{width:42px;height:42px;border-radius:12px;background:var(--green);display:grid;place-items:center;overflow:hidden;flex:none}
+ .dk-ic svg{width:34px;height:34px;margin-top:4px}
+ .dk-wm{font:700 1.6rem/1 "Fraunces",serif;color:#B8441F;letter-spacing:-.01em}.dk-wm span{color:#F2875C}
+ nav{top:92px!important;padding:0 18px 20px!important;gap:4px!important}
+ nav .navplus{display:none!important}
+ .dk-add{display:flex!important;align-items:center;justify-content:center!important;gap:10px!important;height:48px!important;margin:4px 0 16px;border-radius:14px!important;background:var(--green)!important;color:#fff!important;font-weight:700!important;font-size:1rem!important}
+ .dk-add .ic{width:19px;height:19px}
+ nav button.on{background:var(--t-beige,var(--sunbg))!important}
+ .dk-acc{margin-top:auto!important;height:auto!important;padding:10px 12px!important;border:1px solid var(--line)!important;border-radius:16px!important;background:var(--card)!important;gap:12px!important}
+ .dk-acc.on{background:var(--t-beige)!important;border-color:transparent!important}
+ .dk-acc .axav{border:0;font-size:.9rem;flex:none}
+ .dk-acc>span:not(.axav){display:flex;flex-direction:column;align-items:flex-start;flex:1;min-width:0;text-align:left}
+ nav button,nav button .lf{font-family:"DM Sans",system-ui,sans-serif!important}
+ .dk-acc b{font-size:.92rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.dk-acc small{font-size:.78rem;color:var(--mute);font-weight:400}
+ .dk-acc>.ic{width:16px;height:16px;color:var(--mute);flex:none}
+}
+@media(min-width:1024px){
+ .dk-open{cursor:pointer}
+ .dk-row3{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;margin:26px 0 8px;align-items:stretch}
+ .dk-row3>*{min-width:0;margin:0!important}
+ .dk-c{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px 22px 18px;box-sizing:border-box}
+ .dk-c .hx-sec{margin:0 0 12px!important;align-items:baseline}
+ .dk-c .hx-sec h3{font-family:Fraunces,serif;font-size:1.35rem}
+ .dk-c .card{background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0!important;border-radius:0!important}
+ .dk-row3>.card,.dk-row3>div:first-child{border-radius:24px}
+ .dh1{align-items:center}
+ .dsrch{margin-left:auto}
+}
+@media(min-width:1024px){
+ /* Recepten */
+ body[data-tab="rec"] main{position:relative}
+ .rx-addd{display:inline-flex!important;align-items:center;gap:8px;position:absolute;top:44px;right:40px;border-radius:14px;padding:13px 20px}
+ .rx-sub{margin-bottom:24px}
+ .rx-search.has-seg{flex-wrap:nowrap;margin-bottom:30px}
+ .rx-search.has-seg .rx-seg{order:0;flex:0 0 auto;width:auto;grid-template-columns:auto auto;padding:4px}
+ .rx-search .rx-seg button{padding:0 18px;height:42px}
+ .rx-fbtn{width:auto;border-radius:16px;padding:0 18px;gap:8px;display:inline-flex;align-items:center;font:inherit;font-weight:700}
+ .rx-fl{display:inline!important}
+ .rx-q{height:50px}
+ .rx-coll{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));margin:0 0 34px;padding:0;overflow:visible}
+ .rx-ct{flex-direction:row;align-items:center;min-height:0;padding:16px 18px;gap:14px;flex:none}
+ .rx-ci{margin:0;width:44px;height:44px;border-radius:12px}
+ .rx-ct b{margin:0}.rx-ct>b,.rx-ct>small{display:block}
+ .rx-ct{display:grid;grid-template-columns:44px 1fr;grid-template-rows:auto auto;column-gap:14px;row-gap:0;text-align:left}
+ .rx-ct .rx-ci{grid-row:1/3}
+ .rx-grid{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
+ .rx-b{padding:14px 16px 16px}.rx-b h3{font-size:1.08rem}
+ /* Filter als zijpaneel */
+ #rfs{flex-direction:row;justify-content:flex-end}
+ .rfs-sheet{max-width:480px;width:480px;max-height:none;height:100%;border-radius:0;animation:rfs-r .28s cubic-bezier(.2,.8,.3,1);margin:0}
+ .rfs-grab{display:none}
+ .rfs-body{padding:24px 30px 18px}.rfs-foot{padding:16px 30px 20px}
+ @keyframes rfs-r{from{transform:translateX(100%)}to{transform:none}}
+ /* Recept als zijpaneel */
+ #rdet{background:none;overflow:hidden;animation:none}
+ #rdet>*{max-width:none}
+ .rd-scrim{display:block;position:absolute;inset:0;background:rgba(43,33,24,.45);animation:rfs-f .2s ease}
+ .rd-panel{position:absolute;top:0;right:0;bottom:0;width:min(820px,62vw);max-width:none;margin:0;background:var(--bg);overflow-y:auto;padding:22px 28px 40px;box-sizing:border-box;animation:rfs-r .3s cubic-bezier(.2,.8,.3,1);box-shadow:-12px 0 40px rgba(0,0,0,.12)}
+ .rd-hero.ph{height:280px;border-radius:24px!important;margin-top:62px!important;position:relative;overflow:visible!important}
+ .rd-hero img{border-radius:24px}
+ .rd-tb{position:absolute;top:-62px;padding:0!important;left:0;right:0}
+ .rd-back{display:none!important}.rd-nav,.rd-x{display:grid!important}
+ .rd-cb{box-shadow:none;border:1px solid var(--line)}
+ .rd-body{margin-top:0!important;padding:26px 0 0!important;border-radius:0;background:none}
+ .rd-body h1{font-size:2.1rem}
+ .rd-bar{display:none!important}
+ .rd-bar2{display:flex!important;gap:12px;margin:6px 0 18px}
+ .rd-bar2 .btn{flex:1;border-radius:16px;padding:14px;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;gap:8px}.rd-bar2 .btn.ghost{flex:0 0 auto;padding:14px 22px;background:var(--card)}
+ .rd-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:28px;align-items:start;margin-top:22px}
+ .rd-colL{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px}
+ .rd-colL .rd-ih{flex-direction:column;align-items:flex-start;margin:0 0 14px}
+ .rd-colL .rd-ing{border:0;border-radius:0;background:none}.rd-colL .rd-ir{padding:11px 0}
+ .rd-colR .rd-h{margin:0 0 14px}
+}
+@media(min-width:1024px){
+ body[data-tab="list"] main{max-width:1240px!important}
+ .ls{max-width:none}
+ .ls-head{margin-bottom:22px}.ls-head h1{font-size:2.3rem}
+ .ls>.ls-store{position:absolute;top:44px;right:100px;width:auto;padding:10px 16px}
+ body[data-tab="list"] main{position:relative}
+ .ls-head .ls-menu{margin-right:0}
+ .ls-cols{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+ .ls-side{display:flex;flex-direction:column;gap:18px;grid-column:2;grid-row:1;position:sticky;top:24px}
+ .ls-main{display:block;grid-column:1;grid-row:1}
+ .ls-side>*{order:0!important;margin:0!important}
+ .ls-addc{display:block;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px 20px}
+ .ls-addh{display:block;margin-bottom:10px;font-size:.95rem}
+ .ls-addc .ls-add{margin:0}
+ .ls-main .ls-sec{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:6px 22px 8px;margin:0 0 20px}
+ .ls-main .ls-sec:first-child{margin-top:0}
+ .ls-home{border-style:dashed}
+}
+@media(min-width:1024px){
+ body header,body[data-tab] header{display:block!important;position:fixed!important;left:0;top:0;width:240px;max-width:none;margin:0;z-index:6}
+ .ls-main .ls-card{border:0!important;box-shadow:none!important;background:none!important;padding:0!important;margin:0!important;border-radius:0!important}
+ .ls-main .ls-sh{padding:14px 0 6px;margin:0}
+ .ls-main .ls-row{padding-left:0;padding-right:0}
+}
+@media(min-width:1024px){
+ .dk-tolist{border-radius:14px;padding:12px 18px;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+ body[data-tab="stock"] main{max-width:1240px!important}
+ .st-w{max-width:none!important;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;align-items:start}
+ .st-w>*{grid-column:1/-1}
+ .st-w>.st-sec{grid-column:auto;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px 24px;margin-top:22px}
+ .st-w>.st-sec .hx-h{margin-top:0!important;font-family:Fraunces,serif;font-size:1.45rem}
+ .st-w>.st-sec .card{border:0;box-shadow:none;background:none;padding:0;margin:0}
+ .st-w .axtop{justify-content:flex-start;gap:16px;margin-bottom:22px}
+ .st-w .axtop h2{font-size:2.3rem;text-align:left;flex:1}
+ .st-w .axtop .axbk{display:none}
+ .st-w .hx-bonb{width:auto;justify-self:start;display:inline-flex}
+}
+@media(min-width:1024px){
+ #kdlg.kx[open]{display:grid!important;grid-template-columns:300px minmax(0,1fr) 340px;grid-template-rows:auto auto 1fr auto;column-gap:32px;padding:0 32px!important}
+ #kdlg.kx>.kx-top,#kdlg.kx>.kx-prog,#kdlg.kx>.kx-foot{grid-column:1/-1}
+ #kdlg.kx>.kx-body{grid-column:2;grid-row:3;max-width:none;overflow:auto;padding:36px 8px}
+ #kdlg.kx>.kx-L{grid-column:1;grid-row:3;overflow:auto;padding:28px 0}
+ #kdlg.kx>.kx-R{grid-column:3;grid-row:3;overflow:auto;padding:28px 0}
+ #kdlg.kx:not(:has(.kx-L))>.kx-body{grid-column:1/-1;max-width:760px;margin:0 auto;width:100%}
+ .kx-dtt,.kx-awake{display:none}
+ #kdlg.kx:has(.kx-L) .kx-tt{display:none}
+ #kdlg.kx:has(.kx-L) .kx-dtt{display:flex;flex-direction:column;flex:1;margin-left:14px}
+ .kx-dtt b{font-family:Fraunces,serif;font-size:1.25rem}.kx-dtt small{color:var(--mute)}
+ #kdlg.kx:has(.kx-L) .kx-awake{display:inline-flex;align-items:center;gap:6px;font-size:.85rem;color:var(--mute);margin-right:12px}
+ .kx-awake svg{width:16px;height:16px}
+ .kx-stepl{font-size:.8rem;letter-spacing:.12em;font-weight:700;color:var(--accent,#B8441F);margin:0 0 10px}
+ #kdlg.kx:has(.kx-L) .kx-txt{font-size:2rem;line-height:1.35}
+ .kx-sl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+ .kx-sl button{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:none;border:0;padding:10px 12px;border-radius:14px;color:var(--ink);font:inherit;cursor:pointer}
+ .kx-sl button:hover{background:var(--card)}
+ .kx-sl .cur button{background:var(--card);box-shadow:0 0 0 1.5px #B8441F inset}
+ .kx-sl .done button{color:var(--mute)}
+ .kx-sn{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;background:var(--line);color:var(--ink)}
+ .kx-sl .cur .kx-sn{background:#B8441F;color:#fff}.kx-sl .done .kx-sn{background:#3E6B4E;color:#fff}
+ .kx-sn svg{width:14px;height:14px}
+ .kx-st2{font-size:.88rem;line-height:1.4}
+ .kx-all{list-style:none;margin:0;padding:6px 0;background:var(--card);border:1px solid var(--line);border-radius:18px}
+ .kx-all li{padding:8px 16px;font-size:.92rem;color:var(--mute)}
+ .kx-all li.on{color:var(--ink);font-weight:600;background:rgba(184,68,31,.08)}
+ .kx-R .axh{margin:18px 0 8px}.kx-R .axh:first-child{margin-top:0}
+ #kdlg.kx:has(.kx-L)>.kx-foot{display:flex;justify-content:flex-end;gap:12px;padding:16px 0}
+ #kdlg.kx:has(.kx-L)>.kx-foot .btn{flex:none;min-width:200px}
+}
+@media(min-width:1024px){
+ #kdlg.kx:has(.kx-L)>.kx-top{display:flex!important;flex-wrap:nowrap;align-items:center;padding:20px 0 14px}
+ #kdlg.kx:has(.kx-L)>.kx-top>.kx-c:last-child{display:none}
+ #kdlg.kx:has(.kx-L) .kx-awake{white-space:nowrap;margin-left:auto}
+}
+@media(min-width:1024px){
+ body[data-tab="account"] main{max-width:1180px!important}
+ .ac-d{display:grid;grid-template-columns:280px minmax(0,1fr);gap:40px;align-items:start;padding-top:10px}
+ .ac-side{position:sticky;top:24px;display:flex;flex-direction:column;gap:6px}
+ .ac-me{display:flex;align-items:center;gap:12px;padding:6px 6px 14px}
+ .ac-me b{display:block;font-family:Fraunces,serif;font-size:1.15rem}.ac-me small{color:var(--mute)}
+ .ac-nav{display:flex;flex-direction:column;gap:2px}
+ .ac-nav h5{font-size:.72rem;letter-spacing:.12em;color:var(--mute);margin:14px 10px 6px;font-weight:700}
+ .ac-it{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:10px 12px;border-radius:12px;font:inherit;color:var(--ink);cursor:pointer;text-align:left}
+ .ac-it:hover{background:var(--card)}
+ .ac-it.on{background:#F6E3D3;color:#B8441F;font-weight:600}
+ :root[data-theme="dark"] .ac-it.on{background:rgba(242,135,92,.16);color:#F2875C}
+ .ac-ic svg{width:18px;height:18px;display:block}
+ .ac-t{flex:1}.ac-it small{color:var(--mute);font-size:.8rem;font-weight:400}
+ .ac-out{margin-top:16px;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font:inherit;color:var(--ink);cursor:pointer}
+ .ac-out svg{width:16px;height:16px}
+ .ac-del{align-self:flex-start;margin:6px 4px;color:#B23A2A}
+ .ac-main{max-width:720px!important;margin:0!important;width:100%}
+ .ac-main .axtop{justify-content:flex-start;margin-bottom:20px}
+ .ac-main .axtop .axbk{display:none}
+ .ac-main .axtop h2{font-size:2.1rem;text-align:left;flex:1}
+ .ac-tabs{display:inline-flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px;margin-bottom:14px}
+ .ac-tabs button{border:0;background:none;padding:8px 14px;border-radius:9px;font:inherit;color:var(--mute);cursor:pointer}
+ .ac-tabs button.on{background:#B8441F;color:#fff}
+}
+@media(min-width:1024px){
+ body:has(.lg2){padding:0!important}body:has(.lg2)::before{display:none!important}
+ body:has(.lg2) main{max-width:none!important;padding:0!important;margin:0!important}
+ body[data-tab="login"] header,body[data-tab="login"] nav{display:none!important}
+ body[data-tab="login"]:not(:has(.lg2)){padding:0!important}body[data-tab="login"]::before{display:none!important}
+ .lg2{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+ .lg2-art{background:#B8441F;color:#FFF4EC;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+ .lg2-art:after{content:"";position:absolute;right:-140px;bottom:-140px;width:420px;height:420px;border-radius:50%;background:#F2875C;opacity:.35}
+ .lg2-brand{display:flex;align-items:center;gap:12px}
+ .lg2-brand .lg-tile{width:44px;height:44px;border-radius:12px;background:#FFF4EC;display:grid;place-items:center;overflow:hidden}
+ .lg2-brand .lg-tile svg{width:100%;height:100%}
+ .lg2-wm{font-family:Fraunces,serif;font-weight:700;font-size:1.6rem;color:#FFF4EC}.lg2-wm span{color:#FFC9AE}
+ .lg2-mid{position:relative;z-index:1;max-width:460px}
+ .lg2-masc{display:block;width:96px;height:96px;margin-bottom:22px}.lg2-masc svg{width:100%;height:100%}
+ .lg2-mid h2{font-family:Fraunces,serif;font-size:2.6rem;line-height:1.15;margin:0 0 30px;color:#fff}
+ .lg2-pts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px}
+ .lg2-pts li{display:flex;gap:14px;align-items:flex-start}
+ .lg2-i{flex:none;width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.16);display:grid;place-items:center}
+ .lg2-i svg{width:20px;height:20px;stroke:#fff}
+ .lg2-pts b{display:block;font-size:1.02rem}.lg2-pts small{opacity:.8;font-size:.9rem}
+ .lg2-foot{position:relative;z-index:1;opacity:.75;font-size:.9rem;margin:0}
+ .lg2-form{display:flex;align-items:center;justify-content:center;padding:48px;background:var(--bg)}
+ .lg2-form .lg{width:100%;max-width:420px;margin:0}
+ .lg2-form .lg-logo{display:none}
+ .lg2-form .lg-h{text-align:left;font-size:2.2rem}.lg2-form .lg-sub{text-align:left}
+ :root[data-theme="dark"] .lg2-art{background:#7E2F15}
+}
+@media(min-width:1024px){
+ #onb{max-width:none!important;margin:0!important;padding:0!important;background:rgba(28,18,12,.55);display:grid!important;grid-template-columns:520px 440px;grid-template-rows:72px 400px 88px;justify-content:center;align-content:center;overflow:auto}
+ #onb>.ob-art{grid-column:1;grid-row:1/4;height:560px!important;min-height:0;margin:0!important;border-radius:28px 0 0 28px!important}
+ #onb>.ob-top,#onb>.ob-txt,#onb>.ob-bot{grid-column:2;height:auto!important;min-height:0!important;align-self:stretch!important;background:var(--bg);margin:0!important;padding-left:44px!important;padding-right:44px!important}
+ #onb>.ob-top{grid-row:1;border-radius:0 28px 0 0;padding-top:24px!important;min-height:64px;display:flex;justify-content:flex-end}
+ #onb>.ob-txt{grid-row:2;display:flex;flex-direction:column;justify-content:center}
+ #onb>.ob-txt h1{font-size:2.2rem}
+ #onb>.ob-bot{grid-row:3;border-radius:0 0 28px 0;padding-bottom:32px!important}
+}
+
+@media (min-width:1024px) and (prefers-color-scheme:dark){
+:root:not([data-theme="light"]) .ac-it.on{background:rgba(242,135,92,.16);color:#F2875C}
+:root:not([data-theme="light"]) .lg2-art{background:#7E2F15}
+}
+@media(min-width:1024px) and (max-width:1279px){
+ .dk-tolist{padding:12px 14px}.dk-tolist span{display:none}
+ #kdlg.kx[open]{grid-template-columns:220px minmax(0,1fr) 260px;column-gap:22px;padding:0 22px!important}
+ #kdlg.kx:has(.kx-L) .kx-txt{font-size:1.5rem}
+ #kdlg.kx:has(.kx-L) .kx-tc{flex-wrap:wrap}
+}
+@media(min-width:1024px) and (max-width:1279px){
+ .wcd,.wcd *{word-break:normal!important;overflow-wrap:normal!important;hyphens:auto}
+ .wcd b,.wcd h3,.wcd h4{font-size:.86rem!important;line-height:1.2}
+ .wcd .wbt{font-size:.75rem;padding-left:4px;padding-right:4px}
+}
+@media(min-width:1024px) and (max-width:1279px){.wcd .btn{font-size:.72rem!important;padding:8px 4px!important;white-space:nowrap}.wcd .btn svg{display:none}}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -2368,13 +2608,13 @@ function vHomeD(){const nm=uname(),todo=homePick(),t=todayK(),WD=wDays(0);let he
  const dxt=dxOf(t).filter(x=>!x.done),recToday=todo>=0&&S.sel[todo].day==t;
  if(!recToday&&dxt.length){const x=dxt[0];hero=`<div class="dhero"><div class="dhb" style="padding:30px 26px"><small>Vanavond</small><h2>${x.kind=="out"?(x.fx?esc(fxT(x)):"Je eet elders"):"Kliekje: "+esc(x.note||"restje")}</h2><p class="mute">${x.kind=="out"?esc(x.note||"Geen kookplan voor vandaag."):"Geen kookplan nodig."}</p>${x.kind!="out"?`<div class="row"><button class="btn" onclick="dxEat(${x.id})">✓ Opgegeten</button></div>`:""}</div></div>`}
  else if(todo>=0){const e=S.sel[todo],r=S.recipes.find(x=>x.id==e.rid),i=r.id%4;
-  hero=`<div class="dhero"><div class="dhi" ${tint(i)}>${ico(DSI[i])}${r.img?`<img src="${esc(r.img)}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:""}<span class="dhp">${e.day==t?"Vandaag · "+pdk(t).toLocaleDateString("nl-NL",{weekday:"long"}):e.day?"Eerstvolgende · "+dayLbl(e.day):"Nog niet ingepland"}</span></div><div class="dhb"><small>${e.day==t?"Vanavond":"Eerstvolgende"}</small><h2>${esc(r.name)}</h2><p class="mute">${[r.time?r.time+" min":"",e.pers+" personen",r.level].filter(Boolean).map(esc).join(" · ")}</p><div class="row nw"><button class="btn" onclick="startK(${r.id},${e.pers},${todo})">${ico("play")} Start koken</button><button class="btn ghost" onclick="dayAct(${todo})">${ico("swap")} Iets anders</button></div></div></div>`}
- else if(heroUpD())hero=heroUpD();else hero=`<div class="dhero"><div class="dhb" style="padding:34px 26px"><small>${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</small><h2>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle recepten op je menu zijn gemaakt.":"Kies een paar recepten voor deze week."}</p><div class="row"><button class="btn" onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button><button class="btn ghost" onclick="go('rec')">Zelf kiezen</button></div></div></div>`;
+  hero=`<div class="dhero"><div class="dhi dk-open" ${tint(i)} onclick="rdOpen(${r.id},${e.pers})">${ico(DSI[i])}${r.img?`<img src="${esc(r.img)}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:""}<span class="dhp">${e.day==t?"Vandaag · "+pdk(t).toLocaleDateString("nl-NL",{weekday:"long"}):e.day?"Eerstvolgende · "+dayLbl(e.day):"Nog niet ingepland"}</span></div><div class="dhb"><small>${e.day==t?"Vanavond":"Eerstvolgende"}</small><h2 class="dk-open" onclick="rdOpen(${r.id},${e.pers})">${esc(r.name)}</h2><p class="mute">${[r.time?r.time+" min":"",e.pers+" personen",r.level].filter(Boolean).map(esc).join(" · ")}</p><div class="row nw"><button class="btn" onclick="startK(${r.id},${e.pers},${todo})">${ico("play")} Start koken</button><button class="btn ghost" onclick="dayAct(${todo})">${ico("swap")} Iets anders</button></div></div></div>`}
+ else if(heroUpD())hero=heroUpD();else hero=`<div class="dhero"><div class="dhi" style="--c:var(--green);--t:var(--t-beige)">${ico("calendar")}<span class="dhp">Nieuwe week</span></div><div class="dhb"><h2>${S.sel.length?"Je weekmenu is op!":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle dagen van je weekmenu zijn geweest. Stel een nieuw weekmenu samen, dan weet je weer wat je vanavond eet.":"Kies een paar recepten voor deze week, of laat Chef Pieper je week vullen."}</p><div class="row nw"><button class="btn" onclick="cfOpen()">${ico("sparkle")} Laat Chef Pieper je week maken</button><button class="btn ghost" onclick="MW=0;go('menu')">${ico("calendar")} Zelf samenstellen</button></div></div></div>`;
  const wk=`<div class="dwk"><div class="dsec" style="margin:0 0 10px"><h3>Deze week</h3><button class="lnk" onclick="MW=0;go('menu')">Aanpassen</button></div>${WD.map(k=>{const es=S.sel.filter(e=>e.day==k).map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).filter(Boolean),dx=dxOf(k).map(x=>x.kind=="out"?(x.fx?fxT(x):"Uit eten"):"Kliekje: "+(x.note||"restje")),n=es.concat(dx);
   return n.length?`<button class="dwr${k==t?" now":""}" onclick="MW=0;go('menu')"><span>${WDL(k)}</span><b>${esc(n.join(", "))}</b></button>`:`<button class="dwr em" onclick="dsOpen('${k}')"><span>${WDL(k)}</span><b>+ Kies iets</b></button>`}).join("")}</div>`;
  const tl=(c,ic,txt,js)=>`<button class="dtl ${c}" onclick="${js}"><span class="ti">${ico(ic)}</span>${txt}</button>`;
  const more=[["deals","Aanbiedingen"],["log","Logboek"],["trend","Trends"]].concat(optOn("stock")||optOn("left")?[["stock","Voorraad"]]:[]).map(([k,n])=>`<button class="dpill" onclick="go('${k}')">${n}</button>`).join("");
- return`<div class="dh1"><div><p class="mute" style="margin:0">${greet()}${nm?", "+esc(nm):""}</p><h2 class="pt" style="margin:2px 0 0;font-size:2.2rem">Wat eten we vanavond?</h2></div><label class="dsrch">${ico("search")}<input placeholder="Zoek een recept…" aria-label="Zoek een recept" onkeydown="if(event.key=='Enter'){Q=this.value;S.tab='rec';draw()}"></label><button class="btn" onclick="openR()">${ico("plus")} Recept</button><button class="hx-av" aria-label="Account en instellingen" onclick="go('account')">${avHTML(pName(myP())||nm||"?",0,46,myP().photo)}${VRON&&vrIn().length?`<i class="axdot"></i>`:""}</button></div><div class="dg2">${hero}${wk}</div><div class="dg3">${shopCardD("Boodschappenlijst")}<div><h3 class="dsq2">Snel naar</h3><div class="dtg">${tl("c1","plus","Recept toevoegen","openR()")}${tl("c2","star","Chef Pieper kiest","surprise()")}${tl("c3","calendar","Weekmenu maken","cfOpen()")}${tl("c4","list","Mijn recepten","go('rec')")}</div><div class="dpills">${more}</div></div></div><div class="hx-dg"><div class="hx-dgc">${dmoCard()}</div><div class="hx-dgc">${vrNewsCard()}</div></div>${inspD()}`}
+ return`<div class="dh1"><div><p class="mute" style="margin:0">${greet()}${nm?", "+esc(nm):""}</p><h2 class="pt" style="margin:2px 0 0;font-size:2.2rem">Wat eten we vanavond?</h2></div><label class="dsrch">${ico("search")}<input placeholder="Zoek een recept…" aria-label="Zoek een recept" onkeydown="if(event.key=='Enter'){Q=this.value;S.tab='rec';draw()}"></label></div><div class="dg2">${hero}${wk}</div><div class="dk-row3">${shopCardD("Boodschappenlijst")}${[dmoCard(),vrNewsCard()].filter(Boolean).map(x=>`<div class="dk-c">${x}</div>`).join("")}</div>${inspD()}`}
 function ideeRows(day){if(!DIDS||DIDS.day!=day||DIDS.rows.some(x=>!S.recipes.some(r=>r.id==x.r.id)||S.sel.some(e=>e.rid==x.r.id&&!e.done))){DIDS={day,rows:dsCalc().filter(x=>x.you&&x.why!="Al op je menu").sort((a,b)=>b.sc-a.sc).slice(0,3)}}return DIDS.rows}
 function ideeAdd(id,k){S.sel.push({rid:id,pers:dp(),day:k});DIDS=null;save();draw()}
 function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
@@ -2398,7 +2638,7 @@ function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
  const unp=un.length?`<div class="dpan" style="margin-top:22px"><h3>Nog niet ingepland</h3><div style="margin-top:10px">${un.map(([e,i])=>mrCard(e,i,"",t)).join("")}</div></div>`:"";
  const ik=emp[0],ideas=ik?ideeRows(ik):[];
  const idp=ik&&ideas.length?`<div class="dpan"><h3>Ideeën voor ${esc(lc(ik))}</h3><p class="mute" style="margin:2px 0 14px">Past bij wat je de rest van de week eet</p>${ideas.map(x=>`<div class="mr" style="margin-bottom:10px">${tileHtml(x.r,"dst")}<span class="dsn"><b>${esc(x.r.name)}</b><span class="dsm"><span>${esc([x.r.time?x.r.time+" min":"",x.why].filter(Boolean).join(" · "))}</span></span></span><button class="mrc" aria-label="Zet op ${esc(lc(ik))}" onclick="ideeAdd(${x.r.id},'${ik}')">${ico("plus")}</button></div>`).join("")}</div>`:"";
- return`<div class="dh1"><div><h2 class="pt" style="margin:0">Weekmenu</h2><p class="mute" style="margin:2px 0 0">Week ${wkNr(d0)} · ${rng}</p></div><div class="dnav">${weekCount(D)?`<button class="lnk dg" onclick="clearWeek()">${ico("close")} Week leegmaken</button>`:""}<div class="wk" style="margin:0;padding:4px"><button onclick="MW--;draw()" aria-label="Vorige week">${ico("chevl")}</button><div class="wl" style="min-width:130px"><b>${lbl}</b></div><button onclick="MW++;draw()" aria-label="Volgende week">${ico("chevr")}</button></div>${MW!=0?`<button class="lnk" onclick="MW=0;draw()">Deze week</button>`:""}</div></div>${prog}<div class="wgrid">${cols}</div>${unp}<div class="dg5">${idp||"<div></div>"}${shopCardD("Nodig voor deze week")}</div>`}
+ return`<div class="dh1"><div><h2 class="pt" style="margin:0">Weekmenu</h2><p class="mute" style="margin:2px 0 0">Week ${wkNr(d0)} · ${rng}</p></div><div class="dnav">${weekCount(D)?`<button class="lnk dg" onclick="clearWeek()">${ico("close")} Week leegmaken</button>`:""}<div class="wk" style="margin:0;padding:4px"><button onclick="MW--;draw()" aria-label="Vorige week">${ico("chevl")}</button><div class="wl" style="min-width:130px"><b>${lbl}</b></div><button onclick="MW++;draw()" aria-label="Volgende week">${ico("chevr")}</button></div>${MW!=0?`<button class="lnk" onclick="MW=0;draw()">Deze week</button>`:""}<button class="btn dk-tolist" onclick="go('list')" aria-label="Zet op boodschappenlijst">${ico("cart")}<span>Zet op boodschappenlijst</span></button></div></div>${prog}<div class="wgrid">${cols}</div>${unp}<div class="dg5">${idp||"<div></div>"}${shopCardD("Nodig voor deze week")}</div>`}
 let SLOT="";
 function slotPick(k){SLOT=k;DSFROM=false;const d=document.getElementById("rdlg");d.innerHTML=`<h2 style="font-size:1.15rem;margin-bottom:8px">Kies iets voor ${dayLbl(k).toLowerCase()}</h2><div class="row nw" style="margin-bottom:8px"><input id="rsq" type="search" placeholder="Zoek recept…" oninput="slotList()" style="flex:1"><button class="btn ghost sm" onclick="slotAdd(suggest(1,[],[])[0])">${ico("sparkle")} Laat Chef Pieper kiezen</button></div><div class="row" style="margin-bottom:8px"><button class="btn ghost sm" onclick="dxAdd('out')">${ico("out")} Eet elders</button><button class="btn ghost sm" onclick="dxLeft()">${ico("left")} Kliekje</button></div><div id="rsl" class="dl"></div><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn ghost" onclick="rdlg.close()">Sluiten</button></div>`;slotList();d.showModal()}
 function slotList(){const q=(document.getElementById("rsq").value||"").toLowerCase(),used=new Set(S.sel.map(e=>e.rid)),rec=recentNames();
@@ -2852,7 +3092,7 @@ const KOPT=[["ETEN EN GEZONDHEID",[["nutri","chart",AT_GREEN,"Macro's tonen","Ei
  ["RESTJES",[["left","a_bowl",AT_PEACH,"Restjes bijhouden","Na het koken vragen we of er iets over is. Restjes komen bij Dit moet op"]]]];
 function kCount(){return KOPT.flatMap(x=>x[1]).filter(([k])=>optOn(k)).length}
 function tglRow([k,ic,tint,t,d]){const dis=k=="leftRem"&&!optOn("left");return`<label class="axtg${dis?" dis":""}"><span class="axic" style="background:${tint[0]};color:${tint[1]}">${ico(ic)}</span><span class="axtx"><b>${t}</b><small>${dis?"Zet eerst Restjes bijhouden aan":d}</small></span><input type="checkbox" class="axsw" ${optOn(k)&&!dis?"checked":""} ${dis?"disabled":""} onchange="setOpt('${k}',this.checked)" aria-label="${esc(t)}"></label>`}
-function vAccount(){const local=!sb;
+function vAccount(){const local=!sb;if(DESK())return vAccD();
  if(RECOV&&uid&&AP!="ww")AP="ww";
  const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast,thema:vAThema,weg:vAWeg}[AP];if(sub)return`<div class="axw">${sub()}</div>`;
  regMe();const p=myP(),ok=sb&&uid,st=ok?(statTxt||"Gesynchroniseerd"):"Alleen op dit apparaat",bad=/mislukt/i.test(st),ms=members();
@@ -3242,18 +3482,18 @@ function stRow(s){return`<button class="axrow hx-srow" onclick="stEdit(${s.id})"
 function lfDays(l){if(l.until)return daysTo(l.until);const age=Math.round((pdk(todayK())-pdk(l.date||todayK()))/864e5);return(l.where=="vriezer"?90:3)-age}
 function lfTag(l){const d=lfDays(l);return`<span class="hx-tag ${d<=1?"warm":"ok"}">${ico("a_clock")} restje · ${d<0?"over de datum":d==0?"vandaag op":d==1?"morgen op":d<21?"nog "+d+" dagen":"nog ±"+Math.round(d/7)+" weken"}</span>`}
 function vStock(){if(STV=="check")return vStCheck();const st=optOn("stock"),lf=optOn("left");
- const top=`<div class="axw">${`<div class="axtop"><button class="axbk" onclick="STV='';go(BKTO||'home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2>${st?`<button class="axplus" onclick="stAddDlg()" aria-label="Iets toevoegen">${ico("plus")}</button>`:"<span></span>"}</div>`}`;
+ const top=`<div class="axw st-w">${`<div class="axtop"><button class="axbk" onclick="STV='';go(BKTO||'home')" aria-label="Terug">${ico("chevl")}</button><h2>Voorraad</h2>${st?`<button class="axplus" onclick="stAddDlg()" aria-label="Iets toevoegen">${ico("plus")}</button>`:"<span></span>"}</div>`}`;
  if(!st&&!lf)return top+`<div class="card axempty"><p>Voorraad en restjes bijhouden staan uit. Zet ze aan bij Account → Kookvoorkeuren.</p><button class="btn" style="margin-top:12px" onclick="go('account');aGo('kook')">Naar Kookvoorkeuren</button></div></div>`;
  let h="";
  if(st){stEnsure();h+=`<button class="axghost hx-bonb" onclick="stBon()">${ico("receipt")} Foto van bon</button>`;
   if((S.stock||[]).length)h+=`<button class="hx-ck" onclick="STV='check';CK=null;draw();scrollTo(0,0)"><span class="hx-cki">${ico("a_check")}</span><span class="axt"><b>Klopt dit nog?</b><small>Even checken voor je nieuwe boodschappenlijst · 30 sec</small></span></button>`}
  if(lf){const L=[...(S.left||[])].sort((a,b)=>lfDays(a)-lfDays(b));
-  h+=`<h3 class="hx-h">Restjes</h3><p class="hx-sub">Kliekjes in de koelkast en vriezer. Tik om in te plannen.</p>${L.length?`<div class="card axlist">${L.map(l=>`<div class="axrow hx-srow"><button class="axt hx-lb" onclick="lfPlan(${l.id})"><b>${esc(l.name)}</b><small class="mute">${String(l.por).replace(".",",")} ${l.por==1?"portie":"porties"} · ${l.where=="vriezer"?"vriezer":"koelkast"}</small></button>${lfTag(l)}<button class="axkick" onclick="lfDel(${l.id})" aria-label="${esc(l.name)} weghalen">${ico("a_x")}</button></div>`).join("")}</div>`:`<div class="card axempty"><p>Geen restjes. Na het koken vraagt de app of er iets over is.</p></div>`}`}
+  h+=`<section class="st-sec"><h3 class="hx-h">Restjes</h3><p class="hx-sub">Kliekjes in de koelkast en vriezer. Tik om in te plannen.</p>${L.length?`<div class="card axlist">${L.map(l=>`<div class="axrow hx-srow"><button class="axt hx-lb" onclick="lfPlan(${l.id})"><b>${esc(l.name)}</b><small class="mute">${String(l.por).replace(".",",")} ${l.por==1?"portie":"porties"} · ${l.where=="vriezer"?"vriezer":"koelkast"}</small></button>${lfTag(l)}<button class="axkick" onclick="lfDel(${l.id})" aria-label="${esc(l.name)} weghalen">${ico("a_x")}</button></div>`).join("")}</div>`:`<div class="card axempty"><p>Geen restjes. Na het koken vraagt de app of er iets over is.</p></div>`}</section>`}
  if(st){const V=(S.stock||[]).filter(s=>stKind(s)=="v").sort((a,b)=>stDaysLeft(a)-stDaysLeft(b)),H=(S.stock||[]).filter(s=>stKind(s)=="h").sort((a,b)=>stLvl(a)-stLvl(b)||a.name.localeCompare(b.name));
   if(!V.length&&!H.length){const names=["rijst","pasta","olijfolie","zout","peper","bloem","suiker","kokosmelk","tomatenblokjes","bouillonblokje","sojasaus","boter"];
    h+=`<div class="card axempty" style="margin-top:16px"><p>Nog niets in je voorraad. Na "boodschappen gedaan" of een foto van je bon vult hij zich vanzelf. Of tik aan wat je al in huis hebt:</p><div class="axchips" style="margin-top:10px">${names.map(n=>`<button class="axchip" onclick="stQuick('${n}')">${ico("plus")}${n}</button>`).join("")}</div></div>`}
-  else{h+=`<h3 class="hx-h">Vers</h3><p class="hx-sub">Houdbaarheid geschat, tik om aan te passen</p>${V.length?`<div class="card axlist">${V.map(stRow).join("")}</div>`:`<div class="card axempty"><p>Geen verse producten.</p></div>`}
-   <h3 class="hx-h">Houdbaar</h3><p class="hx-sub">Ongeveer, niet op de gram</p>${H.length?`<div class="card axlist">${H.map(stRow).join("")}</div>`:`<div class="card axempty"><p>Geen houdbare producten.</p></div>`}`}}
+  else{h+=`<section class="st-sec"><h3 class="hx-h">Vers</h3><p class="hx-sub">Houdbaarheid geschat, tik om aan te passen</p>${V.length?`<div class="card axlist">${V.map(stRow).join("")}</div>`:`<div class="card axempty"><p>Geen verse producten.</p></div>`}</section>
+   <section class="st-sec"><h3 class="hx-h">Houdbaar</h3><p class="hx-sub">Ongeveer, niet op de gram</p>${H.length?`<div class="card axlist">${H.map(stRow).join("")}</div>`:`<div class="card axempty"><p>Geen houdbare producten.</p></div>`}</section>`}}
  if(sb&&uid&&isMulti())h+=`<p class="hx-shared">${ico("a_friends")} Gedeeld met iedereen in ${esc(hhName())}</p>`;
  return top+h+`</div>`}
 // ---- Toevoegen en aanpassen
@@ -3501,20 +3741,27 @@ function drawK(){const d=$("kdlg"),n=KR.st.length,p=KR.pers||KR.r.pers||2,r=KR.r
   <h4 class="axh">INGREDIËNTEN VOOR ${p} ${p==1?"PERSOON":"PERSONEN"}</h4>${ingTable}
   <p class="kx-note">${ico("a_sun")} Je scherm blijft aan zolang je kookt</p></div>
   <div class="kx-foot"><button class="btn kx-go" onclick="kgo(1)">Start met koken ${ico("chevr")}</button></div>${kModal()}`;return}
- const t=KR.st[KI],sc=kScan(t),D=kdurs(t),k=KSTEPT[KI]||0,run=KTM.find(x=>x.step==KI&&!x.done),others=KTM.some(x=>!x.done&&x.step!=KI);
+ const dk=DESK(),t=KR.st[KI],sc=kScan(t),D=kdurs(t),k=KSTEPT[KI]||0,run=KTM.find(x=>x.step==KI&&!x.done),others=KTM.some(x=>!x.done&&x.step!=KI);
  let timer="";
  if(run)timer=kRunCard(run);
  else if(k<D.length){const L=kLab2(D[k].sent,t);timer=`<div class="kx-tc"><span class="kx-ti">${ico("a_timer")}</span><span class="axt"><b>${kfmt(D[k].sec*1000)}</b><small>${esc(L.label)}${D.length>1?` · timer ${k+1} van ${D.length}`:""}</small></span><button class="kx-ts" onclick="kstart(${KI},${k})">${ico("a_tri")} Start</button></div>`}
  else if(D.length)timer=`<p class="kx-note">${ico("a_check")} ${D.length>1?"Alle timers van deze stap zijn klaar.":"De timer van deze stap is klaar."}</p>`;
- d.innerHTML=`<div class="kx-top"><button class="kx-c" onclick="closeKAsk()" aria-label="Sluiten">${ico("a_x")}</button><span class="kx-tt"><small>${esc(r.name.length>24?r.name.split(/ (?:met|en|in|op|van|uit|à la) /i)[0].slice(0,30):r.name)}</small><b>Stap ${KI+1} van ${n}</b></span><button class="kx-c${KR.ing?" on":""}" onclick="ktog()" aria-label="Alle ingrediënten">${ico("a_list")}</button></div>
+ d.innerHTML=`<div class="kx-top"><button class="kx-c" onclick="closeKAsk()" aria-label="Sluiten">${ico("a_x")}</button><span class="kx-tt"><small>${esc(r.name.length>24?r.name.split(/ (?:met|en|in|op|van|uit|à la) /i)[0].slice(0,30):r.name)}</small><b>Stap ${KI+1} van ${n}</b></span><span class="kx-dtt"><b>${esc(r.name)}</b><small>Stap ${KI+1} van ${n} · ${p} ${p==1?"persoon":"personen"}</small></span><span class="kx-awake">${ico("a_sun")} Scherm blijft aan</span><button class="kx-c${KR.ing?" on":""}" onclick="ktog()" aria-label="Alle ingrediënten">${ico("a_list")}</button></div>
  <div class="kx-prog">${KR.st.map((_,i)=>`<i class="${i<=KI?"on":""}"></i>`).join("")}</div>
- <div class="kx-body">${kBanners()}
+ <div class="kx-body">${dk?`<p class="kx-stepl">STAP ${KI+1}</p>`:kBanners()}
  ${KR.ing?`<h4 class="axh">ALLE INGREDIËNTEN · ${p} ${p==1?"PERSOON":"PERSONEN"}</h4>${ingTable}<button class="axghost" onclick="ktog()">Terug naar stap ${KI+1}</button>`:`
  <div class="kx-txt">${sc.html}</div>
- ${sc.need.length?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${sc.need.map(q=>kRow(q.a,q.n)).join("")}</div>`:""}
+ ${sc.need.length&&!dk?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${sc.need.map(q=>kRow(q.a,q.n)).join("")}</div>`:""}
  ${timer}`}</div>
- <div class="kx-foot two"><button class="btn ghost kx-prev" onclick="kgo(-1)">${ico("chevl")} Vorige</button><button class="btn kx-go" onclick="kgo(1)">${KI==n-1?`${ico("a_check")} Klaar`:`Volgende stap ${ico("chevr")}`}</button></div>${kModal()}`;
+ <div class="kx-foot two"><button class="btn ghost kx-prev" onclick="kgo(-1)">${ico("chevl")} Vorige</button><button class="btn kx-go" onclick="kgo(1)">${KI==n-1?`${ico("a_check")} Klaar`:`Volgende stap ${ico("chevr")}`}</button></div>${dk?kDeskCols(sc,p):""}${kModal()}`;
  kSwInit()}
+
+function kDeskCols(sc,p){const r=KR.r,need=new Set(sc.need.map(q=>String(q.n).toLowerCase()));
+ const L=`<aside class="kx-L"><h4 class="axh">ALLE STAPPEN</h4><ol class="kx-sl">${KR.st.map((s,i)=>`<li class="${i<KI?"done":i==KI?"cur":""}"><button onclick="KI=${i};drawK()"><span class="kx-sn">${i<KI?ico("a_check"):i+1}</span><span class="kx-st2">${esc(s.length>90?s.slice(0,88)+"…":s)}</span></button></li>`).join("")}</ol></aside>`;
+ const ban=kBanners();
+ const R=`<aside class="kx-R">${ban?`<h4 class="axh">LOOPT NU</h4>${ban}`:""}${sc.need.length?`<h4 class="axh">NODIG IN DEZE STAP</h4><div class="card kx-ing">${sc.need.map(q=>kRow(q.a,q.n)).join("")}</div>`:""}
+  <h4 class="axh">ALLE INGREDIËNTEN</h4><ul class="kx-all">${r.ing.map(l=>{const q=kparts(l);const on=need.has(String(q.n).toLowerCase());return`<li class="${on?"on":""}">${esc([q.a,q.n].filter(Boolean).join(" "))}</li>`}).join("")}</ul></aside>`;
+ return L+R}
 // === VASTE DAGEN ===
 let VD=null;
 const fxT=x=>{if(!x||!x.fx)return"";const f=(S.fixed||[]).find(y=>y.id==x.fx);return f?f.name:(x.note||"")};
@@ -3724,7 +3971,7 @@ function vList(){const st=STORES[S.store]||STORES.ah;LGR=shopGroups();const N=LG
  const secs=st[1].map(a=>{const it=LGR.map((o,i)=>({o,i})).filter(({o})=>o.ai==a);if(!it.length)return"";const todo=it.filter(({o})=>!o.done).length;
   return`<div class="ls-sec"><div class="ls-sh"><span>${esc(AISLES[a].replace(/ & /g," en ").toUpperCase())}</span><small>${todo?todo+" te gaan":"klaar"}</small></div><div class="card ls-card">${it.map(({o,i})=>{const sr=lSrc(o),ex=o.ex,who=ex.length&&S.exBy?S.exBy[ex[0].t]:null,wm=who&&isMulti()?members().find(m=>m.id==who):null;
    return`<div class="ls-row${o.done?" done":""}"><button class="ls-cb" onclick="lTick(${i})" role="checkbox" aria-checked="${o.done}" aria-label="${esc(o.name)}">${o.done?ico("a_check"):""}</button><button class="ls-tx" onclick="lTick(${i})"><b>${esc(capF(o.name))}</b><small>${esc(sr||(ex.length?"Zelf toegevoegd":""))}${sr&&ex.length?" + zelf toegevoegd":""}</small></button>${wm?`<span class="ls-who">${avHTML(wm.name,members().indexOf(wm),26,wm.p&&wm.p.photo)}</span>`:""}<button class="ls-amt" onclick="lPk(${i})" aria-label="Verpakking van ${esc(o.name)} aanpassen">${o.amt?esc(o.amt):'<i class="ls-amt0">+</i>'}</button>${ex.length&&!sr?`<button class="ls-x" onclick="lRmX(${ex[0].i})" aria-label="${esc(o.name)} weghalen">${ico("a_x")}</button>`:optOn("pantry")&&sr&&LEDIT?`<button class="ls-x ls-hm" onclick='pAdd(${esc(JSON.stringify(o.name))})' aria-label="Meestal al in huis" title="Meestal al in huis">${ico("home")}</button>`:""}</div>`}).join("")}</div></div>`}).join("");
- return`<div class="ls">${stCkBanner()}${head}${prog}${add}${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${secs}<p class="ls-tip">Tik op een hoeveelheid om aan te geven dat je het al hebt, of om de verpakking aan te passen.</p>${homeC}<button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div>`}
+ return`<div class="ls">${stCkBanner()}${head}<div class="ls-cols"><div class="ls-side">${prog}<div class="ls-addc"><b class="ls-addh">Iets toevoegen</b>${add}</div>${LEDIT?`<div class="ls-ask" style="background:var(--sage)"><span class="axt"><b>Meestal in huis aanpassen</b><small>Tik op het huisje bij wat je bijna altijd in huis hebt. Dat zet de app voortaan bij "al in huis".</small></span><button class="ls-yes" onclick="LEDIT=false;draw()">Klaar</button></div>`:ask}${homeC}</div><div class="ls-main">${secs}<p class="ls-tip">Tik op een hoeveelheid om aan te geven dat je het al hebt, of om de verpakking aan te passen.</p><button class="btn ls-done" onclick="doneL()">${ico("a_check")} Boodschappen afronden</button></div></div></div>`}
 document.addEventListener("click",e=>{if(LMENU&&!e.target.closest(".ls-menu")){LMENU=false;draw()}});
 
 /* ---- Verpakkingen: eigen keuze (S.packs) + Open Food Facts (S.offc) ---- */
@@ -3787,7 +4034,7 @@ function pkHaveSet(cat){const o=LPKG;if(!o)return;S.opt=S.opt||{};S.opt.pantry=t
 function pkItems(cat){return[...new Set(S.pantry||[])].filter(n=>pCat(n)==cat).sort((a,b)=>a.localeCompare(b,"nl"))}
 function pkSection(){if(!optOn("pantry"))return"";const rows=PKC.map(([k,t,,ic],i)=>{const L=pkItems(k);if(k=="overig"&&!L.length)return"";const[bg,fg]=ATINT[i%4];
   return`<button class="axrow pk-crow" onclick="STV='pk:${k}';draw();scrollTo(0,0)"><span class="axic" style="background:${bg};color:${fg}">${ico(ic)}</span><span class="axt"><b>${t}</b><small class="mute">${L.length?L.length+" · "+esc(L.slice(0,3).join(", "))+(L.length>3?"…":""):"Nog leeg"}</small></span>${ico("chevr")}</button>`}).join("");
- return`<h3 class="hx-h">Kruiden en sauzen</h3><p class="hx-sub">Niet precies bijgehouden. Staat het in een recept, dan vraagt je lijst of je het nog hebt.</p><div class="card axlist pk-cats">${rows}</div>`}
+ return`<section class="st-sec"><h3 class="hx-h">Kruiden en sauzen</h3><p class="hx-sub">Niet precies bijgehouden. Staat het in een recept, dan vraagt je lijst of je het nog hebt.</p><div class="card axlist pk-cats">${rows}</div></section>`}
 function pkView(cat){const c=PKC.find(x=>x[0]==cat)||PKC[0],L=pkItems(c[0]);
  return`<div class="axw"><div class="axtop"><button class="axbk" onclick="STV='';draw()" aria-label="Terug">${ico("chevl")}</button><h2>${c[2]}</h2><span></span></div>
  <p class="hx-sub" style="margin-top:4px">Wat je meestal in huis hebt. Komt niet op je boodschappenlijst; je krijgt daar de vraag of je het nog hebt.</p>
@@ -3879,9 +4126,10 @@ function vRec2(){const multi=isMulti(),all=dedupR(S.recipes||[]).length,me=meK()
  const mine=multi?dedupR((S.recipes||[]).filter(r=>ownerIds(r).includes(me))).length:all,M=members(),mi=Math.max(0,M.findIndex(m=>m.id==me)),mm=M[mi]||{};
  const nF=rfCount(RF),CL=collOn()?collList():[],cur=COLL?CL.find(c=>c.id==COLL):null;if(COLL&&!cur)COLL="";
  const sorts=[["last","Laatst gekookt"],["name","Naam (A–Z)"],["new","Nieuwste eerst"],["fast","Snelste eerst"]];
- return`<p class="rx-sub">${ico("a_users")} ${all} ${all==1?"recept":"recepten"}${multi?" in "+esc(hhName()):""}</p>
- <div class="rx-search"><label class="rx-q">${ico("search")}<input type="search" placeholder="Zoek naam of ingrediënt…" aria-label="Zoek op naam of ingrediënt" value="${esc(RQ)}" oninput="rxSetQ(this.value)"></label><button class="rx-fbtn${nF?" on":""}" onclick="rfOpen()" aria-label="Filter${nF?" ("+nF+" actief)":""}">${ico("a_sliders")}${nF?`<span class="rx-fn">${nF}</span>`:""}</button></div>
- ${multi?`<div class="axseg rx-seg"><button class="${OWNF?"":"on"}" onclick="OWNF='';draw()">${ico("a_users")} Huishouden <span>${all}</span></button><button class="${OWNF==me?"on":""}" onclick="OWNF='${me}';draw()">${avHTML(mm.name||uname()||"?",mi,20,mm.p&&mm.p.photo)} Alleen van mij <span>${mine}</span></button></div>`:""}
+ const seg=multi?`<div class="axseg rx-seg"><button class="${OWNF?"":"on"}" onclick="OWNF='';draw()">${ico("a_users")} Huishouden <span>${all}</span></button><button class="${OWNF==me?"on":""}" onclick="OWNF='${me}';draw()">${avHTML(mm.name||uname()||"?",mi,20,mm.p&&mm.p.photo)} Alleen van mij <span>${mine}</span></button></div>`:"";
+ return`<button class="btn rx-addd" onclick="openR()">${ico("plus")} Recept toevoegen</button><p class="rx-sub">${ico("a_users")} ${all} ${all==1?"recept":"recepten"}${multi?" in "+esc(hhName()):""}</p>
+ <div class="rx-search${multi?" has-seg":""}"><label class="rx-q">${ico("search")}<input type="search" placeholder="Zoek naam of ingrediënt…" aria-label="Zoek op naam of ingrediënt" value="${esc(RQ)}" oninput="rxSetQ(this.value)"></label>${seg}<button class="rx-fbtn${nF?" on":""}" onclick="rfOpen()" aria-label="Filter${nF?" ("+nF+" actief)":""}">${ico("a_sliders")}<span class="rx-fl">Filter</span>${nF?`<span class="rx-fn">${nF}</span>`:""}</button></div>
+
  ${collOn()?`<div class="rx-sh"><h2>Collecties</h2><button class="lnk rx-new" onclick="collNew()">Nieuwe collectie</button></div>
  <div class="rx-coll">${CL.map(c=>`<button class="rx-ct${COLL==c.id?" on":""}" style="background:${c.bg}" onclick="COLL=COLL=='${c.id}'?'':'${c.id}';draw()" aria-pressed="${COLL==c.id}"><span class="rx-ci" style="color:${c.fg}">${ico(c.ic)}</span><b>${esc(c.name)}</b><small>${collCount(c)} ${collCount(c)==1?"recept":"recepten"}</small></button>`).join("")}</div>`:""}
  <div class="rx-sh rx-allh"><h2>${cur?esc(cur.name):"Alle recepten"}${cur?`<button class="lnk rx-clr" onclick="COLL='';draw()" aria-label="Collectie sluiten">${ico("a_x")}</button>`:""}</h2>${cur&&cur.own?`<button class="lnk rx-new" onclick="collEdit('${cur.id}')">Wijzig</button>`:""}<label class="rx-sort"><select aria-label="Sorteren" onchange="RSORT=this.value;draw()">${sorts.map(([v,t])=>`<option value="${v}"${RSORT==v?" selected":""}>${t}</option>`).join("")}</select>${ico("a_chevd")}</label></div>
@@ -3938,7 +4186,7 @@ let RD=null;
 function rdOpen(id,pers){const r=S.recipes.find(x=>x.id==id);if(!r)return;const e=(S.sel||[]).find(x=>x.rid==id);
  RD={id,pers:pers||(e&&e.pers)||r.pers||dp(),all:false,added:0,y:window.scrollY};
  let o=$("rdet");if(!o){o=document.createElement("div");o.id="rdet";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");document.body.appendChild(o)}
- document.documentElement.style.overflow="hidden";rdDraw();o.scrollTop=0;
+ document.documentElement.style.overflow="hidden";rdDraw();{const sc=rdSc();if(sc)sc.scrollTop=0}
  try{history.pushState({rd:1},"")}catch(e){}}
 function rdClose(fromPop){const o=$("rdet");if(o)o.remove();document.documentElement.style.overflow="";RD=null;
  if(!fromPop){try{if(history.state&&history.state.rd)history.back()}catch(e){}}}
@@ -3961,28 +4209,29 @@ function rdDraw(){const o=$("rdet");if(!o||!RD)return;const r=S.recipes.find(x=>
  const pr=rdPrice(r),sub=[nut?"Per portie":"",pr].filter(Boolean).join(" · ");
  const S3=RD.all?st:st.slice(0,3);
  const noteBy=r.noteBy?((M.find(m=>m.id==r.noteBy)||{}).name||mName(r.noteBy)).split(" ")[0]:"";
- o.innerHTML=`<div class="rd-hero ph pi" style="--c:${DSC[hi]}">${r.img?`<img src="${esc(r.img)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:`<span class="rd-hic">${ico(DSI[hi])}</span>`}
-  <div class="rd-tb"><button class="rd-cb" onclick="rdClose()" aria-label="Terug">${ico("chevl")}</button><span></span>
+ o.innerHTML=`<div class="rd-scrim" onclick="rdClose()"></div><div class="rd-panel"><div class="rd-hero ph pi" style="--c:${DSC[hi]}">${r.img?`<img src="${esc(r.img)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">`:`<span class="rd-hic">${ico(DSI[hi])}</span>`}
+  <div class="rd-tb"><button class="rd-cb rd-back" onclick="rdClose()" aria-label="Terug">${ico("chevl")}</button><button class="rd-cb rd-nav" onclick="rdStep(-1)" aria-label="Vorig recept">${ico("chevl")}</button><button class="rd-cb rd-nav" onclick="rdStep(1)" aria-label="Volgend recept">${ico("chevr")}</button><span></span>
   ${collOn()?`<button class="rd-cb${fav?" on":""}" onclick="favTog(${r.id});rdDraw()" aria-pressed="${fav}" aria-label="${fav?"Uit favorieten":"Aan favorieten toevoegen"}">${ico(fav?"a_heartf":"a_heart")}</button>`:""}
-  <button class="rd-cb" onclick="rdShare()" aria-label="Delen">${ico("a_share")}</button><button class="rd-cb" onclick="rdMore()" aria-label="Meer">${ico("a_dots")}</button></div></div>
+  <button class="rd-cb" onclick="rdShare()" aria-label="Delen">${ico("a_share")}</button><button class="rd-cb" onclick="rdMore()" aria-label="Meer">${ico("a_dots")}</button><button class="rd-cb rd-x" onclick="rdClose()" aria-label="Sluiten">${ico("a_x")}</button></div></div>
  <div class="rd-body">
   <h1>${esc(r.name)}</h1><p class="rd-meta">${meta}</p>
   <p class="rd-by">${ids.length&&isMulti()?avHTML(om.name||"?",oi,28,om.p&&om.p.photo):""}<span>${by}</span></p>
   ${(()=>{const L=rLabels(r);return L.length?`<div class="rd-labs">${L.map(l=>`<span>${esc(l)}</span>`).join("")}</div>`:""})()}
-  ${nut}${sub?`<p class="rd-sub">${sub}</p>`:""}
+  <div class="rd-bar2"><button class="btn" onclick="rdCook()">${ico("play")} Start koken</button><button class="btn ghost" onclick="pickR(${r.id})">${ico(S.sel.some(x=>x.rid==r.id)?"a_check":"a_cal")} ${S.sel.some(x=>x.rid==r.id)?"Gepland":"Op weekmenu"}</button></div>
+  ${nut}${sub?`<p class="rd-sub">${sub}</p>`:""}<div class="rd-cols"><section class="rd-colL">
   <div class="rd-ih"><h2>Ingrediënten</h2><div class="rd-pers"><button onclick="rdPers(-1)" aria-label="Minder personen" ${RD.pers<=1?"disabled":""}>${ico("a_minus")}</button><b>${RD.pers} ${RD.pers==1?"persoon":"personen"}</b><button onclick="rdPers(1)" aria-label="Meer personen">${ico("plus")}</button></div></div>
   <div class="rd-ing">${I.map(x=>`<div class="rd-ir"><span class="rd-ia">${x.a?esc(fmt(x.a,x.u)):""}</span><span class="rd-in">${esc(x.name)}</span>${x.home?`<span class="rd-home">${ico("a_check")} in huis</span>`:""}</div>`).join("")||`<p class="mute" style="padding:12px 16px;margin:0">Nog geen ingrediënten.</p>`}</div>
   ${I.length?`<button class="rd-shop${RD.added?" done":""}" onclick="rdShop()" ${!miss.length?"disabled":""}>${ico(RD.added?"a_check":"cart")} ${RD.added?RD.added+(RD.added==1?" ingrediënt":" ingrediënten")+" op je lijst gezet":miss.length?"Zet ontbrekende op boodschappenlijst":"Alles is in huis"}</button>`:""}
-  <h2 class="rd-h">Bereiding</h2>
+  </section><section class="rd-colR"><h2 class="rd-h">Bereiding</h2>
   ${st.length?`<ol class="rd-steps">${S3.map((t,i)=>`<li><span>${i+1}</span><p>${esc(t)}</p></li>`).join("")}</ol>${st.length>3?`<button class="rd-more" onclick="RD.all=!RD.all;rdDraw()">${RD.all?"Toon minder":"Toon alle "+st.length+" stappen"} ${ico(RD.all?"a_chevu":"a_chevd")}</button>`:""}`:`<p class="mute">Nog geen bereidingswijze. Voeg die toe via ••• › Aanpassen.</p>`}
-  ${r.note?`<div class="rd-note">${ico("a_pen")}<div><b>Notitie${noteBy?" van "+esc(noteBy):""}</b><p>${esc(r.note)}</p></div></div>`:""}
+  </section></div>${r.note?`<div class="rd-note">${ico("a_pen")}<div><b>Notitie${noteBy?" van "+esc(noteBy):""}</b><p>${esc(r.note)}</p></div></div>`:""}
   ${/^https?:\/\//.test(r.url||"")?`<p class="rd-src"><a href="${esc(r.url)}" target="_blank" rel="noopener">${ico("a_link")} Bron van dit recept</a></p>`:""}
  </div>
- <div class="rd-bar"><button class="btn ghost" onclick="pickR(${r.id})">${ico(S.sel.some(x=>x.rid==r.id)?"a_check":"a_cal")} ${S.sel.some(x=>x.rid==r.id)?"Gepland":"Op weekmenu"}</button><button class="btn" onclick="rdCook()">${ico("play")} Start koken</button></div>`}
-function rdPers(d){if(!RD)return;RD.pers=Math.max(1,Math.min(40,RD.pers+d));RD.added=0;const o=$("rdet"),y=o?o.scrollTop:0;rdDraw();if(o)o.scrollTop=y}
+ <div class="rd-bar"><button class="btn ghost" onclick="pickR(${r.id})">${ico(S.sel.some(x=>x.rid==r.id)?"a_check":"a_cal")} ${S.sel.some(x=>x.rid==r.id)?"Gepland":"Op weekmenu"}</button><button class="btn" onclick="rdCook()">${ico("play")} Start koken</button></div></div>`}
+function rdPers(d){if(!RD)return;RD.pers=Math.max(1,Math.min(40,RD.pers+d));RD.added=0;const o=rdSc(),y=o?o.scrollTop:0;rdDraw();const o2=rdSc();if(o2)o2.scrollTop=y}
 function rdShop(){const r=S.recipes.find(x=>x.id==RD.id);if(!r)return;const M=rdIng(r).filter(x=>!x.home);let n=0;S.extra=S.extra||[];S.exBy=S.exBy||{};
  for(const x of M){const t=(x.a?fmt(x.a,x.u)+" ":"")+x.name;if(!S.extra.includes(t)){S.extra.push(t);S.exBy[t]=uid||"local";n++}}
- RD.added=n||M.length;save();const o=$("rdet"),y=o?o.scrollTop:0;rdDraw();if(o)o.scrollTop=y}
+ RD.added=n||M.length;save();const o=rdSc(),y=o?o.scrollTop:0;rdDraw();const o2=rdSc();if(o2)o2.scrollTop=y}
 function rdCook(){const id=RD.id,p=RD.pers,si=(S.sel||[]).findIndex(x=>x.rid==id);rdClose();startK(id,p,si>=0?si:null)}
 function rdShare(){const r=S.recipes.find(x=>x.id==RD.id);if(!r)return;const txt=r.name+"\n\nIngrediënten:\n"+(r.ing||[]).map(l=>"- "+l.split("|")[0].trim()).join("\n")+(r.steps?"\n\nBereiding:\n"+r.steps:"")+(r.url?"\n\nBron: "+r.url:"");
  if(navigator.share){navigator.share({title:r.name,text:txt}).catch(()=>{})}else{try{navigator.clipboard.writeText(txt);ask("Het recept is gekopieerd. Je kunt het nu plakken in een bericht.",()=>{},"Oké")}catch(e){}}}
@@ -3997,6 +4246,40 @@ function rdNote(){const r=S.recipes.find(x=>x.id==RD.id);if(!r)return;
 function rdNoteSave(){const r=S.recipes.find(x=>x.id==RD.id);if(!r)return;const v=($("rdn").value||"").trim();if(v){r.note=v;r.noteBy=uid||"local"}else{delete r.note;delete r.noteBy}save();actClose();rdDraw()}
 Object.assign(ICP,{a_share:'<circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/>',a_dots:'<circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/>',
  a_minus:'<path d="M5 12h14"/>',a_note:'<path d="M5 4h14v16H5z"/><path d="M9 9h6M9 13h6M9 17h3"/>'});
+
+function rdStep(d){if(!RD)return;let L=[];try{L=S.tab=="rec"?recShown():dedupR(S.recipes)}catch(e){L=S.recipes}const i=L.findIndex(x=>x.id==RD.id);if(i<0||!L.length)return;const n=L[(i+d+L.length)%L.length];RD.id=n.id;RD.pers=((S.sel||[]).find(x=>x.rid==n.id)||{}).pers||n.pers||dp();RD.all=false;RD.added=0;rdDraw();const o=rdSc();if(o)o.scrollTop=0}
+
+function rdSc(){const o=$("rdet");if(!o)return null;return DESK()?o.querySelector(".rd-panel"):o}
+// ================= Webversie (vanaf 1024 px): zijbalk en schil =================
+function deskChrome(){if(!DESK())return;const n=$("nav");if(!n||!uid&&sb)return;
+ const h=document.querySelector("header h1");if(h&&!h.querySelector(".dk-brand"))h.innerHTML=`<span class="dk-brand"><span class="dk-ic">${MASCOT}</span><span class="dk-wm">Kook<span>Buddy</span></span></span>`;
+ if(!n.querySelector(".dk-add"))n.insertAdjacentHTML("afterbegin",`<button class="dk-add" onclick="openR()">${ico("plus")}<span>Recept toevoegen</span></button>`);
+ if((optOn("stock")||optOn("left")||optOn("pantry"))&&!n.querySelector(".dk-stock")){const L=n.querySelectorAll("button:not(.dk-add):not(.navplus)");const last=L[L.length-1];
+  if(last)last.insertAdjacentHTML("afterend",`<button class="dk-stock${S.tab=="stock"?" on":""}" onclick="BKTO='';STV='';go('stock')"><b class="ni" aria-hidden="true">${ico("a_box")}</b><span class="lf">Voorraad</span></button>`)}
+ if(!n.querySelector(".dk-acc")){const M=members(),me=uid||"local",i=Math.max(0,M.findIndex(m=>m.id==me)),p=myP(),nm=(pName(p)||uname()||"Jij");
+  n.insertAdjacentHTML("beforeend",`<button class="dk-acc${S.tab=="account"?" on":""}" onclick="go('account')">${avHTML(nm,i,36,p.photo)}<span><b>${esc(nm)}</b><small>Account</small></span>${ico("chevr")}</button>`)}
+ const hb=n.querySelector("button.on:not(.dk-stock):not(.dk-acc)");if(S.tab=="stock"&&hb&&!hb.classList.contains("dk-add"))hb.classList.remove("on")}
+{const _d=draw;draw=function(){_d.apply(this,arguments);try{deskChrome()}catch(e){console.error(e)}}}
+function vAccD(){const ok=sb&&uid,p=myP();
+ if(RECOV&&uid)AP="ww";
+ if(!AP||AP=="home"){AP="profiel";PD=JSON.parse(JSON.stringify(p))}
+ const sub={profiel:vAProf,mail:vAMail,ww:vAPw,kook:vAKook,meld:vAMeld,huis:vAHuis,bk:vABk,app:vAApp,vrienden:vAVr,vriend:vAVriend,vast:vAVast,thema:vAThema,weg:vAWeg}[AP]||vAProf;
+ const grp={vriend:"vrienden",vast:"huis"}[AP]||AP;
+ const it=(k,ic,t,sm,on)=>`<button class="ac-it${grp==k?" on":""}" onclick="${on||`aGo('${k}')`}"><span class="ac-ic">${ico(ic)}</span><span class="ac-t">${esc(t)}</span>${sm?`<small>${sm}</small>`:""}</button>`;
+ const menu=`<aside class="ac-side"><div class="ac-me">${avHTML(pName(p)||p.name||uname(),0,48,p.photo)}<span><b>${esc(p.name||uname()||"Jouw naam")}</b>${p.gnaam?`<small>@${esc(p.gnaam)}</small>`:""}</span></div>
+  <div class="ac-nav"><h5>JIJ</h5>${it("profiel","a_user","Profiel")}${ok?it("mail","a_lock","Inloggen en beveiliging"):""}${it("kook","a_sliders","Kookvoorkeuren",kCount()+" aan")}${it("meld","a_bell","Meldingen")}${it("thema","a_sun","Weergave",THEMES[thGet()][0])}
+  <h5>SAMEN</h5>${it("huis","a_house","Huishouden")}${it("vrienden","a_friends","Vrienden")}
+  <h5>JOUW KEUKEN</h5>${it("x1","a_list","Logboek","","BKTO='account';go('log')")}${it("x2","chart","Trends","","BKTO='account';go('trend')")}
+  <h5>APP</h5>${it("bk","a_save","Back-ups")}${it("app","a_phone","Als app op je telefoon")}${it("x3","sparkle","Rondleiding bekijken","","onbOpen()")}</div>
+  ${ok?`<button class="ac-out" onclick="logout()">${ico("a_out")} Uitloggen</button><button class="lnk ac-del" onclick="DELQ='';DELERR='';DELOK=false;aGo('weg')">Account verwijderen</button>`:""}</aside>`;
+ const sec=(AP=="mail"||AP=="ww")&&ok?`<div class="ac-tabs"><button class="${AP=="mail"?"on":""}" onclick="aGo('mail')">E-mailadres</button><button class="${AP=="ww"?"on":""}" onclick="aGo('ww')">Wachtwoord</button></div>`:"";
+ return`<div class="ac-d">${menu}<div class="ac-main axw">${sec}${sub()}</div></div>`}
+{const _l=vLogin;vLogin=function(){const f=_l.apply(this,arguments);if(!DESK())return f;
+ const pt=(ic,b,t)=>`<li><span class="lg2-i">${ico(ic)}</span><span><b>${b}</b><small>${t}</small></span></li>`;
+ return`<div class="lg2"><section class="lg2-art"><div class="lg2-brand"><span class="lg-tile">${KBLOGO}</span><span class="lg2-wm">Kook<span>Buddy</span></span></div>
+ <div class="lg2-mid"><span class="lg2-masc">${MASCOT}</span><h2>Wat eten we vanavond?<br>Chef Pieper weet het.</h2>
+ <ul class="lg2-pts">${pt("book","Al je recepten op één plek","Van website, foto of zelf ingetypt")}${pt("a_cal","Je weekmenu in een paar tikken","Of laat Chef Pieper je week vullen")}${pt("cart","Boodschappen vanzelf","Op volgorde van je eigen winkel")}</ul></div>
+ <p class="lg2-foot">Samen koken met je huishouden en vrienden</p></section><section class="lg2-form">${f}</section></div>`}}
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
