@@ -2149,6 +2149,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
  #dsh .dsft .ds2cancel{display:block;background:var(--card);color:var(--ink);border:1px solid var(--line)}
  #dsh .dsft button:disabled{background:var(--green);color:#fff;opacity:.45}
 }
+.ds2ti.cp{background:none;padding:0}.ds2ti.cp .cpi{box-shadow:none}
 </style><style id="cf2">.cf2m{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cf2m button{display:flex;flex-direction:column;gap:3px;text-align:left;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:12px;font:inherit;color:var(--ink);cursor:pointer}
 .cf2m button.on{border-color:var(--green);background:var(--t-peach)}
@@ -2167,7 +2168,81 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cf2warn{color:#F2CF7A}}
 .cf2van{display:flex;align-items:center;gap:5px;font-size:.78rem;color:var(--sagefg);margin-top:2px}
 .cf2wk{margin:0 0 4px;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sagefg)}
-</style><style id="navfix">.wclr{display:flex;justify-content:flex-end;margin:12px 2px -4px}.wclr .lnk{font-size:.9rem;display:inline-flex;align-items:center;gap:4px}.wclr .ic{width:14px;height:14px}.dnav-x{display:flex;align-items:center;gap:18px;justify-content:flex-end}.dnav .wk .wl{min-width:150px!important;text-align:center}</style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
+/* ---- Chef Pieper maakt je menu (ontwerp) */
+#cfdlg.cf3{padding:0!important;background:var(--bg);overflow-y:auto}
+@media(max-width:1023px){#cfdlg.cf3{padding-top:0!important;padding-bottom:0!important}}
+.cf3b{padding:26px 20px 10px}
+.cf3hd{display:flex;align-items:center;gap:14px}
+.cf3m{width:68px;height:68px;border-radius:18px;background:var(--t-peach);display:grid;place-items:center;flex:none}
+.cf3m .cpi{background:none;box-shadow:none}
+.cf3hd>div{flex:1;min-width:0}.cf3hd h2{font:600 1.75rem/1.12 "Fraunces",serif;margin:0}
+.cf3x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;flex:none;cursor:pointer;align-self:flex-start;padding:0}
+.cf3x .ic{width:18px;height:18px}
+.cf3in{color:var(--mute);line-height:1.5;margin:16px 0 4px}
+.cf3h{font:700 1rem "DM Sans";margin:20px 0 10px}.cf3h span{font-weight:400;color:var(--mute)}
+.cf3h0{margin-top:20px}
+.cf3m2{display:flex;flex-direction:column;gap:10px}
+.cf3rad{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px;font:inherit;color:var(--ink);cursor:pointer}
+.cf3rad.on{border:2px solid var(--green)}
+.cf3ri,.cf3si{width:40px;height:40px;border-radius:12px;background:var(--tile,#EFE6DA);color:var(--ink);display:grid;place-items:center;flex:none}
+.cf3rad.on .cf3ri{background:var(--t-peach);color:var(--green)}
+.cf3ri .ic,.cf3si .ic{width:18px;height:18px}
+.cf3own{background:var(--t-beige);color:var(--green)}
+.cf3rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.cf3rt b{font-size:1rem}.cf3rt small{color:var(--mute);font-size:.86rem;line-height:1.35}
+.cf3dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;box-sizing:border-box}
+.cf3rad.on .cf3dot{border:6px solid var(--green)}
+.cf3days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cf3d{display:flex;flex-direction:column;align-items:center;gap:1px;padding:9px 2px 7px;border-radius:14px;border:0;background:var(--tile,#EFE6DA);color:var(--ink);font:inherit;cursor:pointer;min-width:0}
+.cf3d span{font-size:.8rem;color:var(--mute)}.cf3d b{font:700 1.2rem "DM Sans"}
+.cf3d i{font-style:normal;font-size:.62rem;color:var(--mute);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:14px;display:flex;align-items:center}
+.cf3d i .ic{width:12px;height:12px}
+.cf3d.on{background:var(--green);color:#fff}.cf3d.on span,.cf3d.on i{color:#fff;opacity:.9}
+.cf3d:not(.on):not(.pl):not(:disabled){background:var(--card);border:1.5px dashed var(--line)}
+.cf3d:disabled{cursor:default}.cf3d.past{opacity:.45}
+.cf3leg{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:.84rem;color:var(--mute);margin:10px 2px 0}
+.cf3leg i{width:9px;height:9px;border-radius:50%;display:inline-block}.cf3leg i.o{background:var(--green)}.cf3leg i.g{background:#CDBFAE}
+.cf3cols{display:block}
+.cf3card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:14px}
+.cf3row{display:flex;align-items:center;gap:12px;padding:14px;border-top:1px solid var(--line)}.cf3row:first-child{border-top:0}
+.cf3st{display:flex;align-items:center;gap:10px;flex:none}
+.cf3st button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:1.3rem;cursor:pointer;padding:0}
+.cf3st b{min-width:22px;text-align:center;font-size:1.1rem}
+.cf3av{display:flex;flex:none}.cf3av .axav+.axav{margin-left:-8px}
+.cf3fr{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 4px}
+.cf3fr button{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:none;border-radius:99px;padding:3px 11px 3px 3px;font:inherit;font-size:.84rem;color:var(--mute);cursor:pointer}
+.cf3fr button.on{border-color:var(--green);color:var(--ink);background:var(--t-peach)}
+.cf3card .cf2n{padding:0 14px}
+.cf3bar{padding:12px 14px 14px}.cf3bar span{display:flex;gap:3px;height:6px}.cf3bar i{display:block;height:6px;border-radius:3px;background:var(--green)}.cf3bar i.g{background:#3E6B4E}
+.cf3bar small{display:block;color:var(--mute);font-size:.84rem;margin-top:8px}
+.cf3seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--tile,#EFE6DA);border-radius:16px;padding:4px}
+.cf3seg button{border:0;background:none;padding:12px 4px;border-radius:12px;font:inherit;font-size:.92rem;color:var(--mute);cursor:pointer}
+.cf3seg button.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.cf3sws .cf3sw{display:flex;align-items:center;gap:12px;padding:14px;border-top:1px solid var(--line);cursor:pointer}.cf3sws .cf3sw:first-child{border-top:0}
+.cf3sw input{position:absolute;opacity:0;width:1px;height:1px}
+.cf3sw i{width:54px;height:32px;border-radius:99px;background:#D9CCBB;position:relative;flex:none;transition:background .2s}
+.cf3sw i:after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.cf3sw input:checked+i{background:var(--green)}.cf3sw input:checked+i:after{transform:translateX(22px)}
+.cf3sw input:focus-visible+i{outline:2px solid var(--green);outline-offset:2px}
+.cf3inp{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:inherit;padding:12px 14px}
+.cf3cs{display:flex;flex-wrap:wrap;gap:8px}
+.cf3c{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:10px 16px;font:inherit;font-size:.95rem;color:var(--ink);cursor:pointer}
+.cf3c.on{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:700}.cf3c .ic{width:15px;height:15px}
+.cf3ft{position:sticky;bottom:0;z-index:2;background:var(--bg);padding:12px 20px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px}
+.cf3can{display:none}
+.cf3go{flex:1;justify-content:center;border-radius:16px;padding:16px;font-size:1.02rem;display:inline-flex;align-items:center;gap:8px}
+.cf3go .ic{width:18px;height:18px}
+@media(min-width:1024px){
+ #cfdlg.cf3{width:min(760px,92vw);max-width:760px;border-radius:28px;max-height:92vh}
+ .cf3b{padding:30px 32px 6px}
+ .cf3hd h2{font-size:1.9rem}
+ .cf3m2{flex-direction:row}.cf3m2 .cf3rad{flex:1}
+ .cf3cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+ .cf3cols>div>.cf3card:first-child{margin-top:20px}
+ .cf3ft{position:static;border-top:1px solid var(--line);margin:16px 32px 0;padding:18px 0 26px;justify-content:flex-end}
+ .cf3can{display:inline-flex;border-radius:14px;padding:12px 20px}
+ .cf3go{flex:none;padding:12px 22px;border-radius:14px}
+}
+</style><style id="navfix">.wclr{display:flex;justify-content:flex-end;margin:12px 2px -4px}.wclr .lnk{font-size:.9rem;display:inline-flex;align-items:center;gap:4px}.wclr .ic{width:14px;height:14px}.dnav-x{display:flex;align-items:center;gap:18px;justify-content:flex-end}.dnav .wk .wl{min-width:150px!important;text-align:center}</style><style id="cpi">.cpi{display:inline-grid;place-items:center;width:var(--s);height:var(--s);border-radius:50%;background:#FFF4EC;overflow:hidden;flex:none;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,.06)}.cpi svg{width:88%;height:88%;margin-top:6%}button .cpi{margin-right:2px}.cf2hd{display:flex;align-items:center;gap:12px;margin-bottom:4px}.cf2hd h2{margin:0!important}.cf2hd .cf2wk{margin:0 0 2px}</style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
 :root[data-theme="dark"]{--lav:#2e2838;--lavfg:#c4a8ee}
@@ -2775,7 +2850,7 @@ function vHome(){if(DESK())return vHomeD();return vHome2();const nm=uname(),todo
  if(!recToday&&dxt.length){const x=dxt[0];hero=x.kind=='out'?`<div class="card hero"><div class="hb2" style="padding:18px 16px"><span class="htag">Vanavond</span><h2>Je eet elders</h2><p class="mute">${esc(x.note||"Geen kookplan voor vandaag.")}</p></div></div>`:`<div class="card hero"><div class="hb2" style="padding:18px 16px"><span class="htag">Vanavond</span><h2>Kliekje: ${esc(x.note||"restje")}</h2><p class="mute">Geen kookplan nodig.</p><button class="btn" onclick="dxEat(${x.id})">✓ Opgegeten</button></div></div>`}
  else if(todo>=0){const e=S.sel[todo],r=S.recipes.find(x=>x.id==e.rid);
   hero=`<div class="card hero">${imgHtml(r)}<div class="hb2"><span class="htag">${e.day==todayK()?"Vanavond":e.day?"Eerstvolgende · "+dayLbl(e.day):"Nog niet ingepland"}</span><h2>${esc(r.name)}</h2><p class="mute">${[r.time?r.time+" min":"",e.pers+" personen",r.level].filter(Boolean).map(esc).join(" · ")}</p><div class="row nw"><button class="btn" style="flex:1" onclick="startK(${r.id},${e.pers},${todo})">${ico("play")} Start koken</button><button class="btn ghost" onclick="go('menu')" aria-label="Menu aanpassen">${ico("swap")}</button></div></div></div>`}
- else hero=`<div class="card hero"><div class="hb2" style="padding:18px 16px"><span class="htag">${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</span><h2>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle recepten op je menu zijn gemaakt.":"Kies een paar recepten voor deze week."}</p><div style="display:grid;gap:8px"><button class="btn" onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button><button class="btn ghost" onclick="go('rec')">Zelf kiezen</button></div></div></div>`;
+ else hero=`<div class="card hero"><div class="hb2" style="padding:18px 16px"><span class="htag">${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</span><h2>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle recepten op je menu zijn gemaakt.":"Kies een paar recepten voor deze week."}</p><div style="display:grid;gap:8px"><button class="btn" onclick="cfOpen()">${cpIco()} Laat Chef Pieper je week maken</button><button class="btn ghost" onclick="go('rec')">Zelf kiezen</button></div></div></div>`;
  const t0=todayK(),WD=wDays(0),unpl=S.sel.filter(e=>!e.day).length;
  const wk=`<div class="hsec"><h3>Deze week</h3><button onclick="MW=0;go('menu')">Weekmenu aanpassen</button></div><div class="wstrip">${WD.map(k=>{const es=S.sel.filter(e=>e.day==k),dxs=dxOf(k),d=pdk(k),all=(es.length||dxs.length)&&es.every(e=>e.done)&&dxs.every(x=>x.done||x.kind=='out');return`<button class="wc${k==t0?" today":""}${es.length||dxs.length?" has":""}" onclick="dsOpen('${k}')" aria-label="${DN[d.getDay()]} ${d.getDate()}${es.length?": "+es.map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).join(", "):""}"><span>${DN[d.getDay()]}</span><b>${d.getDate()}</b><i>${all?"✓":es.length||dxs.length?"●":"·"}</i></button>`}).join("")}</div>${unpl?`<p class="mute" style="margin:8px 2px 0;font-size:.85rem">${unpl} recept${unpl>1?"en":""} nog niet ingepland.</p>`:""}`;
  const L=list(),dn=L.filter(x=>S.checked[x.k]).length;
@@ -2909,7 +2984,7 @@ function cfDraw(){const d=document.getElementById("cfdlg");if(!CF)return;
  <div class="row" style="margin-top:10px;align-items:center"><select id="cfm" style="flex:1;min-width:0" onchange="cfSync()"><option value="0">Kooktijd: maakt niet uit</option>${[20,30,45,60].map(m=>`<option value="${m}"${CF.maxT==m?" selected":""}>Maximaal ${m} min</option>`).join("")}</select><label class="item" style="border:0;padding:0;cursor:pointer;gap:6px"><input type="checkbox" ${CF.easy?"checked":""} onchange="cfSync();CF.easy=this.checked"><span>Alleen makkelijk</span></label></div>
  ${optOn("stock")?"":`<label class="cfl" for="cfh">Wat ligt er in de koelkast?</label><input id="cfh" value="${esc(CF.have)}" placeholder="bijv. courgette, room, gehakt" style="width:100%" oninput="CF.have=this.value">`}
  ${optOn("stock")?`<label class="item" style="border:0;padding:8px 0 0;cursor:pointer;gap:8px"><input type="checkbox" ${CF.useStock?"checked":""} onchange="CF.useStock=this.checked"><span>Houd rekening met mijn voorraad</span></label>`:""}${optOn("left")&&(S.left||[]).length?`<label class="item" style="border:0;padding:4px 0 0;cursor:pointer;gap:8px"><input type="checkbox" ${CF.useLeft?"checked":""} onchange="CF.useLeft=this.checked"><span>Plan mijn restjes in als kliekje</span></label>`:""}
- <div class="row" style="justify-content:flex-end;margin-top:16px"><button class="btn ghost" onclick="cfClose()">Annuleren</button><button class="btn" ${CF.days.length?"":"disabled"} onclick="cfMake()">${ico("sparkle")} Maak voorstel</button></div>`}
+ <div class="row" style="justify-content:flex-end;margin-top:16px"><button class="btn ghost" onclick="cfClose()">Annuleren</button><button class="btn" ${CF.days.length?"":"disabled"} onclick="cfMake()">${cpIco()} Maak voorstel</button></div>`}
 
 // === INTERNET-INSPIRATIE ===
 let INSP={items:[],state:"idle",q:"",err:"",note:""};
@@ -3025,7 +3100,7 @@ function vMenu(){if(DESK())return vMenuD();const D=wDays(MW),t=todayK(),d0=pdk(D
  const head=`<div class="wk"><button onclick="MW--;draw()" aria-label="Vorige week">${ico("chevl")}</button><div class="wl"><b>${lbl}</b><span class="mute">${rng}</span></div><button onclick="MW++;draw()" aria-label="Volgende week">${ico("chevr")}</button></div>${MW!=0?`<p style="margin:-6px 0 12px;text-align:center"><button class="lnk" onclick="MW=0;draw()">Terug naar deze week</button></p>`:""}`;
  let pl=0,ou=0;const segs=D.map(k=>{const es=S.sel.some(e=>e.day==k),dxs=dxOf(k),o=dxs.some(x=>x.kind=="out"),oth=dxs.some(x=>x.kind!="out");if(es||oth||o){pl++;if(!es&&!oth&&!dxs.some(x=>x.fx))ou++;return"p"}return"e"});
  const free=D.filter(k=>k>=t&&!S.sel.some(e=>e.day==k)&&!dxOf(k).length).length;
- const prog=`<div class="mpg"><div class="mpt"><b>${pl} van 7 avonden gepland</b>${ou?`<span>${ou} avond${ou>1?"en":""} uit eten</span>`:""}</div><div class="mps">${segs.map(x=>`<i class="${x}"></i>`).join("")}</div>${free?`<button onclick="cfOpenFill()">${ico("star")} Laat Chef Pieper de rest kiezen</button>`:`<button onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button>`}</div><p style="margin:-6px 0 12px;text-align:center">${free?`<button class="lnk" onclick="cfOpen()">${ico("sparkle")} Chef Pieper laten kiezen met voorkeuren</button>`:""}${weekCount(D)?`<button class="lnk dg" onclick="clearWeek()">${ico("close")} Week leegmaken</button>`:""}</p>`;
+ const prog=`<div class="mpg"><div class="mpt"><b>${pl} van 7 avonden gepland</b>${ou?`<span>${ou} avond${ou>1?"en":""} uit eten</span>`:""}</div><div class="mps">${segs.map(x=>`<i class="${x}"></i>`).join("")}</div>${`<button onclick="cfOpen()">${cpIco()} Laat Chef Pieper kiezen</button>`}</div><p style="margin:-6px 0 12px;text-align:center">${free?`<button class="lnk" onclick="cfOpen()">${cpIco()} Chef Pieper laten kiezen met voorkeuren</button>`:""}${weekCount(D)?`<button class="lnk dg" onclick="clearWeek()">${ico("close")} Week leegmaken</button>`:""}</p>`;
  const days=D.map(k=>{const es=S.sel.map((e,i)=>[e,i]).filter(([e])=>e.day==k),dxs=dxOf(k),d=pdk(k);
   return`<section class="mdg${k<t&&MW<=0?" past":""}"><div class="mdh"><span><b>${WDL(k)}</b> <i>${d.getDate()} ${MON[d.getMonth()]}</i></span>${k==t?'<em class="vd">VANDAAG</em>':""}</div>${es.length||dxs.length?es.map(([e,i])=>mrCard(e,i,k,t)).join("")+dxs.map(mrDx).join(""):`<button class="mslot" onclick="dsOpen('${k}')">${ico("plus")} Kies iets</button>`}</section>`}).join("");
  const un=S.sel.map((e,i)=>[e,i]).filter(([e])=>!e.day);
@@ -3123,7 +3198,7 @@ function vHomeD(){const nm=uname(),todo=homePick(),t=todayK(),WD=wDays(0);let he
  if(!recToday&&dxt.length){const x=dxt[0];hero=`<div class="dhero"><div class="dhb" style="padding:30px 26px"><small>Vanavond</small><h2>${x.kind=="out"?(x.fx?esc(fxT(x)):"Je eet elders"):"Kliekje: "+esc(x.note||"restje")}</h2><p class="mute">${x.kind=="out"?esc(x.note||"Geen kookplan voor vandaag."):"Geen kookplan nodig."}</p>${x.kind!="out"?`<div class="row"><button class="btn" onclick="dxEat(${x.id})">✓ Opgegeten</button></div>`:""}</div></div>`}
  else if(todo>=0){const e=S.sel[todo],r=S.recipes.find(x=>x.id==e.rid),i=r.id%4;
   hero=`<div class="dhero"><div class="dhi dk-open" ${tint(i)} onclick="rdOpen(${r.id},${e.pers})">${ico(DSI[i])}${r.img?`<img src="${esc(r.img)}" alt="" referrerpolicy="no-referrer" onerror="this.style.display='none'">`:""}<span class="dhp">${e.day==t?"Vandaag · "+pdk(t).toLocaleDateString("nl-NL",{weekday:"long"}):e.day?"Eerstvolgende · "+dayLbl(e.day):"Nog niet ingepland"}</span></div><div class="dhb"><small>${e.day==t?"Vanavond":"Eerstvolgende"}</small><h2 class="dk-open" onclick="rdOpen(${r.id},${e.pers})">${esc(r.name)}</h2><p class="mute">${[r.time?r.time+" min":"",e.pers+" personen",r.level].filter(Boolean).map(esc).join(" · ")}</p><div class="row nw"><button class="btn" onclick="startK(${r.id},${e.pers},${todo})">${ico("play")} Start koken</button><button class="btn ghost" onclick="dayAct(${todo})">${ico("swap")} Iets anders</button></div></div></div>`}
- else if(heroUpD())hero=heroUpD();else hero=`<div class="dhero"><div class="dhi" style="--c:var(--green);--t:var(--t-beige)">${ico("calendar")}<span class="dhp">Nieuwe week</span></div><div class="dhb"><h2>${S.sel.length?"Je weekmenu is op!":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle dagen van je weekmenu zijn geweest. Stel een nieuw weekmenu samen, dan weet je weer wat je vanavond eet.":"Kies een paar recepten voor deze week, of laat Chef Pieper je week vullen."}</p><div class="row nw"><button class="btn" onclick="cfOpen()">${ico("sparkle")} Laat Chef Pieper je week maken</button><button class="btn ghost" onclick="MW=0;go('menu')">${ico("calendar")} Zelf samenstellen</button></div></div></div>`;
+ else if(heroUpD())hero=heroUpD();else hero=`<div class="dhero"><div class="dhi" style="--c:var(--green);--t:var(--t-beige)">${ico("calendar")}<span class="dhp">Nieuwe week</span></div><div class="dhb"><h2>${S.sel.length?"Je weekmenu is op!":"Wat gaan we eten?"}</h2><p class="mute">${S.sel.length?"Alle dagen van je weekmenu zijn geweest. Stel een nieuw weekmenu samen, dan weet je weer wat je vanavond eet.":"Kies een paar recepten voor deze week, of laat Chef Pieper je week vullen."}</p><div class="row nw"><button class="btn" onclick="cfOpen()">${cpIco()} Laat Chef Pieper je week maken</button><button class="btn ghost" onclick="MW=0;go('menu')">${ico("calendar")} Zelf samenstellen</button></div></div></div>`;
  const wk=`<div class="dwk"><div class="dsec" style="margin:0 0 10px"><h3>Deze week</h3><button class="lnk" onclick="MW=0;go('menu')">Aanpassen</button></div>${WD.map(k=>{const es=S.sel.filter(e=>e.day==k).map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).filter(Boolean),dx=dxOf(k).map(x=>x.kind=="out"?(x.fx?fxT(x):"Uit eten"):"Kliekje: "+(x.note||"restje")),n=es.concat(dx);
   return n.length?`<button class="dwr${k==t?" now":""}" onclick="MW=0;go('menu')"><span>${WDL(k)}</span><b>${esc(n.join(", "))}</b></button>`:`<button class="dwr em" onclick="dsOpen('${k}')"><span>${WDL(k)}</span><b>+ Kies iets</b></button>`}).join("")}</div>`;
  const tl=(c,ic,txt,js)=>`<button class="dtl ${c}" onclick="${js}"><span class="ti">${ico(ic)}</span>${txt}</button>`;
@@ -3140,7 +3215,7 @@ function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
  const lc=k=>WDL(k).toLowerCase(),cap=x=>x[0].toUpperCase()+x.slice(1);const parts=[];
  if(emp.length)parts.push(emp.length<=2?cap(emp.map(lc).join(" en "))+(emp.length==1?" is":" zijn")+" nog leeg":emp.length+" dagen nog leeg");
  if(outs.length)parts.push(outs.map(lc).join(" en ")+" uit eten");
- const prog=`<div class="mpg dpg"><div><b>${pl} van 7 avonden gepland</b><span>${parts.length?esc(parts.join(" · ")):"Alles is ingepland"}</span></div><div class="mps">${segs.map(x=>`<i class="${x}"></i>`).join("")}</div>${emp.length?`<button onclick="cfOpenFill()">${ico("star")} Laat Chef Pieper de rest kiezen</button>`:`<button onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button>`}</div>`;
+ const prog=`<div class="mpg dpg"><div><b>${pl} van 7 avonden gepland</b><span>${parts.length?esc(parts.join(" · ")):"Alles is ingepland"}</span></div><div class="mps">${segs.map(x=>`<i class="${x}"></i>`).join("")}</div>${`<button onclick="cfOpen()">${cpIco()} Laat Chef Pieper kiezen</button>`}</div>`;
  const cols=D.map(k=>{const es=S.sel.map((e,i)=>[e,i]).filter(([e])=>e.day==k),dxs=dxOf(k),d=pdk(k);
   let body="";
   body+=es.map(([e,i])=>{const r=S.recipes.find(x=>x.id==e.rid);if(!r)return"";const play=k==t&&!e.done;
@@ -3154,7 +3229,7 @@ function vMenuD(){const D=wDays(MW),t=todayK(),d0=pdk(D[0]),d6=pdk(D[6]);
  const idp=ik&&ideas.length?`<div class="dpan"><h3>Ideeën voor ${esc(lc(ik))}</h3><p class="mute" style="margin:2px 0 14px">Past bij wat je de rest van de week eet</p>${ideas.map(x=>`<div class="mr" style="margin-bottom:10px">${tileHtml(x.r,"dst")}<span class="dsn"><b>${esc(x.r.name)}</b><span class="dsm"><span>${esc([x.r.time?x.r.time+" min":"",x.why].filter(Boolean).join(" · "))}</span></span></span><button class="mrc" aria-label="Zet op ${esc(lc(ik))}" onclick="ideeAdd(${x.r.id},'${ik}')">${ico("plus")}</button></div>`).join("")}</div>`:"";
  return`<div class="dh1"><div><h2 class="pt" style="margin:0">Weekmenu</h2><p class="mute" style="margin:2px 0 0">Week ${wkNr(d0)} · ${rng}</p></div><div class="dnav"><span class="dnav-x">${MW!=0?`<button class="lnk" onclick="MW=0;draw()">Terug naar deze week</button>`:""}</span><div class="wk" style="margin:0;padding:4px"><button onclick="MW--;draw()" aria-label="Vorige week">${ico("chevl")}</button><div class="wl" style="min-width:130px"><b>${lbl}</b></div><button onclick="MW++;draw()" aria-label="Volgende week">${ico("chevr")}</button></div><button class="btn dk-tolist" onclick="go('list')" aria-label="Zet op boodschappenlijst">${ico("cart")}<span>Zet op boodschappenlijst</span></button></div></div>${prog}<div class="wgrid">${cols}</div>${weekCount(D)?`<div class="wclr"><button class="lnk dg" onclick="clearWeek()">${ico("close")} Week leegmaken</button></div>`:""}${unp}<div class="dg5">${idp||"<div></div>"}${shopCardD("Nodig voor deze week")}</div>`}
 let SLOT="";
-function slotPick(k){SLOT=k;DSFROM=false;const d=document.getElementById("rdlg");d.innerHTML=`<h2 style="font-size:1.15rem;margin-bottom:8px">Kies iets voor ${dayLbl(k).toLowerCase()}</h2><div class="row nw" style="margin-bottom:8px"><input id="rsq" type="search" placeholder="Zoek recept…" oninput="slotList()" style="flex:1"><button class="btn ghost sm" onclick="slotAdd(suggest(1,[],[])[0])">${ico("sparkle")} Laat Chef Pieper kiezen</button></div><div class="row" style="margin-bottom:8px"><button class="btn ghost sm" onclick="dxAdd('out')">${ico("out")} Eet elders</button><button class="btn ghost sm" onclick="dxLeft()">${ico("left")} Kliekje</button></div><div id="rsl" class="dl"></div><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn ghost" onclick="rdlg.close()">Sluiten</button></div>`;slotList();d.showModal()}
+function slotPick(k){SLOT=k;DSFROM=false;const d=document.getElementById("rdlg");d.innerHTML=`<h2 style="font-size:1.15rem;margin-bottom:8px">Kies iets voor ${dayLbl(k).toLowerCase()}</h2><div class="row nw" style="margin-bottom:8px"><input id="rsq" type="search" placeholder="Zoek recept…" oninput="slotList()" style="flex:1"><button class="btn ghost sm" onclick="slotAdd(suggest(1,[],[])[0])">${cpIco()} Laat Chef Pieper kiezen</button></div><div class="row" style="margin-bottom:8px"><button class="btn ghost sm" onclick="dxAdd('out')">${ico("out")} Eet elders</button><button class="btn ghost sm" onclick="dxLeft()">${ico("left")} Kliekje</button></div><div id="rsl" class="dl"></div><div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn ghost" onclick="rdlg.close()">Sluiten</button></div>`;slotList();d.showModal()}
 function slotList(){const q=(document.getElementById("rsq").value||"").toLowerCase(),used=new Set(S.sel.map(e=>e.rid)),rec=recentNames();
  const L=S.recipes.filter(r=>!q||(r.name||"").toLowerCase().includes(q)).sort((a,b)=>(used.has(a.id)-used.has(b.id))||(rec.has(a.name)-rec.has(b.name))||a.name.localeCompare(b.name)).slice(0,40);
  document.getElementById("rsl").innerHTML=L.map(r=>`<button onclick="slotAdd(${r.id})"><b>${esc(r.name)}</b><span class="mute"> ${[r.time?r.time+" min":"",used.has(r.id)?"al op menu":""].filter(Boolean).join(" · ")}</span></button>`).join("")||'<p class="mute">Geen recepten gevonden.</p>'}
@@ -4158,10 +4233,10 @@ function vHome2(){setTimeout(onbCheck,300);const nm=uname(),p=myP(),todo=homePic
  const dxH=(x,lbl,now)=>`<div class="card hx-hero"><div class="hx-hb"><span class="hx-pill">${esc(lbl)}</span><h3>${x.kind=="out"?(x.fx?esc(fxT(x)):"Je eet elders"):"Kliekje: "+esc(x.note||"restje")}</h3><p class="mute">${x.kind=="out"?(x.fx?"Vaste dag · niet koken":esc(x.note||"Geen kookplan nodig.")):"Geen kookplan nodig, alleen opwarmen."}</p>${now&&x.kind!="out"?`<button class="btn hx-cook" onclick="dxEat(${x.id})">${ico("a_check")} Opgegeten</button>`:`<button class="btn ghost hx-cook" onclick="MW=0;go('menu')">Weekmenu bekijken</button>`}</div></div>`;
  const wd=k=>pdk(k).toLocaleDateString("nl-NL",{weekday:"long"});
  if(first&&first.day==t)hero=first.kind=="rec"?recH(first.i,"Vandaag · "+wd(t)):dxH(first.x,"Vanavond",true);
- else if(done.length)hero=`<div class="card hx-hero"><div class="hx-img hx-done">${ico("a_check")}<span class="hx-pill">Vandaag · gekookt</span></div><div class="hx-hb"><h3>${esc(done.map(r=>r.name).join(" en "))}</h3><p class="mute">${first?"Hierna: "+esc(upDay(first))+" · "+esc(upLbl(first)):"Hierna staat er nog niets gepland."}</p>${first?`<button class="btn ghost hx-cook" onclick="MW=0;go('menu')">Weekmenu bekijken</button>`:`<button class="btn hx-cook" onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button>`}</div></div>`;
+ else if(done.length)hero=`<div class="card hx-hero"><div class="hx-img hx-done">${ico("a_check")}<span class="hx-pill">Vandaag · gekookt</span></div><div class="hx-hb"><h3>${esc(done.map(r=>r.name).join(" en "))}</h3><p class="mute">${first?"Hierna: "+esc(upDay(first))+" · "+esc(upLbl(first)):"Hierna staat er nog niets gepland."}</p>${first?`<button class="btn ghost hx-cook" onclick="MW=0;go('menu')">Weekmenu bekijken</button>`:`<button class="btn hx-cook" onclick="cfOpen()">${cpIco()} Laat Chef Pieper je week maken</button>`}</div></div>`;
  else if(first)hero=first.kind=="rec"?recH(first.i,first.day=="9999"?"Nog niet ingepland":"Eerstvolgende · "+upDay(first)):dxH(first.x,"Eerstvolgende · "+upDay(first),false);
  else if(todo>=0)hero=recH(todo,"Nog niet gekookt · "+(S.sel[todo].day?dayLbl(S.sel[todo].day).toLowerCase():""));
- else hero=`<div class="card hx-hero"><div class="hx-img">${ico("a_pot")}<span class="hx-pill">${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</span></div><div class="hx-hb"><h3>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h3><p class="mute">${S.sel.length?"Alles op je menu is gegeten.":"Kies een paar recepten voor deze week."}</p><button class="btn hx-cook" onclick="cfOpen()">${ico("sparkle")} Weekmenu samenstellen</button><button class="btn ghost hx-cook" style="margin-top:8px" onclick="go('rec')">Zelf kiezen</button></div></div>`;
+ else hero=`<div class="card hx-hero"><div class="hx-img">${ico("a_pot")}<span class="hx-pill">${S.sel.length?"Alles gemaakt":"Nog niets gepland"}</span></div><div class="hx-hb"><h3>${S.sel.length?"Tijd voor een nieuw menu":"Wat gaan we eten?"}</h3><p class="mute">${S.sel.length?"Alles op je menu is gegeten.":"Kies een paar recepten voor deze week."}</p><button class="btn hx-cook" onclick="cfOpen()">${cpIco()} Laat Chef Pieper je week maken</button><button class="btn ghost hx-cook" style="margin-top:8px" onclick="go('rec')">Zelf kiezen</button></div></div>`;
  const wk=`<div class="hx-sec hx-wkh"><h3>Deze week</h3><button class="lnk" onclick="MW=0;go('menu')">Weekmenu aanpassen</button></div><div class="hx-week">${wDays(0).map(k=>{const n=S.sel.filter(e=>e.day==k).map(e=>{const r=S.recipes.find(x=>x.id==e.rid);return r?r.name:""}).filter(Boolean).concat(dxOf(k).map(x=>x.kind=="out"?(x.fx?fxT(x):"Uit eten"):"Kliekje"));const dd=pdk(k).toLocaleDateString("nl-NL",{weekday:"short"}).replace(".","").slice(0,2).toUpperCase();
   return n.length?`<button class="hx-day${k==t?" now":""}${k<t?" past":""}" onclick="MW=0;go('menu')"><small>${dd}</small><b>${esc(n.join(", "))}</b></button>`:`<button class="hx-day em${k==t?" now":""}${k<t?" past":""}" onclick="dsOpen('${k}')"><small>${dd}</small><b>${ico("plus")} Kies</b></button>`}).join("")}</div>`;
  const L=list().length;
@@ -4693,7 +4768,7 @@ const ONBS=[
   play:[[500,"s1"],[350,"s2"],[350,"s3"],[1000,"tap"],[450,"press"],[500,"go"],[700,"add"],[1600,"scroll"],[2600,"back"],[2000,"reset"]]},
  {bg:"var(--t-green)",t:"Je weekmenu in een paar tikken",d:"Kies zelf wat je wanneer eet, of laat Chef Pieper je week vullen met recepten die bij jullie passen.",
   art:()=>`<div class="ob-week">${[["MA","Stamppot",1],["DI","Pesto",1],["WO","Shakshuka",0],["DO","Curry",0],["VR","Pizza",0]].map(([d,n,f],i)=>`<div class="ob-day${f?" full":""}${i==0?" today":""}" data-d="${d}"><b>${d}</b><span class="ob-dn">${n}</span><span class="ob-de">+ Kies iets</span></div>`).join("")}</div>
-   <button class="ob-chef" tabindex="-1">${ico("sparkle")} Laat Chef Pieper kiezen</button><div class="ob-tap"></div>`,
+   <button class="ob-chef" tabindex="-1">${cpIco()} Laat Chef Pieper kiezen</button><div class="ob-tap"></div>`,
   play:[[800,"tapdo"],[450,"pickdo"],[1200,"tapchef"],[450,"chef"],[500,"f1"],[500,"f2"],[2200,"reset"]]},
  {bg:"var(--t-lilac)",t:"De boodschappenlijst maakt zichzelf",d:"Alles uit je weekmenu komt op je lijst, op volgorde van jouw supermarkt. Samen boodschappen doen? Jullie zien dezelfde lijst.",
   art:()=>`<div class="ob-list">${[["Boerenkool","Groente","P"],["Uien","Groente","R"],["Rookworst","Vlees","P"],["Melk","Zuivel","R"]].map(([n,c,w],i)=>`<div class="ob-li" data-i="${i}"><span class="ob-ck">${ico("a_check")}</span><b>${n}</b><small>${c}</small><em class="ob-who ob-w${w}">${w}</em></div>`).join("")}</div>`,
@@ -5091,9 +5166,9 @@ function dsHead(){const k=DS.day,d=pdk(k),W=wDays(wOff(k)),t=todayK();
 function dsDay(k){DS.day=k;dsHead();dsDraw()}
 // ---- De drie tegels
 function dsTiles(){const nl=optOn("left")?(S.left||[]).length:0;
- const t=(m,ic,b,s,bg,fg,js)=>`<button class="ds2t${DS.mode==m?" on":""}" style="--tb:${bg};--tf:${fg}" onclick="${js}" aria-pressed="${DS.mode==m}"><span class="ds2ti">${ico(ic)}</span><b>${b}</b><small>${s}</small></button>`;
+ const t=(m,ic,b,s,bg,fg,js)=>`<button class="ds2t${DS.mode==m?" on":""}" style="--tb:${bg};--tf:${fg}" onclick="${js}" aria-pressed="${DS.mode==m}"><span class="ds2ti${ic=="cp"?" cp":""}">${ic=="cp"?cpIco(30):ico(ic)}</span><b>${b}</b><small>${s}</small></button>`;
  if(!nl&&DS.mode=="left")DS.mode="rec";
- document.getElementById("dsM").innerHTML=`<div class="ds2ts" style="grid-template-columns:repeat(${nl?3:2},1fr)">${t("sur","star","Verras me","Past bij je week","var(--t-lilac)","var(--lilacline)","dsSurprise()")}${nl?t("left","box","Restjes eten",nl+" beschikbaar","var(--t-beige)","var(--green)","dsMode('left')"):""}${t("out","home","Niet koken","Afhalen, uit eten…","var(--tile,#EFE6DA)","var(--ink)","dsMode('out')")}</div>`}
+ document.getElementById("dsM").innerHTML=`<div class="ds2ts" style="grid-template-columns:repeat(${nl?3:2},1fr)">${t("sur","cp","Verras me","Chef Pieper kiest iets","var(--t-lilac)","var(--lilacline)","dsSurprise()")}${nl?t("left","box","Restjes eten",nl+" beschikbaar","var(--t-beige)","var(--green)","dsMode('left')"):""}${t("out","home","Niet koken","Afhalen, uit eten…","var(--tile,#EFE6DA)","var(--ink)","dsMode('out')")}</div>`}
 function dsMode(m){DS.mode=DS.mode==m?"rec":m;dsDraw();const b=document.getElementById("dsb");if(b&&DS.mode!="rec")b.scrollTo({top:0,behavior:"smooth"})}
 // ---- Inhoud
 function dsBody(){const P=document.getElementById("dsP");const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"});
@@ -5192,7 +5267,7 @@ function dsCta(){const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"
 function cfKeuk(r){try{const L=rLabels(r);return L.find(l=>LKEUKEN.some(k=>k[0]==l))||""}catch(e){return""}}
 function cfFree(w,mode){const t=todayK();return wDays(w).filter(k=>k>=t&&!dxOf(k).length&&(mode=="all"?!S.sel.some(e=>e.day==k&&(e.done||e.fx)):!S.sel.some(e=>e.day==k)))}
 function cfCtxWeek(){if(S.tab=="menu"&&typeof MW=="number")return MW;return cfFree(0,"fill").length?0:1}
-function cfWkLbl(w){const D=wDays(w),a=pdk(D[0]),b=pdk(D[6]),m=d=>d.toLocaleDateString("nl-NL",{month:"long"});return"Week "+wkNr(a)+" · "+a.getDate()+(m(a)==m(b)?"":" "+m(a))+" – "+b.getDate()+" "+m(b)}
+function cfWkLbl(w){const D=wDays(w),a=pdk(D[0]),b=pdk(D[6]),m=d=>d.toLocaleDateString("nl-NL",{month:"short"}).replace(".","");return"Week "+wkNr(a)+" · "+a.getDate()+(m(a)==m(b)?"":" "+m(a))+" – "+b.getDate()+" "+m(b)}
 {const _o=cfOpen;cfOpen=function(){_o.apply(this,arguments);if(!CF)return;CF.wk=cfCtxWeek();const planned=wDays(CF.wk).some(k=>k>=todayK()&&S.sel.some(e=>e.day==k));
  Object.assign(CF,{mode:planned?"fill":"all",keuk:[],fr:null,nOwn:null});CF.days=cfFree(CF.wk,CF.mode);cfVrLoad();cfDraw()}}
 function cfMode(m){cfSync();CF.mode=m;CF.days=cfFree(CF.wk,m);if(m=="fill")CF.days=CF.days.slice(0,7);cfDraw()}
@@ -5235,33 +5310,51 @@ function cfMat(){for(const p of CF.prop){if(p.kind!="frec")continue;const r=cfFR
 {const _x=cfAccept;cfAccept=function(){cfMat();return _x.apply(this,arguments)}}
 {const _y=cfAcceptMenu;cfAcceptMenu=function(){cfMat();return _y.apply(this,arguments)}}
 // ---- Formulier en voorstel tekenen
-{const _d=cfDraw;cfDraw=function(){const d=document.getElementById("cfdlg");if(!CF)return;CF.keuk=CF.keuk||[];CF.mode=CF.mode||"fill";if(CF.fr===undefined)CF.fr=null;if(CF.nOwn===undefined)CF.nOwn=null;if(CF.view=="pick")return _d();
+{const _d=cfDraw;cfDraw=function(){const d=document.getElementById("cfdlg");if(!CF)return;CF.keuk=CF.keuk||[];CF.mode=CF.mode||"fill";if(CF.fr===undefined)CF.fr=null;if(CF.nOwn===undefined)CF.nOwn=null;if(CF.view=="pick"){d.className="";return _d()}
  if(CF.view=="prop")return cfDrawProp(d);
- const t=todayK(),D=wDays(CF.wk),cs=Object.entries(S.recipes.reduce((a,r)=>{if(r.cat&&!SKIPT.includes(r.type))a[r.cat]=(a[r.cat]||0)+1;return a},{})).sort((a,b)=>b[1]-a[1]).slice(0,12).map(x=>x[0]);
- const F=cfFriends(),on=cfFrOn(),n=CF.days.length,no=cfNOwn(),ksrc=S.recipes.concat(...F.map(f=>Array.isArray(DSV[f.uid])?DSV[f.uid]:[]));
+ return cfForm(d)}}
+function cfShort(k){const e=S.sel.find(x=>x.day==k&&!x.done)||S.sel.find(x=>x.day==k);if(e){const r=S.recipes.find(x=>x.id==e.rid);return r?capF(String(r.name).split(/[\s,]+/)[0]):"Gepland"}
+ const x=dxOf(k)[0];if(!x)return"";if(x.kind=="out")return x.fx?String(fxT?fxT(x):x.note||"Vaste dag").split(/[\s,]+/)[0]:"Uit eten";return"Kliekje"}
+function cfForm(d){cfSync();const t=todayK(),D=wDays(CF.wk),cs=Object.entries(S.recipes.reduce((a,r)=>{if(r.cat&&!SKIPT.includes(r.type))a[r.cat]=(a[r.cat]||0)+1;return a},{})).sort((a,b)=>b[1]-a[1]).slice(0,12).map(x=>x[0]);
+ const F=cfFriends(),on=cfFrOn(),n=CF.days.length,no=cfNOwn(),nf=n-no,ksrc=S.recipes.concat(...F.map(f=>Array.isArray(DSV[f.uid])?DSV[f.uid]:[]));
  const K=[...new Set(ksrc.filter(r=>!SKIPT.includes(r.type)).map(cfKeuk).filter(Boolean))].sort();
- const busyTxt=k=>{const e=S.sel.find(x=>x.day==k);if(dxOf(k).length)return"bezet";if(e&&(e.done||e.fx))return"bezet";if(e&&CF.mode=="fill")return"gepland";if(e)return"wordt vervangen";return""};
  const loading=F.some(f=>DSV[f.uid]=="laden"),nFr=cfFrPool().length;
- d.innerHTML=`<h2 style="font-size:1.25rem;margin-bottom:2px">Weekmenu samenstellen</h2><p class="cf2wk">${esc(cfWkLbl(CF.wk))}</p><p class="mute" style="margin:0 0 6px;font-size:.88rem">Vul in wat je wilt, dan doet Chef Pieper een voorstel.</p>
- <label class="cfl">Wat moet Chef Pieper doen?</label>
- <div class="cf2m"><button class="${CF.mode=="fill"?"on":""}" onclick="cfMode('fill')" aria-pressed="${CF.mode=="fill"}"><b>Week aanvullen</b><small>Alleen de lege dagen, wat er al staat blijft staan</small></button><button class="${CF.mode=="all"?"on":""}" onclick="cfMode('all')" aria-pressed="${CF.mode=="all"}"><b>Hele week maken</b><small>Chef Pieper kiest voor alle dagen, ook wat al gepland is</small></button></div>
- <label class="cfl">Op welke dagen kook je?</label><div class="cfdays">${D.map(k=>{const dd=pdk(k),bt=busyTxt(k),past=k<t,off=past||bt=="bezet"||(CF.mode=="fill"&&bt=="gepland");return`<button class="cfday${CF.days.includes(k)?" on":""}" ${off?"disabled":""} onclick="cfSync();cfDay('${k}')"><span>${DN[dd.getDay()]}</span><b>${dd.getDate()}</b>${bt&&!past?`<i>${bt=="wordt vervangen"&&!CF.days.includes(k)?"gepland":bt}</i>`:""}</button>`}).join("")}</div>
- <label class="cfl">Hoeveel personen?</label><div class="row" style="align-items:center"><span class="stp"><button onclick="cfSync();CF.pers=Math.max(1,CF.pers-1);cfDraw()" aria-label="Minder">−</button><span><b>${CF.pers}</b> pers.</span><button onclick="cfSync();CF.pers=Math.min(12,CF.pers+1);cfDraw()" aria-label="Meer">+</button></span></div>
- ${F.length?`<label class="cfl">Waar komen de recepten vandaan?</label>
- <div class="cf2src"><div class="cf2row"><span><b>Uit mijn recepten</b><small>${no==n?"Alle avonden":no==0?"Geen enkele avond":no+" van de "+n+" avonden"}</small></span><span class="stp"><button onclick="cfSync();CF.nOwn=Math.max(0,cfNOwn()-1);cfDraw()" aria-label="Minder uit mijn recepten">−</button><span><b>${no}</b></span><button onclick="cfSync();CF.nOwn=Math.min(${n},cfNOwn()+1);cfDraw()" aria-label="Meer uit mijn recepten">+</button></span></div>
-  <div class="cf2row"><span><b>Nieuw van vrienden</b><small>${n-no?(n-no)+" "+(n-no==1?"avond":"avonden")+" iets wat je nog niet hebt":"Niets van vrienden"}</small></span></div>
-  ${n-no?`<div class="cf2fr">${F.map(f=>`<button class="${on.includes(f.uid)?"on":""}" onclick="cfFrTog('${f.uid}')" aria-pressed="${on.includes(f.uid)}">${avHTML(f.naam,vrIdx(f.uid)%6,22,f.foto)}<span>${esc(f.naam)}</span>${on.includes(f.uid)?ico("check"):""}</button>`).join("")}</div>
-  <p class="cf2n">${loading?"Recepten van vrienden laden…":nFr?nFr+" recepten van vrienden om uit te kiezen":on.length?"Geen nieuwe recepten van deze vrienden binnen je voorkeuren, dan kiest hij uit je eigen recepten.":"Kies minstens één vriend."}</p>`:""}</div>`:""}
- ${K.length?`<label class="cfl">Welke keuken? <span class="mute" style="font-weight:400">(niets kiezen = alles)</span></label><div class="chips" style="margin-top:0">${K.map(k=>`<button class="chip${CF.keuk.includes(k)?" on":""}" onclick="cfKeukTog(${esc(JSON.stringify(k))})">${CF.keuk.includes(k)?"✓ ":""}${esc(k)}</button>`).join("")}</div>`:""}
- <label class="cfl">Waar heb je zin in? <span class="mute" style="font-weight:400">(niets kiezen = alles)</span></label><div class="chips" style="margin-top:0">${cs.map(c=>`<button class="chip${CF.prefs.includes(c)?" on":""}" onclick="cfSync();cfPref(${esc(JSON.stringify(c))})">${CF.prefs.includes(c)?"✓ ":""}${esc(c)}</button>`).join("")}</div>
- <div class="row" style="margin-top:10px;align-items:center"><select id="cfm" style="flex:1;min-width:0" onchange="cfSync()"><option value="0">Kooktijd: maakt niet uit</option>${[20,30,45,60].map(m=>`<option value="${m}"${CF.maxT==m?" selected":""}>Maximaal ${m} min</option>`).join("")}</select><label class="item" style="border:0;padding:0;cursor:pointer;gap:6px"><input type="checkbox" ${CF.easy?"checked":""} onchange="cfSync();CF.easy=this.checked"><span>Alleen makkelijk</span></label></div>
- ${optOn("stock")?"":`<label class="cfl" for="cfh">Wat ligt er in de koelkast?</label><input id="cfh" value="${esc(CF.have)}" placeholder="bijv. courgette, room, gehakt" style="width:100%" oninput="CF.have=this.value">`}
- ${optOn("stock")?`<label class="item" style="border:0;padding:8px 0 0;cursor:pointer;gap:8px"><input type="checkbox" ${CF.useStock?"checked":""} onchange="CF.useStock=this.checked"><span>Houd rekening met mijn voorraad</span></label>`:""}${optOn("left")&&(S.left||[]).length?`<label class="item" style="border:0;padding:4px 0 0;cursor:pointer;gap:8px"><input type="checkbox" ${CF.useLeft?"checked":""} onchange="CF.useLeft=this.checked"><span>Plan mijn restjes in als kliekje</span></label>`:""}
- ${CF.mode=="all"&&CF.days.some(k=>S.sel.some(e=>e.day==k&&!e.done&&!e.fx))?`<p class="cf2warn">Let op: wat nu op de gekozen dagen staat, wordt vervangen door het voorstel van Chef Pieper.</p>`:""}
- <div class="row" style="justify-content:flex-end;margin-top:16px"><button class="btn ghost" onclick="cfClose()">Annuleren</button><button class="btn" ${CF.days.length?"":"disabled"} onclick="cfMake()">${ico("sparkle")} Maak voorstel</button></div>`}}
+ const card=(k,ic,b,sm)=>`<button class="cf3rad${CF.mode==k?" on":""}" role="radio" aria-checked="${CF.mode==k}" onclick="cfMode('${k}')"><span class="cf3ri">${ico(ic)}</span><span class="cf3rt"><b>${b}</b><small>${sm}</small></span><span class="cf3dot"></span></button>`;
+ const step=(v,dec,inc,lbl)=>`<span class="cf3st"><button onclick="${dec}" aria-label="${lbl} minder">−</button><b>${v}</b><button onclick="${inc}" aria-label="${lbl} meer">+</button></span>`;
+ const sw=(on,js,b,sm,ic)=>`<label class="cf3sw"><span class="cf3si">${ico(ic)}</span><span class="cf3rt"><b>${b}</b><small>${sm}</small></span><input type="checkbox" ${on?"checked":""} onchange="${js}"><i></i></label>`;
+ const chip=(on,txt,js)=>`<button class="cf3c${on?" on":""}" onclick="${js}" aria-pressed="${on}">${on?ico("check"):""}${esc(txt)}</button>`;
+ const tm=[[0,"Maakt niet uit"],[30,"Tot 30 min"],[45,"Tot 45 min"]];
+ const avs=F.filter(f=>on.includes(f.uid)).slice(0,3).map(f=>avHTML(f.naam,vrIdx(f.uid)%6,24,f.foto)).join("");
+ d.className="cf3";
+ d.innerHTML=`<div class="cf3b">
+ <div class="cf3hd"><span class="cf3m">${cpIco(56)}</span><div><p class="cf2wk">${esc(cfWkLbl(CF.wk))}</p><h2>Chef Pieper maakt je menu</h2></div><button class="cf3x" onclick="cfClose()" aria-label="Sluiten">${ico("close")}</button></div>
+ <p class="cf3in">Vertel wat je wilt, dan doet Chef Pieper een voorstel. Je kunt daarna alles nog wisselen.</p>
+ <h3 class="cf3h">Wat moet Chef Pieper doen?</h3>
+ <div class="cf3m2" role="radiogroup">${card("fill","plus","Week aanvullen","Alleen de lege dagen. Wat al gepland is blijft staan.")}${card("all","swap","Hele week maken","Chef Pieper kiest voor alle dagen opnieuw.")}</div>
+ <h3 class="cf3h">Voor welke dagen? <span>${n} ${n==1?"dag":"dagen"}</span></h3>
+ <div class="cf3days">${D.map(k=>{const dd=pdk(k),past=k<t,sh=cfShort(k),locked=!!dxOf(k).length||S.sel.some(e=>e.day==k&&(e.done||e.fx)),planned=!!sh,sel=CF.days.includes(k),off=past||locked||(CF.mode=="fill"&&planned);
+  return`<button class="cf3d${sel?" on":planned?" pl":""}${past?" past":""}" ${off?"disabled":""} onclick="cfDay('${k}')" aria-pressed="${sel}" aria-label="${esc(dd.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric"}))}${planned?", "+esc(sh):""}"><span>${DN[dd.getDay()]}</span><b>${dd.getDate()}</b><i>${sel?ico("star"):esc(sh)}</i></button>`}).join("")}</div>
+ <p class="cf3leg"><i class="o"></i>Chef Pieper kiest · <i class="g"></i>${CF.mode=="fill"?"al gepland, blijft staan":"al gepland"}</p>
+ ${CF.mode=="all"&&CF.days.some(k=>S.sel.some(e=>e.day==k&&!e.done&&!e.fx))?`<p class="cf2warn">Wat nu op de gekozen dagen staat, wordt vervangen door het voorstel van Chef Pieper.</p>`:""}
+ <div class="cf3cols"><div>
+  <div class="cf3card"><div class="cf3row"><span class="cf3si">${ico("a_users")}</span><span class="cf3rt"><b>Personen</b><small>Standaard voor jullie</small></span>${step(CF.pers,"CF.pers=Math.max(1,CF.pers-1);cfDraw()","CF.pers=Math.min(12,CF.pers+1);cfDraw()","Personen")}</div></div>
+  ${F.length?`<h3 class="cf3h">Waar komen de recepten vandaan?</h3>
+  <div class="cf3card"><div class="cf3row"><span class="cf3si cf3own">${ico("book")}</span><span class="cf3rt"><b>${isMulti()?"Jullie":"Jouw"} recepten</b><small>${isMulti()?"Uit "+esc(hhName()):"Uit je eigen recepten"}</small></span>${step(no,`CF.nOwn=Math.max(0,cfNOwn()-1);cfDraw()`,`CF.nOwn=Math.min(${n},cfNOwn()+1);cfDraw()`,"Eigen recepten")}</div>
+   <div class="cf3row"><span class="cf3av">${avs||`<span class="cf3si">${ico("a_friends")}</span>`}</span><span class="cf3rt"><b>Nieuw van vrienden</b><small>Nog niet gekookt</small></span>${step(nf,`CF.nOwn=Math.min(${n},cfNOwn()+1);cfDraw()`,`CF.nOwn=Math.max(0,cfNOwn()-1);cfDraw()`,"Van vrienden")}</div>
+   ${nf?`<div class="cf3fr">${F.map(f=>`<button class="${on.includes(f.uid)?"on":""}" onclick="cfFrTog('${f.uid}')" aria-pressed="${on.includes(f.uid)}">${avHTML(f.naam,vrIdx(f.uid)%6,20,f.foto)}${esc(f.naam)}</button>`).join("")}</div><p class="cf2n">${loading?"Recepten van vrienden laden…":nFr?nFr+(nFr==1?" recept":" recepten")+" van vrienden om uit te kiezen":on.length?"Geen nieuwe recepten van deze vrienden binnen je voorkeuren, dan kiest hij uit je eigen recepten.":"Kies minstens één vriend."}</p>`:""}
+   <div class="cf3bar"><span><i style="width:${n?no/n*100:0}%"></i><i class="g" style="width:${n?nf/n*100:0}%"></i></span><small>${n} van de ${n} ${n==1?"dag":"dagen"} verdeeld</small></div></div>`:""}
+ </div><div>
+  <h3 class="cf3h cf3h0">Hoeveel tijd heb je?</h3>
+  <div class="cf3seg" role="radiogroup">${tm.map(([m,l])=>`<button role="radio" aria-checked="${(CF.maxT||0)==m}" class="${(CF.maxT||0)==m?"on":""}" onclick="CF.maxT=${m};cfDraw()">${l}</button>`).join("")}</div>
+  <div class="cf3card cf3sws">${sw(CF.easy,"CF.easy=this.checked","Alleen makkelijke recepten","Niets met lastige technieken","check")}${optOn("stock")?sw(CF.useStock,"CF.useStock=this.checked","Houd rekening met mijn voorraad","Eerst op wat bijna over de datum is","a_fridge"):""}${optOn("left")&&(S.left||[]).length?sw(CF.useLeft,"CF.useLeft=this.checked","Plan mijn restjes in","Als kliekje op een van de dagen","box"):""}</div>
+  ${optOn("stock")?"":`<label class="cf3h" for="cfh" style="display:block">Wat ligt er in de koelkast?</label><input id="cfh" class="cf3inp" value="${esc(CF.have)}" placeholder="bijv. courgette, room, gehakt" oninput="CF.have=this.value">`}
+ </div></div>
+ ${K.length?`<h3 class="cf3h">Welke keuken? <span>(niets kiezen = alles)</span></h3><div class="cf3cs">${K.map(k=>chip(CF.keuk.includes(k),k,`cfKeukTog(${esc(JSON.stringify(k))})`)).join("")}</div>`:""}
+ ${cs.length?`<h3 class="cf3h">Waar heb je zin in? <span>(niets kiezen = alles)</span></h3><div class="cf3cs">${cs.map(c=>chip(CF.prefs.includes(c),c,`cfPref(${esc(JSON.stringify(c))})`)).join("")}</div>`:""}
+ </div><div class="cf3ft"><button class="btn ghost cf3can" onclick="cfClose()">Annuleren</button><button class="btn cf3go" ${CF.days.length?"":"disabled"} onclick="cfMake()">${ico("star")} Maak voorstel</button></div>`}
 // cfDay mag in "hele week" ook geplande dagen aan/uit zetten
-function cfDrawProp(d){const info=cfListInfo(),n=CF.prop.filter(p=>p.kind=="rec"||p.kind=="frec").length,have=haveTerms(CF.have||"");
- d.innerHTML=`<h2 style="font-size:1.25rem;margin-bottom:2px">Jouw weekmenu</h2><p class="mute" style="margin:0 0 10px;font-size:.88rem">Past het niet? Tik op "Ander" voor een alternatief, of kies zelf.</p>${CF.note?`<p style="color:var(--danger);margin:0 0 8px;font-size:.88rem">${esc(CF.note)}</p>`:""}${CF.prop.map((p,i)=>{if(p.kind=="left")return`<div class="cfr"><div class="cfd">${dayLbl(p.day)}</div><div class="cfb"><span class="th dxi">${ico("left")}</span><div style="flex:1;min-width:0"><b>Kliekje: ${esc(p.name)}</b><div class="mute" style="font-size:.82rem">Uit je restjes</div></div><button class="xb" onclick="cfSkip(${i})" aria-label="Weghalen">✕</button></div></div>`;
+function cfDrawProp(d){d.className="";const info=cfListInfo(),n=CF.prop.filter(p=>p.kind=="rec"||p.kind=="frec").length,have=haveTerms(CF.have||"");
+ d.innerHTML=`<div class="cf2hd">${cpIco(48)}<div><p class="cf2wk">Voorstel van Chef Pieper</p><h2 style="font-size:1.25rem">Jouw weekmenu</h2></div></div><p class="mute" style="margin:0 0 10px;font-size:.88rem">Past het niet? Tik op "Ander" voor een alternatief, of kies zelf.</p>${CF.note?`<p style="color:var(--danger);margin:0 0 8px;font-size:.88rem">${esc(CF.note)}</p>`:""}${CF.prop.map((p,i)=>{if(p.kind=="left")return`<div class="cfr"><div class="cfd">${dayLbl(p.day)}</div><div class="cfb"><span class="th dxi">${ico("left")}</span><div style="flex:1;min-width:0"><b>Kliekje: ${esc(p.name)}</b><div class="mute" style="font-size:.82rem">Uit je restjes</div></div><button class="xb" onclick="cfSkip(${i})" aria-label="Weghalen">✕</button></div></div>`;
   const fr=p.kind=="frec",r=fr?cfFR(p):S.recipes.find(x=>x.id==p.rid);if(!r||!r.name)return"";const m=have.length&&r.ing?matchTerms(r,have):[],su=!fr&&CF.useStock&&optOn("stock")?stockUse(r):[];
   const old=CF.mode=="all"?S.sel.filter(e=>e.day==p.day&&!e.done&&!e.fx).map(e=>(S.recipes.find(x=>x.id==e.rid)||{}).name).filter(Boolean):[];
   return`<div class="cfr"><div class="cfd">${dayLbl(p.day)}</div><div class="cfb"><span class="th">${imgHtml(fr?{...r,id:Math.abs(vrIdx(p.u+":"+r.id))}:r)}</span><div style="flex:1;min-width:0"><b>${esc(r.name)}</b><div class="mute" style="font-size:.82rem">${[r.time?r.time+" min":"",cfKeuk(r)||rLabels(r)[0]].filter(Boolean).map(esc).join(" · ")}</div>${fr?`<div class="cf2van">${avHTML(p.naam,vrIdx(p.u)%6,16,(vrF(p.u)||{}).foto)} Van ${esc(p.naam)} · nieuw voor jou</div>`:""}${m.length?`<div style="font-size:.78rem;color:var(--sagefg)">Gebruikt: ${esc(m.join(", "))}</div>`:""}${su.length?`<div style="font-size:.78rem;color:var(--sagefg)">Uit je voorraad: ${esc(su.slice(0,4).join(", "))}</div>`:""}${old.length?`<div style="font-size:.76rem;color:var(--mute)">In plaats van ${esc(old.join(", "))}</div>`:""}</div><button class="xb" onclick="cfSkip(${i})" aria-label="Dag overslaan">✕</button></div><div class="cfa"><button class="btn ghost sm" onclick="cfAlt(${i})">↻ Ander</button><button class="btn ghost sm" onclick="cfPickOpen(${i})">Kies zelf</button></div></div>`}).join("")||'<p class="mute">Niets in je voorstel.</p>'}
@@ -5272,6 +5365,7 @@ function cfOpenFill(){cfOpen();if(!CF)return;CF.mode="fill";CF.days=cfFree(CF.wk
 // alleen hoofdgerechten (als die er zijn)
 {const _p=cfPool;cfPool=function(skip){const L=_p(skip);if(S.recipes.some(r=>mainCat(r)=="Hoofdgerecht"))return L.filter(r=>mainCat(r)=="Hoofdgerecht");return L}}
 
+function cpIco(n){return`<span class="cpi" aria-hidden="true" style="--s:${n||26}px">${MASCOT.replace('role="img" aria-label="Chef Pieper"','aria-hidden="true"')}</span>`}
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
