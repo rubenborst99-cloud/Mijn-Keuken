@@ -1181,6 +1181,9 @@ body nav .ls{padding:0;margin:0;max-width:none}
 .ax-delbtn:disabled{opacity:.45}
 .ax-delno{width:100%;margin-top:10px;border-radius:16px;padding:14px;background:var(--card)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .axdel{background:#3A1F1C;border-color:#5C2E28}:root:not([data-theme="light"]) .axdel h3{color:#FF9C8F}:root:not([data-theme="light"]) .axdel-x{color:#FF8A80}:root:not([data-theme="light"]) .ax-delbtn{background:#C9372C;border-color:#C9372C}}
+
+.axchef{display:inline-flex;align-items:center;gap:6px;margin:8px auto 0;padding:5px 12px;border-radius:999px;background:var(--t-beige);color:var(--green);font-weight:700;font-size:.82rem}
+.axchef .ic{width:14px;height:14px;stroke-width:3}
 </style>
 <style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
@@ -2495,7 +2498,7 @@ const vrIdx=id=>{let h=0;for(const c of String(id))h=(h*31+c.charCodeAt(0))|0;re
 const vrMissing=e=>/PGRST202|42883|Could not find the function|does not exist/i.test(((e&&e.message)||"")+((e&&e.code)||""));
 async function loadVR(){if(!sb||!uid||!HH||LEGACY)return;let r;try{r=await sb.rpc("vriendenlijst")}catch(e){return}
  if(!r)return;if(r.error){if(vrMissing(r.error)){VRON=false;VR=null}return}
- VRON=true;VR=r.data||[];gnApply();
+ VRON=true;VR=r.data||[];chefFix();gnApply();
  try{const m=await sb.from("meldingen").select("id,tekst,gemaakt,van").gte("gemaakt",new Date(Date.now()-14*864e5).toISOString()).order("gemaakt",{ascending:false}).limit(10);MELD=(m&&m.data)||[]}catch(e){}
  syncProf();vrFeedUpd();vrPending();if(["home","account"].includes(S.tab)&&!typing()&&!document.querySelector("dialog[open]"))draw()}
 function syncProf(){if(!sb||!uid||!VRON)return;const p=myP(),row={uid,naam:(pName(p)||uname()||"").trim(),over:p.about||"",foto:p.photo||"",vis:p.vis||"friends",gnaam:p.gnaam||null};
@@ -2565,13 +2568,19 @@ function vAVriend(){const f=vrF(FV);if(!f)return`${aTop("Vriend","aGo('vrienden'
   <div class="axseg vr-seg"><button class="${FVNEW?"":"on"}" onclick="FVNEW=false;draw()">Alle recepten</button><button class="${FVNEW?"on":""}" onclick="FVNEW=true;draw()">Nog niet opgeslagen${nNew?" · "+nNew:""}</button></div>
   <p class="mute axcnt">${L.length} ${L.length==1?"recept":"recepten"} · nieuwste eerst</p>${FVNEW&&!L.length?`<div class="card axempty"><p>${nNew?"Geen recepten die passen bij je zoekopdracht.":"Je hebt alle recepten van "+esc(f.naam)+" al."}</p></div>`:""}
   <div class="axgrid">${L.map(([r,i])=>{const has=vrHas(r),[bg,fg]=ATINT[i%4];return`<div class="axrc"><button class="axrct" onclick="vrRec(${i})" style="background:${bg};color:${fg}">${r.img?`${ico("a_bowl")}<img src="${esc(r.img)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:ico("a_bowl")}</button><button class="axrcadd${has?" ok":""}" onclick="${has?"":`vrAddRec(${i})`}" aria-label="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}" title="${has?"Staat al in je recepten":"Aan mijn recepten toevoegen"}">${ico(has?"a_check":"plus")}</button><button class="axrcb" onclick="vrRec(${i})"><b>${esc(r.name)}</b>${r.time?`<small class="mute">${ico("a_clock")} ${r.time} min</small>`:""}</button></div>`}).join("")}</div>`}
- return`${aTop(f.naam,"aGo('vrienden')")}<div class="axfhead">${avHTML(f.naam,vrIdx(f.uid),110,f.foto)}<h3>${esc(f.naam)}</h3>${f.gnaam?`<div class="axgn">@${esc(f.gnaam)}</div>`:""}<p class="mute">${[f.recepten!=null?f.recepten+(f.recepten==1?" recept":" recepten"):"",since].filter(Boolean).join(" · ")}</p>${f.over?`<p class="axabout">${esc(f.over)}</p>`:""}</div>${body}
- <button class="axleave" style="color:var(--mute)" onclick="vrRemove('${f.uid}',true)">Vriendschap verbreken</button>`}
+ return`${aTop(f.naam,"aGo('vrienden')")}<div class="axfhead">${avHTML(f.naam,vrIdx(f.uid),110,f.foto)}<h3>${esc(f.naam)}</h3>${f.gnaam?`<div class="axgn">@${esc(f.gnaam)}</div>`:""}${isChef(f)?`<div class="axchef">${ico("a_check")} Receptenbank van KookBuddy</div>`:""}<p class="mute">${[f.recepten!=null?f.recepten+(f.recepten==1?" recept":" recepten"):"",since].filter(Boolean).join(" · ")}</p>${f.over?`<p class="axabout">${esc(f.over)}</p>`:""}</div>${body}
+ ${isChef(f)?"":`<button class="axleave" style="color:var(--mute)" onclick="vrRemove('${f.uid}',true)">Vriendschap verbreken</button>`}`}
 // ---- Meldingen op Thuis
 async function vrMeldWeg(id){MELD=MELD.filter(m=>m.id!=id);draw();try{await sb.from("meldingen").update({gelezen:true}).eq("id",id)}catch(e){}}
 function meldCard(){if(!VRON)return"";const I=vrIn();if(!I.length&&!MELD.length)return"";
  return`<div class="card axrem"><div class="axremh"><span class="axic" style="background:var(--t-lilac);color:var(--lilacline)">${ico("a_friends")}</span><b>Vrienden</b></div>${I.slice(0,3).map(f=>`<div class="axreml"><span><b>${esc(f.naam)}</b><small class="mute">wil vrienden worden</small></span><button class="btn ghost sm" onclick="go('account');aGo('vrienden')">Bekijken</button></div>`).join("")}${MELD.slice(0,3).map(m=>`<div class="axreml"><span><small style="color:var(--ink);font-size:.92rem">${esc(m.tekst)}</small></span><button class="axkick" onclick="vrMeldWeg(${m.id})" aria-label="Weghalen">${ico("a_x")}</button></div>`).join("")}</div>`}
 Object.assign(ICP,{a_clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.500 2"/>'});
+
+// ---- Chef Pieper: vriend van iedereen
+const isChef=f=>!!f&&f.gnaam=="chefpieper";
+let CHEFIMG="";
+function chefImg(){if(!CHEFIMG){const svg=MASCOT.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" ').replace(/role="img" aria-label="[^"]*"/,"");CHEFIMG="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" fill="#B8441F"/><g transform="translate(14 8) scale(.82)">${svg.replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,"")}</g></svg>`)}return CHEFIMG}
+function chefFix(){if(!Array.isArray(VR))return;for(const f of VR)if(isChef(f)&&!f.foto)f.foto=chefImg();VR.sort((x,y)=>isChef(y)-isChef(x))}
 // === RECEPTEN PER PERSOON (eigenaren, filter, geen dubbele) ===
 let OWNF="";
 const own=r=>Array.isArray(r&&r.own)?r.own:[];
