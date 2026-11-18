@@ -1547,6 +1547,9 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .hx-kmv .hx-mk{margin:12px 12px 0}.hx-kmv .st-rsn b{font-size:1.05rem}
 .hx-kmvc{margin:10px 14px 14px}
 .kx-dtt,.kx-awake{display:none}
+/* profielfoto altijd netjes rond in het rondje, ook binnen receptfoto-vlakken */
+.axav{box-sizing:border-box}
+.axav>img{position:static!important;inset:auto!important;display:block;width:100%!important;height:100%!important;max-width:none!important;object-fit:cover;border-radius:50%;opacity:1!important}
 </style>
 <style id="desk">/* ================= Webversie (ontwerp app-ontwerp.pdf) ================= */
 @media(min-width:1024px){
@@ -2061,9 +2064,9 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .ds2r.on{border-color:var(--green)}
 .ds2im{position:relative;display:grid;place-items:center;height:104px;background:var(--tb);color:var(--tf)}
 .ds2im>.ic{width:44px;height:44px}
-.ds2im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ds2im>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ds2av{position:absolute;left:10px;bottom:-12px;display:flex;z-index:1}
-.ds2av>*{margin-right:-6px;border:2px solid var(--card);border-radius:50%}
+.ds2av>*{margin-right:-6px;border:2px solid var(--card);border-radius:50%;--s:24px;width:24px;height:24px;flex:none}
 .ds2avm{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:.66rem;font-weight:700;display:grid;place-items:center}
 .ds2pl{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:var(--card);color:var(--ink);display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:1}
 .ds2pl .ic{width:16px;height:16px}
@@ -5071,7 +5074,8 @@ function dsDay(k){DS.day=k;dsHead();dsDraw()}
 // ---- De drie tegels
 function dsTiles(){const nl=optOn("left")?(S.left||[]).length:0;
  const t=(m,ic,b,s,bg,fg,js)=>`<button class="ds2t${DS.mode==m?" on":""}" style="--tb:${bg};--tf:${fg}" onclick="${js}" aria-pressed="${DS.mode==m}"><span class="ds2ti">${ico(ic)}</span><b>${b}</b><small>${s}</small></button>`;
- document.getElementById("dsM").innerHTML=`<div class="ds2ts">${t("sur","star","Verras me","Past bij je week","var(--t-lilac)","var(--lilacline)","dsSurprise()")}${t("left","box","Restjes eten",nl?nl+" beschikbaar":"Geen restjes","var(--t-beige)","var(--green)","dsMode('left')")}${t("out","home","Niet koken","Afhalen, uit eten…","var(--tile,#EFE6DA)","var(--ink)","dsMode('out')")}</div>`}
+ if(!nl&&DS.mode=="left")DS.mode="rec";
+ document.getElementById("dsM").innerHTML=`<div class="ds2ts" style="grid-template-columns:repeat(${nl?3:2},1fr)">${t("sur","star","Verras me","Past bij je week","var(--t-lilac)","var(--lilacline)","dsSurprise()")}${nl?t("left","box","Restjes eten",nl+" beschikbaar","var(--t-beige)","var(--green)","dsMode('left')"):""}${t("out","home","Niet koken","Afhalen, uit eten…","var(--tile,#EFE6DA)","var(--ink)","dsMode('out')")}</div>`}
 function dsMode(m){DS.mode=DS.mode==m?"rec":m;dsDraw();const b=document.getElementById("dsb");if(b&&DS.mode!="rec")b.scrollTo({top:0,behavior:"smooth"})}
 // ---- Inhoud
 function dsBody(){const P=document.getElementById("dsP");const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"});
