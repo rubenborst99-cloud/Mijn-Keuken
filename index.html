@@ -1814,7 +1814,196 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 @media(min-width:1024px){.st-R>:first-child{margin-top:0!important}.st-L>.st-empty{margin-top:0!important}}
 @media(min-width:1024px){.st-back{display:none}}
 </style>
-<style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
+<style id="add">/* ---- Recept toevoegen (telefoon eerst) */
+#dlg.ad{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
+#dlg.ad[data-mode=choice]{height:fit-content;max-height:92dvh;margin:auto 0 0;border-radius:24px 24px 0 0;padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+#dlg.ad .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#dlg .ad-crumb{display:none}
+#dlg .ad-hd{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:var(--bg)}
+#dlg[data-mode=choice] .ad-hd{position:static;padding-top:20px}
+#dlg .ad-bk,#dlg .ad-x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+#dlg .ad-x{display:none}
+#dlg[data-mode=choice] .ad-bk{display:none}
+#dlg .ad-tt{flex:1;min-width:0;text-align:center}
+#dlg[data-mode=choice] .ad-tt{text-align:left}
+#dlg .ad-tt h2{font-family:Fraunces,serif;font-size:1.5rem;line-height:1.15;margin:0;font-weight:600}
+#dlg[data-mode=choice] .ad-tt h2{font-size:1.75rem}
+#dlg .ad-sub{margin:4px 0 0;color:var(--mute);font-size:.95rem}.ad-sub:empty{display:none}
+#dlg .ad-svt{border:0;background:none;color:var(--green);font:inherit;font-weight:700;font-size:1rem;padding:8px 2px;cursor:pointer;min-width:44px;display:none}
+#dlg[data-mode=form] .ad-svt{display:block}
+#dlg:not([data-mode=form]) .ad-tt{padding-right:54px}
+#dlg[data-mode=choice] .ad-tt{padding-right:0}
+#dlg .ad-dact{display:none}
+#dlg .mm,#dlg .chs{display:none;padding:4px 18px 18px}
+#dlg[data-mode=choice] .chs{display:block}
+#dlg[data-mode=link] #m-link,#dlg[data-mode=photo] #m-photo,#dlg[data-mode=form] #m-form{display:block}
+/* keuze */
+.ad-chs{display:flex;flex-direction:column;gap:10px}
+.ad-ch{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;font:inherit;color:var(--ink);cursor:pointer}
+.ad-ch:hover{border-color:var(--green)}
+.ad-chi{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;flex:none}
+.ad-chi .ic{width:24px!important;height:24px!important}
+.ad-cht b{display:block;font-size:1.08rem}.ad-cht small{color:var(--mute);font-size:.9rem;line-height:1.35}
+.ad-tip{display:none;color:var(--mute);font-size:.85rem;margin:14px 0 0}
+/* link */
+.ad-intro{color:var(--mute);line-height:1.5;margin:4px 0 18px}
+.ad-l{display:block;font-weight:700;font-size:.92rem;margin:16px 0 7px}
+.ad-url{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--green);border-radius:16px;padding:6px 6px 6px 14px}
+.ad-url input{flex:1;min-width:0;border:0!important;background:none!important;padding:10px 0!important;font:inherit;color:var(--ink);outline:none;box-shadow:none!important}
+.ad-paste{border:0;background:var(--tile,#EFE6DA);color:var(--ink);font:inherit;font-weight:700;font-size:.88rem;padding:10px 12px;border-radius:11px;cursor:pointer;flex:none}
+.ad-busy{display:none;align-items:center;gap:14px;background:var(--sage);border-radius:18px;padding:16px;margin-top:14px}
+#dlg[data-busy="1"] .ad-busy{display:flex}#dlg[data-busy="1"] #f-st{display:none}
+.ad-busy b{display:block;color:var(--sagefg)}.ad-busy small{color:var(--sagefg);opacity:.85}
+.ad-spin{width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.7);border-top-color:var(--sagefg);animation:adspin 1s linear infinite;flex:none}
+@keyframes adspin{to{transform:rotate(360deg)}}
+.ad-st{margin:10px 0 0;color:var(--mute);font-size:.92rem}.ad-st:empty{display:none}
+.ad-l2{font-weight:700;font-size:.88rem;color:var(--mute);margin:22px 0 8px}
+.ad-srcs{display:flex;flex-wrap:wrap;gap:8px}
+.ad-srcs span{background:var(--tile,#EFE6DA);border-radius:99px;padding:6px 12px;font-size:.85rem;color:var(--mute)}
+.ad-pt{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.ad-pt summary{cursor:pointer;font-weight:700;font-size:.92rem}
+.ad-pt textarea{min-height:110px;margin-top:10px;width:100%}
+/* foto */
+.ad-dsk{display:none}
+.ad-cam{background:#2B2118;border-radius:24px;aspect-ratio:1/1.1;display:grid;place-items:center;cursor:pointer;position:relative;overflow:hidden}
+.ad-camp{width:62%;aspect-ratio:3/4;background:#F6EEE2;border-radius:10px;transform:rotate(-3deg);padding:16% 9% 0;box-sizing:border-box;display:flex;flex-direction:column;gap:7px;box-shadow:0 0 0 3px #F6EEE2,0 0 0 6px #2B2118,0 0 0 8px rgba(255,255,255,.7)}
+.ad-camp i{display:block;height:6px;border-radius:3px;background:#DCCCB5}.ad-camp i:nth-child(3n){width:70%}.ad-camp i:nth-child(2){width:60%;background:#C9B79E;height:9px}
+.ad-camh{position:absolute;left:50%;top:18px;transform:translateX(-50%) rotate(0);background:rgba(43,33,24,.75);color:#fff;font-size:.82rem;padding:6px 12px;border-radius:99px;white-space:nowrap}
+.ad-camb{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin:16px 0 6px}
+.ad-camb .btn{justify-self:start;border-radius:14px}
+.ad-shut{width:78px;height:78px;border-radius:50%;border:4px solid var(--green);background:var(--card);display:grid;place-items:center;cursor:pointer;padding:0}
+.ad-shut i{width:58px;height:58px;border-radius:50%;background:var(--green)}
+.ad-drop{display:none}
+.ad-phh{margin:14px 0 8px;font-size:.88rem;color:var(--mute);font-weight:600}
+.ad-phl{display:flex;flex-wrap:wrap;gap:12px;margin:0}
+.ad-phl .pht{width:88px;height:112px;border-radius:12px;overflow:visible;border:1px solid var(--line);background:var(--card)}
+.ad-phl .pht img{border-radius:11px}
+.ad-phl .pht i{left:auto;right:-8px;top:-8px;bottom:auto;width:24px;height:24px;border-radius:50%;background:#3E6B4E;color:#fff;text-shadow:none;display:grid;place-items:center;font-size:.75rem}
+.ad-phl .pht button{top:auto;bottom:6px;right:6px}
+.ad-phplus{width:88px;height:112px;border-radius:12px;border:1.5px dashed var(--dash,var(--line));background:none;color:var(--mute);display:grid;place-items:center;cursor:pointer}
+.ad-phplus .ic{width:26px!important;height:26px!important}
+/* formulier */
+.ad-ok{display:flex;gap:12px;align-items:flex-start;background:var(--sage);color:var(--sagefg);border-radius:18px;padding:14px 16px;margin:0 0 16px}
+.ad-ok:empty{display:none}
+.ad-ok b{display:block}.ad-ok small{display:block;font-size:.88rem;line-height:1.45;color:var(--ink2,var(--ink));opacity:.85;margin-top:2px}
+.ad-cols,.ad-c1,.ad-c2{display:contents}
+.ad-basis{order:1}.ad-ingc{order:2}.ad-stc{order:3}.ad-extra{order:4}
+#m-form{display:none;flex-direction:column}
+#dlg[data-mode=form] #m-form{display:flex}
+#m-form .ad-ok{order:0}
+.ad-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin-bottom:16px}
+.ad-card h3{font-family:Fraunces,serif;font-size:1.35rem;margin:0;font-weight:600}
+.ad-cs{color:var(--mute);font-size:.86rem;margin:2px 0 12px}
+.ad-card input:not([type=checkbox]),.ad-card select,.ad-card textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;padding:12px 14px}
+.ad-photo{margin-top:14px;border-radius:18px;aspect-ratio:16/9;background:var(--bg);border:1.5px dashed var(--dash,var(--line));display:grid;place-items:center;cursor:pointer;position:relative;overflow:hidden}
+.ad-photo.has{border:0;background:var(--t-green)}
+.ad-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ad-phe{display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--mute)}.ad-phe b{font-size:.9rem}
+.ad-phb{position:absolute;right:10px;bottom:10px;background:var(--card);color:var(--ink);border-radius:12px;padding:8px 12px;font-weight:700;font-size:.88rem;display:flex;align-items:center;gap:6px}
+.ad-phb .ic{width:16px!important;height:16px!important}
+.ad-phdel{margin-top:6px;font-size:.85rem;color:var(--mute)!important}
+.ad-g2{display:grid;grid-template-columns:1fr 112px;gap:10px}
+.ad-suf{position:relative;display:block}.ad-suf em{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;color:var(--mute);pointer-events:none}
+.ad-suf input{padding-right:44px!important}
+.ad-step{display:grid;grid-template-columns:52px 1fr 52px;border:1px solid var(--line);border-radius:12px;background:var(--bg);overflow:hidden}
+.ad-step button{border:0;background:none;font-size:1.4rem;color:var(--ink);cursor:pointer}
+.ad-step input{border:0!important;text-align:center;font-weight:700;background:none!important;-moz-appearance:textfield}
+.ad-step input::-webkit-inner-spin-button{-webkit-appearance:none}
+.ad-seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--tile,#EFE6DA);border-radius:14px;padding:4px;gap:2px}
+.ad-seg button{border:0;background:none;padding:11px 4px;border-radius:11px;font:inherit;font-size:.92rem;color:var(--mute);cursor:pointer}
+.ad-seg button.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.ad-labs{display:flex;flex-wrap:wrap;gap:8px}
+.ad-lab{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:9px 14px;font:inherit;font-weight:700;font-size:.9rem;cursor:pointer;border:1.5px solid var(--line);background:none;color:var(--mute)}
+.ad-lab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.ad-lab .ic{width:15px!important;height:15px!important}
+.ad-labadd button{display:inline-flex;align-items:center;gap:6px;border:1.5px dashed var(--dash,var(--line));background:none;border-radius:99px;padding:9px 14px;font:inherit;font-weight:700;font-size:.9rem;color:var(--ink);cursor:pointer}
+.ad-labadd .ic{width:15px!important;height:15px!important}
+.ad-labin{width:150px!important;border-radius:99px!important;padding:9px 14px!important}
+.ad-ing{display:flex;flex-direction:column;gap:8px}
+.ad-ir{display:grid;grid-template-columns:16px 58px 50px minmax(0,1fr) 32px;gap:6px;align-items:center}
+.ad-ir input{padding:11px 10px!important}
+.ad-ir.warn input{border-color:#E0A526!important;background:var(--sunbg,#FFF6E0)!important}
+.ad-drag{color:var(--mute);cursor:grab;touch-action:none;user-select:none;font-size:.8rem;letter-spacing:-2px;text-align:center}
+.ad-ir.drag,.ad-sr.drag{opacity:.6}
+.ad-del{border:0;background:none;color:var(--mute);display:grid;place-items:center;cursor:pointer;width:32px;height:40px;padding:0}
+.ad-del .ic{width:18px!important;height:18px!important}
+.ad-warn{background:var(--sunbg,#FFF6E0);color:#8A5A00;border-radius:12px;padding:10px 12px;font-size:.86rem;margin:10px 0 0}
+:root[data-theme="dark"] .ad-warn{color:#F2CF7A}
+.ad-add{display:inline-flex;align-items:center;gap:6px;margin-top:12px;border:1.5px dashed var(--dash,var(--line));background:none;border-radius:12px;padding:10px 14px;font:inherit;font-weight:700;font-size:.92rem;color:var(--ink);cursor:pointer}
+.ad-add .ic{width:16px!important;height:16px!important}
+.ad-sts{display:flex;flex-direction:column;gap:10px}
+.ad-sr{display:grid;grid-template-columns:30px minmax(0,1fr) 28px;gap:10px;align-items:start}
+.ad-sn{width:30px;height:30px;border-radius:50%;background:var(--t-peach);color:var(--green);display:grid;place-items:center;font-family:Fraunces,serif;font-weight:700;margin-top:6px}
+.ad-sr textarea{min-height:64px;resize:none;overflow:hidden;line-height:1.45}
+.ad-sr .ad-del{height:32px;margin-top:4px}
+.ad-extra textarea{min-height:70px}
+.ad-extra .nutf,.ad-more{margin-top:14px}
+.ad-more summary,.ad-extra .nutf summary{cursor:pointer;font-weight:600;font-size:.9rem}
+/* onderbalk */
+.ad-ft{position:sticky;bottom:0;z-index:3;display:flex;gap:10px;padding:12px 18px calc(14px + env(safe-area-inset-bottom));background:var(--bg)}
+#dlg[data-mode=choice] .ad-ft{display:none}
+.ad-ft .btn{flex:1;justify-content:center;border-radius:16px;padding:16px;font-size:1.02rem;display:none;align-items:center;gap:8px}
+.ad-ft .ad-cancel{display:none!important}
+#dlg[data-mode=link] #f-go{display:inline-flex}
+#dlg[data-mode=photo][data-ph="1"] #f-phgo{display:inline-flex!important}
+#dlg[data-mode=form] #f-save{display:inline-flex}
+#dlg:not([data-mode=photo]) #f-phgo{display:none!important}
+#dlg[data-mode=photo]:not([data-ph="1"]) .ad-ft{display:none}
+#dlg.ad-dragon{outline:3px dashed var(--green);outline-offset:-8px}
+
+/* ---- Webversie */
+@media(min-width:1024px){
+ #dlg.ad{width:min(760px,92vw);height:fit-content;max-height:90vh;margin:auto;border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+ #dlg.ad[data-mode=choice]{margin:auto;border-radius:28px;padding-bottom:6px}
+ #dlg.ad[data-mode=link]{width:min(600px,92vw)}
+ #dlg.ad[data-mode=photo]{width:min(640px,92vw)}
+ #dlg .ad-hd{position:static;padding:26px 28px 6px}
+ #dlg .ad-x{display:grid}
+ #dlg .ad-tt{text-align:left;padding-right:0!important}
+ #dlg .ad-tt h2{font-size:1.85rem}
+ #dlg .mm,#dlg .chs{padding:6px 28px 22px}
+ .ad-chs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+ .ad-ch{flex-direction:column;align-items:flex-start;padding:20px;min-height:170px;gap:16px}
+ .ad-tip{display:block}
+ .ad-dsk{display:block}.ad-mob{display:none}
+ .ad-cam,.ad-camb{display:none}
+ .ad-drop{display:flex;flex-direction:column;align-items:center;gap:8px;border:1.5px dashed var(--dash,var(--line));border-radius:22px;padding:30px 20px;cursor:pointer;text-align:center}
+ .ad-drop b{font-size:1.05rem;margin-top:6px}.ad-drop small{color:var(--mute)}
+ .ad-drop .btn{border-radius:14px}
+ #dlg[data-mode=photo]:not([data-ph="1"]) .ad-phh,#dlg[data-mode=photo]:not([data-ph="1"]) .ad-phl{display:none}
+ .ad-ft{position:static;justify-content:flex-end;padding:0 28px 26px}
+ #dlg[data-mode=photo]:not([data-ph="1"]) .ad-ft{display:flex}
+ .ad-ft .btn{flex:none;padding:13px 20px;font-size:.98rem;border-radius:14px}
+ .ad-ft .ad-cancel{display:inline-flex!important}
+ #dlg[data-mode=photo]:not([data-ph="1"]) #f-phgo{display:inline-flex!important;opacity:.45;pointer-events:none}
+ #dlg[data-mode=photo]:not([data-ph="1"]) #f-phgo::after{content:""}
+ /* formulier als pagina naast de zijbalk */
+ #dlg.ad[data-mode=form]{position:fixed;inset:0 0 0 240px;width:auto;max-width:none;height:100vh;max-height:none;margin:0;border-radius:0;box-shadow:none;padding:0 40px 40px}
+ #dlg.ad[data-mode=form]::backdrop{background:transparent}
+ #dlg[data-mode=form] .ad-crumb{display:flex;align-items:center;gap:8px;max-width:1160px;margin:30px auto 0;font-size:.9rem;color:var(--mute)}
+ #dlg .ad-crumb button{border:0;background:none;color:var(--green);font:inherit;font-weight:700;padding:0;cursor:pointer}
+ #dlg .ad-crumb .ic{width:14px!important;height:14px!important}
+ #dlg[data-mode=form] .ad-hd{max-width:1160px;margin:0 auto;padding:12px 0 22px;background:none;position:static}
+ #dlg[data-mode=form] .ad-bk,#dlg[data-mode=form] .ad-x,#dlg[data-mode=form] .ad-svt{display:none}
+ #dlg[data-mode=form] .ad-tt h2{font-size:2.5rem}
+ #dlg[data-mode=form] .ad-dact{display:flex;gap:10px}
+ .ad-dact .btn{border-radius:14px;padding:12px 20px;display:inline-flex;align-items:center;gap:8px}
+ #dlg[data-mode=form] #m-form{max-width:1160px;margin:0 auto;padding:0}
+ #dlg[data-mode=form] .ad-ft{display:none}
+ .ad-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:24px;align-items:start}
+ .ad-c1,.ad-c2{display:flex;flex-direction:column;gap:20px}
+ .ad-card{margin:0;padding:22px}
+ .ad-ok{margin-bottom:24px}
+}
+@media(max-width:1023px){
+ #dlg .mm{padding-left:12px;padding-right:12px}
+ .ad-card{padding:16px 12px}
+ .ad-ir{grid-template-columns:10px 44px 48px minmax(0,1fr) 24px;gap:4px}
+ .ad-ir input{padding:11px 7px!important;font-size:.95rem!important}
+ .ad-del{width:24px}
+ .ad-sr{grid-template-columns:28px minmax(0,1fr) 22px;gap:8px}
+}
+</style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
 :root[data-theme="dark"]{--lav:#2e2838;--lavfg:#c4a8ee}
@@ -1833,56 +2022,105 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 <main id="main"></main>
 <footer id="ft" class="bar" style="max-width:1000px;margin:auto;padding:10px 20px 30px"></footer>
 
-<dialog id="dlg" data-mode="choice" data-isnew="1">
-  <h2 id="dt">Recept</h2>
-  <div class="chs">
-   <p class="mute" style="margin:0 0 10px">Hoe wil je het recept toevoegen?</p>
-   <button class="chb" onclick="setMode('link')"><b aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.600 0l3-3a4 4 0 0 0-5.600-5.600l-1 1"/><path d="M14 10a4 4 0 0 0-5.600 0l-3 3a4 4 0 0 0 5.600 5.600l1-1"/></svg></b><span><strong>Via link</strong><small>Plak een link, het recept wordt opgehaald</small></span></button>
-   <button class="chb" onclick="setMode('photo')"><b aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.500-2.500h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg></b><span><strong>Via foto</strong><small>Foto van een kookboek of scherm, de tekst wordt gelezen</small></span></button>
-   <button class="chb" onclick="setMode('form')"><b aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.500 4.500a2 2 0 0 1 3 3L8 19z"/></svg></b><span><strong>Zelf invullen</strong><small>Typ of plak het recept zelf</small></span></button>
+<dialog id="dlg" data-mode="choice" data-isnew="1" class="ad">
+ <div class="ad-crumb"><button onclick="dlg.close()">Recepten</button><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg><span>Recept toevoegen</span></div>
+ <div class="ad-hd">
+  <button class="ad-bk" onclick="adBack()" aria-label="Terug"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <div class="ad-tt"><h2 id="dt">Recept toevoegen</h2><p class="ad-sub" id="ad-sub">Hoe wil je je recept toevoegen?</p></div>
+  <button class="ad-svt" onclick="saveRecipe()">Opslaan</button>
+  <div class="ad-dact"><button class="btn ghost" onclick="dlg.close()">Annuleren</button><button class="btn ad-svb" onclick="saveRecipe()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg> <span id="ad-svl">Recept opslaan</span></button></div>
+  <button class="ad-x" onclick="dlg.close()" aria-label="Sluiten"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+ </div>
+
+ <div class="chs">
+  <div class="ad-chs">
+   <button class="ad-ch" onclick="setMode('link')"><span class="ad-chi" style="background:var(--t-peach);color:var(--green)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.600 0l3-3a4 4 0 0 0-5.600-5.600l-1 1"/><path d="M14 10a4 4 0 0 0-5.600 0l-3 3a4 4 0 0 0 5.600 5.600l1-1"/></svg></span><span class="ad-cht"><b>Link plakken</b><small>Van een website of social media</small></span></button>
+   <button class="ad-ch" onclick="setMode('photo')"><span class="ad-chi" style="background:var(--t-green);color:var(--sagefg)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.500-2.500h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg></span><span class="ad-cht"><b>Foto maken</b><small>Uit een kookboek, van een screenshot of een briefje</small></span></button>
+   <button class="ad-ch" onclick="setMode('form')"><span class="ad-chi" style="background:var(--t-lilac);color:var(--lilacline)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.500 4.500a2 2 0 0 1 3 3L8 19z"/></svg></span><span class="ad-cht"><b>Zelf invoeren</b><small>Typ je eigen recept in</small></span></button>
   </div>
-  <div id="m-link" class="mm">
-  <label for="f-url">Link naar een recept</label>
-  <div class="row"><input id="f-url" type="url" placeholder="https://..." style="flex:1;width:auto;min-width:0"><button class="btn sm" id="f-go" onclick="fetchRecipe()">Ophalen</button></div>
-  <p id="f-st" class="mute" style="margin:6px 0 0"></p>
-  <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:600">Recepttekst plakken</summary>
-  <textarea id="f-paste" style="min-height:110px;margin-top:8px" placeholder="Kopieer het recept van de website (ingrediënten en bereiding) en plak het hier"></textarea>
-  <div class="row" style="margin-top:8px"><button class="btn sm" onclick="parsePaste()">Verwerken</button></div>
-  <p id="f-ps" class="mute" style="margin:6px 0 0"></p></details>
-  <p class="mute" style="margin:12px 0 0"><a href="#" onclick="setMode('form');return false" style="color:var(--green)">Zelf invullen</a></p>
+  <p class="ad-tip">Tip: je kunt ook een link of foto direct in dit venster slepen.</p>
+ </div>
+
+ <div id="m-link" class="mm">
+  <p class="ad-intro">Plak de link van een recept. KookBuddy haalt de ingrediënten, stappen en foto voor je op.</p>
+  <label for="f-url" class="ad-l">Link naar het recept</label>
+  <div class="ad-url"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.600 0l3-3a4 4 0 0 0-5.600-5.600l-1 1"/><path d="M14 10a4 4 0 0 0-5.600 0l-3 3a4 4 0 0 0 5.600 5.600l1-1"/></svg><input id="f-url" type="url" placeholder="https://..." onkeydown="if(event.key=='Enter')fetchRecipe()"><button type="button" class="ad-paste" onclick="adPasteUrl()">Plakken</button></div>
+  <div class="ad-busy"><span class="ad-spin" aria-hidden="true"></span><span><b>Recept ophalen…</b><small>Ingrediënten en stappen worden gelezen</small></span></div>
+  <p id="f-st" class="ad-st" role="status"></p>
+  <p class="ad-l2">Werkt met onder andere</p>
+  <div class="ad-srcs"><span>Receptensites</span><span>Foodblogs</span><span>Instagram</span><span>TikTok</span><span>Pinterest</span></div>
+  <details class="ad-pt"><summary>Lukt het niet? Plak de recepttekst</summary>
+   <textarea id="f-paste" placeholder="Kopieer het recept (ingrediënten en bereiding) en plak het hier"></textarea>
+   <div class="row" style="margin-top:8px"><button class="btn ghost sm" onclick="parsePaste()">Verwerken</button></div>
+   <p id="f-ps" class="mute" style="margin:6px 0 0"></p></details>
+ </div>
+
+ <div id="m-photo" class="mm">
+  <p class="ad-intro ad-dsk">Upload een foto van een kookboek, een screenshot of een handgeschreven recept. KookBuddy leest de tekst en maakt er een recept van.</p>
+  <div class="ad-cam" onclick="document.getElementById('f-cam').click()">
+   <div class="ad-camp" aria-hidden="true"><span class="ad-camh">Houd de hele pagina in beeld</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   </div>
-  <div id="m-photo" class="mm">
-   <p class="mute" style="margin:0 0 10px">Maak een foto van het recept (ingrediënten en bereiding in beeld) of kies een afbeelding. Zorg voor goed licht en een scherpe, rechte foto. Is het recept lang? Voeg dan meerdere foto's toe, in de volgorde van het recept.</p>
-   <button class="btn" onclick="document.getElementById('f-ocr').click()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.500-2.500h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg> <span id="f-phaddt">Foto's maken of kiezen</span></button>
-   <input type="file" accept="image/*" id="f-ocr" multiple hidden>
-   <div id="f-phl" class="phl"></div>
-   <button type="button" class="btn" id="f-phgo" style="display:none;margin-top:10px" onclick="phRead()">Tekst lezen uit de foto</button>
-   <p id="f-pst" class="mute" style="margin:10px 0 0"></p>
-   <p class="mute" style="margin:12px 0 0">Lukt het niet? Op veel telefoons kun je de tekst in een foto lang indrukken en kopiëren. Plak die dan bij <a href="#" onclick="setMode('link');return false" style="color:var(--green)">Via link, Recepttekst plakken</a>.</p>
+  <div class="ad-camb"><button type="button" class="btn ghost" onclick="document.getElementById('f-ocr').click()">Uit galerij</button><button type="button" class="ad-shut" onclick="document.getElementById('f-cam').click()" aria-label="Foto maken"><i></i></button><span></span></div>
+  <div class="ad-drop" id="ad-drop" onclick="if(event.target.tagName!='BUTTON')document.getElementById('f-ocr').click()">
+   <span class="ad-chi" style="background:var(--t-green);color:var(--sagefg)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.500-2.500h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg></span>
+   <b>Sleep foto's hierheen</b><small>of</small><button type="button" class="btn ghost" onclick="document.getElementById('f-ocr').click()">Kies bestanden</button><small class="mute">JPG of PNG · meerdere foto's mag</small>
   </div>
-  <div id="m-form" class="mm">
-   <p id="f-note" class="mute" style="margin:0 0 4px"></p>
-  <label for="f-name">Naam</label><input id="f-name">
-  <div class="row"><input id="f-cat" type="hidden">
-  <div><label for="f-pers">Voor (personen)</label><input id="f-pers" type="number" min="1" value="2" style="width:90px"></div></div>
-  <div class="g3"><div><label for="f-type">Soort gerecht</label><select id="f-type"><option value="">Kies…</option></select></div><div><label for="f-level">Moeilijkheid</label><select id="f-level"><option value="">Kies…</option></select></div><div><label for="f-time">Tijd (min)</label><input id="f-time" type="number" min="0" placeholder="30"></div></div>
-  <details class="nutf" id="f-nutd"><summary>Voedingswaarden per portie <span id="f-nsrc" class="mute" style="font-weight:400"></span></summary><div class="ng"><div><label for="f-n-kcal">Calorieën (kcal)</label><input id="f-n-kcal" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-p">Eiwit (g)</label><input id="f-n-p" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-f">Vet (g)</label><input id="f-n-f" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-c">Koolhydraten (g)</label><input id="f-n-c" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-fi">Vezels (g)</label><input id="f-n-fi" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-su">Suikers (g)</label><input id="f-n-su" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-sa">Zout (g)</label><input id="f-n-sa" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div></div><div class="row" style="margin-top:8px;align-items:center"><button type="button" class="btn ghost sm" onclick="nutFill()">Schat uit ingrediënten</button><span id="f-nst" class="mute" style="font-size:.82rem"></span></div></details>
-  <datalist id="cats"></datalist>
-  <label for="f-photo">Foto</label>
-  <div class="row nw" style="align-items:center"><div id="f-prev" style="width:84px;flex:none"></div><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start"><button type="button" class="btn ghost sm" onclick="document.getElementById('f-photo').click()">Foto kiezen</button><input type="file" accept="image/*" id="f-photo" hidden><button type="button" class="btn ghost sm del" id="f-photodel" onclick="setImg('')">Foto verwijderen</button></div></div>
-  <div class="row nw" style="margin-top:8px"><input id="f-imgurl" placeholder="Of plak een link naar een afbeelding" style="flex:1;width:auto;min-width:0"><button type="button" class="btn ghost sm" onclick="setImg(document.getElementById('f-imgurl').value.trim())">Gebruiken</button></div>
-  <label for="f-ing">Ingrediënten (één per regel, bijv. 500 g aardappelen)</label>
-  <textarea id="f-ing" placeholder="1 kg aardappelen&#10;500 g winterpeen&#10;2 uien&#10;1 rookworst"></textarea>
-  <p class="mute">Het gangpad wordt automatisch herkend. Zelf kiezen kan met een streepje, bijv. <i>2 el pindakaas | Houdbaar</i>.</p>
-  <label for="f-steps">Bereidingswijze</label>
-  <textarea id="f-steps" style="min-height:140px" placeholder="1. Schil de aardappelen en snijd ze in stukken.&#10;2. Kook alles 20 minuten.&#10;3. Stamp tot een stamppot."></textarea>
-  <label for="f-file">Of upload een .txt of .json bestand</label>
-  <p class="mute" style="margin:0 0 4px">Bij .txt is de eerste regel de naam. Een regel die begint met Bereiding scheidt de ingrediënten van de stappen.</p><input id="f-file" type="file" accept=".txt,.json">
+  <input type="file" accept="image/*" id="f-ocr" multiple hidden><input type="file" accept="image/*" capture="environment" id="f-cam" hidden>
+  <p class="ad-phh"><b class="ad-dsk">Toegevoegd</b><span class="ad-mob">Gemaakte foto's · recept over meerdere pagina's? Maak er gewoon nog een.</span></p>
+  <div id="f-phl" class="phl ad-phl"></div>
+  <span id="f-phaddt" hidden></span>
+  <p id="f-pst" class="ad-st" role="status"></p>
+ </div>
+
+ <div id="m-form" class="mm">
+  <p id="f-note" hidden></p>
+  <div class="ad-ok" id="ad-ok"></div>
+  <div class="ad-cols">
+   <div class="ad-c1">
+    <section class="ad-card ad-basis"><h3>Basis</h3>
+     <div id="f-prev" class="ad-photo" onclick="document.getElementById('f-photo').click()"></div>
+     <input type="file" accept="image/*" id="f-photo" hidden><button type="button" class="lnk ad-phdel" id="f-photodel" onclick="setImg('')">Foto verwijderen</button>
+     <label for="f-name" class="ad-l">Naam van het recept</label><input id="f-name" placeholder="Bijv. Oma's appeltaart" onblur="adLabAuto()">
+     <div class="ad-g2"><div><label for="f-type" class="ad-l">Type</label><select id="f-type"><option value="">Kies…</option></select></div><div><label for="f-time" class="ad-l">Tijd</label><span class="ad-suf"><input id="f-time" type="number" min="0" inputmode="numeric" placeholder="30"><em>min</em></span></div></div>
+     <label for="f-pers" class="ad-l">Personen</label>
+     <div class="ad-step"><button type="button" onclick="adPers(-1)" aria-label="Minder personen">−</button><input id="f-pers" type="number" min="1" value="2" inputmode="numeric"><button type="button" onclick="adPers(1)" aria-label="Meer personen">+</button></div>
+     <span class="ad-l">Moeilijkheid</span>
+     <div class="ad-seg" id="ad-lvl" role="radiogroup" aria-label="Moeilijkheid"></div><select id="f-level" hidden><option value="">Kies…</option></select>
+     <span class="ad-l">Labels</span>
+     <div class="ad-labs" id="ad-labs"></div>
+     <input id="f-cat" type="hidden">
+    </section>
+    <section class="ad-card ad-extra"><h3>Extra</h3>
+     <label for="f-memo" class="ad-l">Notitie</label><textarea id="f-memo" placeholder="Bijv. een eigen tip"></textarea>
+     <details class="nutf" id="f-nutd"><summary>Voedingswaarden per portie <span id="f-nsrc" class="mute" style="font-weight:400"></span></summary><div class="ng"><div><label for="f-n-kcal">Calorieën (kcal)</label><input id="f-n-kcal" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-p">Eiwit (g)</label><input id="f-n-p" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-f">Vet (g)</label><input id="f-n-f" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-c">Koolhydraten (g)</label><input id="f-n-c" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-fi">Vezels (g)</label><input id="f-n-fi" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-su">Suikers (g)</label><input id="f-n-su" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div><div><label for="f-n-sa">Zout (g)</label><input id="f-n-sa" type="text" inputmode="decimal" oninput="nutSrc='manual'"></div></div><div class="row" style="margin-top:8px;align-items:center"><button type="button" class="btn ghost sm" onclick="nutFill()">Schat uit ingrediënten</button><span id="f-nst" class="mute" style="font-size:.82rem"></span></div></details>
+     <details class="ad-more"><summary>Foto via link of bestand importeren</summary>
+      <div class="row nw" style="margin-top:8px"><input id="f-imgurl" placeholder="Link naar een afbeelding" style="flex:1;width:auto;min-width:0"><button type="button" class="btn ghost sm" onclick="setImg(document.getElementById('f-imgurl').value.trim())">Gebruiken</button></div>
+      <label for="f-file" class="ad-l">Of upload een .txt of .json bestand</label><input id="f-file" type="file" accept=".txt,.json">
+     </details>
+     <datalist id="cats"></datalist>
+    </section>
+   </div>
+   <div class="ad-c2">
+    <section class="ad-card ad-ingc"><h3>Ingrediënten</h3><p class="ad-cs">Hoeveelheid, eenheid en naam</p>
+     <div id="ad-ing" class="ad-ing"></div><p class="ad-warn" id="ad-warn"></p>
+     <button type="button" class="ad-add" onclick="adIngAdd()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Ingrediënt</button>
+     <textarea id="f-ing" hidden></textarea>
+    </section>
+    <section class="ad-card ad-stc"><h3>Bereiding</h3><p class="ad-cs">Tijden in een stap worden automatisch een timer bij Start koken</p>
+     <div id="ad-st" class="ad-sts"></div>
+     <button type="button" class="ad-add" onclick="adStAdd()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Stap</button>
+     <textarea id="f-steps" hidden></textarea>
+    </section>
+   </div>
   </div>
-  <div class="row foot" style="margin-top:18px;justify-content:flex-end">
-    <button class="btn ghost back" onclick="setMode('choice')">← Terug</button><span style="flex:1"></span>
-    <button class="btn ghost" onclick="dlg.close()">Annuleren</button>
-    <button class="btn" id="f-save" onclick="saveRecipe()">Recept opslaan</button></div>
+ </div>
+
+ <div class="ad-ft">
+  <button class="btn ghost ad-cancel" onclick="dlg.close()">Annuleren</button>
+  <button class="btn ad-go" id="f-go" onclick="fetchRecipe()"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.600 0l3-3a4 4 0 0 0-5.600-5.600l-1 1"/><path d="M14 10a4 4 0 0 0-5.600 0l-3 3a4 4 0 0 0 5.600 5.600l1-1"/></svg> Recept ophalen</button>
+  <button type="button" class="btn ad-go" id="f-phgo" onclick="phRead()" style="display:none"></button>
+  <button class="btn ad-go" id="f-save" onclick="saveRecipe()">Recept opslaan</button>
+ </div>
 </dialog>
 
 <dialog id="pdlg"><h2 id="pt" style="font-size:1.2rem;margin-bottom:10px"></h2><label for="pn" class="mute">Voor hoeveel personen?</label><input id="pn" type="number" min="1" value="4" style="width:100%;margin:6px 0 10px" onkeydown="if(event.key=='Enter')pickOk()"><label for="pday" class="mute">Welke dag?</label><select id="pday" style="width:100%;margin:6px 0 16px"></select><div class="row" style="justify-content:flex-end"><button class="btn ghost" onclick="pdlg.close()">Annuleren</button><button class="btn" onclick="pickOk()">Op lijstje zetten</button></div></dialog>
@@ -2875,7 +3113,7 @@ async function phRead(){const st=document.getElementById("f-pst"),n=PHS.length,g
  try{st.textContent="Tekstlezer laden (de eerste keer duurt dit even)...";await loadTess();
   w=await window.Tesseract.createWorker("nld+eng",1,{logger:m=>{if(m.status)st.textContent="Foto "+(cur+1)+" van "+n+": "+(m.status=="recognizing text"?"tekst lezen ":"voorbereiden ")+Math.round((m.progress||0)*100)+"%"}});
   const parts=[];for(cur=0;cur<n;cur++){st.textContent="Foto "+(cur+1)+" van "+n+": laden...";const cv=await phCanvas(PHS[cur].fl);const res=await w.recognize(cv);parts.push((res.data.text||"").trim())}
-  await w.terminate();w=null;const txt=parts.join("\n").trim();
+  await w.terminate();w=null;const OT=ocrTidy(parts),txt=OT.text.trim();if(OT.name&&!f("name").value.trim())f("name").value=OT.name;
   if(txt.length<20){st.textContent="Ik kon bijna geen tekst lezen. Probeer scherpere foto's met meer licht.";return}
   document.getElementById("f-paste").value=txt;
   if(!parsePaste()){st.textContent="Tekst gelezen, maar ik herken geen ingrediënten. Je kunt de tekst zelf bewerken bij Via link, Recepttekst plakken.";return}
@@ -3061,7 +3299,7 @@ function dupOf(r,skipId){const u=normUrl(r.url),a=nname(r.name),ai=new Set((r.in
   if(ai.size>=5&&bi.size>=5){const inter=[...ai].filter(w=>bi.has(w)).length;if(inter/Math.min(ai.size,bi.size)>=0.8&&inter/Math.max(ai.size,bi.size)>=0.7)return{r:x,why:"vrijwel dezelfde ingrediënten"}}}
  return null}
 function saveRecipe(){const name=f("name").value.trim();if(!name){f("name").focus();return}
- const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||dp(),ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim(),url:f("url").value.trim(),img:curImg,type:f("type").value,level:f("level").value,time:+f("time").value||0};
+ const r={id:editId||S.next++,name,cat:f("cat").value.trim(),pers:+f("pers").value||dp(),ing:f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean),steps:f("steps").value.trim(),url:f("url").value.trim(),img:curImg,type:f("type").value,level:f("level").value,time:+f("time").value||0};adApply(r);
  {const old=S.recipes.find(x=>x.id==editId),nu=optOn("nutri")?readNut():(old&&old.nut);if(nu)r.nut=nu}
  const commit=()=>{const i=S.recipes.findIndex(x=>x.id==editId);if(i>=0){const o=S.recipes[i];if(o.own)r.own=o.own;if(o.src)r.src=o.src;S.recipes[i]=r}else S.recipes.push(toDp(r));save();dlg.close();draw()};
  if(!editId){const d=dupOf(r,r.id);if(d){ask("Dit lijkt op \""+d.r.name+"\" ("+d.why+"), dat staat al in je recepten. Toch opslaan als nieuw recept?",commit,"Toch opslaan");return}}
@@ -4419,6 +4657,148 @@ function vAccD(){const ok=sb&&uid,p=myP();
  <div class="lg2-mid"><span class="lg2-masc">${MASCOT}</span><h2>Wat eten we vanavond?<br>Chef Pieper weet het.</h2>
  <ul class="lg2-pts">${pt("book","Al je recepten op één plek","Van website, foto of zelf ingetypt")}${pt("a_cal","Je weekmenu in een paar tikken","Of laat Chef Pieper je week vullen")}${pt("cart","Boodschappen vanzelf","Op volgorde van je eigen winkel")}</ul></div>
  <p class="lg2-foot">Samen koken met je huishouden en vrienden</p></section><section class="lg2-form">${f}</section></div>`}}
+// ================= Foto-tekst opschonen (screenshots van Instagram, websites, kookboeken) =================
+const OCR_JUNK=/^(\d{1,2}[:.]\d{2}\b|<\s*foto|foto\b.{0,4}$|.*vinden dit leuk|.*opmerkingen bekijken|alle \d+ (opmerkingen|reacties)|meer weergeven|vertaling bekijken|antwoorden$|.*\bvind-ik-leuks?\b|bekijk (alle|de) reacties|\d+\s*(likes?|weken?|dagen|uur|min)\s*$|(\d{1,2}\s+)?(januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december)(\s+\d{4})?$|gesponsord|volgen$|bericht sturen|(pagina|page|blz\.?)\s*\d+$)/i;
+function ocrLetters(l){const t=l.replace(/\s/g,"");if(!t)return 0;return(t.match(/[a-zà-ÿ0-9]/gi)||[]).length/t.length}
+function ocrNorm(l){return l.toLowerCase().replace(/[^a-zà-ÿ0-9]/g,"")}
+function ocrSim(a,b){a=ocrNorm(a);b=ocrNorm(b);if(!a||!b)return 0;if(a==b)return 1;const bg=s=>{const m=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);m.set(k,(m.get(k)||0)+1)}return m};
+ const A=bg(a),B=bg(b);let n=0;for(const[k,v]of A)n+=Math.min(v,B.get(k)||0);return 2*n/Math.max(1,(a.length-1)+(b.length-1))}
+const OCR_BUL=/^[\s•·▪●○◦▢□☐*+«»>~–—\-]+(?=\S)/;
+function ocrTidy(parts){
+ let name="";const out=[];// items: {t, kind:'step'|'bul'|'txt', n}
+ for(const raw of parts){
+  // 1. regels, telefoonrommel eruit, blokken (gescheiden door lege regels) bewaren
+  const lines=String(raw||"").split(/\r?\n/).map(l=>l.replace(/\s+$/,""));
+  const paras=[];let cur=[];
+  for(let l of lines){const t=l.trim();if(!t){if(cur.length){paras.push(cur);cur=[]}continue}
+   if(OCR_JUNK.test(t)||ocrLetters(t)<.6||t.replace(/[^a-zà-ÿ]/gi,"").length<3){if(cur.length){paras.push(cur);cur=[]}continue}
+   cur.push(t)}
+  if(cur.length)paras.push(cur);
+  for(const p of paras){
+   // titel in hoofdletters (Instagram: "gebruikersnaam TITEL IN HOOFDLETTERS")
+   if(!name){const joined=p.join(" "),m=joined.match(/((?:[A-ZÀ-Ý][A-ZÀ-Ý'’&-]*[,]?\s+){2,}[A-ZÀ-Ý][A-ZÀ-Ý'’&-]*)/);
+    if(m&&m[1].replace(/[^A-ZÀ-Ý]/g,"").length>=10){name=m[1].trim().replace(/,$/,"");name=name.charAt(0)+name.slice(1).toLowerCase();continue}}
+   // regels in dit blok verdelen in items
+   let it=null;const push=()=>{if(it){it.t=it.t.replace(/\s+/g," ").trim();out.push(it)}it=null};
+   for(let l of p){const bul=OCR_BUL.test(l),num=l.match(/^(\d{1,2})\s*[.)]\s+(\S.*)$/);
+    l=l.replace(OCR_BUL,"").replace(/^(\d+(?:[.,]\d+)?)(el|tl|gr|g|kg|ml|cl|dl|l)\b/i,"$1 $2").trim();
+    if(num){push();it={t:num[2],kind:"step",n:+num[1]};continue}
+    if(bul){push();it={t:l,kind:"bul"};continue}
+    if(it&&(it.kind=="step"||(it.kind=="txt"&&!/^[\d½¼¾]/.test(l)&&!/^voor \d/i.test(it.t)&&(it.t.length>=40||/^[a-zà-ÿ]/.test(l))&&!/:$/.test(it.t))||(it.kind=="bul"&&/^[a-zà-ÿ(]/.test(l)&&(it.t.length>=34||/[-,(]$/.test(it.t))&&l.split(" ").length<=4))){it.t+=" "+l;continue}
+    push();it={t:l,kind:/^[\d½¼¾]/.test(l)&&l.length<70?"bul":"txt"}}
+   push()}}
+ // 2. dubbelingen tussen screenshots: zelfde stapnummer -> langste houden; bijna gelijke regels weg
+ const res=[];
+ for(const x of out){
+  if(x.kind=="step"){const j=res.findIndex(y=>y.kind=="step"&&y.n==x.n);if(j>=0){const y=res[j];const ok=s=>ocrLetters(s)>.85&&!/[a-zà-ÿ]{22,}/i.test(s);
+    if(ok(x.t)&&(!ok(y.t)||x.t.length>=y.t.length*.9))res[j]=x;continue}}
+  else if(res.some(y=>y.kind==x.kind&&ocrSim(y.t,x.t)>.82))continue;
+  res.push(x)}
+ // 3. tekst opbouwen: titel, personen/ingrediënten, stappen op volgorde
+ const steps=res.filter(x=>x.kind=="step").sort((a,b)=>a.n-b.n);
+ const firstIng=res.findIndex(x=>x.kind=="bul");
+ const body=[];let sawIng=false;
+ for(let i=0;i<res.length;i++){const x=res[i];if(x.kind=="step")continue;
+  if(x.kind=="txt"){
+   if(/^voor \d+\s*(personen|pers|porties)|^(ingredi[eë]nten|benodigdheden)\b/i.test(x.t)){body.push(x.t.replace(/:?$/,":"));continue}
+   if(!sawIng&&firstIng>i&&x.t.length>40)continue;// inleidend verhaaltje overslaan
+   if(steps.length&&x.t.length>40&&/[.!?]$/.test(x.t)&&sawIng)continue;}
+  if(x.kind=="bul")sawIng=true;
+  body.push(x.t)}
+ const text=[name,...body,...(steps.length?["Bereiding:"]:[]),...steps.map(s=>s.n+". "+s.t)].filter(Boolean).join("\n");
+ return{name,text}}
+
+// ================= Recept toevoegen (ontwerp "app-ontwerp selection") =================
+let ADSRC=null,ADL=[],ADLOFF=new Set(),ADLT=false,ADFLAG=[];
+const ADUNIT="(?:kg|g|gr|gram|mg|ml|cl|dl|l|liter|el|eetlepels?|tl|theelepels?|kl|kopjes?|cups?|stuks?|st|teentjes?|teen|tenen|blikjes?|blik|pakjes?|pak|zakjes?|zak|bosjes?|bos|takjes?|snufjes?|snuf|plakjes?|plakken|bakjes?|potjes?|pot|scheutjes?|scheut|handjes?|handje|mespuntjes?|mespunt|stengels?|blaadjes?|bollen|bol|vellen|vel)";
+const ADRE=new RegExp("^((?:\\d+(?:[.,/]\\d+)?|[½¼¾⅓⅔])(?:\\s*[½¼¾])?(?:\\s*[-–]\\s*(?:\\d+(?:[.,]\\d+)?|[½¼¾]))?)\\s*(?:("+ADUNIT+")\\.?(?=\\s|$))?\\s*(.*)$","i");
+function adSplit(l){const m=String(l||"").trim().match(ADRE);if(!m)return{q:"",u:"",n:String(l||"").trim()};return{q:m[1]||"",u:m[2]||"",n:(m[3]||"").trim()}}
+function adJoin(o){return[o.q,o.u,o.n].map(x=>String(x||"").trim()).filter(Boolean).join(" ")}
+const ADOKNOQ=/peper|zout|olie|naar smaak|water|bakken|garnering|garneren|optioneel|evt\.?|snufje|ijs|bakspray/i;
+// ---- Titels en modus
+function adTitle(){const m=dlg.dataset.mode,dsk=DESK();const t={choice:"Recept toevoegen",link:"Link plakken",photo:dsk?"Foto uploaden":"Foto maken",form:editId?"Recept aanpassen":ADSRC?"Controleer je recept":"Zelf invoeren"}[m]||"Recept";
+ document.getElementById("dt").textContent=t;document.getElementById("ad-sub").textContent=m=="choice"?"Hoe wil je je recept toevoegen?":"";
+ const sv=ADSRC&&!editId?"Opslaan bij recepten":editId?"Wijzigingen opslaan":"Recept opslaan";document.getElementById("ad-svl").textContent=sv;document.getElementById("f-save").textContent=sv;
+ const cr=document.querySelector("#dlg .ad-crumb span");if(cr)cr.textContent=editId?"Recept aanpassen":"Recept toevoegen"}
+{const _sm=setMode;setMode=function(m){_sm(m);try{dlg.dataset.busy="";if(m=="form")adLoad();if(m=="photo")phDraw();adTitle()}catch(e){console.error(e)}}}
+function adBack(){const m=dlg.dataset.mode;if(m=="choice"||editId||(m=="form"&&dlg.dataset.isnew!="1")){dlg.close();return}setMode("choice")}
+{const _o=openR;openR=function(id){ADSRC=null;ADLT=false;ADL=[];ADLOFF=new Set();_o.apply(this,arguments);const r=S.recipes.find(x=>x.id==id);const m=document.getElementById("f-memo");if(m)m.value=r&&r.note||"";if(dlg.dataset.mode=="form")adLoad();adTitle()}}
+{const _f=fetchRecipe;fetchRecipe=async function(){const u=f("url").value.trim();let host="";try{host=new URL(u).hostname.replace(/^www\./,"")}catch(e){}
+ ADSRC={k:"link",host};dlg.dataset.busy="1";try{await _f.apply(this,arguments)}finally{dlg.dataset.busy="";if(dlg.dataset.mode!="form")ADSRC=null}}}
+{const _p=phRead;phRead=async function(){ADSRC={k:"photo",n:PHS.length};try{await _p.apply(this,arguments)}finally{if(dlg.dataset.mode!="form")ADSRC=null}}}
+{const _pp=parsePaste;parsePaste=function(){if(!ADSRC)ADSRC={k:"text"};const ok=_pp.apply(this,arguments);if(!ok&&dlg.dataset.mode!="form")ADSRC=null;return ok}}
+async function adPasteUrl(){try{const t=await navigator.clipboard.readText();if(t){f("url").value=t.trim();if(/^https?:\/\//i.test(t.trim()))fetchRecipe()}}catch(e){f("url").focus();document.getElementById("f-st").textContent="Plakken lukt hier niet automatisch. Houd het veld ingedrukt en kies Plakken."}}
+// ---- Formulier laden
+function adLoad(){adIngDraw(f("ing").value.split("\n").map(x=>x.trim()).filter(Boolean));adStDraw(adStSplit(f("steps").value));adLvlDraw();adLabInit();adOkDraw()}
+function adOkDraw(){const o=document.getElementById("ad-ok");if(!ADSRC||editId){o.innerHTML="";return}
+ const head=ADSRC.k=="link"?"Opgehaald van "+(ADSRC.host||"de website"):ADSRC.k=="photo"?"Gelezen uit "+(ADSRC.n>1?ADSRC.n+" foto's":"de foto"):"Recept herkend uit de tekst";
+ const n=ADFLAG.length,tail=n?(n==1?" Eén ding kon niet goed gelezen worden, die staat in het geel.":" "+n+" dingen konden niet goed gelezen worden, die staan in het geel."):(ADSRC.k=="photo"?" Foto's kunnen leesfouten bevatten, let vooral op de hoeveelheden.":"");
+ o.innerHTML=`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg><span><b>${esc(head)}</b><small>Check even of alles klopt.${esc(tail)}</small></span>`}
+// ---- Ingrediënten
+function adIngRow(o,i){const fl=ADFLAG.includes(i);return`<div class="ad-ir${fl?" warn":""}" data-i="${i}"><span class="ad-drag" aria-hidden="true" onpointerdown="adDrag(event,'ad-ing')">⋮⋮</span><input class="ad-q" value="${esc(o.q)}" placeholder="250" aria-label="Hoeveelheid" inputmode="decimal" oninput="adIngSync()"><input class="ad-u" value="${esc(o.u)}" placeholder="g" aria-label="Eenheid" oninput="adIngSync()"><input class="ad-n" value="${esc(o.n)}" placeholder="Ingrediënt" aria-label="Ingrediënt" oninput="adIngSync()" onkeydown="if(event.key=='Enter'){event.preventDefault();adIngAdd()}"><button type="button" class="ad-del" onclick="adIngDel(this)" aria-label="Ingrediënt weghalen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`}
+function adIngDraw(lines){const L=lines.map(adSplit);if(!L.length)L.push({q:"",u:"",n:""});
+ ADFLAG=ADSRC&&!editId?L.map((o,i)=>o.n&&!o.q&&!ADOKNOQ.test(o.n)?i:-1).filter(i=>i>=0):[];
+ document.getElementById("ad-ing").innerHTML=L.map(adIngRow).join("");adWarnDraw()}
+function adWarnDraw(){const w=document.getElementById("ad-warn"),rows=[...document.querySelectorAll("#ad-ing .ad-ir.warn")];
+ const names=rows.map(r=>r.querySelector(".ad-n").value.trim()).filter(Boolean);
+ w.textContent=names.length?"Geen hoeveelheid gevonden bij "+(names.length==1?"de "+names[0]:names.slice(0,-1).join(", ")+" en "+names.slice(-1))+". Vul in of laat leeg.":"";w.style.display=names.length?"":"none"}
+function adIngSync(){const rows=[...document.querySelectorAll("#ad-ing .ad-ir")];
+ rows.forEach(r=>{if(r.classList.contains("warn")&&r.querySelector(".ad-q").value.trim())r.classList.remove("warn")});
+ f("ing").value=rows.map(r=>adJoin({q:r.querySelector(".ad-q").value,u:r.querySelector(".ad-u").value,n:r.querySelector(".ad-n").value})).filter(x=>x&&!/^[\d.,\s]*$/.test(x)).join("\n");adWarnDraw()}
+function adIngAdd(){const w=document.getElementById("ad-ing");w.insertAdjacentHTML("beforeend",adIngRow({q:"",u:"",n:""},w.children.length));const r=w.lastElementChild;r.querySelector(".ad-q").focus()}
+function adIngDel(b){const r=b.closest(".ad-ir"),w=r.parentNode;r.remove();if(!w.children.length)adIngAdd();adIngSync()}
+// ---- Stappen
+function adStSplit(t){const L=String(t||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);if(!L.length)return[];const num=L.some(l=>/^\d+\s*[.)]\s*/.test(l));
+ if(!num)return L;const out=[];for(const l of L){if(/^\d+\s*[.)]\s*/.test(l)||!out.length)out.push(l.replace(/^\d+\s*[.)]\s*/,""));else out[out.length-1]+=" "+l}return out}
+function adStRow(t,i){return`<div class="ad-sr" data-i="${i}"><span class="ad-sn">${i+1}</span><textarea rows="2" placeholder="Beschrijf deze stap…" aria-label="Stap ${i+1}" oninput="adGrow(this);adStSync()">${esc(t)}</textarea><button type="button" class="ad-del" onclick="adStDel(this)" aria-label="Stap weghalen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`}
+function adStDraw(L){if(!L.length)L=[""];document.getElementById("ad-st").innerHTML=L.map(adStRow).join("");adStSync(true);requestAnimationFrame(()=>document.querySelectorAll("#ad-st textarea").forEach(adGrow))}
+function adGrow(t){t.style.height="auto";t.style.height=Math.max(t.scrollHeight+2,64)+"px"}
+function adStSync(noSet){const rows=[...document.querySelectorAll("#ad-st .ad-sr")];rows.forEach((r,i)=>{r.querySelector(".ad-sn").textContent=i+1});
+ if(noSet!==true)f("steps").value=rows.map(r=>r.querySelector("textarea").value.trim().replace(/\s*\n\s*/g," ")).filter(Boolean).map((t,i)=>(i+1)+". "+t).join("\n")}
+function adStAdd(){const w=document.getElementById("ad-st");w.insertAdjacentHTML("beforeend",adStRow("",w.children.length));adStSync(true);w.lastElementChild.querySelector("textarea").focus()}
+function adStDel(b){const r=b.closest(".ad-sr"),w=r.parentNode;r.remove();if(!w.children.length)adStAdd();adStSync()}
+// ---- Slepen om de volgorde te veranderen
+function adDrag(e,wid){const row=e.target.closest(".ad-ir,.ad-sr"),w=document.getElementById(wid);if(!row)return;e.preventDefault();row.classList.add("drag");
+ const mv=ev=>{const y=ev.clientY;const sib=[...w.children].filter(x=>x!=row);let before=null;for(const s of sib){const r=s.getBoundingClientRect();if(y<r.top+r.height/2){before=s;break}}w.insertBefore(row,before)};
+ const up=()=>{row.classList.remove("drag");removeEventListener("pointermove",mv);removeEventListener("pointerup",up);if(wid=="ad-ing")adIngSync();else adStSync()};
+ addEventListener("pointermove",mv);addEventListener("pointerup",up)}
+// ---- Personen en moeilijkheid
+function adPers(d){const e=f("pers");e.value=Math.max(1,Math.min(40,(+e.value||dp())+d))}
+function adLvlDraw(){const v=f("level").value;document.getElementById("ad-lvl").innerHTML=LEVELS.map(x=>`<button type="button" role="radio" aria-checked="${v==x}" class="${v==x?"on":""}" onclick="adLvl('${x}')">${x}</button>`).join("")}
+function adLvl(x){f("level").value=f("level").value==x?"":x;adLvlDraw()}
+// ---- Labels
+function adLabInit(){const r=S.recipes.find(x=>x.id==editId);ADLOFF=new Set();
+ if(r&&Array.isArray(r.lab)){ADL=[...r.lab];ADLT=true}else{ADL=adLabSug();ADLT=false}adLabDraw()}
+function adLabSug(){try{return rLabels({name:f("name").value,cat:f("cat").value,ing:f("ing").value.split("\n")},true)}catch(e){return[]}}
+function adLabAuto(){if(ADLT||dlg.dataset.mode!="form")return;ADL=adLabSug();adLabDraw()}
+function adLabDraw(){const w=document.getElementById("ad-labs");if(!w)return;
+ w.innerHTML=ADL.map((l,i)=>`<button type="button" class="ad-lab${ADLOFF.has(l)?"":" on"}" onclick="adLabTog(${i})" aria-pressed="${!ADLOFF.has(l)}">${ADLOFF.has(l)?"":`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>`}${esc(l)}</button>`).join("")+`<span class="ad-labadd"><button type="button" onclick="adLabNew(this)"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Label</button></span>`}
+function adLabTog(i){const l=ADL[i];if(ADLOFF.has(l))ADLOFF.delete(l);else ADLOFF.add(l);ADLT=true;adLabDraw()}
+function adLabNew(b){const s=b.parentNode;s.innerHTML=`<input class="ad-labin" placeholder="Nieuw label" maxlength="24" onkeydown="if(event.key=='Enter'){event.preventDefault();adLabOk(this)}if(event.key=='Escape')adLabDraw()" onblur="adLabOk(this)">`;s.querySelector("input").focus()}
+function adLabOk(inp){const v=inp.value.trim();if(v){const t=v.charAt(0).toUpperCase()+v.slice(1);if(!ADL.includes(t))ADL.push(t);ADLOFF.delete(t);ADLT=true}adLabDraw()}
+{const _rl=rLabels;rLabels=function(r,auto){if(!auto&&r&&Array.isArray(r.lab))return r.lab;return _rl(r)}}
+// ---- Opslaan: notitie, labels en overige velden bewaren
+function adApply(r){const old=S.recipes.find(x=>x.id==editId);
+ if(old)for(const k in old)if(!(k in r)&&!["note","noteBy","lab"].includes(k))r[k]=old[k];
+ const m=document.getElementById("f-memo"),v=m?m.value.trim():"";if(v){r.note=v;r.noteBy=old&&old.note==v&&old.noteBy?old.noteBy:(uid||"local")}
+ if(ADLT)r.lab=ADL.filter(l=>!ADLOFF.has(l));else if(old&&Array.isArray(old.lab))r.lab=old.lab}
+{const _sv=saveRecipe;saveRecipe=function(){if(dlg.dataset.mode=="form"){adIngSync();adStSync()}return _sv.apply(this,arguments)}}
+// ---- Foto's
+function phDraw(){const w=document.getElementById("f-phl"),g=document.getElementById("f-phgo");if(!w)return;
+ w.innerHTML=PHS.map((x,i)=>`<span class="pht"><img src="${x.u}" alt="Foto ${i+1}"><button type="button" onclick="phDel(${i})" aria-label="Foto ${i+1} verwijderen">✕</button><i>${i+1}</i></span>`).join("")+`<button type="button" class="ad-phplus" onclick="document.getElementById(DESK()?'f-ocr':'f-cam').click()" aria-label="Nog een foto toevoegen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>`;
+ dlg.dataset.ph=PHS.length?"1":"";
+ if(g){g.style.display=PHS.length&&dlg.dataset.mode=="photo"?"":"none";g.innerHTML=`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg> `+(PHS.length>1?"Lees "+PHS.length+" foto's uit":"Lees de foto uit")}}
+document.getElementById("f-cam").addEventListener("change",e=>{for(const fl of e.target.files)PHS.push({fl,u:URL.createObjectURL(fl)});e.target.value="";document.getElementById("f-pst").textContent="";phDraw()});
+function setImg(u){curImg=u||"";const p=document.getElementById("f-prev");if(!p)return;
+ p.innerHTML=curImg?`<img src="${esc(curImg)}" alt="Foto van het recept" referrerpolicy="no-referrer" onerror="this.style.display='none'"><span class="ad-phb"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.500-2.500h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg> Andere foto</span>`:`<span class="ad-phe"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.500-2.500h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.500"/></svg><b>Foto toevoegen</b></span>`;
+ p.classList.toggle("has",!!curImg);document.getElementById("f-photodel").style.display=curImg?"":"none"}
+// ---- Slepen in het venster
+dlg.addEventListener("dragover",e=>{if(["choice","link","photo"].includes(dlg.dataset.mode)){e.preventDefault();dlg.classList.add("ad-dragon")}});
+dlg.addEventListener("dragleave",e=>{if(e.target==dlg)dlg.classList.remove("ad-dragon")});
+dlg.addEventListener("drop",e=>{if(!["choice","link","photo"].includes(dlg.dataset.mode))return;e.preventDefault();dlg.classList.remove("ad-dragon");const dt=e.dataTransfer;
+ const fl=[...(dt.files||[])].filter(x=>/^image\//.test(x.type));if(fl.length){fl.forEach(x=>PHS.push({fl:x,u:URL.createObjectURL(x)}));setMode("photo");return}
+ const u=(dt.getData("text/uri-list")||dt.getData("text/plain")||"").split("\n")[0].trim();if(/^https?:\/\//i.test(u)){setMode("link");f("url").value=u;fetchRecipe()}});
+
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
