@@ -2242,7 +2242,91 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
  .cf3can{display:inline-flex;border-radius:14px;padding:12px 20px}
  .cf3go{flex:none;padding:12px 22px;border-radius:14px}
 }
-</style><style id="navfix">.wclr{display:flex;justify-content:flex-end;margin:12px 2px -4px}.wclr .lnk{font-size:.9rem;display:inline-flex;align-items:center;gap:4px}.wclr .ic{width:14px;height:14px}.dnav-x{display:flex;align-items:center;gap:18px;justify-content:flex-end}.dnav .wk .wl{min-width:150px!important;text-align:center}</style><style id="cpi">.cpi{display:inline-grid;place-items:center;width:var(--s);height:var(--s);border-radius:50%;background:#FFF4EC;overflow:hidden;flex:none;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,.06)}.cpi svg{width:88%;height:88%;margin-top:6%}button .cpi{margin-right:2px}.cf2hd{display:flex;align-items:center;gap:12px;margin-bottom:4px}.cf2hd h2{margin:0!important}.cf2hd .cf2wk{margin:0 0 2px}</style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
+</style><style id="navfix">.wclr{display:flex;justify-content:flex-end;margin:12px 2px -4px}.wclr .lnk{font-size:.9rem;display:inline-flex;align-items:center;gap:4px}.wclr .ic{width:14px;height:14px}.dnav-x{display:flex;align-items:center;gap:18px;justify-content:flex-end}.dnav .wk .wl{min-width:150px!important;text-align:center}</style><style id="cpi">.cpi{display:inline-grid;place-items:center;width:var(--s);height:var(--s);border-radius:50%;background:#FFF4EC;overflow:hidden;flex:none;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,.06)}.cpi svg{width:88%;height:88%;margin-top:6%}button .cpi{margin-right:2px}.cf2hd{display:flex;align-items:center;gap:12px;margin-bottom:4px}.cf2hd h2{margin:0!important}.cf2hd .cf2wk{margin:0 0 2px}</style><style id="tr2">/* ---- Trends */
+.tr2,.lb2{padding-bottom:30px}
+.tr2hd{display:flex;flex-wrap:wrap;align-items:center;gap:12px 10px;margin:4px 0 18px}
+.tr2bk{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;flex:none;cursor:pointer;padding:0}
+.tr2bk .ic{width:18px;height:18px}
+.tr2ht{flex:1;min-width:0;text-align:center;margin-right:54px}.tr2ht h1{font:600 1.6rem "Fraunces",serif;margin:0}.tr2ht p{display:none}
+.tr2seg{order:3;flex:0 0 100%;display:grid;grid-template-columns:repeat(3,1fr);background:var(--tile,#EFE6DA);border-radius:16px;padding:4px}
+.tr2seg button{border:0;background:none;padding:10px 4px;border-radius:12px;font:inherit;font-size:.92rem;color:var(--mute);cursor:pointer}
+.tr2seg button.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tr2ts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tr2t{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tr2ti{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;margin-bottom:10px}.tr2ti .ic{width:18px;height:18px}
+.tr2t small{color:var(--mute);font-size:.86rem}.tr2t p{margin:0;color:var(--mute)}.tr2t p b{font:600 2rem "Fraunces",serif;color:var(--ink);margin-right:2px}
+.tr2t em{font-style:normal;font-weight:700;font-size:.8rem;color:var(--sagefg)}
+.tr2c{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;margin-top:14px;min-width:0}
+.tr2c h3{font:600 1.35rem "Fraunces",serif;margin:0}.tr2s{color:var(--mute);font-size:.86rem;margin:2px 0 0}
+.tr2e{color:var(--mute);font-size:.9rem;margin:12px 0 0}
+.tr2hr{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tr2bars{display:flex;align-items:flex-end;gap:8px;height:190px;margin-top:16px}
+.tr2b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;min-width:0}
+.tr2b span{font-size:.8rem;color:var(--mute);font-weight:600}.tr2b small{font-size:.74rem;color:var(--mute)}
+.tr2b i{display:block;width:100%;max-width:46px;border-radius:8px 8px 4px 4px;background:#E8B7A2}
+.tr2b.cur i{background:var(--green)}
+.tr2ol{list-style:none;margin:10px 0 0;padding:0}
+.tr2ol li{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}.tr2ol li:first-child{border-top:0}
+.tr2n{width:18px;font:600 1.05rem "Fraunces",serif;color:var(--mute);flex:none}
+.tr2im{width:46px;height:46px;border-radius:12px;flex:none;position:relative;overflow:hidden}
+.tr2nm{flex:1;min-width:0;text-align:left;border:0;background:none;padding:0;font:inherit;color:var(--ink);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr2ol b{font-size:.92rem;flex:none;min-width:26px;text-align:right}
+.tr2stack{display:flex;gap:3px;height:16px;border-radius:8px;overflow:hidden;margin:16px 0 14px}.tr2stack i{display:block}
+.tr2leg{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.tr2leg li{display:flex;align-items:center;gap:10px;font-size:.95rem}.tr2leg li i{width:12px;height:12px;border-radius:3px;flex:none}.tr2leg li b{margin-left:auto}
+.tr2who{display:flex;border-radius:14px;overflow:hidden;margin-top:14px}.tr2who span{padding:12px 14px;font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.tr2who span:last-child:not(:first-child){text-align:right}
+.tr2wt{margin-top:12px;line-height:1.45}
+.tr2nr{display:grid;grid-template-columns:1fr auto;gap:6px 10px;margin-top:12px;font-size:.95rem}.tr2nr i{grid-column:1/-1;height:6px;border-radius:3px;background:var(--tile,#EFE6DA);overflow:hidden}.tr2nr em{display:block;height:100%;border-radius:3px}
+.tr2eu{margin:12px 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.tr2eu b{font:600 2rem "Fraunces",serif}.tr2eu span{color:var(--mute);font-size:.9rem}
+.tr2sb div{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:10px;margin-top:8px;font-size:.88rem}.tr2sb span{color:var(--mute)}
+.tr2sb i{height:8px;border-radius:4px;background:var(--tile,#EFE6DA);overflow:hidden}.tr2sb em{display:block;height:100%;background:#3E6B4E;border-radius:4px}
+.tr2sl p{color:var(--mute);font-size:.9rem;margin:16px 0 12px;line-height:1.45}
+.tr2lb{width:100%;justify-content:center;display:inline-flex;align-items:center;gap:8px;border-radius:14px}
+.tr2 .card{margin-top:14px}
+/* ---- Logboek */
+.lb2hd{margin:4px 0 16px}.lb2t{display:flex;align-items:center;gap:12px}
+.lb2t h1{font:600 1.5rem "Fraunces",serif;margin:0;flex:1}
+.lb2sum{background:#3E6B4E;color:#fff;border-radius:22px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.lb2sum small{display:block;opacity:.8;font-size:.86rem}.lb2sum>div>b{font:600 2.1rem "Fraunces",serif}
+.lb2k{display:flex;gap:22px}.lb2k b{font-size:1.15rem}
+.lb2ch{display:flex;gap:8px;overflow-x:auto;margin:0 0 14px;scrollbar-width:none}
+.lb2ch button{flex:none;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:var(--card);border-radius:99px;padding:9px 16px;font:inherit;color:var(--ink);cursor:pointer}
+.lb2ch button.on{background:var(--ink);border-color:var(--ink);color:var(--bg);font-weight:700}.lb2ch .ic{width:15px;height:15px}
+.lb2cols{margin-top:14px}
+.lb2r{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px;font:inherit;color:var(--ink);cursor:pointer}
+.lb2r.on{border-color:var(--green)}
+.lb2ri{width:46px;height:46px;border-radius:12px;background:var(--t-green);color:var(--sagefg);display:grid;place-items:center;flex:none}.lb2ri .ic{width:20px;height:20px}
+.lb2rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.lb2rt b{font-size:.98rem}.lb2rt small{color:var(--mute);font-size:.84rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb2r em{font-style:normal;font-weight:700;flex:none}
+.lb2note{color:var(--mute);font-size:.86rem;line-height:1.45;margin:6px 4px}
+.lb2dc{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px}
+.lb2dh{display:flex;align-items:center;gap:14px}.lb2dh h2{font:600 1.4rem "Fraunces",serif;margin:0}.lb2dh p{margin:2px 0 0;color:var(--mute);font-size:.9rem}
+.lb2st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.lb2st div{background:var(--bg);border-radius:14px;padding:10px 12px}.lb2st small{display:block;color:var(--mute);font-size:.8rem}.lb2st b{font-size:1.05rem}
+.lb2ms{margin:0 0 12px}.lb2ms summary{cursor:pointer;font-weight:700;font-size:.92rem}
+.lb2its h4{font-size:.74rem;letter-spacing:.08em;color:var(--mute);margin:16px 0 4px}
+.lb2i{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.95rem}.lb2i span{flex:1;min-width:0}.lb2i em{font-style:normal;color:var(--mute);font-size:.86rem}.lb2i b{min-width:56px;text-align:right}
+.lb2i.no span{color:var(--mute);text-decoration:line-through}.lb2i.no small{text-decoration:none;display:inline-block;margin-left:4px}
+.lb2more{margin-top:10px;font-size:.88rem}
+.lb2again{width:100%;justify-content:center;display:inline-flex;align-items:center;gap:8px;border-radius:14px;margin-top:16px}
+.lb2del{display:block;margin:12px auto 0;color:var(--mute)!important;font-size:.85rem}
+@media(min-width:1024px){
+ body[data-tab="trend"] main,body[data-tab="log"] main{max-width:1180px!important}
+ .tr2hd{flex-wrap:nowrap;margin-bottom:24px}.tr2bk{display:none}
+ .tr2ht{text-align:left;margin:0}.tr2ht h1{font-size:2.6rem}.tr2ht p{display:block;margin:2px 0 0;color:var(--mute)}
+ .tr2seg{order:0;flex:0 0 auto;display:flex}.tr2seg button{padding:9px 18px}
+ .tr2ts{grid-template-columns:repeat(4,1fr);gap:16px}
+ .tr2g1{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;align-items:start}
+ .tr2g2{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+ .tr2g1 .tr2c,.tr2g2 .tr2c{margin-top:16px}
+ .tr2shop{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:end}.tr2lb{width:auto}
+ .lb2hd{margin-bottom:22px}.lb2cr{display:flex;align-items:center;gap:6px;margin:0 0 10px;font-size:.88rem;color:var(--mute)}.lb2cr .ic{width:14px;height:14px}.lb2cr .lnk{padding:0}
+ .lb2t h1{font-size:2.4rem}.lb2ch{margin:0}
+ .lb2cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:22px}
+ .lb2d{position:sticky;top:20px}
+}
+.tr2im{background:var(--t);color:var(--c);display:grid;place-items:center}.tr2im .ic{width:22px;height:22px}.tr2im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+</style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
 :root[data-theme="dark"]{--lav:#2e2838;--lavfg:#c4a8ee}
@@ -2838,7 +2922,7 @@ let WL=null;
 async function wake(){const want=S.tab=="list"&&document.visibilityState=="visible";try{if(want&&!WL&&navigator.wakeLock){WL=await navigator.wakeLock.request("screen");WL.addEventListener("release",()=>{WL=null})}else if(!want&&WL){await WL.release();WL=null}}catch(e){WL=null}}
 function draw(){try{if((!sb||(uid&&HH))&&S.fixed&&S.fixed.length&&applyFixed())save()}catch(e){}document.body.classList.toggle("nutri-on",optOn("nutri"));document.body.classList.toggle("home-on",S.tab=="home");if(sb&&!uid){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=vLogin();return}if(sb&&uid&&!HH){$("nav").innerHTML="";$("ft").innerHTML="";document.body.dataset.tab="login";$("main").innerHTML=HHCK?vSetup():`<p class="mute" style="text-align:center;margin-top:40px">Laden…</p>`;return}
  document.getElementById("nav").innerHTML=[["home","Home","Home","home"],["rec","Recepten","Recepten","book"],["menu","Weekmenu","Menu","calendar"],["list","Boodschappen","Lijst","cart"]].map(([k,n,sh,io])=>`<button class="${S.tab==k||(k=="home"&&["deals","log","trend","stock"].includes(S.tab))?"on":""}" onclick="go('${k}')"><b class="ni" aria-hidden="true">${ico(io)}</b><span class="lf">${n}</span><span class="ls">${sh}</span>${k=="menu"&&S.sel.length?`<i class="bd">${S.sel.length}</i>`:""}</button>`).join("");
- navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="KookBuddy"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals","log","trend"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go(BKTO||'home')">${ico("chevl")} ${BKTO?"Account":"Home"}</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
+ navPlus();document.body.dataset.tab=S.tab;{const h=document.querySelector("header h1");if(h)h.textContent="KookBuddy"}document.getElementById("main").innerHTML=({rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]&&!(S.tab=="menu"&&DESK())?`<h2 class="pt">${{rec:"Recepten",menu:"Weekmenu",list:"Boodschappen"}[S.tab]}</h2>`:"")+(["deals"].includes(S.tab)?`<div class="bk"><button class="lnk" onclick="go(BKTO||'home')">${ico("chevl")} ${BKTO?"Account":"Home"}</button></div><h2 class="pt">${{deals:"Aanbiedingen",log:"Logboek",trend:"Trends",stock:"Voorraad",account:"Account"}[S.tab]}</h2>`:"")+{home:vHome,rec:vRec,menu:vMenu,list:vList,log:vLog,trend:vTrend,deals:vDeals,stock:vStock,account:vAccount}[S.tab]();ft();wake()}
 const greet=()=>{const h=new Date().getHours();return h<6?"Goedenacht":h<12?"Goedemorgen":h<18?"Goedemiddag":"Goedenavond"};
 function uname(){const pp=(S.prof||{})[uid||"local"];if(pp){const nm=(pp.name||pp.nick||"").trim();if(nm)return nm.split(/\s+/)[0]}if(S.userName)return S.userName;const m=String(uemail||"").split("@")[0].match(/^[a-zA-Z]+/);return m?m[0][0].toUpperCase()+m[0].slice(1).toLowerCase():""}
 let HS=null;
@@ -5366,6 +5450,105 @@ function cfOpenFill(){cfOpen();if(!CF)return;CF.mode="fill";CF.days=cfFree(CF.wk
 {const _p=cfPool;cfPool=function(skip){const L=_p(skip);if(S.recipes.some(r=>mainCat(r)=="Hoofdgerecht"))return L.filter(r=>mainCat(r)=="Hoofdgerecht");return L}}
 
 function cpIco(n){return`<span class="cpi" aria-hidden="true" style="--s:${n||26}px">${MASCOT.replace('role="img" aria-label="Chef Pieper"','aria-hidden="true"')}</span>`}
+// ================= Trends en Boodschappenlogboek (nieuw ontwerp) =================
+let TP2="m",TRALL=false,LOGM="",LOGD=null,LOGMORE=false;
+// ---- bijhouden wie kookt en wie boodschappen doet
+{const _k=kgo;kgo=function(d){const e=typeof KR!="undefined"&&KR&&KR.si!=null?S.sel[KR.si]:null,was=e&&e.done;const r=_k.apply(this,arguments);if(e&&e.done&&!was){e.by=uid||"local";e.ckAt=todayK();save()}return r}}
+{const _f=finishL;finishL=function(){const n=S.log.length;const r=_f.apply(this,arguments);if(S.log.length>n&&S.log[0])S.log[0].by=uid||"local";save();return r}}
+// ---- gegevens
+const trK=d=>{const x=d instanceof Date?d:new Date(d);return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")};
+function trRange(p,back){const n=new Date(),t=todayK();let a,b;
+ if(p=="m"){a=new Date(n.getFullYear(),n.getMonth()-(back?1:0),1);b=back?new Date(n.getFullYear(),n.getMonth()-1,Math.min(n.getDate(),new Date(n.getFullYear(),n.getMonth(),0).getDate())):n}
+ else if(p=="3m"){a=new Date(n.getFullYear(),n.getMonth()-2-(back?3:0),1);b=back?new Date(n.getFullYear(),n.getMonth()-2,0):n}
+ else{a=new Date(n.getFullYear()-(back?1:0),0,1);b=back?new Date(n.getFullYear()-1,n.getMonth(),n.getDate()):n}
+ return[trK(a),back?trK(b):t]}
+function trDin(a,b){const t=todayK();return(S.sel||[]).filter(e=>e.day&&e.day>=a&&e.day<=b&&(e.done||e.day<t)).map(e=>({e,day:e.day,r:S.recipes.find(x=>x.id==e.rid)})).filter(x=>x.r)}
+function trLeft(a,b){return(S.dx||[]).filter(x=>x.kind=="left"&&x.done&&x.day>=a&&x.day<=b)}
+function trFirst(){const f={};for(const e of S.sel||[]){if(!e.day)continue;const r=S.recipes.find(x=>x.id==e.rid);if(!r)continue;const k=nkey(r);if(e.day<=todayK()&&(!f[k]||e.day<f[k]))f[k]=e.day}return f}
+function trPLbl(){const n=new Date(),M=n.toLocaleDateString("nl-NL",{month:"long"});return TP2=="m"?capF(M):TP2=="3m"?"Afgelopen 3 maanden":"Dit jaar"}
+function trPrevLbl(){const n=new Date();return TP2=="m"?new Date(n.getFullYear(),n.getMonth()-1,1).toLocaleDateString("nl-NL",{month:"long"}):TP2=="3m"?"de 3 maanden ervoor":"vorig jaar"}
+function trWho(id){const M=members(),i=M.findIndex(m=>m.id==id),m=M[i]||{};const full=m.name||(typeof mName=="function"?mName(id):"")||"Iemand";return{nm:String(full).trim().split(/\s+/)[0],i:i<0?0:i,ph:m.p&&m.p.photo}}
+// ---- Trends
+function vTrend2(){const[a,b]=trRange(TP2),[pa,pb]=trRange(TP2,true),D=trDin(a,b),P=trDin(pa,pb),L=trLeft(a,b),first=trFirst();
+ const nw=[...new Set(D.filter(x=>first[nkey(x.r)]>=a).map(x=>nkey(x.r)))],nwFr=nw.filter(k=>{const r=S.recipes.find(x=>nkey(x)==k);return r&&r.src&&r.src.uid}).length;
+ const avg=X=>{const v=X.map(x=>+x.r.time||0).filter(Boolean);return v.length?Math.round(v.reduce((s,x)=>s+x,0)/v.length):0},av=avg(D),pav=avg(P);
+ const diff=D.length-P.length;
+ const tile=(ic,bg,fg,lbl,v,u,sub)=>`<div class="tr2t"><span class="tr2ti" style="background:${bg};color:${fg}">${ico(ic)}</span><small>${lbl}</small><p><b>${v}</b> ${u}</p><em>${sub||"&nbsp;"}</em></div>`;
+ const tiles=`<div class="tr2ts">${tile("home","var(--t-green)","var(--sagefg)","Thuis gekookt",D.length,D.length==1?"avond":"avonden",P.length||D.length?(diff>0?"+"+diff+" t.o.v. ":diff<0?-diff+" minder dan ":"Evenveel als ")+esc(trPrevLbl()):"")}
+  ${tile("star","var(--t-lilac)","var(--lilacline)","Nieuw geprobeerd",nw.length,nw.length==1?"recept":"recepten",nwFr?nwFr+" van vrienden":"")}
+  ${tile("a_clock","var(--t-beige)","var(--green)","Gem. kooktijd",av||"–","min",av&&pav?(av<pav?(pav-av)+" min sneller":av>pav?(av-pav)+" min langer":"Even snel"):"")}
+  ${tile("box","var(--t-peach)","var(--green)","Restjes opgemaakt",L.length,"keer",L.length?"Minder weggegooid":"")}</div>`;
+ // per week
+ const wk=[];{const n=pdk(todayK()),mon=new Date(n);mon.setDate(n.getDate()-((n.getDay()+6)%7));for(let i=7;i>=0;i--){const s=new Date(mon);s.setDate(mon.getDate()-7*i);const e=new Date(s);e.setDate(s.getDate()+6);wk.push({l:"W"+wkNr(s),n:trDin(trK(s),trK(e)).length,cur:i==0})}}
+ const wm=Math.max(1,...wk.map(x=>x.n));
+ const weekC=`<section class="tr2c tr2wk"><h3>Thuis gekookt per week</h3><p class="tr2s">De laatste 8 weken</p><div class="tr2bars">${wk.map(x=>`<div class="tr2b${x.cur?" cur":""}"><span>${x.n||""}</span><i style="height:${x.n?Math.max(6,x.n/wm*100):2}%"></i><small>${x.l}</small></div>`).join("")}</div></section>`;
+ // meest gekookt
+ const by={};for(const x of D){const k=nkey(x.r);(by[k]=by[k]||{r:x.r,n:0}).n++}
+ const top=Object.values(by).sort((p,q)=>q.n-p.n||p.r.name.localeCompare(q.r.name)),shown=TRALL?top:top.slice(0,5);
+ const own=r=>{const ids=rOwners(r);if(!ids.length)return"";const w=trWho(ids[0]);return avHTML(w.nm,w.i,24,w.ph)};
+ const topC=`<section class="tr2c tr2top"><div class="tr2hr"><h3>Meest gekookt</h3>${top.length>5?`<button class="lnk" onclick="TRALL=!TRALL;draw()">${TRALL?"Minder":"Alles"}</button>`:""}</div>${shown.length?`<ol class="tr2ol">${shown.map((x,i)=>`<li><span class="tr2n">${i+1}</span>${tileHtml(x.r,"tr2im")}<button class="tr2nm" onclick="rdOpen(${x.r.id})">${esc(x.r.name)}</button>${own(x.r)}<b>${x.n}×</b></li>`).join("")}</ol>`:`<p class="tr2e">Nog niets gekookt in deze periode.</p>`}</section>`;
+ // keukens
+ const kc={};for(const x of D){const k=(typeof cfKeuk=="function"&&cfKeuk(x.r))||"Overig";kc[k]=(kc[k]||0)+1}
+ let ks=Object.entries(kc).sort((p,q)=>(p[0]=="Overig")-(q[0]=="Overig")||q[1]-p[1]);if(ks.length>5){const rest=ks.slice(4).reduce((s,x)=>s+x[1],0);ks=ks.slice(0,4).filter(x=>x[0]!="Overig").concat([["Overig",rest]])}
+ const KC=["#B8441F","#3E6B4E","#6E4C9E","#D69A1E","#A89A8C"],tot=D.length||1;
+ const keukC=`<section class="tr2c"><h3>Keukens</h3><p class="tr2s">Waar ${isMulti()?"jullie":"je"} zin in had${isMulti()?"den":""}</p>${D.length?`<div class="tr2stack">${ks.map(([k,n],i)=>`<i style="flex:${n};background:${KC[i%5]}"></i>`).join("")}</div><ul class="tr2leg">${ks.map(([k,n],i)=>`<li><i style="background:${KC[i%5]}"></i>${esc(k)}<b>${Math.round(n/tot*100)}%</b></li>`).join("")}</ul>`:`<p class="tr2e">Nog geen gegevens.</p>`}</section>`;
+ // wie kookt er
+ let whoC="";if(isMulti()){const W=D.filter(x=>x.e.by),c={};for(const x of W){const o=c[x.e.by]||(c[x.e.by]={n:0,we:0});o.n++;const g=pdk(x.day).getDay();if(g==0||g==6)o.we++}
+  const P2=Object.entries(c).sort((p,q)=>q[1].n-p[1].n),tw=W.length||1,BG=["var(--t-beige)","var(--t-green)","var(--t-lilac)","var(--t-peach)"],FG=["var(--green)","var(--sagefg)","var(--lilacline)","var(--green)"];
+  let txt="";if(P2.length>1){const wd=P2.filter(([,o])=>o.we/o.n<.4),we=P2.filter(([,o])=>o.we/o.n>=.4);txt=wd.length&&we.length?`${esc(trWho(wd[0][0]).nm)} kookt vooral doordeweeks, ${esc(trWho(we[0][0]).nm)} vaker in het weekend.`:`${esc(trWho(P2[0][0]).nm)} kookte het vaakst.`}else if(P2.length==1)txt=`${esc(trWho(P2[0][0]).nm)} kookte alle keren.`;
+  whoC=`<section class="tr2c"><h3>Wie kookt er?</h3>${P2.length?`<div class="tr2who">${P2.map(([id,o],i)=>`<span style="flex:${o.n};background:${BG[i%4]};color:${FG[i%4]}">${esc(trWho(id).nm)} · ${o.n}</span>`).join("")}</div><p class="tr2s tr2wt">${txt}</p>`:`<p class="tr2e">Wordt bijgehouden zodra jullie via Start koken koken.</p>`}</section>`}
+ // voeding
+ let nutC="";if(optOn("nutri")){const V=D.map(x=>{try{return nutOf(x.r)}catch(e){return null}}).filter(Boolean),m=k=>V.length?Math.round(V.reduce((s,o)=>s+(+o.nut[k]||0),0)/V.length):0;
+  const R=[["Eiwit","p",45,"#3E6B4E"],["Koolhydraten","c",90,"#D69A1E"],["Vet","f",45,"#B8441F"],["Vezels","fi",12,"#7BA05B"]];
+  nutC=`<section class="tr2c"><h3>Gemiddeld per portie</h3><p class="tr2s">Omdat je voedingswaarden bijhoudt</p>${V.length?R.map(([l,k,ref,c])=>`<div class="tr2nr"><span>${l}</span><b>${m(k)} g</b><i><em style="width:${Math.min(100,m(k)/ref*100)}%;background:${c}"></em></i></div>`).join(""):`<p class="tr2e">Nog geen voedingswaarden voor wat je kookte.</p>`}</section>`}
+ // boodschappen
+ const rs=(S.receipts||[]).filter(r=>{const k=trK(r.date);return k>=a&&k<=b}),sum=rs.reduce((s,r)=>s+(+r.total||0),0),eu=v=>"€ "+v.toFixed(v>=100?0:2).replace(".",",");
+ const wkS=[];{const n=pdk(todayK()),mon=new Date(n);mon.setDate(n.getDate()-((n.getDay()+6)%7));for(let i=3;i>=0;i--){const s=new Date(mon);s.setDate(mon.getDate()-7*i);const e=new Date(s);e.setDate(s.getDate()+6);const v=(S.receipts||[]).filter(r=>{const k=trK(r.date);return k>=trK(s)&&k<=trK(e)}).reduce((t,r)=>t+(+r.total||0),0);wkS.push({l:"W"+wkNr(s),v})}}
+ const wsm=Math.max(1,...wkS.map(x=>x.v)),nLog=(S.log||[]).filter(g=>{const k=trK(g.date);return k>=a&&k<=b}).length;
+ const shopC=`<section class="tr2c tr2shop"><div><h3>Boodschappen</h3><p class="tr2s">${optOn("prices")?"Omdat je prijzen bijhoudt":"Prijzen bijhouden staat uit"}</p>
+  ${optOn("prices")&&rs.length?`<p class="tr2eu"><b>${eu(sum)}</b> <span>${TP2=="m"?"deze maand":"in deze periode"}${D.length?" · ca. "+eu(sum/(D.length*Math.max(1,dp())))+" per persoon per avond":""}</span></p><div class="tr2sb">${wkS.map(x=>`<div><span>${x.l}</span><i><em style="width:${x.v/wsm*100}%"></em></i><b>${x.v?eu(x.v):"–"}</b></div>`).join("")}</div>`:optOn("prices")?`<p class="tr2e">Nog geen bonnen in deze periode.</p>`:""}</div>
+  <div class="tr2sl"><p>${nLog?nLog+" keer boodschappen gedaan "+(TP2=="m"?"deze maand":"in deze periode")+". ":""}Bekijk per keer wat je kocht${optOn("prices")?" en wat het kostte":""}.</p><button class="btn ghost tr2lb" onclick="LOGD=null;LOGM='';BKTO='trend';go('log')">${ico("book")} Bekijk logboek</button></div></section>`;
+ const seg=`<div class="tr2seg" role="tablist">${[["m","Maand"],["3m","3 maanden"],["y","Jaar"]].map(([k,l])=>`<button role="tab" aria-selected="${TP2==k}" class="${TP2==k?"on":""}" onclick="TP2='${k}';TRALL=false;draw()">${l}</button>`).join("")}</div>`;
+ return`<div class="tr2"><div class="tr2hd"><button class="tr2bk" onclick="go(BKTO&&BKTO!='trend'?BKTO:'account')" aria-label="Terug">${ico("chevl")}</button><div class="tr2ht"><h1>Trends</h1><p>${esc(trPLbl())}${isMulti()?" · "+esc(hhName()):""}</p></div>${seg}</div>
+ ${tiles}<div class="tr2g1">${weekC}${topC}</div><div class="tr2g2">${keukC}${whoC}${nutC}</div>${shopC}${featCard()}</div>`}
+// ---- Logboek
+function logMoments(){const out=[];(S.log||[]).forEach((g,i)=>out.push({k:"l",i,g,date:g.date,day:trK(g.date)}));
+ (S.receipts||[]).forEach(r=>{const d=trK(r.date);const l=out.find(x=>x.k=="l"&&x.day==d&&!x.rc);if(l){l.rc=r;return}out.push({k:"r",r,date:r.date,day:d,rc:r})});
+ return out.sort((p,q)=>q.day.localeCompare(p.day))}
+function logDesc(m){if(m.k=="r")return(m.r.n?m.r.n+" producten · ":"")+"Bon";const g=m.g,n=(g.items||[]).filter(x=>x.ok).length,ms=(g.meals||[]).length;
+ return n+" producten · "+(ms?"Weekmenu · "+ms+" "+(ms==1?"recept":"recepten"):"Tussendoor: "+(g.items||[]).slice(0,3).map(x=>x.n).join(", "))}
+function logStore(m){return m.k=="r"?(m.r.store&&STORES[m.r.store]?STORES[m.r.store][0]:m.r.store||"Winkel"):(m.g.store||"Winkel")}
+const eu2=v=>"€ "+(+v||0).toFixed(2).replace(".",",");
+function vLog2(){const M=logMoments(),cur=todayK().slice(0,7),months=[...new Set([cur,...M.map(m=>m.day.slice(0,7))])].sort().reverse().slice(0,3);
+ if(!LOGM||!months.includes(LOGM))LOGM=months[0];
+ const L=M.filter(m=>m.day.slice(0,7)==LOGM),mnm=k=>capF(new Date(k+"-01T12:00").toLocaleDateString("nl-NL",{month:"long"}));
+ const tot=L.reduce((s,m)=>s+(m.rc?+m.rc.total||0:0),0),prod=L.reduce((s,m)=>s+(m.k=="l"?(m.g.items||[]).filter(x=>x.ok).length:(+m.r.n||0)),0),hasP=L.some(m=>m.rc);
+ const dsk=DESK();if(LOGD!=null&&!L[LOGD])LOGD=null;const sel=dsk?(LOGD!=null?LOGD:(L.length?0:null)):LOGD;
+ const head=`<div class="lb2hd">${dsk?`<p class="lb2cr"><button class="lnk" onclick="go('trend')">Trends</button> ${ico("chevr")} <span>Boodschappenlogboek</span></p>`:""}<div class="lb2t">${dsk?"":`<button class="tr2bk" onclick="${LOGD!=null?"LOGD=null;draw()":"go(BKTO&&BKTO!='log'?BKTO:'trend')"}" aria-label="Terug">${ico("chevl")}</button>`}<h1>${!dsk&&LOGD!=null?"Boodschappenmoment":"Boodschappenlogboek"}</h1>${dsk?logChips(months,mnm):""}</div></div>`;
+ if(!dsk&&LOGD!=null)return`<div class="lb2">${head}${logDetail(L[LOGD])}</div>`;
+ const green=`<div class="lb2sum"><div><small>${mnm(LOGM)}${LOGM==cur?" tot nu toe":""}</small><b>${hasP?eu2(tot):L.length+" keer"}</b></div><div class="lb2k"><span><small>Keer</small><b>${L.length}</b></span><span><small>Producten</small><b>${prod}</b></span></div></div>`;
+ const list=L.length?L.map((m,i)=>{const w=m.k=="l"&&m.g.by?trWho(m.g.by):null,dd=pdk(m.day);
+  return`<button class="lb2r${dsk&&sel==i?" on":""}" onclick="LOGD=${i};LOGMORE=false;draw();${dsk?"":"scrollTo(0,0)"}"><span class="lb2ri">${ico("cart")}</span><span class="lb2rt"><b>${capF(DN[dd.getDay()])} ${dd.getDate()} ${MON[dd.getMonth()]} · ${esc(logStore(m))}</b><small>${esc(logDesc(m))}</small></span>${w?avHTML(w.nm,w.i,26,w.ph):""}${m.rc?`<em>${eu2(m.rc.total)}</em>`:""}</button>`}).join(""):`<p class="tr2e lb2e">Nog geen boodschappen in ${mnm(LOGM).toLowerCase()}.</p>`;
+ const note=`<p class="lb2note">Een boodschappenmoment wordt opgeslagen als je je lijst afrondt${optOn("prices")?" of een bon toevoegt":""}.</p>`;
+ return`<div class="lb2">${head}${dsk?"":logChips(months,mnm)}${green}<div class="lb2cols"><div class="lb2l">${list}${note}</div>${dsk&&sel!=null?`<div class="lb2d">${logDetail(L[sel])}</div>`:""}</div></div>`}
+function logChips(months,mnm){return`<div class="lb2ch">${months.map(k=>`<button class="${LOGM==k?"on":""}" onclick="LOGM='${k}';LOGD=null;draw()" aria-pressed="${LOGM==k}">${LOGM==k?ico("check"):""}${mnm(k)}</button>`).join("")}</div>`}
+function logDetail(m){if(!m)return"";const dd=pdk(m.day),w=m.k=="l"&&m.g.by?trWho(m.g.by):null;
+ const items=m.k=="l"?(m.g.items||[]):[],meals=m.k=="l"?(m.g.meals||[]):[];
+ const stat=(l,v)=>`<div><small>${l}</small><b>${v}</b></div>`;
+ const g={};items.forEach(x=>{const a=aisleOf(x.n);(g[a]=g[a]||[]).push(x)});const keys=Object.keys(g).map(Number).sort((p,q)=>p-q);
+ let shown=0;const lim=LOGMORE?1e9:9;let rows="";
+ for(const a of keys){const xs=g[a].filter(()=>shown++<lim);if(!xs.length)continue;rows+=`<h4>${esc((AISLES[a]||"Overig").toUpperCase().replace("&","EN"))}</h4>`+xs.map(x=>{const pr=optOn("prices")&&typeof priceOf=="function"?priceOf(x.n):null;return`<div class="lb2i${x.ok?"":" no"}"><span>${esc(capF(x.n))}${x.ok?"":" <small>niet gekocht</small>"}</span><em>${esc(x.q||"")}</em>${pr?`<b>${eu2(pr.p)}</b>`:""}</div>`}).join("")}
+ const rest=items.length-Math.min(items.length,lim);
+ return`<div class="lb2dc"><div class="lb2dh"><span class="lb2ri">${ico("cart")}</span><div><h2>${capF(dd.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"}))}</h2><p>${esc(logStore(m))}${w?" · gedaan door "+esc(w.nm):""}</p></div></div>
+ <div class="lb2st">${stat("Totaal",m.rc?eu2(m.rc.total):"–")}${stat("Producten",m.k=="l"?items.filter(x=>x.ok).length:(m.r.n||"–"))}${stat("Recepten",meals.length||"–")}</div>
+ ${meals.length?`<details class="lb2ms"><summary>${meals.length} ${meals.length==1?"recept":"recepten"} op deze lijst</summary>${logMeals(meals)}</details>`:""}
+ ${items.length?`<div class="lb2its">${rows}${rest>0?`<button class="lnk lb2more" onclick="LOGMORE=true;draw()">+ ${rest} andere producten</button>`:""}</div><button class="btn ghost lb2again" onclick="logAgain(${m.i})">${ico("cart")} Zet deze lijst opnieuw klaar</button>`:`<p class="tr2e">Van deze bon zijn geen losse producten bewaard.</p>`}
+ ${m.k=="l"?`<button class="lnk lb2del" onclick="rmLog(${m.i})">Verwijderen uit logboek</button>`:""}</div>`}
+function logAgain(i){const g=S.log[i];if(!g)return;const have=new Set((S.extra||[]).map(x=>String(x).toLowerCase()));let n=0;S.extra=S.extra||[];
+ for(const x of g.items||[]){if(!x.ok)continue;const t=(x.q?x.q+" ":"")+x.n;if(have.has(t.toLowerCase()))continue;S.extra.push(t);n++}
+ save();go("list")}
+vTrend=vTrend2;vLog=vLog2;
+
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
