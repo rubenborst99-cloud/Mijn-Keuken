@@ -2326,6 +2326,15 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
  .lb2d{position:sticky;top:20px}
 }
 .tr2im{background:var(--t);color:var(--c);display:grid;place-items:center}.tr2im .ic{width:22px;height:22px}.tr2im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.lb2bon{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#3E6B4E;border:0;border-radius:12px;padding:9px 12px;font:inherit;font-weight:700;font-size:.86rem;cursor:pointer;align-self:center}
+.lb2bon .ic{width:16px;height:16px}
+.lb2k{align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.lb2row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:14px;padding:12px 14px;margin:0 0 12px;font:inherit;color:var(--ink);cursor:pointer}
+.lb2row span{flex:1;font-weight:700}.lb2row small{display:block;font-weight:400;color:var(--mute);font-size:.82rem}.lb2row .ic{width:18px;height:18px}
+.tr2lbs{display:flex;gap:8px;flex-wrap:wrap}.tr2lbs .tr2lb{flex:1;min-width:150px}
+.tr2bt{font-size:.82rem!important;margin:10px 0 0!important}
+.rd-cost{color:var(--mute);font-size:.85em}
+@media(max-width:1023px){.lb2sum{flex-wrap:wrap}.lb2k{width:100%;justify-content:space-between}}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -3525,7 +3534,7 @@ function drawB(){const stores=Object.entries(STORES);
  document.getElementById("b-save").style.display=""}
 function num(v){const n=parseFloat(String(v).replace(",","."));return isFinite(n)?n:0}
 function saveB(){if(!RC)return;const store=document.getElementById("b-store").value,d=new Date().toISOString();let n=0;
- RC.lines.forEach((l,i)=>{if(!document.getElementById("bc"+i).checked)return;const nm=document.getElementById("bp"+i).value.trim(),pr=num(document.getElementById("bq"+i).value);if(nm&&pr>0){addPrice(nm,pr,store,d);n++}});
+ RC.lines.forEach((l,i)=>{if(!document.getElementById("bc"+i).checked)return;const nm=document.getElementById("bp"+i).value.trim(),pr=num(document.getElementById("bq"+i).value);if(nm&&pr>0){addPrice(nm,pr,store,d,bonQty(RC.lines[i].raw));n++}});
  S.receipts=S.receipts||[];const tot=num(document.getElementById("b-total").value)||RC.lines.reduce((a,x,i)=>a+(document.getElementById("bc"+i).checked?num(document.getElementById("bq"+i).value):0),0);
  S.receipts.unshift({id:Date.now(),date:d,store,total:Math.round(tot*100)/100,n});save();document.getElementById("bdlg").close();draw()}
 document.getElementById("b-ocr").addEventListener("change",async e=>{const fl=e.target.files[0];e.target.value="";if(!fl)return;const st=document.getElementById("b-st");
@@ -5507,7 +5516,7 @@ function vTrend2(){const[a,b]=trRange(TP2),[pa,pb]=trRange(TP2,true),D=trDin(a,b
  const wsm=Math.max(1,...wkS.map(x=>x.v)),nLog=(S.log||[]).filter(g=>{const k=trK(g.date);return k>=a&&k<=b}).length;
  const shopC=`<section class="tr2c tr2shop"><div><h3>Boodschappen</h3><p class="tr2s">${optOn("prices")?"Omdat je prijzen bijhoudt":"Prijzen bijhouden staat uit"}</p>
   ${optOn("prices")&&rs.length?`<p class="tr2eu"><b>${eu(sum)}</b> <span>${TP2=="m"?"deze maand":"in deze periode"}${D.length?" · ca. "+eu(sum/(D.length*Math.max(1,dp())))+" per persoon per avond":""}</span></p><div class="tr2sb">${wkS.map(x=>`<div><span>${x.l}</span><i><em style="width:${x.v/wsm*100}%"></em></i><b>${x.v?eu(x.v):"–"}</b></div>`).join("")}</div>`:optOn("prices")?`<p class="tr2e">Nog geen bonnen in deze periode.</p>`:""}</div>
-  <div class="tr2sl"><p>${nLog?nLog+" keer boodschappen gedaan "+(TP2=="m"?"deze maand":"in deze periode")+". ":""}Bekijk per keer wat je kocht${optOn("prices")?" en wat het kostte":""}.</p><button class="btn ghost tr2lb" onclick="LOGD=null;LOGM='';BKTO='trend';go('log')">${ico("book")} Bekijk logboek</button></div></section>`;
+  <div class="tr2sl"><p>${nLog?nLog+" keer boodschappen gedaan "+(TP2=="m"?"deze maand":"in deze periode")+". ":""}Bekijk per keer wat je kocht${optOn("prices")?" en wat het kostte":""}.</p><div class="tr2lbs"><button class="btn ghost tr2lb" onclick="LOGD=null;LOGM='';BKTO='trend';go('log')">${ico("book")} Bekijk logboek</button><button class="btn ghost tr2lb" onclick="logBon(null)">${ico("camera")} Bon toevoegen</button></div><p class="tr2bt">Met je bonnen leert KookBuddy wat dingen kosten, en schat hij ook wat een recept kost.</p></div></section>`;
  const seg=`<div class="tr2seg" role="tablist">${[["m","Maand"],["3m","3 maanden"],["y","Jaar"]].map(([k,l])=>`<button role="tab" aria-selected="${TP2==k}" class="${TP2==k?"on":""}" onclick="TP2='${k}';TRALL=false;draw()">${l}</button>`).join("")}</div>`;
  return`<div class="tr2"><div class="tr2hd"><button class="tr2bk" onclick="go(BKTO&&BKTO!='trend'?BKTO:'account')" aria-label="Terug">${ico("chevl")}</button><div class="tr2ht"><h1>Trends</h1><p>${esc(trPLbl())}${isMulti()?" · "+esc(hhName()):""}</p></div>${seg}</div>
  ${tiles}<div class="tr2g1">${weekC}${topC}</div><div class="tr2g2">${keukC}${whoC}${nutC}</div>${shopC}${featCard()}</div>`}
@@ -5526,7 +5535,7 @@ function vLog2(){const M=logMoments(),cur=todayK().slice(0,7),months=[...new Set
  const dsk=DESK();if(LOGD!=null&&!L[LOGD])LOGD=null;const sel=dsk?(LOGD!=null?LOGD:(L.length?0:null)):LOGD;
  const head=`<div class="lb2hd">${dsk?`<p class="lb2cr"><button class="lnk" onclick="go('trend')">Trends</button> ${ico("chevr")} <span>Boodschappenlogboek</span></p>`:""}<div class="lb2t">${dsk?"":`<button class="tr2bk" onclick="${LOGD!=null?"LOGD=null;draw()":"go(BKTO&&BKTO!='log'?BKTO:'trend')"}" aria-label="Terug">${ico("chevl")}</button>`}<h1>${!dsk&&LOGD!=null?"Boodschappenmoment":"Boodschappenlogboek"}</h1>${dsk?logChips(months,mnm):""}</div></div>`;
  if(!dsk&&LOGD!=null)return`<div class="lb2">${head}${logDetail(L[LOGD])}</div>`;
- const green=`<div class="lb2sum"><div><small>${mnm(LOGM)}${LOGM==cur?" tot nu toe":""}</small><b>${hasP?eu2(tot):L.length+" keer"}</b></div><div class="lb2k"><span><small>Keer</small><b>${L.length}</b></span><span><small>Producten</small><b>${prod}</b></span></div></div>`;
+ const green=`<div class="lb2sum"><div><small>${mnm(LOGM)}${LOGM==cur?" tot nu toe":""}</small><b>${hasP?eu2(tot):L.length+" keer"}</b></div><div class="lb2k"><span><small>Keer</small><b>${L.length}</b></span><span><small>Producten</small><b>${prod}</b></span><button class="lb2bon" onclick="logBon(null)">${ico("camera")} Bon toevoegen</button></div></div>`;
  const list=L.length?L.map((m,i)=>{const w=m.k=="l"&&m.g.by?trWho(m.g.by):null,dd=pdk(m.day);
   return`<button class="lb2r${dsk&&sel==i?" on":""}" onclick="LOGD=${i};LOGMORE=false;draw();${dsk?"":"scrollTo(0,0)"}"><span class="lb2ri">${ico("cart")}</span><span class="lb2rt"><b>${capF(DN[dd.getDay()])} ${dd.getDate()} ${MON[dd.getMonth()]} · ${esc(logStore(m))}</b><small>${esc(logDesc(m))}</small></span>${w?avHTML(w.nm,w.i,26,w.ph):""}${m.rc?`<em>${eu2(m.rc.total)}</em>`:""}</button>`}).join(""):`<p class="tr2e lb2e">Nog geen boodschappen in ${mnm(LOGM).toLowerCase()}.</p>`;
  const note=`<p class="lb2note">Een boodschappenmoment wordt opgeslagen als je je lijst afrondt${optOn("prices")?" of een bon toevoegt":""}.</p>`;
@@ -5541,6 +5550,7 @@ function logDetail(m){if(!m)return"";const dd=pdk(m.day),w=m.k=="l"&&m.g.by?trWh
  const rest=items.length-Math.min(items.length,lim);
  return`<div class="lb2dc"><div class="lb2dh"><span class="lb2ri">${ico("cart")}</span><div><h2>${capF(dd.toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"}))}</h2><p>${esc(logStore(m))}${w?" · gedaan door "+esc(w.nm):""}</p></div></div>
  <div class="lb2st">${stat("Totaal",m.rc?eu2(m.rc.total):"–")}${stat("Producten",m.k=="l"?items.filter(x=>x.ok).length:(m.r.n||"–"))}${stat("Recepten",meals.length||"–")}</div>
+ ${m.rc&&m.rc.img?`<button class="lb2row" id="lbph_${m.rc.id}" style="display:none" onclick="logPhOpen(${m.rc.id})">${ico("book")}<span>Foto van de bon</span>${ico("chevr")}</button>${(setTimeout(()=>logPh(m.rc.id),0),"")}`:""}${!m.rc?`<button class="lb2row" onclick="logBon('${m.day}')">${ico("camera")}<span>Bon van deze keer toevoegen<small>Dan weet KookBuddy wat alles kostte</small></span>${ico("chevr")}</button>`:""}
  ${meals.length?`<details class="lb2ms"><summary>${meals.length} ${meals.length==1?"recept":"recepten"} op deze lijst</summary>${logMeals(meals)}</details>`:""}
  ${items.length?`<div class="lb2its">${rows}${rest>0?`<button class="lnk lb2more" onclick="LOGMORE=true;draw()">+ ${rest} andere producten</button>`:""}</div><button class="btn ghost lb2again" onclick="logAgain(${m.i})">${ico("cart")} Zet deze lijst opnieuw klaar</button>`:`<p class="tr2e">Van deze bon zijn geen losse producten bewaard.</p>`}
  ${m.k=="l"?`<button class="lnk lb2del" onclick="rmLog(${m.i})">Verwijderen uit logboek</button>`:""}</div>`}
@@ -5548,6 +5558,43 @@ function logAgain(i){const g=S.log[i];if(!g)return;const have=new Set((S.extra||
  for(const x of g.items||[]){if(!x.ok)continue;const t=(x.q?x.q+" ":"")+x.n;if(have.has(t.toLowerCase()))continue;S.extra.push(t);n++}
  save();go("list")}
 vTrend=vTrend2;vLog=vLog2;
+
+// ================= Bonnen: hoeveelheden, foto, koppeling met logboek en receptkosten =================
+let BONDATE=null,BONIMG=null;
+// hoeveelheid uit een bonregel halen ("KIPFILET 500G", "0,512 KG", "6 ST")
+function bonQty(raw){const t=String(raw||"").toLowerCase().replace(",",".");let m=t.match(/(\d+(?:\.\d+)?)\s?(kg|kilo|g|gr|gram|l|liter|ltr|ml|cl)\b/);
+ if(m){const v=+m[1],u=m[2];if(!v)return{};if(u=="kg"||u=="kilo")return{q:v*1000,c:"m"};if(u=="g"||u=="gr"||u=="gram")return{q:v,c:"m"};if(u=="l"||u=="liter"||u=="ltr")return{q:v*1000,c:"v"};if(u=="cl")return{q:v*10,c:"v"};return{q:v,c:"v"}}
+ m=t.match(/(\d+)\s?(st|stuks|stk)\b/)||t.match(/^(\d+)\s?x\s/);if(m&&+m[1]>0)return{q:+m[1],c:"n"};return{}}
+// prijs onthouden mét hoeveelheid
+addPrice=function(name,p,store,d,meta){S.prices=S.prices||{};const k=canon(name);if(!k)return;const r=S.prices[k]||(S.prices[k]={name,h:[]});r.name=name;r.h.unshift({p,store,d,...(meta&&meta.q?{q:meta.q,c:meta.c}:{})});r.h=r.h.slice(0,12)};
+// ---- kosten van een recept
+const COST_SKIP=/^(zout|peper|water|olijfolie|olie|zonnebloemolie|azijn|suiker|bloem|bakpoeder|kruiden|snufje|zout en peper|peper en zout)$|^gedroogde /;
+function ingCost(i){const nm=String(i.name||"").toLowerCase().trim();if(!nm)return{skip:1};if(COST_SKIP.test(nm))return{skip:1};
+ const pr=priceOf(i.name);if(!pr)return null;let q=pr.q,c=pr.c;if(!q){const pk=packOf(i.name);if(pk){q=pk.q;c=pk.c}}
+ if(q&&c&&i.a){let need=null;try{need=conv(i,c)}catch(e){}if(need!=null&&need>0)return{v:pr.p*need/q,exact:!!pr.q}}
+ return{v:pr.p,pack:1}}
+function recCost(r,pers){const sc=(pers||r.pers||1)/(r.pers||1);let tot=0,n=0,k=0;
+ for(const l of r.ing||[]){let i;try{i=parse(String(l).split("|")[0])}catch(e){continue}if(!i||!i.name)continue;const c=ingCost({...i,a:(i.a||0)*sc});if(c&&c.skip)continue;n++;if(c){tot+=c.v;k++}}
+ return{tot,n,k}}
+rdPrice=function(r){if(!optOn("prices"))return"";const c=recCost(r,RD.pers);if(!c.k)return"";
+ const pp=c.tot/Math.max(1,RD.pers);return`≈ ${eur(c.tot)} · ${eur(pp)} p.p.${c.k<c.n?` <span class="rd-cost">(prijs van ${c.k} van ${c.n} ingrediënten)</span>`:""}`};
+// ---- bon bij een boodschappenmoment, foto bewaren op dit toestel
+function logBon(day){if(!optOn("prices"))setOpt("prices",true);BONDATE=day?new Date(day+"T12:00:00").toISOString():null;BONIMG=null;openB()}
+function bonIdb(){return new Promise((ok,no)=>{try{const q=indexedDB.open("kookbuddy",1);q.onupgradeneeded=()=>q.result.createObjectStore("bon");q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)}catch(e){no(e)}})}
+async function bonPut(id,data){try{const db=await bonIdb();db.transaction("bon","readwrite").objectStore("bon").put(data,String(id))}catch(e){}}
+async function bonGet(id){try{const db=await bonIdb();return await new Promise(ok=>{const g=db.transaction("bon").objectStore("bon").get(String(id));g.onsuccess=()=>ok(g.result||null);g.onerror=()=>ok(null)})}catch(e){return null}}
+document.getElementById("b-ocr").addEventListener("change",e=>{const fl=e.target.files&&e.target.files[0];if(!fl)return;const rd=new FileReader();rd.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,1100/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);BONIMG=c.toDataURL("image/jpeg",.65)};im.src=rd.result};rd.readAsDataURL(fl)});
+{const _s=saveB;saveB=function(){const n0=(S.receipts||[]).length;const r=_s.apply(this,arguments);const R=S.receipts||[];
+ if(R.length>n0&&R[0]){if(BONDATE)R[0].date=BONDATE;R[0].by=uid||"local";if(BONIMG){R[0].img=1;bonPut(R[0].id,BONIMG)}save();draw()}BONDATE=null;BONIMG=null;return r}}
+async function logPh(id){const d=await bonGet(id),b=document.getElementById("lbph_"+id);if(b)b.style.display=d?"":"none"}
+async function logPhOpen(id){const d=await bonGet(id);if(!d)return;const g=$("bkdlg");g.innerHTML=`<h2 style="font-size:1.2rem;margin:0 0 10px">Foto van de bon</h2><img src="${d}" alt="Foto van de bon" style="width:100%;border-radius:12px;display:block"><div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button></div>`;g.showModal()}
+// prijs ook vinden bij een iets andere naam ("halfvolle melk" voor melk, "uien" voor ui)
+{const _p=priceOf;priceOf=function(name){const x=_p(name);if(x)return x;const k=canon(String(name||"").toLowerCase());if(!k||k.length<2)return null;
+ const sing=w=>w.replace(/(en|s)$/,"");const kw=k.split(" ");let best=null,bd="";
+ for(const key in S.prices||{}){const e=S.prices[key];if(!e||!e.h||!e.h.length)continue;const pw=key.split(" ");
+  const hit=pw.some(w=>w==k||sing(w)==sing(k)||(k.length>=4&&w==kw[kw.length-1]))||kw.some(w=>w.length>=4&&(w==key||sing(w)==sing(key)));
+  if(!hit)continue;const h=e.h.find(x=>x.store==S.store)||e.h[0];if(!best||String(h.d)>bd){best=h;bd=String(h.d)}}
+ return best}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
