@@ -3072,7 +3072,7 @@ async function fetchRecipe(){const st=document.getElementById("f-st"),u=f("url")
   if(error)throw new Error("functie");
   if(!data||data.error)throw new Error(data&&data.error||"geen antwoord");
   const doc=new DOMParser().parseFromString(data.html,"text/html"),r=findRecipe(doc);
-  if(!r){st.textContent="Op deze pagina staan geen receptgegevens die ik kan lezen. Vul het recept zelf in.";return}
+  if(!r){socFallback(doc,u,data.html);return}
   const nm=dec(r.name);if(nm)f("name").value=nm;
   f("pers").value=yieldN(r.recipeYield);
   const ing=[].concat(r.recipeIngredient||[]).map(normIng).filter(Boolean);
@@ -3083,7 +3083,7 @@ async function fetchRecipe(){const st=document.getElementById("f-st"),u=f("url")
   {const tt=String(r.totalTime||r.cookTime||"").match(/^P(?:\d+D)?(?:T(?:(\d+)H)?(?:(\d+)M)?)?/i);if(tt&&!f("time").value){const mm=(+tt[1]||0)*60+(+tt[2]||0);if(mm)f("time").value=mm}
    const c=[].concat(r.recipeCategory||[]).join(" ").toLowerCase();if(!f("type").value){const m=[[/taart|cake|gebak|koek|brownie|muffin/,"Gebak"],[/voorgerecht|soep/,"Voorgerecht"],[/hoofdgerecht|hoofd/,"Hoofdgerecht"],[/dessert|toetje|nagerecht|zoet/,"Nagerecht"],[/bijgerecht|bij /,"Bijgerecht"],[/ontbijt|lunch|brunch/,"Ontbijt & lunch"],[/snack|borrel|hapje/,"Snack"]].find(([re])=>re.test(c));if(m)f("type").value=m[1]}}
   st.textContent="Gevonden: "+ing.length+" ingrediënten. Controleer alles en klik op Recept opslaan.";showForm(st.textContent)
- }catch(e){st.textContent=e.message=="functie"?"Ophalen mislukt: de ophaalfunctie in Supabase is niet bereikbaar. Is die al aangemaakt?":"Ophalen mislukt: "+e.message}
+ }catch(e){if(SOC_RE.test(socHost(u))){socHelp(u)}else st.textContent=e.message=="functie"?"Ophalen mislukt: de ophaalfunctie in Supabase is niet bereikbaar. Is die al aangemaakt?":"Ophalen mislukt: "+e.message}
  finally{btn.disabled=false}}
 function parsePaste(){const ps=document.getElementById("f-ps");
  const HS=/^(ingredi[eë]nten|benodigdheden|ingredients)\b/i,HB=/^(bereiding(swijze)?|zo maak je het|en zo doe je het|aan de slag|instructies|werkwijze|instructions|directions|method)\b/i,
@@ -4894,6 +4894,31 @@ function estFill(){let ch=false;for(const r of S.recipes||[]){if(r.est||(r.time&
   if(!r.time){r.time=e.time;E.push("time")}if(!r.level){r.level=e.level;E.push("level")}if(E.length){r.est=E;ch=true}}return ch}
 {const _d=draw;let busy=false;draw=function(){if(!busy){busy=true;try{if(estFill())save()}catch(e){console.error(e)}busy=false}return _d.apply(this,arguments)}}
 function tMin(r){const n=+r.time||0;if(!n)return"";const t=n<90?n+" min":Math.floor(n/60)+" u"+(n%60?" "+n%60+" min":"");return(Array.isArray(r.est)&&r.est.includes("time")?"± ":"")+t}
+
+// ================= Link zonder receptgegevens (Instagram, TikTok, ...): recept uit de caption halen =================
+function socHost(u){try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return""}}
+const SOC_RE=/(^|\.)(instagram\.com|tiktok\.com|facebook\.com|fb\.watch|pinterest\.\w+|pin\.it|youtube\.com|youtu\.be|threads\.net)$/i;
+function socCaption(doc,html){const C=[];
+ const m=n=>{const e=doc.querySelector(`meta[property="${n}"],meta[name="${n}"]`);return e?String(e.getAttribute("content")||""):""};
+ for(const k of["og:description","description","twitter:description"]){let t=m(k);if(!t)continue;
+  const q=t.match(/:\s*[“"]([\s\S]+)[”"]\s*\.?\s*$/);if(q)t=q[1];C.push(t)}
+ const H=String(html||"");
+ for(const re of[/"caption":\{[^{}]*?"text":"((?:[^"\\]|\\.)*)"/g,/"edge_media_to_caption":\{"edges":\[\{"node":\{"text":"((?:[^"\\]|\\.)*)"/g,/"desc":"((?:[^"\\]|\\.)*)"/g,/"description":"((?:[^"\\]|\\.)*)"/g]){let x;let n=0;while((x=re.exec(H))&&n++<20){try{C.push(JSON.parse('"'+x[1]+'"'))}catch(e){}}}
+ const clean=t=>String(t).replace(/\\n/g,"\n").split(/\r?\n/).map(l=>l.replace(/^[\s\p{Extended_Pictographic}️‍]+/u,"").replace(/[\s\p{Extended_Pictographic}️‍]+$/u,"")).join("\n");
+ const sc=t=>{const L=t.split("\n");return L.filter(l=>/^[\s•\-*+]*[\d½¼¾]+\s*\S/.test(l)).length*3+L.length};
+ return C.map(clean).filter(t=>t.length>40).sort((a,b)=>sc(b)-sc(a))[0]||""}
+function socFallback(doc,u,html){const st=document.getElementById("f-st"),cap=socCaption(doc,html);
+ if(cap){const OT=ocrTidy([cap]);document.getElementById("f-paste").value=OT.text;if(OT.name&&!f("name").value.trim())f("name").value=OT.name;
+  {const im=doc.querySelector('meta[property="og:image"]');const iu=im&&im.getAttribute("content");if(iu&&/^https?:\/\//.test(iu)&&!curImg)setImg(iu)}
+  if(parsePaste())return true}
+ socHelp(u);return true}
+function socHelp(u){const h=socHost(u),st=document.getElementById("f-st"),soc=SOC_RE.test(h),nm=/instagram/.test(h)?"Instagram":/tiktok/.test(h)?"TikTok":/facebook|fb\./.test(h)?"Facebook":/youtu/.test(h)?"YouTube":/pinterest|pin\.it/.test(h)?"Pinterest":"";
+ st.innerHTML=soc?`${esc(nm||"Deze site")} laat het recept niet ophalen (vaak moet je daar eerst inloggen, of staat het recept alleen in de video). Zo lukt het wel: <button type="button" class="lnk" onclick="setMode('photo')">maak screenshots van de post</button>, of kopieer de tekst onder de post en plak die hieronder.`:"Op deze pagina staan geen receptgegevens die ik kan lezen. Plak de recepttekst hieronder, of vul het recept zelf in.";
+ const d=document.querySelector("#m-link .ad-pt");if(d){d.open=true;const t=document.getElementById("f-paste");if(t)t.focus()}}
+// ---- Zelf geplakte tekst (bijv. een caption) eerst opschonen
+{const _pp=parsePaste;parsePaste=function(){const t=document.getElementById("f-paste");if(!t||/^⁣|^$/.test(t.value)||t.dataset.tidy=="1")return _pp.apply(this,arguments);
+ const raw=t.value;let clean=raw;try{const c=raw.split(/\r?\n/).map(l=>l.replace(/^[\s\p{Extended_Pictographic}️‍]+/u,"").replace(/[\s\p{Extended_Pictographic}️‍]+$/u,"")).join("\n");const OT=ocrTidy([c]);if(OT.text.split("\n").length>=3){clean=OT.text;if(OT.name&&!f("name").value.trim())f("name").value=OT.name}}catch(e){}
+ t.value=clean;t.dataset.tidy="1";try{return _pp.apply(this,arguments)}finally{t.value=raw;t.dataset.tidy=""}}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
