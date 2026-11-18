@@ -2003,6 +2003,15 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
  .ad-del{width:24px}
  .ad-sr{grid-template-columns:28px minmax(0,1fr) 22px;gap:8px}
 }
+</style><style id="modal">/* ---- Vensters: telefoon = van onderen met greepje */
+@media(max-width:1023px){
+ dialog:not(.kk):not(.ad):not(.sheet){margin:auto 0 0!important;width:100%!important;max-width:100%!important;height:fit-content;max-height:90dvh;border-radius:24px 24px 0 0!important;padding-top:30px!important;padding-bottom:calc(22px + env(safe-area-inset-bottom))!important;box-sizing:border-box}
+ dialog:not(.kk):not(.ad):not(.sheet)[open]{animation:kbup .26s ease-out}
+ dialog:not(.kk):not(.ad):not(.sheet)::before,#dlg.ad[data-mode=choice]::before{content:"";position:absolute;top:10px;left:50%;width:44px;height:5px;margin-left:-22px;border-radius:3px;background:var(--line)}
+ #dlg.ad[data-mode=choice] .ad-hd{padding-top:26px}
+ #dlg.ad[data-mode=choice][open]{animation:kbup .26s ease-out}
+}
+@keyframes kbup{from{transform:translateY(40%);opacity:.4}to{transform:none;opacity:1}}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -4664,48 +4673,52 @@ function ocrNorm(l){return l.toLowerCase().replace(/[^a-zà-ÿ0-9]/g,"")}
 function ocrSim(a,b){a=ocrNorm(a);b=ocrNorm(b);if(!a||!b)return 0;if(a==b)return 1;const bg=s=>{const m=new Map();for(let i=0;i<s.length-1;i++){const k=s.slice(i,i+2);m.set(k,(m.get(k)||0)+1)}return m};
  const A=bg(a),B=bg(b);let n=0;for(const[k,v]of A)n+=Math.min(v,B.get(k)||0);return 2*n/Math.max(1,(a.length-1)+(b.length-1))}
 const OCR_BUL=/^[\s•·▪●○◦▢□☐*+«»>~–—\-]+(?=\S)/;
+function OCR_STEPISH(t,sec){if(sec=="st")return true;if(/^[\d½¼¾]/.test(t))return false;const w=t.split(" ").length;return(w>=9&&/[.!?]$/.test(t))||w>=14}
 function ocrTidy(parts){
- let name="";const out=[];// items: {t, kind:'step'|'bul'|'txt', n}
- for(const raw of parts){
-  // 1. regels, telefoonrommel eruit, blokken (gescheiden door lege regels) bewaren
-  const lines=String(raw||"").split(/\r?\n/).map(l=>l.replace(/\s+$/,""));
-  const paras=[];let cur=[];
-  for(let l of lines){const t=l.trim();if(!t){if(cur.length){paras.push(cur);cur=[]}continue}
-   if(OCR_JUNK.test(t)||ocrLetters(t)<.6||t.replace(/[^a-zà-ÿ]/gi,"").length<3){if(cur.length){paras.push(cur);cur=[]}continue}
-   cur.push(t)}
-  if(cur.length)paras.push(cur);
-  for(const p of paras){
-   // titel in hoofdletters (Instagram: "gebruikersnaam TITEL IN HOOFDLETTERS")
-   if(!name){const joined=p.join(" "),m=joined.match(/((?:[A-ZÀ-Ý][A-ZÀ-Ý'’&-]*[,]?\s+){2,}[A-ZÀ-Ý][A-ZÀ-Ý'’&-]*)/);
-    if(m&&m[1].replace(/[^A-ZÀ-Ý]/g,"").length>=10){name=m[1].trim().replace(/,$/,"");name=name.charAt(0)+name.slice(1).toLowerCase();continue}}
-   // regels in dit blok verdelen in items
-   let it=null;const push=()=>{if(it){it.t=it.t.replace(/\s+/g," ").trim();out.push(it)}it=null};
-   for(let l of p){const bul=OCR_BUL.test(l),num=l.match(/^(\d{1,2})\s*[.)]\s+(\S.*)$/);
-    l=l.replace(OCR_BUL,"").replace(/^(\d+(?:[.,]\d+)?)(el|tl|gr|g|kg|ml|cl|dl|l)\b/i,"$1 $2").trim();
-    if(num){push();it={t:num[2],kind:"step",n:+num[1]};continue}
-    if(bul){push();it={t:l,kind:"bul"};continue}
-    if(it&&(it.kind=="step"||(it.kind=="txt"&&!/^[\d½¼¾]/.test(l)&&!/^voor \d/i.test(it.t)&&(it.t.length>=40||/^[a-zà-ÿ]/.test(l))&&!/:$/.test(it.t))||(it.kind=="bul"&&/^[a-zà-ÿ(]/.test(l)&&(it.t.length>=34||/[-,(]$/.test(it.t))&&l.split(" ").length<=4))){it.t+=" "+l;continue}
-    push();it={t:l,kind:/^[\d½¼¾]/.test(l)&&l.length<70?"bul":"txt"}}
-   push()}}
+ let name="";const out=[];
+ let sec="";parts.forEach((raw,pi)=>{
+  // 1. regels als één doorlopende stroom; lege regels tellen niet (de tekstlezer zet ze soms na elke regel)
+  const lines=String(raw||"").split(/\r?\n/).map(l=>l.trim()).filter(t=>t&&!OCR_JUNK.test(t)&&ocrLetters(t)>=.6&&t.replace(/[^a-zà-ÿ]/gi,"").length>=(/^[\s•·▪*+\-–]*\d/.test(t)?2:3));
+  const items=[];let it=null;const push=()=>{if(it){it.t=it.t.replace(/\s+/g," ").trim();if(it.t){if(it.kind=="bul"&&OCR_STEPISH(it.t,sec)){it.kind="step";it.n=null}items.push(it)}}it=null};
+  for(let l of lines){const bul=OCR_BUL.test(l),num=l.match(/^(\d{1,2}|[lI])\s*[.),]\s+([A-ZÀ-Ý]\S*.*)$/)||l.match(/^(\d{1,2})\s*[.)]\s+(\S.*)$/);if(num&&/^[lI]$/.test(num[1]))num[1]="1";
+   l=l.replace(OCR_BUL,"").replace(/^(\d+(?:[.,]\d+)?)(el|tl|gr|g|kg|ml|cl|dl|l)\b/i,"$1 $2").trim();
+   if(num){push();it={t:num[2],kind:"step",n:+num[1]};continue}
+   if(bul){push();it={t:l,kind:"bul"};continue}
+   l=l.replace(/\s+[^\w\s.,!?:;)%°½¼¾-]{1,2}$/,"").trim();
+   if(/^(voor \d+\s*(personen|pers|porties|stuks)|ingredi[eë]nten|benodigdheden|bereiding(swijze)?|zo maak je het|instructies)\b/i.test(l)){push();sec=/^(bereiding|zo maak|instructies)/i.test(l)?"st":/^(ingredi|benodigd|voor \d)/i.test(l)?"ing":sec;it={t:l,kind:"txt",hd:1};push();continue}
+   const low=/^[a-zà-ÿ(]/.test(l),dig=/^[\d½¼¾]/.test(l);
+   if(it&&it.kind=="step"&&!/^(tip|let op|bewaar|weetje|serveertip|variatie)\b/i.test(l)&&!/^voor \d/i.test(l)){it.t+=" "+l;continue}
+   if(it&&it.kind=="bul"&&!dig&&(sec=="st"||OCR_STEPISH(it.t,sec)||it.t.split(" ").length>=6&&!/^[\d½¼¾]/.test(it.t))&&(low||!/[.!?]$/.test(it.t))){it.t+=" "+l;continue}
+   if(it&&it.kind=="bul"&&low&&(it.t.length>=34||/[-,(]$/.test(it.t))&&l.split(" ").length<=4){it.t+=" "+l;continue}
+   if(it&&it.kind=="txt"&&!dig&&!/^voor \d/i.test(it.t)&&!/:$/.test(it.t)&&(low||(it.t.length>=40&&!/[.!?]$/.test(it.t)))){it.t+=" "+l;continue}
+   push();it={t:l,kind:dig&&l.length<70?"bul":"txt"}}
+  push();
+  // titel in hoofdletters (Instagram: "gebruikersnaam TITEL IN HOOFDLETTERS")
+  if(!name)for(let k=0;k<items.length;k++){const x=items[k];if(x.kind!="txt")continue;const m=x.t.match(/((?:[A-ZÀ-Ý][A-ZÀ-Ý'’&-]*[,]?\s+){2,}[A-ZÀ-Ý][A-ZÀ-Ý'’&-]+)(?![a-zà-ÿA-ZÀ-Ý])/);
+   if(m&&m[1].replace(/[^A-ZÀ-Ý]/g,"").length>=10){name=m[1].trim().replace(/,$/,"");name=name.charAt(0)+name.slice(1).toLowerCase();items.splice(k,1);break}}
+  // volgende screenshot: afgekapte regels bovenaan (vóór de eerste regel die al bekend is) weg
+  if(pi>0&&out.length){const j=items.findIndex(x=>out.some(y=>y.kind==x.kind&&(x.kind=="step"?y.n==x.n:ocrSim(y.t,x.t)>.82)));if(j>0&&j<=3)items.splice(0,j)}
+  out.push(...items)});
  // 2. dubbelingen tussen screenshots: zelfde stapnummer -> langste houden; bijna gelijke regels weg
  const res=[];
  for(const x of out){
-  if(x.kind=="step"){const j=res.findIndex(y=>y.kind=="step"&&y.n==x.n);if(j>=0){const y=res[j];const ok=s=>ocrLetters(s)>.85&&!/[a-zà-ÿ]{22,}/i.test(s);
+  if(x.kind=="step"){const pre=t=>ocrNorm(t).slice(0,28);const j=res.findIndex(y=>y.kind=="step"&&(x.n!=null&&y.n!=null?y.n==x.n:(ocrSim(y.t,x.t)>.82||pre(y.t)==pre(x.t))));if(j>=0){const y=res[j];const ok=s=>ocrLetters(s)>.85&&!/[a-zà-ÿ]{22,}/i.test(s);
     if(ok(x.t)&&(!ok(y.t)||x.t.length>=y.t.length*.9))res[j]=x;continue}}
   else if(res.some(y=>y.kind==x.kind&&ocrSim(y.t,x.t)>.82))continue;
   res.push(x)}
  // 3. tekst opbouwen: titel, personen/ingrediënten, stappen op volgorde
- const steps=res.filter(x=>x.kind=="step").sort((a,b)=>a.n-b.n);
+ let steps=res.filter(x=>x.kind=="step");if(steps.every(x=>x.n!=null))steps.sort((a,b)=>a.n-b.n);
  const firstIng=res.findIndex(x=>x.kind=="bul");
  const body=[];let sawIng=false;
  for(let i=0;i<res.length;i++){const x=res[i];if(x.kind=="step")continue;
   if(x.kind=="txt"){
    if(/^voor \d+\s*(personen|pers|porties)|^(ingredi[eë]nten|benodigdheden)\b/i.test(x.t)){body.push(x.t.replace(/:?$/,":"));continue}
+   if(x.hd&&/^(bereiding|zo maak|instructies)/i.test(x.t))continue;
    if(!sawIng&&firstIng>i&&x.t.length>40)continue;// inleidend verhaaltje overslaan
    if(steps.length&&x.t.length>40&&/[.!?]$/.test(x.t)&&sawIng)continue;}
   if(x.kind=="bul")sawIng=true;
   body.push(x.t)}
- const text=[name,...body,...(steps.length?["Bereiding:"]:[]),...steps.map(s=>s.n+". "+s.t)].filter(Boolean).join("\n");
+ const text=[name,...body,...(steps.length?["Bereiding:"]:[]),...steps.map((s,i)=>(i+1)+". "+s.t)].filter(Boolean).join("\n");
  return{name,text}}
 
 // ================= Recept toevoegen (ontwerp "app-ontwerp selection") =================
@@ -4798,6 +4811,29 @@ dlg.addEventListener("dragleave",e=>{if(e.target==dlg)dlg.classList.remove("ad-d
 dlg.addEventListener("drop",e=>{if(!["choice","link","photo"].includes(dlg.dataset.mode))return;e.preventDefault();dlg.classList.remove("ad-dragon");const dt=e.dataTransfer;
  const fl=[...(dt.files||[])].filter(x=>/^image\//.test(x.type));if(fl.length){fl.forEach(x=>PHS.push({fl:x,u:URL.createObjectURL(x)}));setMode("photo");return}
  const u=(dt.getData("text/uri-list")||dt.getData("text/plain")||"").split("\n")[0].trim();if(/^https?:\/\//i.test(u)){setMode("link");f("url").value=u;fetchRecipe()}});
+
+// ================= Vensters overal hetzelfde sluiten =================
+// Telefoon: venster komt van onderen, sluiten door omlaag te vegen of naast het venster te tikken.
+// Computer: venster in het midden, sluiten met het kruisje, door ernaast te klikken of met Esc.
+function kbSkip(d){if(!d)return true;if(d.classList&&d.classList.contains("kk"))return true;
+ if(d.id=="dlg"){const m=dlg.dataset.mode;if(m=="form")return true;if(!DESK()&&m!="choice")return true}return false}
+function kbClose(d){if(!d)return;if(d.id=="rfs"||d.classList.contains("rfs-sheet")){try{rfClose()}catch(e){}return}
+ if(d.id=="act")return actClose();if(d.id=="dsh")return dsClose();d.style.transform="";d.style.transition="";if(d.open)d.close()}
+document.addEventListener("click",e=>{const d=e.target;if(!(d instanceof HTMLDialogElement)||!d.open||kbSkip(d))return;
+ const r=d.getBoundingClientRect();if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom)return;kbClose(d)});
+{let S0=null;
+ const box=t=>{if(!t||!t.closest)return null;const d=t.closest("dialog[open],.rfs-sheet");if(!d)return null;if(d.classList.contains("sheet"))return null;if(d.tagName=="DIALOG"&&kbSkip(d))return null;return d};
+ const atTop=(t,d)=>{for(let el=t;el&&el!=d.parentNode;el=el.parentNode){if(el.scrollTop>0)return false;if(el==d)break}return true};
+ document.addEventListener("touchstart",e=>{S0=null;if(DESK())return;const t=e.target,d=box(t);if(!d)return;
+  if(t.closest("input,textarea,select,[contenteditable],.ad-drag,.noswipe")&&!t.closest(".dsg"))return;
+  if(!atTop(t,d))return;S0={d,y:e.touches[0].clientY,x:e.touches[0].clientX,dy:0,dir:0,t0:Date.now()}},{passive:true});
+ document.addEventListener("touchmove",e=>{if(!S0)return;const dy=e.touches[0].clientY-S0.y,dx=e.touches[0].clientX-S0.x;
+  if(!S0.dir){if(Math.abs(dx)<6&&Math.abs(dy)<6)return;S0.dir=Math.abs(dy)>Math.abs(dx)&&dy>0?1:-1;if(S0.dir==1)S0.d.style.transition="none"}
+  if(S0.dir!=1)return;S0.dy=Math.max(0,dy);S0.d.style.transform="translateY("+S0.dy+"px)";if(e.cancelable)e.preventDefault()},{passive:false});
+ const end=()=>{if(!S0||S0.dir!=1){S0=null;return}const d=S0.d,v=S0.dy/Math.max(1,Date.now()-S0.t0),go=S0.dy>90||v>.6&&S0.dy>30;S0=null;
+  d.style.transition="transform .2s ease-out";if(go){d.style.transform="translateY(100%)";setTimeout(()=>{d.style.transition="";d.style.transform="";kbClose(d)},190)}
+  else{d.style.transform="";setTimeout(()=>{d.style.transition=""},220)}};
+ document.addEventListener("touchend",end);document.addEventListener("touchcancel",end)}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
