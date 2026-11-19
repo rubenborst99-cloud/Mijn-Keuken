@@ -5956,10 +5956,40 @@ function costShow(){const r=COSTR;if(!r)return;const pers=RD.pers||r.pers||1,R=c
  <div class="cs-l">${priced.map(row).join("")}</div>
  ${none.length?`<h3>Nog geen prijs</h3><p class="cs-n">${none.map(x=>esc(capF(x.n))).join(", ")}</p>`:""}
  ${skip.length?`<h3>Telt niet mee</h3><p class="cs-n">${skip.map(x=>esc(capF(x.n))).join(", ")} <span>(heb je meestal al in huis)</span></p>`:""}
- <p class="cs-n">"Hele verpakking": er staat geen hoeveelheid bij, of die kon niet worden omgerekend, dus telt één pak mee. Een bon van dit product maakt de prijs nauwkeuriger.</p>
+ <p class="cs-n">"Hele verpakking": er staat geen hoeveelheid bij, of die kon niet worden omgerekend, dus telt één pak mee. Zet er in het recept een hoeveelheid bij voor een preciezere prijs.</p>
  <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button></div></div>`;g.showModal()}
 // ---- receptenlijst: recept zoals het geschreven is; alleen vanuit het weekmenu (pers meegegeven) omrekenen
 {const _o=rdOpen;rdOpen=function(id,pers){const r=S.recipes.find(x=>x.id==id);return _o(id,pers||(r&&+r.pers)||dp())}}
+// ================= Kosten v2: Checkjebon eerst, voorraadkast overslaan, dubbele regels samen, kruiden per echt gewicht, bouillon = blokjes =================
+const CPANTRY=new Set(["zout","peper","zwarte peper","witte peper","peper en zout","zout en peper","olie","olijfolie","zonnebloemolie","arachideolie","bakolie","frituurolie","water","kraanwater","heet water","suiker","kristalsuiker","bloem","tarwebloem","bakpoeder","azijn","ijsblokjes"]);
+function costBase(n){return String(n||"").toLowerCase().replace(/\(.*?\)/g," ").replace(/\b(naar smaak|optioneel|extra|om te serveren|voor erbij)\b/g," ").replace(/\s+/g," ").trim()}
+function costPantry(b){const parts=b.split(/\s*(?:,|&|\+|\ben\b|\bof\b)\s*/).map(x=>x.trim()).filter(Boolean);return parts.length&&parts.every(p=>CPANTRY.has(p)||CPANTRY.has(p.replace(/^(wat|een beetje|beetje|snufje|scheutje)\s+/,"")))}
+const LEAFY=/(kruiden|oregano|tijm|basilicum|rozemarijn|peterselie|dille|munt|salie|majoraan|laurier|bieslook|koriander(?!zaad)|dragon)/,SPICE=/(poeder|kaneel|komijn|kurkuma|paprika ?poeder|chili|cayenne|kerrie|curry|nootmuskaat|specerij|garam masala|ras el hanout|zaad|gember ?poeder|piment|kardemom|vlokken|za.?atar|sumak)/;
+const CJB1=(()=>{const _p=priceOf;return function(name){const b=costBase(name);return cjbPrice(b)||cjbPrice(name)||_p(name)}})();
+priceOf=CJB1;
+function costPackQ(name){const b=costBase(name),c=cjbPrice(b);if(c&&c.q)return{q:c.q,c:c.c};try{const pk=packOf(b)||packOf(name);if(pk)return pk}catch(e){}return null}
+ingCost=function(i){const b=costBase(i.name);if(!b)return{skip:1};if(COST_SKIP.test(b)||costPantry(b)||(!i.a&&/naar smaak|snufje|scheutje|beetje|garnering/.test(String(i.name).toLowerCase())))return{skip:1};
+ const u=String(i.u||"").toLowerCase();
+ // bouillon uit blokjes: 1 blokje per 500 ml
+ if(/bouillon|fond/.test(b)&&!/blok|tablet|poeder|cube/.test(b)&&(/^(ml|l|liter|dl|cl)$/.test(u))){const ml=u=="l"||u=="liter"?i.a*1000:u=="dl"?i.a*100:u=="cl"?i.a*10:i.a,n=Math.max(1,Math.ceil(ml/500)),pr=cjbPrice("bouillonblokjes")||cjbPrice("bouillon blokjes");
+  const per=pr&&pr.c=="n"&&pr.q?pr.p/pr.q:.15;return{v:per*n,pr:pr||{p:.15,q:1,c:"n",store:"schatting"},note:n+" "+(n==1?"blokje":"blokjes"),exact:1}}
+ const pr=priceOf(i.name);if(!pr)return null;let q=pr.q,c=pr.c;if(!q){const pk=costPackQ(i.name);if(pk){q=pk.q;c=pk.c}}
+ if(q&&c&&i.a){let need=null;
+  if(c=="m"&&/^(tl|theelepel|theelepels|el|eetlepel|eetlepels)$/.test(u)&&(LEAFY.test(b)||SPICE.test(b))){const tl=/^(tl|theelepel)/.test(u);need=i.a*(LEAFY.test(b)&&!SPICE.test(b)?(tl?1:3):(tl?2.5:7.5))}
+  else if(/^(teen|tenen|teentje|teentjes)$/.test(u)&&/knoflook/.test(b)){need=c=="n"?i.a/10:i.a*5}
+  else{try{need=conv(i,c)}catch(e){}}
+  if(need!=null&&need>0)return{v:pr.p*need/q,exact:!!pr.q,pr:{...pr,q,c},need,c}}
+ return{v:pr.p,pack:1,pr}};
+// dubbele regels samenvoegen (zelfde ingrediënt + eenheid optellen; zonder hoeveelheid één keer)
+function costMerge(r,sc){const M=new Map();
+ for(const l of r.ing||[]){let i;try{i=parse(String(l).split("|")[0])}catch(e){continue}if(!i||!i.name)continue;const k=canon(costBase(i.name))||costBase(i.name),a=(i.a||0)*sc,ex=M.get(k);
+  if(!ex){M.set(k,{...i,a});continue}if(a&&ex.a&&String(ex.u||"")==String(i.u||""))ex.a+=a;else if(a&&!ex.a){ex.a=a;ex.u=i.u}ex.dup=(ex.dup||1)+1}
+ return[...M.values()]}
+recCost=function(r,pers){const sc=(pers||r.pers||1)/(r.pers||1);let tot=0,n=0,k=0;for(const i of costMerge(r,sc)){const c=ingCost(i);if(c&&c.skip)continue;n++;if(c){tot+=c.v;k++}}return{tot,n,k}};
+costSrc=function(pr){if(!pr)return"";if(pr.store=="checkjebon")return"Checkjebon";if(pr.store=="schatting")return"Schatting";if(pr.seed)return"Startprijs";return"Jullie bonnen"+(pr.med?" · mediaan van "+pr.med:"")};
+costRows=function(r,pers){const sc=(pers||r.pers||1)/(r.pers||1),R=[];
+ for(const i of costMerge(r,sc)){const c=ingCost(i);R.push({n:i.name+(i.dup>1?" ("+i.dup+"×)":""),amt:c&&c.note?c.note:costAmt(i),v:c&&!c.skip?c.v:null,skip:!!(c&&c.skip),pack:!!(c&&c.pack),src:c&&c.pr?costSrc(c.pr):"",pp:c&&c.pr?c.pr:null})}
+ return R};
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
