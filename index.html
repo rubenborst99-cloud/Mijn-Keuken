@@ -2335,7 +2335,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .tr2bt{font-size:.82rem!important;margin:10px 0 0!important}
 .rd-cost{color:var(--mute);font-size:.85em}
 @media(max-width:1023px){.lb2sum{flex-wrap:wrap}.lb2k{width:100%;justify-content:space-between}}
-</style><style id="bn">.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
+</style><style id="bn">.ld-hint{margin:8px 2px 0}.hx-pors .ld-later{grid-column:1/-1}.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
 #bndlg.bn{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
 #bndlg .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .bn-hd{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:var(--bg)}
@@ -6043,6 +6043,63 @@ inspAdd=function(i){const r=INSP.items[i];if(!r)return;const rec={...r,id:S.next
 inspPad=function(){return[]};
 {const _a=inspSection;inspSection=function(){let h=_a();if(INSP.state=="ok"&&INSP.items.length<3)h+=Array.from({length:3-INSP.items.length},()=>`<div class="card sk" style="padding:14px 12px;margin-bottom:8px"><span class="mute">${INSP.more?"Nieuwe suggestie zoeken…":"Even geen nieuwe suggesties. Tik op ↻ Andere."}</span></div>`).join("");return h}}
 {const _d=inspD;inspD=function(){let h=_d();if(INSP.state=="ok"&&INSP.items.length<3){const sk=Array.from({length:3-INSP.items.length},()=>`<div class="dic dic-sk"><div class="dib"><span class="mute">${INSP.more?"Nieuwe suggestie zoeken…":"Even geen nieuwe suggesties"}</span></div></div>`).join("");const i=h.lastIndexOf("</div>");h=h.replace(/(<div class="dg4[^"]*">)([\s\S]*?)(<\/div>\s*<\/div>\s*$)/,(m,a,b,c)=>a+b+sk+c)}return h}}
+
+// ================= Pushmeldingen: restjes navragen na het eten =================
+const PUSHOK=("serviceWorker" in navigator)&&("PushManager" in window)&&("Notification" in window);
+const PIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform=="MacIntel"&&navigator.maxTouchPoints>1);
+const PSTAND=(()=>{try{return matchMedia("(display-mode: standalone)").matches||navigator.standalone===true}catch(e){return false}})();
+let PUSH={on:false,busy:false,err:""};
+const LPKEY="kleftpend";function lpGet(){try{return JSON.parse(localStorage.getItem(LPKEY)||"[]")}catch(e){return[]}}function lpSet(a){try{localStorage.setItem(LPKEY,JSON.stringify(a))}catch(e){}}
+function pushLeftOn(){try{return localStorage.getItem("kpushleft")!=="0"}catch(e){return true}}
+function pushB64(s){const p="=".repeat((4-s.length%4)%4),b=atob((s+p).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from(b,c=>c.charCodeAt(0))}
+async function pushState(){if(!PUSHOK)return;try{const reg=await navigator.serviceWorker.ready,s=await reg.pushManager.getSubscription();const was=PUSH.on;PUSH.on=!!s&&Notification.permission=="granted";if(was!=PUSH.on&&S.tab=="account")draw()}catch(e){}}
+async function pushEnable(){PUSH.err="";
+ if(!sb||!uid){PUSH.err="Log in om meldingen te krijgen.";draw();return}
+ if(!PUSHOK){PUSH.err=PIOS&&!PSTAND?"Zet KookBuddy eerst op je beginscherm (Delen → Zet op beginscherm) en open hem daarvandaan. Daarna kun je meldingen aanzetten.":"Deze browser ondersteunt geen pushmeldingen.";draw();return}
+ PUSH.busy=true;draw();
+ try{const perm=await Notification.requestPermission();if(perm!="granted")throw new Error("Meldingen zijn niet toegestaan. Zet ze aan in de instellingen van je telefoon of browser.");
+  const{data,error}=await sb.functions.invoke("push-versturen",{body:{action:"key"}});if(error||!data||!data.key)throw new Error("De meldingenfunctie is nog niet ingesteld in Supabase.");
+  const reg=await navigator.serviceWorker.ready;let s=await reg.pushManager.getSubscription();if(!s)s=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:pushB64(data.key)});
+  const{error:e2}=await sb.from("push_abonnementen").upsert({endpoint:s.endpoint,sub:s.toJSON()});if(e2)throw new Error("Opslaan lukte niet ("+e2.message+")");
+  PUSH.on=true}catch(e){PUSH.err=e.message||String(e)}
+ PUSH.busy=false;draw()}
+async function pushDisable(){PUSH.busy=true;draw();try{const reg=await navigator.serviceWorker.ready,s=await reg.pushManager.getSubscription();if(s){try{await sb.from("push_abonnementen").delete().eq("endpoint",s.endpoint)}catch(e){}await s.unsubscribe()}}catch(e){}PUSH.on=false;PUSH.busy=false;draw()}
+// ---- restjes later navragen
+async function leftCancel(rid){lpSet(lpGet().filter(x=>x.rid!=rid));if(sb&&uid)try{await sb.from("push_herinneringen").delete().eq("tag","left-"+rid).eq("sent",false)}catch(e){}}
+function leftSched(rid){const r=S.recipes.find(x=>x.id==rid);if(!r)return;const at=Date.now()+60*60e3;
+ lpSet(lpGet().filter(x=>x.rid!=rid).concat([{rid,at,name:r.name,by:uid||"local"}]));
+ if(PUSH.on&&pushLeftOn()&&sb&&uid){(async()=>{try{await sb.from("push_herinneringen").delete().eq("tag","left-"+rid).eq("sent",false);
+  await sb.from("push_herinneringen").insert({send_at:new Date(at).toISOString(),title:"Is er wat overgebleven?",body:"Van de "+r.name.toLowerCase()+". Tik om het in te vullen.",url:"./?restjes="+rid,tag:"left-"+rid})}catch(e){}})()}}
+{const _p=ldPor;ldPor=function(n){if(LD)LD.later=false;return _p(n)}}
+{const _o=leftOpen;leftOpen=function(){const only=!!(LQ&&LQ.only);_o();if(only&&LD){LD.only=true;LD.left=true;leftDraw()}}}
+{const _d=leftDraw;leftDraw=function(){_d();const d=$("ldlg");if(!LD)return;
+  if(LD.only){d.classList.add("ld-only");const h=d.querySelector(".hx-cookh h2");if(h)h.textContent="Is er wat overgebleven?";
+   [...d.querySelectorAll(".hx-h")].forEach(x=>{if(/meegegeten|voorraad/i.test(x.textContent))(x.closest(".hx-sec")||x).style.display="none"});
+   d.querySelectorAll(".hx-eat,.hx-pick").forEach(x=>x.style.display="none");const us=d.querySelector(".hx-used");if(us){const c=us.closest(".card");if(c)c.style.display="none"}}
+  if(LD.only)[...d.querySelectorAll(".hx-h")].forEach(x=>{if(/iets over/i.test(x.textContent))x.style.display="none"});
+  const pr=d.querySelector(".hx-pors");if(pr&&LD.later)pr.querySelectorAll("button.on").forEach(b=>b.classList.remove("on"));if(pr&&!LD.only){const b=document.createElement("button");b.className="ld-later"+(LD.later?" on":"");b.textContent="Weet ik nog niet";b.setAttribute("onclick","LD.later=!LD.later;LD.por=0;leftDraw()");pr.appendChild(b);
+   if(LD.later){const p=document.createElement("p");p.className="axhelp ld-hint";p.textContent=PUSH.on&&pushLeftOn()?"Prima! Over een uur krijg je een melding om het alsnog in te vullen.":"Prima! We vragen het later nog eens als je de app opent."+(PUSHOK&&!PUSH.on?" Met pushmeldingen (Account → Meldingen) krijg je een seintje.":"");pr.after(p)}}}}
+{const _s=leftSave;leftSave=function(){if(!LD)return;const rid=LD.rid;
+  if(LD.only){const e0=S.sel[LD.ei];if(LD.por>0){S.left=S.left||[];const lid=newId();if(e0&&e0.rid==LD.rid)e0.lid=lid;S.left.push({id:lid,name:(LD.name||"Restje").trim(),por:LD.por,where:LD.where,date:todayK(),until:LD.until,rid:LD.rid||0})}
+   leftCancel(rid);$("ldlg").close();save();draw();return}
+  const later=LD.later&&LD.left;const r=_s.apply(this,arguments);if(later)leftSched(rid);else leftCancel(rid);return r}}
+// melding aangetikt (?restjes=…) of de tijd is verstreken terwijl de app open is
+function leftDueCheck(){if(document.querySelector("dialog[open]"))return;let rid=null;
+ try{const u=new URL(location.href),q=u.searchParams.get("restjes");if(q){rid=q;u.searchParams.delete("restjes");history.replaceState(null,"",u.pathname+(u.search||"")+u.hash)}}catch(e){}
+ if(rid==null){const due=lpGet().find(x=>x.at<=Date.now());if(due)rid=due.rid}
+ if(rid==null)return;const r=S.recipes.find(x=>String(x.id)==String(rid));lpSet(lpGet().filter(x=>String(x.rid)!=String(rid)));if(!r)return;
+ if(sb&&uid)sb.from("push_herinneringen").delete().eq("tag","left-"+r.id).eq("sent",false).then(()=>{},()=>{});
+ LQ={rid:r.id,only:true};leftOpen()}
+setTimeout(()=>{pushState();leftDueCheck()},1800);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState=="visible")setTimeout(leftDueCheck,400)});
+setInterval(()=>{if(document.visibilityState=="visible")leftDueCheck()},60e3);
+// ---- instelling op Account → Meldingen
+{const _m=vAMeld;vAMeld=function(){const ios=PIOS&&!PSTAND;
+ const box=`<h4 class="axh">PUSHMELDINGEN</h4><div class="card axlist">
+  <label class="axtg"><span class="axic" style="background:var(--t-peach);color:var(--green)">${ico("a_bell")}</span><span class="axtx"><b>Pushmeldingen op dit apparaat</b><small>${PUSH.busy?"Bezig…":ios?"Op de iPhone werkt dit als KookBuddy op je beginscherm staat":PUSH.on?"Aan":"Ook als de app dicht is"}</small></span><input type="checkbox" class="axsw" ${PUSH.on?"checked":""} ${PUSH.busy?"disabled":""} onchange="this.checked?pushEnable():pushDisable()" aria-label="Pushmeldingen op dit apparaat"></label>
+  <label class="axtg${PUSH.on?"":" dis"}"><span class="axic" style="background:var(--t-beige);color:var(--green)">${ico("a_bowl")}</span><span class="axtx"><b>Restjes navragen na het eten</b><small>Kies je na het eten ‘Weet ik nog niet’, dan krijg je een uur later een melding</small></span><input type="checkbox" class="axsw" ${pushLeftOn()?"checked":""} ${PUSH.on?"":"disabled"} onchange="try{localStorage.setItem('kpushleft',this.checked?'1':'0')}catch(e){}" aria-label="Restjes navragen na het eten"></label></div>
+  ${PUSH.err?`<p class="axerr" style="color:var(--danger,#B23A2A);margin:8px 4px 0;font-size:.9rem">${esc(PUSH.err)}</p>`:""}`;
+ const h=_m();const i=h.indexOf("<h4 class=\"axh\">DELEN MET VRIENDEN");return i>=0?h.slice(0,i)+box+h.slice(i):h+box}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
