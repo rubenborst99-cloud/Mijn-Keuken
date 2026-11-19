@@ -2335,7 +2335,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .tr2bt{font-size:.82rem!important;margin:10px 0 0!important}
 .rd-cost{color:var(--mute);font-size:.85em}
 @media(max-width:1023px){.lb2sum{flex-wrap:wrap}.lb2k{width:100%;justify-content:space-between}}
-</style><style id="bn">.ld-hint{margin:8px 2px 0}.hx-pors .ld-later{grid-column:1/-1}.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
+</style><style id="bn">.rx-pt{color:var(--green);font-weight:700;letter-spacing:.02em}.rd-pt{color:var(--green);font-weight:700;margin-left:4px;white-space:nowrap}.rfp b{font-weight:800;margin-right:2px}.ld-hint{margin:8px 2px 0}.hx-pors .ld-later{grid-column:1/-1}.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
 #bndlg.bn{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
 #bndlg .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .bn-hd{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:var(--bg)}
@@ -6103,6 +6103,38 @@ setInterval(()=>{if(document.visibilityState=="visible")leftDueCheck()},60e3);
   <label class="axtg${PUSH.on?"":" dis"}"><span class="axic" style="background:var(--t-beige);color:var(--green)">${ico("a_bowl")}</span><span class="axtx"><b>Restjes navragen na het eten</b><small>Kies je na het eten ‘Weet ik nog niet’, dan krijg je een uur later een melding</small></span><input type="checkbox" class="axsw" ${pushLeftOn()?"checked":""} ${PUSH.on?"":"disabled"} onchange="try{localStorage.setItem('kpushleft',this.checked?'1':'0')}catch(e){}" aria-label="Restjes navragen na het eten"></label></div>
   ${PUSH.err?`<p class="axerr" style="color:var(--danger,#B23A2A);margin:8px 4px 0;font-size:.9rem">${esc(PUSH.err)}</p>`:""}`;
  const h=_m();const i=h.indexOf("<h4 class=\"axh\">DELEN MET VRIENDEN");return i>=0?h.slice(0,i)+box+h.slice(i):h+box}}
+
+// ================= Prijsklasse € / €€ / €€€ per recept, relatief aan het soort gerecht =================
+const PTB={"Hoofdgerecht":[2.5,4.5],"Voorgerecht":[1.25,2.5],"Tussengerecht":[1.25,2.5],"Bijgerecht":[1.25,2.5],"Ontbijt & lunch":[1.25,2.5],"Nagerecht":[1,2],"Gebak":[1,2],"Snack":[1,2]};
+const PTL=["","€","€€","€€€"],PTN=["","Goedkoop","Gemiddeld","Duurder"];
+const PTC=new Map();
+function priceTier(r){if(!r||!optOn("prices"))return 0;const pers=+r.pers||1,key=r.id+"|"+pers+"|"+(r.ing||[]).join("¦")+"|"+(CJB?CJB.t:0)+"|"+mainCat(r);
+ if(PTC.has(key))return PTC.get(key);let t=0;
+ try{const c=recCost(r,pers);if(c.k>=2&&c.k>=c.n*.6){const pp=c.tot/pers,b=PTB[mainCat(r)]||PTB.Hoofdgerecht;t=pp<b[0]?1:pp<b[1]?2:3}}catch(e){}
+ PTC.set(key,t);return t}
+function ptCat(r){const c=mainCat(r);return PTB[c]?c.toLowerCase().replace("ontbijt & lunch","ontbijt of lunch"):"hoofdgerecht"}
+// filter op de receptenpagina
+{const _m=rfMatch;rfMatch=function(r,f){if(!_m(r,f))return false;if(f.price&&f.price.length&&!f.price.includes(priceTier(r)))return false;return true}}
+{const _c=rfCount;rfCount=function(f){return _c(f)+(f.price&&f.price.length?1:0)}}
+function rfPTog(v){RFD.price=RFD.price||[];const i=RFD.price.indexOf(v);if(i>=0)RFD.price.splice(i,1);else RFD.price.push(v);const sc=$("rfsb")?$("rfsb").scrollTop:0;rfDraw();if($("rfsb"))$("rfsb").scrollTop=sc}
+{const _d=rfDraw;rfDraw=function(){_d();if(!optOn("prices"))return;const b=$("rfsb");if(!b)return;const f=RFD||{},on=v=>(f.price||[]).includes(v);
+  const h=[...b.querySelectorAll("h3")].find(x=>x.textContent=="Dieet");const sec=document.createElement("div");
+  sec.innerHTML=`<h3>Prijs</h3><div class="rfw">${[1,2,3].map(v=>`<button class="rfc rfp${on(v)?" on":""}" aria-pressed="${on(v)}" onclick="rfPTog(${v})">${on(v)?ico("a_check"):""}<b>${PTL[v]}</b> ${PTN[v]}</button>`).join("")}</div><p class="rfs-note" style="margin-top:6px">Per persoon en vergeleken met het soort gerecht: een voorgerecht van € 5 is duur, een hoofdgerecht van € 5 gemiddeld.</p>`;
+  if(h)b.insertBefore(sec,h);else b.appendChild(sec);
+  const n=recShown(RFD).length,go=document.querySelector("#rfsf .rfs-go");if(go)go.textContent=n?"Toon "+n+(n==1?" recept":" recepten"):"Geen recepten"}}
+{const _v=vRec2;vRec2=function(){let h=_v();if(RF.price&&RF.price.length){const ch=RF.price.slice().sort().map(v=>`<span class="rx-ach">${PTL[v]} ${PTN[v].toLowerCase()}</span>`).join("");h=h.replace('<button class="lnk" onclick="RF={types:[],labels:[],time:0,levels:[],diet:[]};draw()">',ch+'<button class="lnk" onclick="RF={types:[],labels:[],time:0,levels:[],diet:[],price:[]};draw()">')}return h}}
+// kaartje: prijsklasse achter de meta-regel
+{const _c=rCard2;rCard2=function(r){const h=_c(r),t=priceTier(r);if(!t)return h;const i=h.indexOf('<div class="rx-b"');if(i<0)return h;const j=h.indexOf("</p>",i);if(j<0)return h;
+  return h.slice(0,j)+` · <span class="rx-pt" title="${PTN[t]} voor een ${ptCat(r)}">${PTL[t]}</span>`+h.slice(j)}}
+// receptdetail: klasse bij de kostenregel
+{const _p=rdPrice;rdPrice=function(r){const h=_p(r),t=priceTier(r);if(!h||!t)return h;return h.replace('<u>Hoe komt dit?</u>',`<span class="rd-pt">${PTL[t]} · ${PTN[t].toLowerCase()} voor een ${ptCat(r)}</span> <u>Hoe komt dit?</u>`)}}
+// "Wat eten we?": filter op prijs
+{const _f=dsFltHtml;dsFltHtml=function(){let h=_f();if(!optOn("prices"))return h;const ch=(on,txt,js)=>`<button class="ds2c${on?" on":""}" onclick="${js}">${txt}</button>`;
+  const blk=`<span>Prijs</span><div>${[1,2,3].map(v=>ch(DS.fp==v,PTL[v]+" "+PTN[v].toLowerCase(),`DS.fp=DS.fp==${v}?0:${v};dsBody()`)).join("")}</div>`;
+  h=h.replace(/(<button class="lnk" onclick="DS\.ft=0;DS\.fl='';DS\.fty='';)/,"$1DS.fp=0;");
+  if(DS.fp&&!/Filters wissen/.test(h))h=h.replace(/<\/div>$/,`<button class="lnk" onclick="DS.ft=0;DS.fl='';DS.fty='';DS.fp=0;dsBody()">Filters wissen</button></div>`);
+  const k=h.lastIndexOf('<button class="lnk"');return k>0?h.slice(0,k)+blk+h.slice(k):h.replace(/<\/div>$/,blk+"</div>")}}
+{const _p=dsPass;dsPass=function(r){if(!_p(r))return false;if(DS.fp&&priceTier(r)!=DS.fp)return false;return true}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
