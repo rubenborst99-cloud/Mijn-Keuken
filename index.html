@@ -5920,14 +5920,16 @@ async function cjbLoad(force){if(CJBBUSY||!window.indexedDB)return;CJBBUSY=true;
   if(CJB&&typeof draw=="function")try{draw()}catch(e){}
  }finally{CJBBUSY=false}}
 // zoeken: alle woorden van het ingrediënt moeten in de productnaam staan; mediaan per eenheid van de best passende producten
-const CJBNO=/\b(saus|chips|snack|drank|siroop|smaak|aroma|kruidenmix|mix|reep|koek|ijs|thee|shampoo|voer)\b/;
-function cjbPrice(name){if(!CJB||!CJBI)return null;const key=String(name||"").toLowerCase().trim();if(CJBC.has(key))return CJBC.get(key);let res=null;
- const tk=cjbTok(key.replace(/\(.*?\)/g,"")).filter(w=>!/^\d/.test(w));if(tk.length){
-  const st=w=>w.replace(/(en|s)$/,"");let posting=null;
+const CJBNO=/(saus|chips|snack|drank|drink|siroop|smaak|aroma|kruidenmix|\bmix\b|reep|repen|koek|\bijs\b|thee|shampoo|voer|gedroogd|\bsap\b|smoothie|yoghurt|knijpfruit|\bbaby|snoep|candy|muesli|crunch|cake|taart|vla|pudding|spread|chutney|jam\b|confituur|limonade)/;
+const CJBBR=/^(ah|jumbo|plus|lidl|aldi|dirk|coop|spar|vomar|hoogvliet|picnic|bio|biologisch|biologische|huismerk|verse?|los|losse|tros|kilo|kg|stuks?|st|per|zak|net|bak|doos|pak|g|ml|l|x|excellent|basic|g.woon|everyday|1|2|3)$/;
+let CJBWANT="";
+function cjbPrice(name){if(!CJB||!CJBI)return null;const key=String(name||"").toLowerCase().trim()+(CJBWANT?"|"+CJBWANT:"");if(CJBC.has(key))return CJBC.get(key);let res=null;
+ const tk=cjbTok(key.split("|")[0].replace(/\(.*?\)/g,"")).filter(w=>!/^\d/.test(w));if(tk.length){
+  const st=w=>w.replace(/('s|en|s)$/,"").replace(/(aa|ee|oo|uu)(?=[^aeiou]$)/,m=>m[0]);let posting=null;
   for(const t of tk){const ids=new Set();for(const [w,a] of CJBI){if(w==t||st(w)==st(t)||(t.length>=4&&(w.endsWith(t)||w.endsWith(st(t)))))for(const i of a)ids.add(i)}posting=posting?new Set([...posting].filter(i=>ids.has(i))):ids;if(!posting.size)break}
-  if(posting&&posting.size){const sc=[];for(const i of posting){const r=CJB.p[i],w=cjbTok(r[0]);const extra=w.filter(x=>!tk.some(t=>x==t||st(x)==st(t)||x.endsWith(t))).length;const bad=CJBNO.test(r[0].toLowerCase())&&!tk.some(t=>CJBNO.test(t))?3:0;sc.push([extra+bad,i])}
+  if(posting&&posting.size){const sc=[];for(const i of posting){const r=CJB.p[i],w=cjbTok(r[0]);const extra=w.filter(x=>!CJBBR.test(x)&&!/^\d/.test(x)&&!tk.some(t=>x==t||st(x)==st(t)||x.endsWith(t))).length;const rl=r[0].toLowerCase(),bad=(CJBNO.test(rl)&&!CJBNO.test(key)?3:0)+(w.some(x=>tk.some(t=>x!=t&&st(x)!=st(t)&&x.startsWith(st(t))&&x.length>t.length+2))?2:0);sc.push([extra+bad,i])}
    sc.sort((a,b)=>a[0]-b[0]);const top=sc.filter(x=>x[0]<=sc[0][0]+1).slice(0,25).map(x=>CJB.p[x[1]]);
-   const cnt={};for(const r of top)if(r[3])cnt[r[3]]=(cnt[r[3]]||0)+1;const c=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
+   const cnt={};for(const r of top)if(r[3])cnt[r[3]]=(cnt[r[3]]||0)+1;const c=CJBWANT&&cnt[CJBWANT]?CJBWANT:Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
    if(c){const per=top.filter(r=>r[3]==c&&r[2]>0).map(r=>r[1]/r[2]);if(per.length){const qs=top.filter(r=>r[3]==c&&r[2]>0).map(r=>r[2]),q=Math.round(bnMed(qs))||(c=="n"?1:1000);res={p:Math.round(bnMed(per)*q*100)/100,q,c,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:per.length}}}
    if(!res)res={p:Math.round(bnMed(top.map(r=>r[1]))*100)/100,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:top.length}}}
  CJBC.set(key,res);return res}
@@ -5990,6 +5992,14 @@ costSrc=function(pr){if(!pr)return"";if(pr.store=="checkjebon")return"Checkjebon
 costRows=function(r,pers){const sc=(pers||r.pers||1)/(r.pers||1),R=[];
  for(const i of costMerge(r,sc)){const c=ingCost(i);R.push({n:i.name+(i.dup>1?" ("+i.dup+"×)":""),amt:c&&c.note?c.note:costAmt(i),v:c&&!c.skip?c.v:null,skip:!!(c&&c.skip),pack:!!(c&&c.pack),src:c&&c.pr?costSrc(c.pr):"",pp:c&&c.pr?c.pr:null})}
  return R};
+
+const STUKG=[[/banaan|bananen/,120],[/appel(?!moes|sap)/,160],[/peer|peren/,170],[/sinaasappel/,200],[/mandarijn/,70],[/citroen/,110],[/limoen/,60],[/avocado/,170],[/mango/,300],[/kiwi/,75],[/tomaat|tomaten/,100],[/cherrytoma/,15],[/paprika(?!poeder)/,170],[/courgette/,250],[/aubergine/,300],[/komkommer/,350],[/wortel|peen/,80],[/prei/,250],[/sjalot/,30],[/rode ui|uien|\bui\b/,110],[/knoflook/,50],[/aardappel/,150],[/zoete aardappel/,300],[/broccoli/,400],[/bloemkool/,600],[/venkel/,250],[/champignon/,20],[/ei(eren)?\b/,60],[/pompoen/,1200],[/biet/,150],[/radijs/,10],[/bosui|lente.?ui/,15],[/rode peper|chilipeper/,15]];
+function stukG(b){for(const [re,g] of STUKG)if(re.test(b))return g;return 0}
+{const _ic=ingCost;ingCost=function(i){const r=_ic(i);if(r&&r.pack&&r.pr&&i.a&&!String(i.u||"").trim()){const b=costBase(i.name),g=stukG(b),pr=r.pr;let q=pr.q,c=pr.c;if(!q){const pk=costPackQ(i.name);if(pk){q=pk.q;c=pk.c}}
+  if(g&&q&&c=="m")return{v:pr.p*(i.a*g)/q,exact:1,pr:{...pr,q,c},need:i.a*g,c:"m"};if(q&&c=="n")return{v:pr.p*i.a/q,exact:1,pr:{...pr,q,c},need:i.a,c:"n"}}return r}}
+
+// gewenste eenheid meegeven: stuks → liefst per stuk verkocht, gram → per gewicht, ml → per volume
+{const _ic=ingCost;ingCost=function(i){const u=String(i.u||"").toLowerCase().trim();CJBWANT=i.a?(!u||/^(stuk|stuks|st)$/.test(u)?"n":/^(g|gr|gram|kg|kilo)$/.test(u)?"m":/^(ml|l|liter|dl|cl)$/.test(u)?"v":""):"";try{return _ic(i)}finally{CJBWANT=""}}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
