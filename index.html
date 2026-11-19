@@ -6016,6 +6016,9 @@ function ingClean(line){const parts=String(line||"").split("|");let s=parts[0];c
 function ingCleanAll(){let ch=false;for(const r of S.recipes||[]){if(!Array.isArray(r.ing))continue;const n=r.ing.map(ingClean);if(n.some((x,i)=>x!==r.ing[i])){r.ing=n;ch=true}}return ch}
 {const _s=save;save=function(){try{ingCleanAll()}catch(e){}return _s.apply(this,arguments)}}
 setTimeout(()=>{try{if(ingCleanAll()){save();draw()}}catch(e){}},1500);
+// ---- recepten bewaren zoals ze geschreven zijn; omrekenen gebeurt pas in het weekmenu
+const toDpForce=toDp;toDp=function(r){return r};
+persGo=async function(){bkdlg.close();try{localStorage.setItem("kundo",JSON.stringify(S.recipes))}catch(e){}await autoBackup(true);for(const r of S.recipes)toDpForce(r);save();draw()};
 
 // ================= Online suggesties: voorraad achter de hand, afwisseling per site, nooit eigen recepten ertussen =================
 INSP.seen=(()=>{try{return JSON.parse(localStorage.getItem("kinspseen")||"[]")}catch(e){return[]}})();INSP.more=false;
