@@ -2335,7 +2335,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .tr2bt{font-size:.82rem!important;margin:10px 0 0!important}
 .rd-cost{color:var(--mute);font-size:.85em}
 @media(max-width:1023px){.lb2sum{flex-wrap:wrap}.lb2k{width:100%;justify-content:space-between}}
-</style><style id="bn">.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
+</style><style id="bn">.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
 #bndlg.bn{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
 #bndlg .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .bn-hd{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:var(--bg)}
@@ -6016,6 +6016,33 @@ function ingClean(line){const parts=String(line||"").split("|");let s=parts[0];c
 function ingCleanAll(){let ch=false;for(const r of S.recipes||[]){if(!Array.isArray(r.ing))continue;const n=r.ing.map(ingClean);if(n.some((x,i)=>x!==r.ing[i])){r.ing=n;ch=true}}return ch}
 {const _s=save;save=function(){try{ingCleanAll()}catch(e){}return _s.apply(this,arguments)}}
 setTimeout(()=>{try{if(ingCleanAll()){save();draw()}}catch(e){}},1500);
+
+// ================= Online suggesties: voorraad achter de hand, afwisseling per site, nooit eigen recepten ertussen =================
+INSP.seen=(()=>{try{return JSON.parse(localStorage.getItem("kinspseen")||"[]")}catch(e){return[]}})();INSP.more=false;
+function inspHost(r){try{return new URL(r.url).hostname.replace(/^www\./,"")}catch(e){return r.host||""}}
+function inspMix(items){const g={},order=[];for(const r of items){const h=inspHost(r);if(!g[h]){g[h]=[];order.push(h)}g[h].push(r)}const out=[];let k=0;while(out.length<items.length){for(const h of order)if(g[h][k])out.push(g[h][k]);k++}return out}
+inspSave=function(){try{localStorage.setItem("kinsp",JSON.stringify({t:Date.now(),items:INSP.items}));localStorage.setItem("kinspseen",JSON.stringify(INSP.seen.slice(-300)))}catch(e){}};
+async function inspFetch(q){const ex=S.recipes.map(r=>r.url).filter(Boolean).concat(INSP.items.map(r=>r.url),INSP.seen);const{data,error}=await sb.functions.invoke("recept-zoeken",{body:{q,n:12,exclude:ex.slice(-400)}});
+ if(error){const st=error.context&&error.context.status;throw new Error(st==404?"functie":"Functie gaf een fout"+(st?" ("+st+")":""))}if(!data||data.error)throw new Error(data&&data.error||"geen antwoord");
+ const out=[];for(const x of data.results||[]){if(INSP.seen.includes(x.url)||INSP.items.some(i=>i.url==x.url))continue;const r=inspParse(x);if(r&&r.name&&!dupOf(r)&&!INSP.items.some(i=>i.name==r.name)&&!out.some(i=>i.name==r.name))out.push(r)}return out}
+inspLoad=async function(force){if(!sb||!uid){INSP.state="off";return}if(INSP.state=="loading")return;
+ if(!force){try{const c=JSON.parse(localStorage.getItem("kinsp")||"null");if(c&&Date.now()-c.t<432e5&&c.items&&c.items.length){INSP.items=c.items.filter(r=>!dupOf(r));if(INSP.items.length){INSP.state="ok";if(INSP.items.length<6)inspMore();return}}}catch(e){}}
+ // "Andere": eerst uit de voorraad doorschuiven
+ if(force&&INSP.state=="ok"&&INSP.items.length>=6){INSP.items.slice(0,3).forEach(r=>INSP.seen.push(r.url));INSP.items=INSP.items.slice(3);INSP.note="";inspSave();draw();if(INSP.items.length<6)inspMore();return}
+ if(force)INSP.items.forEach(r=>INSP.seen.push(r.url));
+ INSP.state="loading";INSP.items=[];INSP.note="";if(S.tab=="home")draw();
+ try{let items=[];for(let k=0;k<3&&items.length<6;k++){try{const got=await inspFetch(inspQuery());for(const r of got)if(!items.some(i=>i.url==r.url||i.name==r.name))items.push(r);INSP.items=items}catch(e){if(!k)throw e}}
+  INSP.items=inspMix(items).slice(0,15);INSP.state=INSP.items.length?"ok":"empty";INSP.err=INSP.items.length?"":"niets nieuws gevonden"}
+ catch(e){INSP.state="err";INSP.err=/functie/.test(e.message)?"nofn":e.message}
+ inspSave();if(S.tab=="home")draw()};
+async function inspMore(){if(INSP.more||!sb||!uid)return;INSP.more=true;
+ try{for(let k=0;k<2&&INSP.items.length<9;k++){const got=await inspFetch(inspQuery());const before=INSP.items.length;INSP.items=INSP.items.slice(0,3).concat(inspMix(INSP.items.slice(3).concat(got)));if(INSP.items.length>before){inspSave();if(S.tab=="home")draw()}}}catch(e){}
+ INSP.more=false;if(S.tab=="home")draw()}
+inspAdd=function(i){const r=INSP.items[i];if(!r)return;const rec={...r,id:S.next++};delete rec.host;toDp(rec);S.recipes.push(rec);INSP.seen.push(r.url);INSP.items.splice(i,1);INSP.note=rec.name;inspSave();save();draw();if(INSP.items.length<6)inspMore()};
+// nooit eigen recepten tussen de online suggesties; zolang er nog gezocht wordt een "zoeken…"-kaartje
+inspPad=function(){return[]};
+{const _a=inspSection;inspSection=function(){let h=_a();if(INSP.state=="ok"&&INSP.items.length<3)h+=Array.from({length:3-INSP.items.length},()=>`<div class="card sk" style="padding:14px 12px;margin-bottom:8px"><span class="mute">${INSP.more?"Nieuwe suggestie zoeken…":"Even geen nieuwe suggesties. Tik op ↻ Andere."}</span></div>`).join("");return h}}
+{const _d=inspD;inspD=function(){let h=_d();if(INSP.state=="ok"&&INSP.items.length<3){const sk=Array.from({length:3-INSP.items.length},()=>`<div class="dic dic-sk"><div class="dib"><span class="mute">${INSP.more?"Nieuwe suggestie zoeken…":"Even geen nieuwe suggesties"}</span></div></div>`).join("");const i=h.lastIndexOf("</div>");h=h.replace(/(<div class="dg4[^"]*">)([\s\S]*?)(<\/div>\s*<\/div>\s*$)/,(m,a,b,c)=>a+b+sk+c)}return h}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
