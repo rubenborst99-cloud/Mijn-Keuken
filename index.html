@@ -2420,6 +2420,12 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .bn-pdf{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--t-peach);color:var(--green);font-weight:800;font-size:.9rem}
 .bn-pdf small{font-weight:400;font-size:.6rem;color:var(--mute);max-width:64px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-top:2px}
 .bn-pl{display:block;margin:8px auto 0;font-size:.88rem}
+.rd-prb{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}.rd-prb u{color:var(--green);font-weight:600;white-space:nowrap}
+.cs h2{font:600 1.35rem "Fraunces",serif;margin:0 0 4px}.cs-s{color:var(--mute);margin:0 0 14px;font-size:.92rem}
+.cs-l{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.cs-r{display:flex;align-items:center;gap:12px;padding:11px 14px;border-top:1px solid var(--line)}.cs-r:first-child{border-top:0}
+.cs-r>div{flex:1;min-width:0}.cs-r b{display:block;font-weight:600}.cs-r small{color:var(--mute);font-size:.8rem}.cs-r strong{flex:none}
+.cs h3{font:700 .95rem "DM Sans";margin:16px 0 4px}.cs-n{color:var(--mute);font-size:.88rem;margin:4px 0}.cs-n span{font-size:.82rem}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -5922,12 +5928,36 @@ function cjbPrice(name){if(!CJB||!CJBI)return null;const key=String(name||"").to
   if(posting&&posting.size){const sc=[];for(const i of posting){const r=CJB.p[i],w=cjbTok(r[0]);const extra=w.filter(x=>!tk.some(t=>x==t||st(x)==st(t)||x.endsWith(t))).length;const bad=CJBNO.test(r[0].toLowerCase())&&!tk.some(t=>CJBNO.test(t))?3:0;sc.push([extra+bad,i])}
    sc.sort((a,b)=>a[0]-b[0]);const top=sc.filter(x=>x[0]<=sc[0][0]+1).slice(0,25).map(x=>CJB.p[x[1]]);
    const cnt={};for(const r of top)if(r[3])cnt[r[3]]=(cnt[r[3]]||0)+1;const c=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
-   if(c){const per=top.filter(r=>r[3]==c&&r[2]>0).map(r=>r[1]/r[2]);if(per.length){const q=c=="n"?1:1000;res={p:Math.round(bnMed(per)*q*100)/100,q,c,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:per.length}}}
+   if(c){const per=top.filter(r=>r[3]==c&&r[2]>0).map(r=>r[1]/r[2]);if(per.length){const qs=top.filter(r=>r[3]==c&&r[2]>0).map(r=>r[2]),q=Math.round(bnMed(qs))||(c=="n"?1:1000);res={p:Math.round(bnMed(per)*q*100)/100,q,c,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:per.length}}}
    if(!res)res={p:Math.round(bnMed(top.map(r=>r[1]))*100)/100,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:top.length}}}
  CJBC.set(key,res);return res}
 // volgorde: eigen bonnen (mediaan) → startprijzen → Checkjebon
 {const _p=priceOf;priceOf=function(name){const x=_p(name);if(x)return x;return cjbPrice(name)}}
 setTimeout(()=>{try{if(optOn("prices"))cjbLoad()}catch(e){}},2500);
+
+// ---- kosten per ingrediënt: met bron, en "naar smaak" telt niet mee
+ingCost=function(i){const nm=String(i.name||"").toLowerCase().trim();if(!nm)return{skip:1};if(COST_SKIP.test(nm)||(!i.a&&/naar smaak|snufje|scheutje|beetje|optioneel|garnering/.test(nm)))return{skip:1};
+ const pr=priceOf(i.name);if(!pr)return null;let q=pr.q,c=pr.c;if(!q){const pk=packOf(i.name);if(pk){q=pk.q;c=pk.c}}
+ if(q&&c&&i.a){let need=null;try{need=conv(i,c)}catch(e){}if(need!=null&&need>0)return{v:pr.p*need/q,exact:!!pr.q,pr,need,c}}
+ return{v:pr.p,pack:1,pr}};
+function costSrc(pr){if(!pr)return"";if(pr.store=="checkjebon")return"Schatting via Checkjebon";if(pr.seed)return"Startprijs";return"Jullie bonnen"+(pr.med?" · mediaan van "+pr.med:"")}
+function costAmt(i){return i.a?(String(Math.round(i.a*100)/100).replace(".",",")+(i.u?" "+i.u:"")):""}
+function costRows(r,pers){const sc=(pers||r.pers||1)/(r.pers||1),R=[];
+ for(const l of r.ing||[]){let i;try{i=parse(String(l).split("|")[0])}catch(e){continue}if(!i||!i.name)continue;const ii={...i,a:(i.a||0)*sc},c=ingCost(ii);
+  R.push({n:i.name,amt:costAmt(ii),v:c&&!c.skip?c.v:null,skip:!!(c&&c.skip),pack:!!(c&&c.pack),src:c&&c.pr?costSrc(c.pr):"",pp:c&&c.pr?c.pr:null})}
+ return R}
+let COSTR=null;
+rdPrice=function(r){if(!optOn("prices"))return"";const c=recCost(r,RD.pers);if(!c.k)return"";COSTR=r;
+ const pp=c.tot/Math.max(1,RD.pers);return`<button class="rd-prb" onclick="costShow()" aria-label="Bekijk hoe de prijs is opgebouwd">≈ ${eur(c.tot)} · ${eur(pp)} p.p.${c.k<c.n?` <span class="rd-cost">(prijs van ${c.k} van ${c.n} ingrediënten)</span>`:""} <u>Hoe komt dit?</u></button>`};
+function costShow(){const r=COSTR;if(!r)return;const pers=RD.pers||r.pers||1,R=costRows(r,pers),tot=R.reduce((a,x)=>a+(x.v||0),0);
+ const priced=R.filter(x=>x.v!=null).sort((a,b)=>b.v-a.v),none=R.filter(x=>x.v==null&&!x.skip),skip=R.filter(x=>x.skip);
+ const row=x=>`<div class="cs-r"><div><b>${esc(capF(x.n))}</b><small>${x.amt?esc(x.amt)+" · ":""}${esc(x.src)}${x.pack?" · hele verpakking":""}${x.pp&&x.pp.q?" · "+eur(x.pp.p)+" per "+(x.pp.c=="n"?(x.pp.q==1?"stuk":x.pp.q+" stuks"):x.pp.q>=1000?(x.pp.q/1000+"").replace(".",",")+(x.pp.c=="v"?" l":" kg"):x.pp.q+(x.pp.c=="v"?" ml":" g")):""}</small></div><strong>${eur(x.v)}</strong></div>`;
+ const g=$("bkdlg");g.innerHTML=`<div class="cs"><h2>Zo is de prijs opgebouwd</h2><p class="cs-s">${esc(r.name)} · ${pers} ${pers==1?"persoon":"personen"} · totaal ≈ ${eur(tot)}</p>
+ <div class="cs-l">${priced.map(row).join("")}</div>
+ ${none.length?`<h3>Nog geen prijs</h3><p class="cs-n">${none.map(x=>esc(capF(x.n))).join(", ")}</p>`:""}
+ ${skip.length?`<h3>Telt niet mee</h3><p class="cs-n">${skip.map(x=>esc(capF(x.n))).join(", ")} <span>(heb je meestal al in huis)</span></p>`:""}
+ <p class="cs-n">"Hele verpakking": er staat geen hoeveelheid bij, of die kon niet worden omgerekend, dus telt één pak mee. Een bon van dit product maakt de prijs nauwkeuriger.</p>
+ <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button></div></div>`;g.showModal()}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
