@@ -5880,6 +5880,54 @@ bnOcr=async function(){if(!BN||!BN.files.length)return;BN.step="read";BN.prog="B
   const seen=new Set(),out=[];for(const t of texts){const cur=t.split("\n");for(const l of cur){const k=l.trim();if(k&&seen.has(k)&&!/statiegeld|^\d+\s?x/i.test(k))continue;out.push(l)}cur.forEach(l=>seen.add(l.trim()))}bnRead(out.join("\n"))
  }catch(err){console.warn(err);BN.step="add";BN.err="Bon lezen is niet gelukt. Is er internet? Je kunt ook de tekst van een digitale bon plakken.";bnDraw()}};
 {const _m=bnMatch;bnMatch=function(l){const o=_m(l);if(l.kg){o.q={q:1000,c:"m"}}return o}}
+// ---- prijs = mediaan van het afgelopen halfjaar (zelfde soort verpakking, per eenheid), anders de nieuwste
+function bnMed(a){a=a.slice().sort((x,y)=>x-y);const m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2}
+{const _p=priceOf;priceOf=function(name){const x=_p(name);if(!x||x.seed||!S.prices)return x;let rec=null;for(const k in S.prices){const r=S.prices[k];if(r&&r.h&&r.h.includes(x)){rec=r;break}}if(!rec)return x;
+ const top=rec.h[0],lim=new Date(top.d||Date.now()).getTime()-183*864e5,same=e=>top.q?(e.q&&e.c==top.c):!e.q;
+ const H=rec.h.filter(e=>same(e)&&e.p>0&&(!e.d||new Date(e.d).getTime()>=lim));if(H.length<2)return x;
+ const m=bnMed(H.map(e=>top.q?e.p/e.q:e.p));return{...top,p:Math.round((top.q?m*top.q:m)*100)/100,med:H.length}}}
+
+// ================= Prijzen van Checkjebon.nl (open data, MIT) als inschatting voor producten zonder eigen bonprijs =================
+const CJB_URL="https://raw.githubusercontent.com/supermarkt/checkjebon/main/data/supermarkets.json";
+let CJB=null,CJBI=null,CJBC=new Map(),CJBBUSY=false;
+function cjbDb(){return new Promise((ok,no)=>{const r=indexedDB.open("kookbuddy-prijzen",1);r.onupgradeneeded=()=>r.result.createObjectStore("d");r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+async function cjbGet(){try{const db=await cjbDb();return await new Promise(ok=>{const q=db.transaction("d").objectStore("d").get("p");q.onsuccess=()=>ok(q.result||null);q.onerror=()=>ok(null)})}catch(e){return null}}
+async function cjbPut(v){try{const db=await cjbDb();db.transaction("d","readwrite").objectStore("d").put(v,"p")}catch(e){}}
+// welke ketens: die van jullie bonnen, anders Jumbo + AH
+function cjbStores(){const m={"albert heijn":"ah","jumbo":"jumbo","lidl":"lidl","aldi":"aldi","plus":"plus","dirk":"dirk","coop":"coop","spar":"spar","vomar":"vomar","hoogvliet":"hoogvliet","picnic":"picnic","dekamarkt":"dekamarkt","jan linders":"janlinders"},s=new Set();
+ for(const r of S.receipts||[]){const c=m[String(r.store||"").toLowerCase()];if(c)s.add(c)}if(!s.size){s.add("jumbo");s.add("ah")}return[...s]}
+// grootte "500 g", "1,5 l", "6 stuks", "2 x 250 g" → {q,c}
+function cjbSize(s){s=String(s||"").toLowerCase().replace(",",".");let k=1;const mx=s.match(/(\d+)\s*x\s*/);if(mx){k=+mx[1];s=s.replace(mx[0],"")}
+ const m=s.match(/(\d+(?:\.\d+)?)\s*(kg|kilo|gram|gr|g|liter|ltr|l|cl|ml|stuks?|st|stk)\b/);if(!m){const n=s.match(/^(\d+)\s*(?:stuks?)?$/);return n?{q:+n[1]*k,c:"n"}:null}
+ let q=+m[1]*k;const u=m[2];if(u=="kg"||u=="kilo")return{q:q*1000,c:"m"};if(/^(gram|gr|g)$/.test(u))return{q,c:"m"};if(/^(liter|ltr|l)$/.test(u))return{q:q*1000,c:"v"};if(u=="cl")return{q:q*10,c:"v"};if(u=="ml")return{q,c:"v"};return{q,c:"n"}}
+function cjbTok(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g," ").split(" ").filter(w=>w.length>=2)}
+// ruwe data (tolerant voor veldnamen) → compact [naam, prijs, q, c]
+function cjbPack(raw,stores){const out=[];const arr=Array.isArray(raw)?raw:(raw&&(raw.supermarkets||raw.data))||Object.entries(raw||{}).map(([k,v])=>Array.isArray(v)?{n:k,d:v}:{n:k,...v});
+ for(const sm of arr){if(!sm||typeof sm!="object")continue;const code=String(sm.n||sm.code||sm.c||sm.name||"").toLowerCase().replace(/[^a-z]/g,"");
+  if(!stores.some(s=>code==s||code.startsWith(s)))continue;const P=sm.d||sm.products||Object.values(sm).find(v=>Array.isArray(v)&&v.length&&typeof v[0]=="object")||[];
+  for(const p of P){if(!p)continue;const n=p.n||p.name||p.title,pr=+(p.p??p.price),sz=cjbSize(p.s||p.size||p.amount||n);if(!n||!(pr>0)||pr>200)continue;out.push([String(n),Math.round(pr*100)/100,sz?sz.q:0,sz?sz.c:""])}}
+ return out}
+function cjbIndex(){CJBI=new Map();CJB.p.forEach((r,i)=>{for(const t of new Set(cjbTok(r[0]))){let a=CJBI.get(t);if(!a)CJBI.set(t,a=[]);a.push(i)}})}
+async function cjbLoad(force){if(CJBBUSY||!window.indexedDB)return;CJBBUSY=true;const stores=cjbStores();
+ try{let v=await cjbGet();if(v&&v.p&&v.p.length){CJB=v;cjbIndex();CJBC.clear()}
+  const old=!v||Date.now()-v.t>7*864e5||String(v.s)!=String(stores);if(force||old){try{const r=await fetch(CJB_URL,{cache:"no-cache"});if(r.ok){const p=cjbPack(await r.json(),stores);if(p.length>200){CJB={t:Date.now(),s:stores,p};cjbIndex();CJBC.clear();cjbPut(CJB)}}}catch(e){}}
+  if(CJB&&typeof draw=="function")try{draw()}catch(e){}
+ }finally{CJBBUSY=false}}
+// zoeken: alle woorden van het ingrediënt moeten in de productnaam staan; mediaan per eenheid van de best passende producten
+const CJBNO=/\b(saus|chips|snack|drank|siroop|smaak|aroma|kruidenmix|mix|reep|koek|ijs|thee|shampoo|voer)\b/;
+function cjbPrice(name){if(!CJB||!CJBI)return null;const key=String(name||"").toLowerCase().trim();if(CJBC.has(key))return CJBC.get(key);let res=null;
+ const tk=cjbTok(key.replace(/\(.*?\)/g,"")).filter(w=>!/^\d/.test(w));if(tk.length){
+  const st=w=>w.replace(/(en|s)$/,"");let posting=null;
+  for(const t of tk){const ids=new Set();for(const [w,a] of CJBI){if(w==t||st(w)==st(t)||(t.length>=4&&(w.endsWith(t)||w.endsWith(st(t)))))for(const i of a)ids.add(i)}posting=posting?new Set([...posting].filter(i=>ids.has(i))):ids;if(!posting.size)break}
+  if(posting&&posting.size){const sc=[];for(const i of posting){const r=CJB.p[i],w=cjbTok(r[0]);const extra=w.filter(x=>!tk.some(t=>x==t||st(x)==st(t)||x.endsWith(t))).length;const bad=CJBNO.test(r[0].toLowerCase())&&!tk.some(t=>CJBNO.test(t))?3:0;sc.push([extra+bad,i])}
+   sc.sort((a,b)=>a[0]-b[0]);const top=sc.filter(x=>x[0]<=sc[0][0]+1).slice(0,25).map(x=>CJB.p[x[1]]);
+   const cnt={};for(const r of top)if(r[3])cnt[r[3]]=(cnt[r[3]]||0)+1;const c=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
+   if(c){const per=top.filter(r=>r[3]==c&&r[2]>0).map(r=>r[1]/r[2]);if(per.length){const q=c=="n"?1:1000;res={p:Math.round(bnMed(per)*q*100)/100,q,c,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:per.length}}}
+   if(!res)res={p:Math.round(bnMed(top.map(r=>r[1]))*100)/100,store:"checkjebon",d:new Date(CJB.t).toISOString(),cjb:top.length}}}
+ CJBC.set(key,res);return res}
+// volgorde: eigen bonnen (mediaan) → startprijzen → Checkjebon
+{const _p=priceOf;priceOf=function(name){const x=_p(name);if(x)return x;return cjbPrice(name)}}
+setTimeout(()=>{try{if(optOn("prices"))cjbLoad()}catch(e){}},2500);
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
