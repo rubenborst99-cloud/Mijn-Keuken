@@ -5958,6 +5958,8 @@ function costShow(){const r=COSTR;if(!r)return;const pers=RD.pers||r.pers||1,R=c
  ${skip.length?`<h3>Telt niet mee</h3><p class="cs-n">${skip.map(x=>esc(capF(x.n))).join(", ")} <span>(heb je meestal al in huis)</span></p>`:""}
  <p class="cs-n">"Hele verpakking": er staat geen hoeveelheid bij, of die kon niet worden omgerekend, dus telt één pak mee. Een bon van dit product maakt de prijs nauwkeuriger.</p>
  <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn ghost" onclick="bkdlg.close()">Sluiten</button></div></div>`;g.showModal()}
+// ---- receptenlijst: recept zoals het geschreven is; alleen vanuit het weekmenu (pers meegegeven) omrekenen
+{const _o=rdOpen;rdOpen=function(id,pers){const r=S.recipes.find(x=>x.id==id);return _o(id,pers||(r&&+r.pers)||dp())}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
