@@ -6069,7 +6069,7 @@ async function leftCancel(rid){lpSet(lpGet().filter(x=>x.rid!=rid));if(sb&&uid)t
 function leftSched(rid){const r=S.recipes.find(x=>x.id==rid);if(!r)return;const at=Date.now()+60*60e3;
  lpSet(lpGet().filter(x=>x.rid!=rid).concat([{rid,at,name:r.name,by:uid||"local"}]));
  if(PUSH.on&&pushLeftOn()&&sb&&uid){(async()=>{try{await sb.from("push_herinneringen").delete().eq("tag","left-"+rid).eq("sent",false);
-  await sb.from("push_herinneringen").insert({send_at:new Date(at).toISOString(),title:"Is er wat overgebleven?",body:"Van de "+r.name.toLowerCase()+". Tik om het in te vullen.",url:"./?restjes="+rid,tag:"left-"+rid})}catch(e){}})()}}
+  await sb.from("push_herinneringen").insert({send_at:new Date(at).toISOString(),title:"Is er nog wat over van de "+r.name.toLowerCase()+"?",body:"Tik om het in te vullen.",url:"./?restjes="+rid,tag:"left-"+rid})}catch(e){}})()}}
 {const _p=ldPor;ldPor=function(n){if(LD)LD.later=false;return _p(n)}}
 {const _o=leftOpen;leftOpen=function(){const only=!!(LQ&&LQ.only);_o();if(only&&LD){LD.only=true;LD.left=true;leftDraw()}}}
 {const _d=leftDraw;leftDraw=function(){_d();const d=$("ldlg");if(!LD)return;
