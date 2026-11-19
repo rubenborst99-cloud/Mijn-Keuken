@@ -6001,6 +6001,22 @@ function stukG(b){for(const [re,g] of STUKG)if(re.test(b))return g;return 0}
 // gewenste eenheid meegeven: stuks → liefst per stuk verkocht, gram → per gewicht, ml → per volume
 {const _ic=ingCost;ingCost=function(i){const u=String(i.u||"").toLowerCase().trim();CJBWANT=i.a?(!u||/^(stuk|stuks|st)$/.test(u)?"n":/^(g|gr|gram|kg|kilo)$/.test(u)?"m":/^(ml|l|liter|dl|cl)$/.test(u)?"v":""):"";try{return _ic(i)}finally{CJBWANT=""}}}
 
+// ================= Ingrediënten opschonen: één ingrediënt per regel, zonder maat-woorden, haakjes, "of …" en bereidingsnotities =================
+const ICSIZE=/\b(extra ?grote|grote|groot|kleine|klein|kleintje|middelgrote|middelgroot|middel|flinke|flink|ruime|ruim|royale|stevige|kleinere|grotere|halfgrote)\b\s*/gi;
+const ICPREP=/,\s*(?:(?:heel |zeer |iets )?(?:fijn|grof|dun|dik)\s*)?(?:gesnipperd|gehakt|gesneden|fijngehakt|fijngesneden|geraspt|uitgeperst|geperst|geschild|ontpit|ontdooid|gewassen|afgespoeld|uitgelekt|gesmolten|zacht(?:e)?|op kamertemperatuur|gehalveerd|in (?:blokjes|plakjes|ringen|ringetjes|reepjes|stukjes|stukken|partjes|kwarten|halve maantjes|de lengte\b.*)|in stukjes gesneden|schoongemaakt|verkruimeld|gepeld|in plakken|in partjes|in de vorm|gekookt|geroosterd|gebakken|koud|warm|lauw|vers gemalen|versgemalen|afgegoten)\b.*$/i;
+function ingClean(line){const parts=String(line||"").split("|");let s=parts[0];const o=s;
+ s=s.replace(/\s*\([^)]*\)?/g," ").replace(/\s*\[[^\]]*\]/g," ");
+ s=s.replace(ICPREP,"");
+ s=s.replace(/([A-Za-zÀ-ÿ][^,]*?)\s+(?:en\/of|of|or)\s+[^,]*/,"$1");
+ s=s.replace(ICSIZE,"");
+ s=s.replace(/\s*,\s*$/,"").replace(/\s{2,}/g," ").trim();
+ if(!/[A-Za-zÀ-ÿ]/.test(s))return line;
+ // eerste letter van de naam weer met hoofdletter als het origineel dat had
+ parts[0]=s;return parts.join("|")}
+function ingCleanAll(){let ch=false;for(const r of S.recipes||[]){if(!Array.isArray(r.ing))continue;const n=r.ing.map(ingClean);if(n.some((x,i)=>x!==r.ing[i])){r.ing=n;ch=true}}return ch}
+{const _s=save;save=function(){try{ingCleanAll()}catch(e){}return _s.apply(this,arguments)}}
+setTimeout(()=>{try{if(ingCleanAll()){save();draw()}}catch(e){}},1500);
+
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
  try{const{error}=await sb.from("huishouden").upsert(hhRow(S,bkPre()+day));if(error)return false;try{localStorage.setItem("kbk",day)}catch(e){}
