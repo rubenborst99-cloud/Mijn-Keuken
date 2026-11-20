@@ -2441,6 +2441,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .agv-af{grid-column:1/-1;margin-top:10px;background:var(--t-beige);border-radius:14px;padding:12px}
 .agv-af p{margin:0 0 8px;font-weight:600;font-size:.9rem}
 .agv-afc{display:flex;flex-wrap:wrap;gap:6px}.agv-afc .ds2c small{font-weight:400;opacity:.75;font-size:.75rem}
+.agv-n{margin:8px 0 0!important;font-weight:400!important;color:var(--mute);font-size:.84rem!important}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -6189,6 +6190,19 @@ const AGV={
   {k:"vegaburger",n:"Vegaburger",m:12,ing:[[1,"","vegaburger","vegaburgers"]],st:["Bak de vegaburgers in een scheutje olie in ± 4 minuten per kant goudbruin."]},
   {k:"vegaschnitzel",n:"Vegaschnitzel",m:12,ing:[[1,"","vegetarische schnitzel","vegetarische schnitzels"]],st:["Bak de schnitzels in een scheutje olie in ± 3 minuten per kant goudbruin."]}]}};
 const AGVK=["a","g","v"];
+// ---- salades: eigen recepten, vrienden en Chef Pieper
+const AGVSAL=/(salade|salad\b|slaatje|coleslaw|tabouleh|caprese|panzanella|fattoush)/i;
+function agvIsSal(r){if(!r||r.agv)return false;if(AGVSAL.test(r.name||""))return true;try{return rLabels(r).some(l=>/salade/i.test(l))}catch(e){return false}}
+function agvSalOwn(){return dedupR(S.recipes||[]).filter(agvIsSal)}
+function agvSalVr(){const out=[];if(typeof VRON=="undefined"||!VRON)return out;for(const f of vrFriends()){const v=DSV[f.uid];if(Array.isArray(v))v.forEach(r=>{if(agvIsSal(r))out.push({f,r})})}return out}
+function agvSalBusy(){if(typeof VRON=="undefined"||!VRON)return false;return vrFriends().some(f=>DSV[f.uid]=="laden"||DSV[f.uid]==null)}
+function agvSalLoad(){if(typeof VRON=="undefined"||!VRON||!sb)return;let go=false;for(const f of vrFriends()){if(DSV[f.uid]!=null)continue;go=true;DSV[f.uid]="laden";
+  sb.rpc("vriend_recepten",{p_uid:f.uid}).then(({data,error})=>{DSV[f.uid]=error?{err:error.message}:(Array.isArray(data)?data:[]);if(DS&&DS.mode=="agv")dsBody()}).catch(e=>{DSV[f.uid]={err:String(e)};if(DS&&DS.mode=="agv")dsBody()})}}
+function agvSalad(key){let r=null,by="";
+ if(key.startsWith("own:"))r=(S.recipes||[]).find(x=>String(x.id)==key.slice(4));
+ else if(key.startsWith("vr:")){const[,u,id]=key.split(":"),v=DSV[u];if(Array.isArray(v))r=v.find(x=>String(x.id)==id);const f=vrFriends().find(x=>x.uid==u);by=f?f.naam:""}
+ if(!r)return null;const st=Array.isArray(r.steps)?r.steps:String(r.steps||"").split("\n").map(x=>x.trim()).filter(Boolean);
+ return{k:"salade",n:capF(r.name),m:+r.time||15,ing:(r.ing||[]).map(String),pers:+r.pers||1,st,by}}
 // diepvries-aardappel voor de airfryer: [sleutel, naam, minuten, ingrediënt per persoon]
 const AGVAF=[["friet","Friet",15,[200,"g","diepvriesfriet"]],["wedges","Wedges",20,[200,"g","aardappelwedges"]],["partjes","Aardappelpartjes",20,[200,"g","aardappelpartjes"]],["schijfjes","Aardappelschijfjes",18,[200,"g","aardappelschijfjes"]],["rosti","Rösti",15,[2,"","röstirondje","röstirondjes"]],["kroketjes","Aardappelkroketjes",15,[8,"","aardappelkroketje","aardappelkroketjes"]],["hashbrown","Hash browns",15,[2,"","hash brown","hash browns"]],["duchesse","Pommes duchesse",15,[5,"","pommes duchesse","pommes duchesse"]],["zoetfriet","Zoete-aardappelfriet",18,[200,"g","zoete-aardappelfriet"]],["krieltjes","Krieltjes uit de vriezer",20,[200,"g","diepvrieskrieltjes"]]];
 const AGVAFRE=/(friet|patat|frites|wedges|r[öo]sti|kroketje|aardappel ?(partje|schijf|wedge)|hash ?brown|duchesse|diepvries ?kriel|aardappelgratin diepvries)/i;
@@ -6198,26 +6212,26 @@ function agvAf(key){let nm,m=15,it;
  if(!nm){const a=AGVAF.find(z=>z[0]==key)||AGVAF[0];nm=a[1];m=a[2];it=a[3]}
  const lc=nm.charAt(0).toLowerCase()+nm.slice(1);
  return{k:"airfryer",n:nm+" uit de airfryer",m:m+5,ing:[it],st:["Verwarm de airfryer voor op 200 °C.","Bak de "+lc+" in ± "+m+" minuten goudbruin en gaar. Schud halverwege.","Bestrooi met wat zout."]}}
-function agvItem(c,k,P){if(c=="a"&&k=="airfryer")return agvAf(P&&P.af);return AGV[c].items.find(x=>x.k==k)}
+function agvItem(c,k,P){if(c=="a"&&k=="airfryer")return agvAf(P&&P.af);if(c=="g"&&k=="salade"&&P&&P.gs&&P.gs!="basis"){const x=agvSalad(P.gs);if(x)return x}return AGV[c].items.find(x=>x.k==k)}
 function agvQty(a,u,n){let x=a*n;if(!u){x=Math.round(x*2)/2;if(x<.5)x=.5}else if(/^(g|ml)$/.test(u))x=x>=100?Math.round(x/10)*10:Math.round(x/5)*5;else x=Math.round(x*2)/2;return x}
 function agvLine(it,n){const[a,u,nm,pl]=it,x=agvQty(a,u,n),num=String(x).replace(".",",");return(num+" "+(u?u+" ":"")+(!u&&x>1&&pl?pl:nm)).trim()}
-function agvName(P){const A=P.a&&agvItem("a",P.a,P),G=P.g&&agvItem("g",P.g),V=P.v&&agvItem("v",P.v),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+function agvName(P){const A=P.a&&agvItem("a",P.a,P),G=P.g&&agvItem("g",P.g,P),V=P.v&&agvItem("v",P.v,P),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
  const rest=[A,G].filter(Boolean).map(x=>lc(x.n));if(V)return V.n+(rest.length?" met "+rest.join(" en "):"");return rest.length?capF(rest.join(" met ")):"AGV"}
 function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c],P)}).filter(p=>p&&p.x);if(!parts.length)return null;
  const T=Math.max(...parts.map(p=>p.x.m)),ord=parts.slice().sort((a,b)=>b.x.m-a.x.m);
- const ing=[];for(const p of parts)for(const it of p.x.ing){const l=agvLine(it,n);if(!ing.includes(l))ing.push(l)}
+ const ing=[];for(const p of parts)for(const it of p.x.ing){const l=typeof it=="string"?scaleLine(it,n/(p.x.pers||n)):agvLine(it,n);if(!ing.includes(l))ing.push(l)}
  const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
  let plan="";if(ord.length>1){const by={};for(const p of ord.slice(1)){const d=T-p.x.m;(by[d]=by[d]||[]).push("de "+lc(p.x.n))}
   const ds=Object.keys(by).map(Number).sort((x,y)=>x-y);plan="Zo is alles tegelijk klaar: begin met de "+lc(ord[0].x.n)+"."+ds.map((d,i)=>(i?",":"")+(d>0?" "+(i?"na":"Na")+" "+d+" minuten "+(i?"":"volg"+(by[d].length>1?"en":"t")+" "):" "+(i?"tegelijk":"Tegelijk")+" ")+by[d].join(" en ")).join("")+".";}
  const steps=[].concat(...ord.map(p=>p.x.st));
- return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||"",af:P.a=="airfryer"?(P.af||"friet"):""}}}
+ return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||"",af:P.a=="airfryer"?(P.af||"friet"):"",gs:P.g=="salade"?(P.gs||"basis"):""}}}
 // ---- tegel + scherm in "Wat eten we?"
 {const _t=dsTiles;dsTiles=function(){_t();const g=document.querySelector("#dsM .ds2ts");if(!g)return;
   const b=document.createElement("div");b.innerHTML=`<button class="ds2t${DS.mode=="agv"?" on":""}" style="--tb:var(--t-green);--tf:var(--sagefg)" onclick="dsMode('agv')" aria-pressed="${DS.mode=="agv"}"><span class="ds2ti">${ico("plate")}</span><b>AGV</b><small>Aardappel, groente, vlees</small></button>`;
   const first=g.firstElementChild;g.insertBefore(b.firstElementChild,first?first.nextSibling:null);const n=g.children.length;g.style.gridTemplateColumns="";g.classList.toggle("ds2t4",n>=4);g.style.setProperty("--n",n)}}
 {const _b=dsBody;dsBody=function(){if(DS.mode!="agv")return _b();DS.agv=DS.agv||{a:"",g:"",v:""};document.getElementById("dsP").innerHTML=agvHtml()}}
 function agvHtml(){const P=DS.agv,dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),n=dp();
- const sec=c=>{const C=AGV[c];return`<div class="agv-s"><h4 class="ds2lh">${ico(C.ic)} ${C.t}</h4><div class="agv-g" role="radiogroup" aria-label="${C.t}">${C.items.map(x=>`<button class="agv-c${P[c]==x.k?" on":""}" role="radio" aria-checked="${P[c]==x.k}" onclick="agvPick('${c}','${x.k}')"><b>${esc(x.n)}</b><small>± ${x.m} min</small></button>`).join("")}<button class="agv-c agv-no${!P[c]?" on":""}" role="radio" aria-checked="${!P[c]}" onclick="agvPick('${c}','')"><b>Geen</b><small>Sla over</small></button></div>${c=="a"&&P.a=="airfryer"?agvAfHtml():""}</div>`};
+ const sec=c=>{const C=AGV[c];return`<div class="agv-s"><h4 class="ds2lh">${ico(C.ic)} ${C.t}</h4><div class="agv-g" role="radiogroup" aria-label="${C.t}">${C.items.map(x=>`<button class="agv-c${P[c]==x.k?" on":""}" role="radio" aria-checked="${P[c]==x.k}" onclick="agvPick('${c}','${x.k}')"><b>${esc(x.n)}</b><small>± ${x.m} min</small></button>`).join("")}<button class="agv-c agv-no${!P[c]?" on":""}" role="radio" aria-checked="${!P[c]}" onclick="agvPick('${c}','')"><b>Geen</b><small>Sla over</small></button></div>${c=="a"&&P.a=="airfryer"?agvAfHtml():""}${c=="g"&&P.g=="salade"?agvSalHtml():""}</div>`};
  const r=agvBuild(P,n),cnt=AGVK.filter(c=>P[c]).length;let pv="";
  if(r&&cnt>=2){let pr="";if(optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr=" · ≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
   pv=`<div class="agv-p"><span class="agv-pi">${ico("plate")}</span><div><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr}</small><small>${r.ing.length} ingrediënten · de bereiding begint met wat het langst duurt</small></div></div>`}
@@ -6225,11 +6239,15 @@ function agvHtml(){const P=DS.agv,dn=pdk(DS.day).toLocaleDateString("nl-NL",{wee
 function agvAfHtml(){const P=DS.agv,St=agvStockAf();if(!P.af)P.af=St.length?"st:"+St[0].id:"friet";
  const b=(k,t,sub)=>`<button class="ds2c${P.af==k?" on":""}" onclick="DS.agv.af='${k}';agvPick('a','airfryer')" aria-pressed="${P.af==k}">${esc(t)}${sub?` <small>${sub}</small>`:""}</button>`;
  return`<div class="agv-af"><p>Wat ligt er in de vriezer?</p><div class="agv-afc">${St.map(x=>b("st:"+x.id,capF(x.name),"in je voorraad")).join("")}${AGVAF.filter(a=>!St.some(x=>new RegExp(a[0].slice(0,5),"i").test(x.name))).map(a=>b(a[0],a[1])).join("")}</div></div>`}
+function agvSalHtml(){const P=DS.agv;agvSalLoad();const O=agvSalOwn(),V=agvSalVr(),busy=agvSalBusy();if(!P.gs)P.gs="basis";
+ if(P.gs!="basis"&&!agvSalad(P.gs)&&!busy)P.gs="basis";
+ const b=(k,t,sub)=>`<button class="ds2c${P.gs==k?" on":""}" onclick="DS.agv.gs=${esc(JSON.stringify(k))};agvPick('g','salade')" aria-pressed="${P.gs==k}">${esc(t)}${sub?` <small>${esc(sub)}</small>`:""}</button>`;
+ return`<div class="agv-af"><p>Welke salade?</p><div class="agv-afc">${b("basis","Simpele frisse salade","sla, komkommer, tomaat")}${O.map(r=>b("own:"+r.id,capF(r.name),"van jullie")).join("")}${V.map(x=>b("vr:"+x.f.uid+":"+x.r.id,capF(x.r.name),"van "+x.f.naam)).join("")}</div>${busy?`<p class="agv-n">Salades van vrienden laden…</p>`:!O.length&&!V.length?`<p class="agv-n">Zodra jij, je vrienden of Chef Pieper een salade opslaan, kun je die hier kiezen.</p>`:""}</div>`}
 function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.scrollTop:0;dsBody();dsCta();if(b)b.scrollTop=y}
 {const _c=dsCta;dsCta=function(){if(DS.mode!="agv")return _c();const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),cnt=AGVK.filter(c=>DS.agv&&DS.agv[c]).length,ok=cnt>=2;
   document.getElementById("dsC").innerHTML=`<button class="ds2cancel" onclick="dsClose()">Annuleren</button><button onclick="dsGo()"${ok?"":" disabled"}>${ok?ico("check")+" Zet AGV op "+dn:"Kies er minstens twee"}</button>`}}
 {const _g=dsGo;dsGo=function(){if(DS.mode=="agv"){const P=DS.agv||{};if(AGVK.filter(c=>P[c]).length<2)return;const n=dp(),r=agvBuild(P,n);
-   const af=P.a=="airfryer"?(P.af||"friet"):"";let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||"")&&(x.agv.af||"")==af);
+   const af=P.a=="airfryer"?(P.af||"friet"):"",gs=P.g=="salade"?(P.gs||"basis"):"";let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||"")&&(x.agv.af||"")==af&&(x.agv.gs||(x.agv.g=="salade"?"basis":""))==gs);
    if(!mine){mine={...r,id:S.next++};S.recipes.push(mine)}else{Object.assign(mine,{...r,id:mine.id,pers:mine.pers})}
    DS.mode="rec";DS.sel=mine.id;DS.selF=null}
   return _g.apply(this,arguments)}}
