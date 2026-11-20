@@ -2438,6 +2438,9 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .agv-p b{display:block;font:600 1.08rem "Fraunces",serif;margin-bottom:2px}.agv-p small{display:block;color:var(--ink);opacity:.8;font-size:.84rem;line-height:1.4}
 .agv-pi{width:42px;height:42px;border-radius:12px;background:var(--card);color:var(--sagefg);display:grid;place-items:center;flex:none}.agv-pi .ic{width:20px;height:20px}
 @media(min-width:1024px){.agv-g{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+.agv-af{grid-column:1/-1;margin-top:10px;background:var(--t-beige);border-radius:14px;padding:12px}
+.agv-af p{margin:0 0 8px;font-weight:600;font-size:.9rem}
+.agv-afc{display:flex;flex-wrap:wrap;gap:6px}.agv-afc .ds2c small{font-weight:400;opacity:.75;font-size:.75rem}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -6157,7 +6160,7 @@ const AGV={
   {k:"krieltjes",n:"Krieltjes uit de oven",m:35,ing:[[250,"g","krieltjes"],[1,"el","olijfolie"],[0.5,"tl","gedroogde rozemarijn"]],st:["Verwarm de oven voor op 200 °C.","Halveer de krieltjes en meng ze met de olie, rozemarijn, zout en peper.","Rooster ze in ± 30 minuten goudbruin en gaar. Schep halverwege om."]},
   {k:"gebakken",n:"Gebakken aardappelen",m:30,ing:[[250,"g","vastkokende aardappelen"],[15,"g","roomboter"]],st:["Kook de aardappelen in de schil in ± 15 minuten bijna gaar. Giet af en laat iets afkoelen.","Snijd ze in plakken en bak ze in de boter in ± 10 minuten goudbruin.","Breng op smaak met zout en peper."]},
   {k:"partjes",n:"Aardappelpartjes",m:40,ing:[[250,"g","vastkokende aardappelen"],[1,"el","olijfolie"],[0.5,"tl","paprikapoeder"]],st:["Verwarm de oven voor op 210 °C.","Snijd de aardappelen in partjes en meng met olie, paprikapoeder, zout en peper.","Rooster ze in ± 35 minuten krokant. Schep halverwege om."]},
-  {k:"friet",n:"Friet uit de airfryer",m:20,ing:[[200,"g","diepvriesfriet"]],st:["Verwarm de airfryer voor op 200 °C.","Bak de friet in ± 15 minuten goudbruin. Schud halverwege.","Bestrooi met wat zout."]},
+  {k:"airfryer",n:"Aardappel uit de airfryer",m:20,ing:[],st:[],af:1},
   {k:"gratin",n:"Aardappelgratin",m:55,ing:[[250,"g","vastkokende aardappelen"],[75,"ml","kookroom"],[25,"g","geraspte kaas"]],st:["Verwarm de oven voor op 190 °C.","Schaaf of snijd de aardappelen in dunne plakjes en leg ze dakpansgewijs in een ingevette ovenschaal.","Giet de kookroom erover, breng op smaak met zout en peper en strooi de kaas erover.","Bak in ± 45 minuten gaar en goudbruin."]},
   {k:"zoet",n:"Zoete aardappel uit de oven",m:35,ing:[[250,"g","zoete aardappel"],[1,"el","olijfolie"]],st:["Verwarm de oven voor op 200 °C.","Snijd de zoete aardappel in blokjes en meng met olie, zout en peper.","Rooster ze in ± 30 minuten gaar."]}]},
  g:{t:"Groente",ic:"a_leaf",items:[
@@ -6186,35 +6189,47 @@ const AGV={
   {k:"vegaburger",n:"Vegaburger",m:12,ing:[[1,"","vegaburger","vegaburgers"]],st:["Bak de vegaburgers in een scheutje olie in ± 4 minuten per kant goudbruin."]},
   {k:"vegaschnitzel",n:"Vegaschnitzel",m:12,ing:[[1,"","vegetarische schnitzel","vegetarische schnitzels"]],st:["Bak de schnitzels in een scheutje olie in ± 3 minuten per kant goudbruin."]}]}};
 const AGVK=["a","g","v"];
-function agvItem(c,k){return AGV[c].items.find(x=>x.k==k)}
+// diepvries-aardappel voor de airfryer: [sleutel, naam, minuten, ingrediënt per persoon]
+const AGVAF=[["friet","Friet",15,[200,"g","diepvriesfriet"]],["wedges","Wedges",20,[200,"g","aardappelwedges"]],["partjes","Aardappelpartjes",20,[200,"g","aardappelpartjes"]],["schijfjes","Aardappelschijfjes",18,[200,"g","aardappelschijfjes"]],["rosti","Rösti",15,[2,"","röstirondje","röstirondjes"]],["kroketjes","Aardappelkroketjes",15,[8,"","aardappelkroketje","aardappelkroketjes"]],["hashbrown","Hash browns",15,[2,"","hash brown","hash browns"]],["duchesse","Pommes duchesse",15,[5,"","pommes duchesse","pommes duchesse"]],["zoetfriet","Zoete-aardappelfriet",18,[200,"g","zoete-aardappelfriet"]],["krieltjes","Krieltjes uit de vriezer",20,[200,"g","diepvrieskrieltjes"]]];
+const AGVAFRE=/(friet|patat|frites|wedges|r[öo]sti|kroketje|aardappel ?(partje|schijf|wedge)|hash ?brown|duchesse|diepvries ?kriel|aardappelgratin diepvries)/i;
+function agvStockAf(){return(S.stock||[]).filter(x=>x&&x.name&&AGVAFRE.test(x.name)&&!(x.q!=null&&x.q<=0))}
+function agvAf(key){let nm,m=15,it;
+ if(String(key||"").startsWith("st:")){const x=(S.stock||[]).find(y=>String(y.id)==key.slice(3));if(x){nm=capF(x.name);const ref=AGVAF.find(a=>new RegExp(a[0].slice(0,5),"i").test(x.name)||a[3][2].toLowerCase().includes(x.name.toLowerCase().split(" ")[0]));m=ref?ref[2]:15;it=ref&&!ref[3][1]?[ref[3][0],"",x.name.toLowerCase(),x.name.toLowerCase()]:[200,"g",x.name.toLowerCase()]}}
+ if(!nm){const a=AGVAF.find(z=>z[0]==key)||AGVAF[0];nm=a[1];m=a[2];it=a[3]}
+ const lc=nm.charAt(0).toLowerCase()+nm.slice(1);
+ return{k:"airfryer",n:nm+" uit de airfryer",m:m+5,ing:[it],st:["Verwarm de airfryer voor op 200 °C.","Bak de "+lc+" in ± "+m+" minuten goudbruin en gaar. Schud halverwege.","Bestrooi met wat zout."]}}
+function agvItem(c,k,P){if(c=="a"&&k=="airfryer")return agvAf(P&&P.af);return AGV[c].items.find(x=>x.k==k)}
 function agvQty(a,u,n){let x=a*n;if(!u){x=Math.round(x*2)/2;if(x<.5)x=.5}else if(/^(g|ml)$/.test(u))x=x>=100?Math.round(x/10)*10:Math.round(x/5)*5;else x=Math.round(x*2)/2;return x}
 function agvLine(it,n){const[a,u,nm,pl]=it,x=agvQty(a,u,n),num=String(x).replace(".",",");return(num+" "+(u?u+" ":"")+(!u&&x>1&&pl?pl:nm)).trim()}
-function agvName(P){const A=P.a&&agvItem("a",P.a),G=P.g&&agvItem("g",P.g),V=P.v&&agvItem("v",P.v),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+function agvName(P){const A=P.a&&agvItem("a",P.a,P),G=P.g&&agvItem("g",P.g),V=P.v&&agvItem("v",P.v),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
  const rest=[A,G].filter(Boolean).map(x=>lc(x.n));if(V)return V.n+(rest.length?" met "+rest.join(" en "):"");return rest.length?capF(rest.join(" met ")):"AGV"}
-function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c])}).filter(p=>p&&p.x);if(!parts.length)return null;
+function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c],P)}).filter(p=>p&&p.x);if(!parts.length)return null;
  const T=Math.max(...parts.map(p=>p.x.m)),ord=parts.slice().sort((a,b)=>b.x.m-a.x.m);
  const ing=[];for(const p of parts)for(const it of p.x.ing){const l=agvLine(it,n);if(!ing.includes(l))ing.push(l)}
  const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
  let plan="";if(ord.length>1){const by={};for(const p of ord.slice(1)){const d=T-p.x.m;(by[d]=by[d]||[]).push("de "+lc(p.x.n))}
   const ds=Object.keys(by).map(Number).sort((x,y)=>x-y);plan="Zo is alles tegelijk klaar: begin met de "+lc(ord[0].x.n)+"."+ds.map((d,i)=>(i?",":"")+(d>0?" "+(i?"na":"Na")+" "+d+" minuten "+(i?"":"volg"+(by[d].length>1?"en":"t")+" "):" "+(i?"tegelijk":"Tegelijk")+" ")+by[d].join(" en ")).join("")+".";}
  const steps=[].concat(...ord.map(p=>p.x.st));
- return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||""}}}
+ return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||"",af:P.a=="airfryer"?(P.af||"friet"):""}}}
 // ---- tegel + scherm in "Wat eten we?"
 {const _t=dsTiles;dsTiles=function(){_t();const g=document.querySelector("#dsM .ds2ts");if(!g)return;
   const b=document.createElement("div");b.innerHTML=`<button class="ds2t${DS.mode=="agv"?" on":""}" style="--tb:var(--t-green);--tf:var(--sagefg)" onclick="dsMode('agv')" aria-pressed="${DS.mode=="agv"}"><span class="ds2ti">${ico("plate")}</span><b>AGV</b><small>Aardappel, groente, vlees</small></button>`;
   const first=g.firstElementChild;g.insertBefore(b.firstElementChild,first?first.nextSibling:null);const n=g.children.length;g.style.gridTemplateColumns="";g.classList.toggle("ds2t4",n>=4);g.style.setProperty("--n",n)}}
 {const _b=dsBody;dsBody=function(){if(DS.mode!="agv")return _b();DS.agv=DS.agv||{a:"",g:"",v:""};document.getElementById("dsP").innerHTML=agvHtml()}}
 function agvHtml(){const P=DS.agv,dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),n=dp();
- const sec=c=>{const C=AGV[c];return`<div class="agv-s"><h4 class="ds2lh">${ico(C.ic)} ${C.t}</h4><div class="agv-g" role="radiogroup" aria-label="${C.t}">${C.items.map(x=>`<button class="agv-c${P[c]==x.k?" on":""}" role="radio" aria-checked="${P[c]==x.k}" onclick="agvPick('${c}','${x.k}')"><b>${esc(x.n)}</b><small>± ${x.m} min</small></button>`).join("")}<button class="agv-c agv-no${!P[c]?" on":""}" role="radio" aria-checked="${!P[c]}" onclick="agvPick('${c}','')"><b>Geen</b><small>Sla over</small></button></div></div>`};
+ const sec=c=>{const C=AGV[c];return`<div class="agv-s"><h4 class="ds2lh">${ico(C.ic)} ${C.t}</h4><div class="agv-g" role="radiogroup" aria-label="${C.t}">${C.items.map(x=>`<button class="agv-c${P[c]==x.k?" on":""}" role="radio" aria-checked="${P[c]==x.k}" onclick="agvPick('${c}','${x.k}')"><b>${esc(x.n)}</b><small>± ${x.m} min</small></button>`).join("")}<button class="agv-c agv-no${!P[c]?" on":""}" role="radio" aria-checked="${!P[c]}" onclick="agvPick('${c}','')"><b>Geen</b><small>Sla over</small></button></div>${c=="a"&&P.a=="airfryer"?agvAfHtml():""}</div>`};
  const r=agvBuild(P,n),cnt=AGVK.filter(c=>P[c]).length;let pv="";
  if(r&&cnt>=2){let pr="";if(optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr=" · ≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
   pv=`<div class="agv-p"><span class="agv-pi">${ico("plate")}</span><div><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr}</small><small>${r.ing.length} ingrediënten · de bereiding begint met wat het langst duurt</small></div></div>`}
  return`<div class="ds2h"><h3>AGV op ${esc(dn)}</h3><p>Kies je aardappel, groente en vlees. Wij maken er één recept van, met boodschappen en bereiding.</p></div>${pv}${AGVK.map(sec).join("")}`}
+function agvAfHtml(){const P=DS.agv,St=agvStockAf();if(!P.af)P.af=St.length?"st:"+St[0].id:"friet";
+ const b=(k,t,sub)=>`<button class="ds2c${P.af==k?" on":""}" onclick="DS.agv.af='${k}';agvPick('a','airfryer')" aria-pressed="${P.af==k}">${esc(t)}${sub?` <small>${sub}</small>`:""}</button>`;
+ return`<div class="agv-af"><p>Wat ligt er in de vriezer?</p><div class="agv-afc">${St.map(x=>b("st:"+x.id,capF(x.name),"in je voorraad")).join("")}${AGVAF.filter(a=>!St.some(x=>new RegExp(a[0].slice(0,5),"i").test(x.name))).map(a=>b(a[0],a[1])).join("")}</div></div>`}
 function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.scrollTop:0;dsBody();dsCta();if(b)b.scrollTop=y}
 {const _c=dsCta;dsCta=function(){if(DS.mode!="agv")return _c();const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),cnt=AGVK.filter(c=>DS.agv&&DS.agv[c]).length,ok=cnt>=2;
   document.getElementById("dsC").innerHTML=`<button class="ds2cancel" onclick="dsClose()">Annuleren</button><button onclick="dsGo()"${ok?"":" disabled"}>${ok?ico("check")+" Zet AGV op "+dn:"Kies er minstens twee"}</button>`}}
 {const _g=dsGo;dsGo=function(){if(DS.mode=="agv"){const P=DS.agv||{};if(AGVK.filter(c=>P[c]).length<2)return;const n=dp(),r=agvBuild(P,n);
-   let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||""));
+   const af=P.a=="airfryer"?(P.af||"friet"):"";let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||"")&&(x.agv.af||"")==af);
    if(!mine){mine={...r,id:S.next++};S.recipes.push(mine)}else{Object.assign(mine,{...r,id:mine.id,pers:mine.pers})}
    DS.mode="rec";DS.sel=mine.id;DS.selF=null}
   return _g.apply(this,arguments)}}
@@ -6223,7 +6238,7 @@ function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.s
 {const _p=dsPass;dsPass=function(r){return!r.agv&&_p(r)}}
 
 // oude AGV-recepten: planningsstap en "Onderdeel: " voor elke stap weghalen
-function agvTidy(){const NM=AGVK.flatMap(c=>AGV[c].items.map(x=>x.n));let ch=false;
+function agvTidy(){const NM=AGVK.flatMap(c=>AGV[c].items.map(x=>x.n)).concat(["Friet uit de airfryer"]);let ch=false;
  for(const r of S.recipes||[]){if(!r.agv||typeof r.steps!="string")continue;let L=r.steps.split("\n");if(/^Zo is alles tegelijk klaar/.test(L[0]))L=L.slice(1);
   L=L.map(x=>{for(const n of NM)if(x.startsWith(n+": "))return x.slice(n.length+2);return x});const t=L.join("\n");if(t!=r.steps){r.steps=t;ch=true}}
  if(ch){save();draw()}return ch}
