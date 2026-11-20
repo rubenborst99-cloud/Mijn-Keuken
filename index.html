@@ -2426,6 +2426,18 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .cs-r{display:flex;align-items:center;gap:12px;padding:11px 14px;border-top:1px solid var(--line)}.cs-r:first-child{border-top:0}
 .cs-r>div{flex:1;min-width:0}.cs-r b{display:block;font-weight:600}.cs-r small{color:var(--mute);font-size:.8rem}.cs-r strong{flex:none}
 .cs h3{font:700 .95rem "DM Sans";margin:16px 0 4px}.cs-n{color:var(--mute);font-size:.88rem;margin:4px 0}.cs-n span{font-size:.82rem}
+.ds2ts.ds2t4{grid-template-columns:repeat(2,1fr)!important}
+@media(min-width:1024px){.ds2ts.ds2t4{grid-template-columns:repeat(4,1fr)!important}}
+.agv-s{margin-top:16px}
+.agv-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.agv-c{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:11px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer;min-height:58px}
+.agv-c b{font-weight:600;font-size:.94rem;line-height:1.25}.agv-c small{color:var(--mute);font-size:.8rem}
+.agv-c.on{border-color:var(--green);background:rgba(184,68,31,.07);box-shadow:inset 0 0 0 1px var(--green)}
+.agv-c.agv-no{border-style:dashed}.agv-c.agv-no b{font-weight:500}
+.agv-p{display:flex;gap:12px;align-items:flex-start;background:var(--t-green);border-radius:18px;padding:14px;margin-top:4px}
+.agv-p b{display:block;font:600 1.08rem "Fraunces",serif;margin-bottom:2px}.agv-p small{display:block;color:var(--ink);opacity:.8;font-size:.84rem;line-height:1.4}
+.agv-pi{width:42px;height:42px;border-radius:12px;background:var(--card);color:var(--sagefg);display:grid;place-items:center;flex:none}.agv-pi .ic{width:20px;height:20px}
+@media(min-width:1024px){.agv-g{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -6135,6 +6147,80 @@ function rfPTog(v){RFD.price=RFD.price||[];const i=RFD.price.indexOf(v);if(i>=0)
   if(DS.fp&&!/Filters wissen/.test(h))h=h.replace(/<\/div>$/,`<button class="lnk" onclick="DS.ft=0;DS.fl='';DS.fty='';DS.fp=0;dsBody()">Filters wissen</button></div>`);
   const k=h.lastIndexOf('<button class="lnk"');return k>0?h.slice(0,k)+blk+h.slice(k):h.replace(/<\/div>$/,blk+"</div>")}}
 {const _p=dsPass;dsPass=function(r){if(!_p(r))return false;if(DS.fp&&priceTier(r)!=DS.fp)return false;return true}}
+
+// ================= AGV samenstellen: aardappel + groente + vlees/vis/vega → één recept =================
+// ingrediënten per persoon: [hoeveelheid, eenheid, naam, meervoud]
+const AGV={
+ a:{t:"Aardappelen",ic:"a_pot",items:[
+  {k:"gekookt",n:"Gekookte aardappelen",m:30,ing:[[250,"g","kruimige aardappelen"]],st:["Schil de aardappelen en snijd grote exemplaren doormidden.","Zet ze op met koud water en een snufje zout. Breng aan de kook en kook ze in ± 20 minuten gaar.","Giet af en laat even droogstomen in de pan."]},
+  {k:"puree",n:"Aardappelpuree",m:30,ing:[[250,"g","kruimige aardappelen"],[50,"ml","melk"],[10,"g","roomboter"]],st:["Schil de aardappelen, snijd ze in stukken en kook ze in ± 20 minuten gaar.","Giet af. Verwarm de melk met de boter en stamp de aardappelen fijn met de warme melk.","Breng op smaak met zout, peper en een snufje nootmuskaat."]},
+  {k:"krieltjes",n:"Krieltjes uit de oven",m:35,ing:[[250,"g","krieltjes"],[1,"el","olijfolie"],[0.5,"tl","gedroogde rozemarijn"]],st:["Verwarm de oven voor op 200 °C.","Halveer de krieltjes en meng ze met de olie, rozemarijn, zout en peper.","Rooster ze in ± 30 minuten goudbruin en gaar. Schep halverwege om."]},
+  {k:"gebakken",n:"Gebakken aardappelen",m:30,ing:[[250,"g","vastkokende aardappelen"],[15,"g","roomboter"]],st:["Kook de aardappelen in de schil in ± 15 minuten bijna gaar. Giet af en laat iets afkoelen.","Snijd ze in plakken en bak ze in de boter in ± 10 minuten goudbruin.","Breng op smaak met zout en peper."]},
+  {k:"partjes",n:"Aardappelpartjes",m:40,ing:[[250,"g","vastkokende aardappelen"],[1,"el","olijfolie"],[0.5,"tl","paprikapoeder"]],st:["Verwarm de oven voor op 210 °C.","Snijd de aardappelen in partjes en meng met olie, paprikapoeder, zout en peper.","Rooster ze in ± 35 minuten krokant. Schep halverwege om."]},
+  {k:"friet",n:"Friet uit de airfryer",m:20,ing:[[200,"g","diepvriesfriet"]],st:["Verwarm de airfryer voor op 200 °C.","Bak de friet in ± 15 minuten goudbruin. Schud halverwege.","Bestrooi met wat zout."]},
+  {k:"gratin",n:"Aardappelgratin",m:55,ing:[[250,"g","vastkokende aardappelen"],[75,"ml","kookroom"],[25,"g","geraspte kaas"]],st:["Verwarm de oven voor op 190 °C.","Schaaf of snijd de aardappelen in dunne plakjes en leg ze dakpansgewijs in een ingevette ovenschaal.","Giet de kookroom erover, breng op smaak met zout en peper en strooi de kaas erover.","Bak in ± 45 minuten gaar en goudbruin."]},
+  {k:"zoet",n:"Zoete aardappel uit de oven",m:35,ing:[[250,"g","zoete aardappel"],[1,"el","olijfolie"]],st:["Verwarm de oven voor op 200 °C.","Snijd de zoete aardappel in blokjes en meng met olie, zout en peper.","Rooster ze in ± 30 minuten gaar."]}]},
+ g:{t:"Groente",ic:"a_leaf",items:[
+  {k:"sperzie",n:"Sperziebonen",m:15,ing:[[150,"g","sperziebonen"]],st:["Haal de puntjes van de sperziebonen.","Kook ze in ± 8 minuten beetgaar in water met een snufje zout en giet af."]},
+  {k:"broccoli",n:"Broccoli",m:12,ing:[[150,"g","broccoli"]],st:["Snijd de broccoli in roosjes.","Kook of stoom ze in ± 6 minuten beetgaar en giet af."]},
+  {k:"wortel",n:"Gestoofde worteltjes",m:20,ing:[[150,"g","winterpeen"],[5,"g","roomboter"],[0.5,"tl","suiker"]],st:["Schil de wortels en snijd ze in plakjes.","Stoof ze met de boter, suiker en een bodempje water in ± 15 minuten gaar met de deksel op de pan."]},
+  {k:"rodekool",n:"Rode kool met appel",m:35,ing:[[150,"g","rode kool"],[0.5,"","appel","appels"]],st:["Snijd de rode kool fijn en de appel in blokjes.","Stoof de kool met de appel, een bodempje water en een snufje zout in ± 30 minuten zacht."]},
+  {k:"bloemkool",n:"Bloemkool met kaassaus",m:25,ing:[[150,"g","bloemkool"],[10,"g","roomboter"],[10,"g","bloem"],[100,"ml","melk"],[25,"g","geraspte kaas"]],st:["Snijd de bloemkool in roosjes en kook ze in ± 8 minuten beetgaar.","Smelt de boter, roer de bloem erdoor en voeg al roerend de melk toe tot een gladde saus.","Roer de kaas erdoor tot die gesmolten is en schenk de saus over de bloemkool."]},
+  {k:"spruit",n:"Spruitjes",m:20,ing:[[150,"g","spruitjes"]],st:["Maak de spruitjes schoon en snijd een kruisje in de onderkant.","Kook ze in ± 10 minuten gaar en giet af. Lekker met een klontje boter."]},
+  {k:"spinazie",n:"Spinazie met knoflook",m:10,ing:[[150,"g","verse spinazie"],[0.5,"","teen knoflook","tenen knoflook"]],st:["Snipper de knoflook en fruit die kort in een scheutje olie.","Voeg de spinazie in delen toe en laat slinken. Breng op smaak met zout en peper."]},
+  {k:"erwten",n:"Doperwten en worteltjes",m:10,ing:[[150,"g","doperwten en worteltjes (diepvries)"]],st:["Kook de doperwten en worteltjes in ± 5 minuten gaar en giet af."]},
+  {k:"salade",n:"Frisse salade",m:10,ing:[[60,"g","sla"],[0.25,"","komkommer","komkommers"],[5,"","cherrytomaatjes","cherrytomaatjes"]],st:["Snijd de komkommer en halveer de tomaatjes.","Meng met de sla en maak aan met een beetje olie, azijn, zout en peper."]}]},
+ v:{t:"Vlees, vis of vega",ic:"plate",items:[
+  {k:"slavink",n:"Slavink",m:15,ing:[[1,"","slavink","slavinken"]],st:["Bak de slavinken in een scheutje olie op middelhoog vuur in ± 12 minuten rondom bruin en gaar."]},
+  {k:"gehaktbal",n:"Gehaktballen",m:30,ing:[[125,"g","gehakt"],[1,"el","paneermeel"],[0.25,"","ei","eieren"]],st:["Meng het gehakt met het paneermeel, ei, zout en peper en draai er ballen van.","Bak ze rondom bruin en laat ze daarna met de deksel op de pan op laag vuur ± 20 minuten garen."]},
+  {k:"kipfilet",n:"Kipfilet",m:15,ing:[[125,"g","kipfilet"]],st:["Bestrooi de kipfilet met zout en peper.","Bak hem in een scheutje olie in ± 10 minuten goudbruin en gaar. Laat kort rusten en snijd in plakken."]},
+  {k:"speklap",n:"Speklap",m:15,ing:[[1,"","speklap","speklappen"]],st:["Bak de speklappen in een droge koekenpan in ± 5 minuten per kant krokant."]},
+  {k:"karbonade",n:"Karbonade",m:15,ing:[[1,"","karbonade","karbonades"]],st:["Bestrooi de karbonades met zout en peper.","Bak ze in een klontje boter in ± 4 minuten per kant gaar."]},
+  {k:"schnitzel",n:"Schnitzel",m:12,ing:[[1,"","schnitzel","schnitzels"]],st:["Bak de schnitzels in een flinke scheut olie in ± 3 minuten per kant goudbruin."]},
+  {k:"hamburger",n:"Hamburger",m:12,ing:[[1,"","hamburger","hamburgers"]],st:["Bak de hamburgers in een scheutje olie in ± 4 minuten per kant gaar."]},
+  {k:"rookworst",n:"Rookworst",m:15,ing:[[0.5,"","rookworst","rookworsten"]],st:["Leg de rookworst in een pan met heet (niet kokend) water en laat hem ± 10 minuten warm worden.","Snijd in plakken."]},
+  {k:"kippendij",n:"Kippendijen uit de oven",m:40,ing:[[150,"g","kippendijfilet"],[0.5,"tl","paprikapoeder"]],st:["Verwarm de oven voor op 200 °C.","Bestrooi de kippendijen met paprikapoeder, zout en peper.","Rooster ze in ± 30 minuten gaar."]},
+  {k:"varkenshaas",n:"Varkenshaas",m:25,ing:[[125,"g","varkenshaas"]],st:["Bestrooi de varkenshaas met zout en peper en bak hem rondom bruin.","Bak hem op laag vuur in ± 15 minuten verder gaar. Laat 5 minuten rusten en snijd in plakken."]},
+  {k:"zalm",n:"Zalmfilet",m:15,ing:[[1,"","zalmfilet","zalmfilets"]],st:["Bestrooi de zalm met zout en peper.","Bak hem op de huid in ± 4 minuten krokant, draai om en bak nog ± 2 minuten."]},
+  {k:"kabeljauw",n:"Kabeljauwfilet",m:15,ing:[[125,"g","kabeljauwfilet"],[10,"g","roomboter"]],st:["Bestrooi de vis met zout en peper.","Bak hem in de boter in ± 3 minuten per kant gaar."]},
+  {k:"vegaburger",n:"Vegaburger",m:12,ing:[[1,"","vegaburger","vegaburgers"]],st:["Bak de vegaburgers in een scheutje olie in ± 4 minuten per kant goudbruin."]},
+  {k:"vegaschnitzel",n:"Vegaschnitzel",m:12,ing:[[1,"","vegetarische schnitzel","vegetarische schnitzels"]],st:["Bak de schnitzels in een scheutje olie in ± 3 minuten per kant goudbruin."]}]}};
+const AGVK=["a","g","v"];
+function agvItem(c,k){return AGV[c].items.find(x=>x.k==k)}
+function agvQty(a,u,n){let x=a*n;if(!u){x=Math.round(x*2)/2;if(x<.5)x=.5}else if(/^(g|ml)$/.test(u))x=x>=100?Math.round(x/10)*10:Math.round(x/5)*5;else x=Math.round(x*2)/2;return x}
+function agvLine(it,n){const[a,u,nm,pl]=it,x=agvQty(a,u,n),num=String(x).replace(".",",");return(num+" "+(u?u+" ":"")+(!u&&x>1&&pl?pl:nm)).trim()}
+function agvName(P){const A=P.a&&agvItem("a",P.a),G=P.g&&agvItem("g",P.g),V=P.v&&agvItem("v",P.v),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+ const rest=[A,G].filter(Boolean).map(x=>lc(x.n));if(V)return V.n+(rest.length?" met "+rest.join(" en "):"");return rest.length?capF(rest.join(" met ")):"AGV"}
+function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c])}).filter(p=>p&&p.x);if(!parts.length)return null;
+ const T=Math.max(...parts.map(p=>p.x.m)),ord=parts.slice().sort((a,b)=>b.x.m-a.x.m);
+ const ing=[];for(const p of parts)for(const it of p.x.ing){const l=agvLine(it,n);if(!ing.includes(l))ing.push(l)}
+ const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+ let plan="";if(ord.length>1){const by={};for(const p of ord.slice(1)){const d=T-p.x.m;(by[d]=by[d]||[]).push("de "+lc(p.x.n))}
+  const ds=Object.keys(by).map(Number).sort((x,y)=>x-y);plan="Zo is alles tegelijk klaar: begin met de "+lc(ord[0].x.n)+"."+ds.map((d,i)=>(i?",":"")+(d>0?" "+(i?"na":"Na")+" "+d+" minuten "+(i?"":"volg"+(by[d].length>1?"en":"t")+" "):" "+(i?"tegelijk":"Tegelijk")+" ")+by[d].join(" en ")).join("")+".";}
+ const steps=(plan?[plan]:[]).concat(...ord.map(p=>p.x.st.map(s=>p.x.n+": "+s)));
+ return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||""}}}
+// ---- tegel + scherm in "Wat eten we?"
+{const _t=dsTiles;dsTiles=function(){_t();const g=document.querySelector("#dsM .ds2ts");if(!g)return;
+  const b=document.createElement("div");b.innerHTML=`<button class="ds2t${DS.mode=="agv"?" on":""}" style="--tb:var(--t-green);--tf:var(--sagefg)" onclick="dsMode('agv')" aria-pressed="${DS.mode=="agv"}"><span class="ds2ti">${ico("plate")}</span><b>AGV</b><small>Aardappel, groente, vlees</small></button>`;
+  const first=g.firstElementChild;g.insertBefore(b.firstElementChild,first?first.nextSibling:null);const n=g.children.length;g.style.gridTemplateColumns="";g.classList.toggle("ds2t4",n>=4);g.style.setProperty("--n",n)}}
+{const _b=dsBody;dsBody=function(){if(DS.mode!="agv")return _b();DS.agv=DS.agv||{a:"",g:"",v:""};document.getElementById("dsP").innerHTML=agvHtml()}}
+function agvHtml(){const P=DS.agv,dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),n=dp();
+ const sec=c=>{const C=AGV[c];return`<div class="agv-s"><h4 class="ds2lh">${ico(C.ic)} ${C.t}</h4><div class="agv-g" role="radiogroup" aria-label="${C.t}">${C.items.map(x=>`<button class="agv-c${P[c]==x.k?" on":""}" role="radio" aria-checked="${P[c]==x.k}" onclick="agvPick('${c}','${x.k}')"><b>${esc(x.n)}</b><small>± ${x.m} min</small></button>`).join("")}<button class="agv-c agv-no${!P[c]?" on":""}" role="radio" aria-checked="${!P[c]}" onclick="agvPick('${c}','')"><b>Geen</b><small>Sla over</small></button></div></div>`};
+ const r=agvBuild(P,n),cnt=AGVK.filter(c=>P[c]).length;let pv="";
+ if(r&&cnt>=2){let pr="";if(optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr=" · ≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
+  pv=`<div class="agv-p"><span class="agv-pi">${ico("plate")}</span><div><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr}</small><small>${r.ing.length} ingrediënten · de bereiding staat op volgorde, zodat alles tegelijk klaar is</small></div></div>`}
+ return`<div class="ds2h"><h3>AGV op ${esc(dn)}</h3><p>Kies je aardappel, groente en vlees. Wij maken er één recept van, met boodschappen en bereiding.</p></div>${pv}${AGVK.map(sec).join("")}`}
+function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.scrollTop:0;dsBody();dsCta();if(b)b.scrollTop=y}
+{const _c=dsCta;dsCta=function(){if(DS.mode!="agv")return _c();const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),cnt=AGVK.filter(c=>DS.agv&&DS.agv[c]).length,ok=cnt>=2;
+  document.getElementById("dsC").innerHTML=`<button class="ds2cancel" onclick="dsClose()">Annuleren</button><button onclick="dsGo()"${ok?"":" disabled"}>${ok?ico("check")+" Zet AGV op "+dn:"Kies er minstens twee"}</button>`}}
+{const _g=dsGo;dsGo=function(){if(DS.mode=="agv"){const P=DS.agv||{};if(AGVK.filter(c=>P[c]).length<2)return;const n=dp(),r=agvBuild(P,n);
+   let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||""));
+   if(!mine){mine={...r,id:S.next++};S.recipes.push(mine)}else{Object.assign(mine,{...r,id:mine.id,pers:mine.pers})}
+   DS.mode="rec";DS.sel=mine.id;DS.selF=null}
+  return _g.apply(this,arguments)}}
+// AGV-recepten horen niet tussen je eigen recepten (ze staan wel in je weekmenu)
+{const _v=recView;recView=function(){return _v().filter(r=>!r.agv)}}
+{const _p=dsPass;dsPass=function(r){return!r.agv&&_p(r)}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
