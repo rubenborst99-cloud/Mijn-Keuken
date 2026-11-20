@@ -2335,7 +2335,7 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .tr2bt{font-size:.82rem!important;margin:10px 0 0!important}
 .rd-cost{color:var(--mute);font-size:.85em}
 @media(max-width:1023px){.lb2sum{flex-wrap:wrap}.lb2k{width:100%;justify-content:space-between}}
-</style><style id="bn">.rx-pt{color:var(--green);font-weight:700;letter-spacing:.02em}.rd-pt{color:var(--green);font-weight:700;margin-left:4px;white-space:nowrap}.rfp b{font-weight:800;margin-right:2px}.ld-hint{margin:8px 2px 0}.hx-pors .ld-later{grid-column:1/-1}.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}/* ---- Bon toevoegen / controleren */
+</style><style id="bn">.rx-pt{color:var(--green);font-weight:700;letter-spacing:.02em}.rd-pt{color:var(--green);font-weight:700;margin-left:4px;white-space:nowrap}.rfp b{font-weight:800;margin-right:2px}.ld-hint{margin:8px 2px 0}.hx-pors .ld-later{grid-column:1/-1}.dic-sk{min-height:120px;display:flex;align-items:center;justify-content:center;border:1.5px dashed var(--line);border-radius:18px;background:none}.dic-sk .dib{text-align:center}.rd-nutl{margin:0 0 6px;font-size:.82rem;color:var(--mute);font-weight:600}html{touch-action:manipulation;-webkit-text-size-adjust:100%}button,a,label,summary,input,select,textarea,[role=button],[onclick]{touch-action:manipulation}@media(max-width:1023px){html body input:not([type=checkbox]):not([type=radio]):not([type=range]),html body select,html body textarea{font-size:16px!important}}/* ---- Bon toevoegen / controleren */
 #bndlg.bn{padding:0;background:var(--bg);color:var(--ink);width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;margin:0;border:0;border-radius:0;overflow-y:auto;overscroll-behavior:contain}
 #bndlg .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .bn-hd{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:var(--bg)}
@@ -6203,7 +6203,7 @@ const AGV={
   {k:"broccoli",n:"Broccoli",m:12,ing:[[150,"g","broccoli"]],st:["Snijd de broccoli in roosjes.","Kook of stoom ze in ± 6 minuten beetgaar en giet af."]},
   {k:"wortel",n:"Gestoofde worteltjes",m:20,ing:[[150,"g","winterpeen"],[5,"g","roomboter"],[0.5,"tl","suiker"]],st:["Schil de wortels en snijd ze in plakjes.","Stoof ze met de boter, suiker en een bodempje water in ± 15 minuten gaar met de deksel op de pan."]},
   {k:"rodekool",n:"Rode kool met appel",m:35,ing:[[150,"g","rode kool"],[0.5,"","appel","appels"]],st:["Snijd de rode kool fijn en de appel in blokjes.","Stoof de kool met de appel, een bodempje water en een snufje zout in ± 30 minuten zacht."]},
-  {k:"bloemkool",n:"Bloemkool met kaassaus",m:25,ing:[[150,"g","bloemkool"],[10,"g","roomboter"],[10,"g","bloem"],[100,"ml","melk"],[25,"g","geraspte kaas"]],st:["Snijd de bloemkool in roosjes en kook ze in ± 8 minuten beetgaar.","Smelt de boter, roer de bloem erdoor en voeg al roerend de melk toe tot een gladde saus.","Roer de kaas erdoor tot die gesmolten is en schenk de saus over de bloemkool."]},
+  {k:"bloemkool",n:"Bloemkool",m:15,ing:[[150,"g","bloemkool"]],st:["Snijd de bloemkool in roosjes en kook ze in ± 8 minuten beetgaar. Giet af."]},
   {k:"spruit",n:"Spruitjes",m:20,ing:[[150,"g","spruitjes"]],st:["Maak de spruitjes schoon en snijd een kruisje in de onderkant.","Kook ze in ± 10 minuten gaar en giet af. Lekker met een klontje boter."]},
   {k:"spinazie",n:"Spinazie met knoflook",m:10,ing:[[150,"g","verse spinazie"],[0.5,"","teen knoflook","tenen knoflook"]],st:["Snipper de knoflook en fruit die kort in een scheutje olie.","Voeg de spinazie in delen toe en laat slinken. Breng op smaak met zout en peper."]},
   {k:"erwten",n:"Doperwten en worteltjes",m:10,ing:[[150,"g","doperwten en worteltjes (diepvries)"]],st:["Kook de doperwten en worteltjes in ± 5 minuten gaar en giet af."]},
@@ -6224,6 +6224,19 @@ const AGV={
   {k:"vegaburger",n:"Vegaburger",m:12,ing:[[1,"","vegaburger","vegaburgers"]],st:["Bak de vegaburgers in een scheutje olie in ± 4 minuten per kant goudbruin."]},
   {k:"vegaschnitzel",n:"Vegaschnitzel",m:12,ing:[[1,"","vegetarische schnitzel","vegetarische schnitzels"]],st:["Bak de schnitzels in een scheutje olie in ± 3 minuten per kant goudbruin."]}]}};
 const AGVK=["a","g","v"];
+// sauzen bij de groente
+const AGVSAUS=[
+ {k:"jus",w:"v",n:"Jus",m:5,ing:[[0.25,"","zakje jus","zakjes jus"]],st:["Maak de jus volgens de verpakking, of blus het bakvet van het vlees af met een scheutje water en laat iets inkoken."]},
+ {k:"peper",w:"v",n:"Pepersaus",m:10,ing:[[50,"ml","kookroom"],[1,"tl","grof gemalen zwarte peper"],[0.25,"","bouillonblokje","bouillonblokjes"]],st:["Blus de pan van het vlees af met een scheutje water en verkruimel het bouillonblokje erin.","Roer de kookroom en de peper erdoor en laat de saus iets inkoken."]},
+ {k:"champignon",w:"v",n:"Champignonroomsaus",m:12,ing:[[75,"g","champignons"],[10,"g","roomboter"],[50,"ml","kookroom"]],st:["Snijd de champignons in plakjes en bak ze in de boter goudbruin.","Voeg de kookroom toe, breng op smaak met zout en peper en laat iets inkoken."]},
+ {k:"sate",w:"v",n:"Satésaus",m:8,ing:[[2,"el","pindakaas"],[1,"tl","ketjap"],[0.25,"tl","sambal"]],st:["Verwarm de pindakaas met een scheutje water, de ketjap en de sambal al roerend tot een gladde saus."]},
+ {k:"kaas",w:"g",n:"Kaassaus",m:10,ing:[[10,"g","roomboter"],[10,"g","bloem"],[100,"ml","melk"],[25,"g","geraspte kaas"]],st:["Smelt de boter, roer de bloem erdoor en voeg al roerend de melk toe tot een gladde saus.","Roer de kaas erdoor tot die gesmolten is."]},
+ {k:"kerrie",w:"g",n:"Kerriesaus",m:10,ing:[[10,"g","roomboter"],[10,"g","bloem"],[1,"tl","kerriepoeder"],[125,"ml","bouillon"]],st:["Smelt de boter, roer de kerriepoeder en de bloem erdoor en bak kort.","Voeg al roerend de bouillon toe en laat binden tot een gladde saus."]},
+ {k:"wit",w:"g",n:"Witte saus",m:10,ing:[[10,"g","roomboter"],[10,"g","bloem"],[125,"ml","melk"]],st:["Smelt de boter, roer de bloem erdoor en voeg al roerend de melk toe tot een gladde saus.","Breng op smaak met zout, peper en wat nootmuskaat."]},
+ {k:"hollandaise",w:"g",n:"Hollandaise",m:5,ing:[[50,"ml","hollandaisesaus"]],st:["Verwarm de hollandaisesaus zachtjes volgens de verpakking."]},
+ {k:"mosterd",w:"g",n:"Mosterdsaus",m:10,ing:[[10,"g","roomboter"],[10,"g","bloem"],[125,"ml","melk"],[1,"tl","mosterd"]],st:["Smelt de boter, roer de bloem erdoor en voeg al roerend de melk toe tot een gladde saus.","Roer de mosterd erdoor en breng op smaak met zout en peper."]},
+ {k:"boter",w:"g",n:"Gesmolten boter met nootmuskaat",m:3,ing:[[15,"g","roomboter"]],st:["Smelt de boter, rasp er wat nootmuskaat over en schenk het over de groente."]}];
+function agvSaus(k){return AGVSAUS.find(x=>x.k==k)}
 // ---- salades: eigen recepten, vrienden en Chef Pieper
 const AGVSAL=/(salade|salad\b|slaatje|coleslaw|tabouleh|caprese|panzanella|fattoush)/i;
 function agvIsSal(r){if(!r||r.agv)return false;if(AGVSAL.test(r.name||""))return true;try{return rLabels(r).some(l=>/salade/i.test(l))}catch(e){return false}}
@@ -6249,16 +6262,16 @@ function agvAf(key){let nm,m=15,it;
 function agvItem(c,k,P){if(/^(own|vr):/.test(k||""))return agvSalad(k);if(c=="a"&&k=="airfryer")return agvAf(P&&P.af);if(c=="g"&&k=="salade"&&P&&P.gs&&P.gs!="basis"){const x=agvSalad(P.gs);if(x)return x}return AGV[c].items.find(x=>x.k==k)}
 function agvQty(a,u,n){let x=a*n;if(!u){x=Math.round(x*2)/2;if(x<.5)x=.5}else if(/^(g|ml)$/.test(u))x=x>=100?Math.round(x/10)*10:Math.round(x/5)*5;else x=Math.round(x*2)/2;return x}
 function agvLine(it,n){const[a,u,nm,pl]=it,x=agvQty(a,u,n),num=String(x).replace(".",",");return(num+" "+(u?u+" ":"")+(!u&&x>1&&pl?pl:nm)).trim()}
-function agvName(P){const A=P.a&&agvItem("a",P.a,P),G=P.g&&agvItem("g",P.g,P),V=P.v&&agvItem("v",P.v,P),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
- const rest=[A,G].filter(Boolean).map(x=>lc(x.n));if(V)return V.n+(rest.length?" met "+rest.join(" en "):"");return rest.length?capF(rest.join(" met ")):"AGV"}
-function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c],P)}).filter(p=>p&&p.x);if(!parts.length)return null;
+function agvName(P){const SA=P.sa&&agvSaus(P.sa);const A=P.a&&agvItem("a",P.a,P),G=P.g&&agvItem("g",P.g,P),V=P.v&&agvItem("v",P.v,P),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
+ const rest=[A,G,SA].filter(Boolean).map(x=>lc(x.n)),and=a=>a.length>1?a.slice(0,-1).join(", ")+" en "+a[a.length-1]:a.join("");if(V)return V.n+(rest.length?" met "+and(rest):"");return rest.length?capF(lc(rest[0])+(rest.length>1?" met "+and(rest.slice(1)):"")):"AGV"}
+function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c],P)}).filter(p=>p&&p.x);if(P.sa&&agvSaus(P.sa))parts.push({c:"s",x:agvSaus(P.sa)});if(!parts.length)return null;
  const T=Math.max(...parts.map(p=>p.x.m)),ord=parts.slice().sort((a,b)=>b.x.m-a.x.m);
  const ing=[];for(const p of parts)for(const it of p.x.ing){const l=typeof it=="string"?scaleLine(it,n/(p.x.pers||n)):agvLine(it,n);if(!ing.includes(l))ing.push(l)}
  const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
  let plan="";if(ord.length>1){const by={};for(const p of ord.slice(1)){const d=T-p.x.m;(by[d]=by[d]||[]).push("de "+lc(p.x.n))}
   const ds=Object.keys(by).map(Number).sort((x,y)=>x-y);plan="Zo is alles tegelijk klaar: begin met de "+lc(ord[0].x.n)+"."+ds.map((d,i)=>(i?",":"")+(d>0?" "+(i?"na":"Na")+" "+d+" minuten "+(i?"":"volg"+(by[d].length>1?"en":"t")+" "):" "+(i?"tegelijk":"Tegelijk")+" ")+by[d].join(" en ")).join("")+".";}
  const steps=[].concat(...ord.map(p=>p.x.st));
- return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||"",af:P.a=="airfryer"?(P.af||"friet"):"",gs:P.g=="salade"?(P.gs||"basis"):""}}}
+ return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||"",af:P.a=="airfryer"?(P.af||"friet"):"",gs:P.g=="salade"?(P.gs||"basis"):"",sa:P.sa||""}}}
 // ---- tegel + scherm in "Wat eten we?"
 {const _t=dsTiles;dsTiles=function(){_t();const g=document.querySelector("#dsM .ds2ts");if(!g)return;
   const b=document.createElement("div");b.innerHTML=`<button class="ds2t${DS.mode=="agv"?" on":""}" style="--tb:var(--t-green);--tf:var(--sagefg)" onclick="dsMode('agv')" aria-pressed="${DS.mode=="agv"}"><span class="ds2ti">${ico("plate")}</span><b>AGV</b><small>Aardappel, groente, vlees</small></button>`;
@@ -6281,7 +6294,7 @@ function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.s
 {const _c=dsCta;dsCta=function(){if(DS.mode!="agv")return _c();const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),cnt=AGVK.filter(c=>DS.agv&&DS.agv[c]).length,ok=cnt>=2;
   document.getElementById("dsC").innerHTML=`<button class="ds2cancel" onclick="dsClose()">Annuleren</button><button onclick="dsGo()"${ok?"":" disabled"}>${ok?ico("check")+" Zet AGV op "+dn:"Kies er minstens twee"}</button>`}}
 {const _g=dsGo;dsGo=function(){if(DS.mode=="agv"){const P=DS.agv||{};if(AGVK.filter(c=>P[c]).length<2)return;const n=dp(),r=agvBuild(P,n);
-   const af=P.a=="airfryer"?(P.af||"friet"):"",gs=P.g=="salade"?(P.gs||"basis"):"";let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||"")&&(x.agv.af||"")==af&&(x.agv.gs||(x.agv.g=="salade"?"basis":""))==gs);
+   const af=P.a=="airfryer"?(P.af||"friet"):"",gs=P.g=="salade"?(P.gs||"basis"):"";let mine=S.recipes.find(x=>x.agv&&x.agv.a==(P.a||"")&&x.agv.g==(P.g||"")&&x.agv.v==(P.v||"")&&(x.agv.af||"")==af&&(x.agv.gs||(x.agv.g=="salade"?"basis":""))==gs&&(x.agv.sa||"")==(P.sa||""));
    if(!mine){mine={...r,id:S.next++};S.recipes.push(mine)}else{Object.assign(mine,{...r,id:mine.id,pers:mine.pers})}
    DS.mode="rec";DS.sel=mine.id;DS.selF=null}
   return _g.apply(this,arguments)}}
@@ -6290,7 +6303,7 @@ function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.s
 {const _p=dsPass;dsPass=function(r){return!r.agv&&_p(r)}}
 
 // oude AGV-recepten: planningsstap en "Onderdeel: " voor elke stap weghalen
-function agvTidy(){const NM=AGVK.flatMap(c=>AGV[c].items.map(x=>x.n)).concat(["Friet uit de airfryer"]);let ch=false;
+function agvTidy(){const NM=AGVK.flatMap(c=>AGV[c].items.map(x=>x.n)).concat(["Friet uit de airfryer","Bloemkool met kaassaus"]);let ch=false;
  for(const r of S.recipes||[]){if(!r.agv||typeof r.steps!="string")continue;let L=r.steps.split("\n");if(/^Zo is alles tegelijk klaar/.test(L[0]))L=L.slice(1);
   L=L.map(x=>{for(const n of NM)if(x.startsWith(n+": "))return x.slice(n.length+2);return x});const t=L.join("\n");if(t!=r.steps){r.steps=t;ch=true}}
  if(ch){save();draw()}return ch}
@@ -6304,15 +6317,18 @@ function agvRecs(c){if(c=="v")return[];const ok=r=>r&&!r.agv&&AGVRX[c].test(r.na
  const own=dedupR(S.recipes||[]).filter(ok).map(r=>({k:"own:"+r.id,r,by:"van jullie"}));const vr=[];
  if(typeof VRON!="undefined"&&VRON)for(const f of vrFriends()){const v=DSV[f.uid];if(Array.isArray(v))v.forEach(r=>{if(ok(r))vr.push({k:"vr:"+f.uid+":"+r.id,r,by:"van "+f.naam})})}
  return own.concat(vr)}
-function agvOpen(){AGVW={step:0,P:{a:"",g:"",v:"",af:"",gs:""}};agvSalLoad();agvwDraw();const d=$("agvdlg");if(!d.open)d.showModal()}
+function agvOpen(){AGVW={step:0,P:{a:"",g:"",v:"",af:"",gs:"",sa:""}};agvSalLoad();agvwDraw();const d=$("agvdlg");if(!d.open)d.showModal()}
 function agvwClose(){const d=$("agvdlg");if(d&&d.open)d.close();AGVW=null}
-const AGVST=[["a","Kies je aardappel","a_pot"],["g","Kies je groente","a_leaf"],["v","Kies je vlees, vis of vega","plate"]];
+const AGVST=[["a","Kies je aardappel","a_pot"],["g","Kies je groente","a_leaf"],["v","Kies je vlees, vis of vega","plate"],["s","Kies je saus","a_jar"]];const AGVN=AGVST.length;
 function agvwIngTxt(x){if(!x)return"";const L=(x.ing||[]).map(i=>typeof i=="string"?(()=>{try{return parse(i).name}catch(e){return i}})():i[2]);return L.filter(Boolean).slice(0,3).join(", ")+(L.length>3?" …":"")}
 function agvwDraw(){const d=$("agvdlg");if(!d||!AGVW)return;const W=AGVW,P=W.P,st=W.step,dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"});
- const prog=`<div class="agvw-pr">${AGVST.map((x,i)=>`<i class="${i<st?"done":i==st?"on":""}"></i>`).join("")}<i class="${st==3?"on":""}"></i></div>`;
- const head=`<div class="agvw-hd"><button class="agvw-bk" onclick="${st?"AGVW.step--;agvwDraw()":"agvwClose()"}" aria-label="${st?"Vorige stap":"Sluiten"}">${ico(st?"chevl":"close")}</button><div class="agvw-tt"><small>${st<3?"Stap "+(st+1)+" van 3":"Overzicht"} · ${esc(dn)}</small><h2>${st<3?AGVST[st][1]:"Jouw AGV"}</h2></div><button class="agvw-x" onclick="agvwClose()" aria-label="Sluiten">${ico("close")}</button></div>${prog}`;
+ const prog=`<div class="agvw-pr">${AGVST.map((x,i)=>`<i class="${i<st?"done":i==st?"on":""}"></i>`).join("")}<i class="${st==AGVN?"on":""}"></i></div>`;
+ const head=`<div class="agvw-hd"><button class="agvw-bk" onclick="${st?"AGVW.step--;agvwDraw()":"agvwClose()"}" aria-label="${st?"Vorige stap":"Sluiten"}">${ico(st?"chevl":"close")}</button><div class="agvw-tt"><small>${st<AGVN?"Stap "+(st+1)+" van "+AGVN:"Overzicht"} · ${esc(dn)}</small><h2>${st<AGVN?AGVST[st][1]:"Jouw AGV"}</h2></div><button class="agvw-x" onclick="agvwClose()" aria-label="Sluiten">${ico("close")}</button></div>${prog}`;
  let body="",foot="";
- if(st<3){const c=AGVST[st][0],cat=AGV[c].items,ex=agvRecs(c),busy=c!="v"&&agvSalBusy();
+ if(st==3){const card=(x)=>`<button class="agvw-c${P.sa==x.k?" on":""}" onclick="agvwSaus('${x.k}')" aria-pressed="${P.sa==x.k}"><span class="agvw-ci">${ico("a_jar")}</span><span class="agvw-cb"><b>${esc(x.n)}</b><small>± ${x.m} min</small><em>${esc(agvwIngTxt(x))}</em></span>${P.sa==x.k?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
+  body=`<h3 class="agvw-h" style="margin-top:4px">Bij het vlees</h3><div class="agvw-g">${AGVSAUS.filter(x=>x.w=="v").map(card).join("")}</div><h3 class="agvw-h">Bij de groente</h3><div class="agvw-g">${AGVSAUS.filter(x=>x.w=="g").map(card).join("")}</div>`;
+  foot=`<button class="btn ghost" onclick="AGVW.P.sa='';AGVW.step++;agvwDraw()">Geen saus</button>${P.sa?`<button class="btn" onclick="AGVW.step++;agvwDraw()">Verder ${ico("chevr")}</button>`:""}`}
+ else if(st<3){const c=AGVST[st][0],cat=AGV[c].items,ex=agvRecs(c),busy=c!="v"&&agvSalBusy();
   const card=(k,name,m,ingt,by,ic)=>`<button class="agvw-c${P[c]==k?" on":""}" onclick="agvwPick('${c}',${esc(JSON.stringify(k))})" aria-pressed="${P[c]==k}"><span class="agvw-ci">${ico(ic)}</span><span class="agvw-cb"><b>${esc(name)}</b><small>${m?"± "+m+" min":""}${by?(m?" · ":"")+esc(by):""}</small>${ingt?`<em>${esc(ingt)}</em>`:""}</span>${P[c]==k?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
   body=`<div class="agvw-g">${cat.map(x=>card(x.k,x.n,x.m,x.af?"friet, wedges, rösti, kroketjes…":x.k=="salade"?"simpel of een salade uit je recepten":agvwIngTxt(x),"",AGV[c].ic)).join("")}</div>
   ${ex.length?`<h3 class="agvw-h">Uit recepten</h3><div class="agvw-g">${ex.map(e=>card(e.k,capF(e.r.name),+e.r.time||0,agvwIngTxt({ing:(e.r.ing||[]).map(String)}),e.by,"book")).join("")}</div>`:busy?`<p class="agvw-n">Bijgerechten van vrienden laden…</p>`:""}
@@ -6321,14 +6337,15 @@ function agvwDraw(){const d=$("agvdlg");if(!d||!AGVW)return;const W=AGVW,P=W.P,s
   foot=`<button class="btn ghost" onclick="agvwPick('${c}','');AGVW.step++;agvwDraw()">Sla over</button>${sub||P[c]?`<button class="btn" onclick="AGVW.step++;agvwDraw()">Verder ${ico("chevr")}</button>`:""}`}
  else{const n=dp(),cnt=AGVK.filter(k=>P[k]).length,r=agvBuild(P,n);let pr="";if(r&&optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr="≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
   const row=(i,c)=>{const x=P[c]&&agvItem(c,P[c],P);return`<div class="agvw-sr"><span class="agvw-ci">${ico(AGVST[i][2])}</span><span class="agvw-cb"><small>${AGV[c].t}</small><b>${x?esc(x.n):"Overgeslagen"}</b></span><button class="lnk" onclick="AGVW.step=${i};agvwDraw()">Wijzig</button></div>`};
-  body=cnt>=2&&r?`<div class="agvw-sum"><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr?" · "+pr:""}</small></div><div class="agvw-sl">${AGVK.map((c,i)=>row(i,c)).join("")}</div><details class="agvw-ing"><summary>${r.ing.length} ingrediënten</summary><ul>${r.ing.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></details>`
-   :`<div class="agvw-sl">${AGVK.map((c,i)=>row(i,c)).join("")}</div><p class="agvw-n">Kies er minstens twee om een AGV te maken.</p>`;
+  const sr=`<div class="agvw-sr"><span class="agvw-ci">${ico("a_jar")}</span><span class="agvw-cb"><small>Saus</small><b>${P.sa&&agvSaus(P.sa)?esc(agvSaus(P.sa).n):"Geen saus"}</b></span><button class="lnk" onclick="AGVW.step=3;agvwDraw()">Wijzig</button></div>`;
+  body=cnt>=2&&r?`<div class="agvw-sum"><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr?" · "+pr:""}</small></div><div class="agvw-sl">${AGVK.map((c,i)=>row(i,c)).join("")}${sr}</div><details class="agvw-ing"><summary>${r.ing.length} ingrediënten</summary><ul>${r.ing.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></details>`
+   :`<div class="agvw-sl">${AGVK.map((c,i)=>row(i,c)).join("")}${sr}</div><p class="agvw-n">Kies er minstens twee om een AGV te maken.</p>`;
   const dn2=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"});
   foot=`<button class="btn ghost" onclick="agvwClose()">Annuleren</button><button class="btn" onclick="agvwGo()"${cnt>=2?"":" disabled"}>${ico("check")} Zet op ${esc(dn2)}</button>`}
  d.innerHTML=head+`<div class="agvw-b" id="agvw-b">${body}</div><div class="agvw-ft">${foot}</div>`}
-function agvwPick(c,k){const P=AGVW.P;P[c]=k;if(c=="a"&&k!="airfryer")P.af="";if(c=="g"&&k!="salade")P.gs="";
+function agvwPick(c,k){const P=AGVW.P,was=P[c];P[c]=k;if(c=="a"&&k!="airfryer")P.af="";if(c=="g"&&k!="salade")P.gs="";if(c=="g"&&k=="bloemkool"&&was!="bloemkool"&&!P.sa)P.sa="kaas";
  const sub=(c=="a"&&k=="airfryer")||(c=="g"&&k=="salade");const b=$("agvw-b"),y=b?b.scrollTop:0;
- if(k&&!sub){agvwDraw();setTimeout(()=>{if(AGVW&&AGVW.P[c]==k&&AGVW.step<3){AGVW.step++;agvwDraw();const bb=$("agvw-b");if(bb)bb.scrollTop=0}},260);return}
+ if(k&&!sub){agvwDraw();setTimeout(()=>{if(AGVW&&AGVW.P[c]==k&&AGVW.step<AGVN){AGVW.step++;agvwDraw();const bb=$("agvw-b");if(bb)bb.scrollTop=0}},260);return}
  agvwDraw();const bb=$("agvw-b");if(bb){bb.scrollTop=y;if(sub){const s2=$("agvw-sub");if(s2)s2.scrollIntoView({block:"nearest",behavior:"smooth"})}}}
 function agvwGo(){if(!AGVW)return;DS.agv={...AGVW.P};DS.mode="agv";agvwClose();dsGo()}
 // de keuzerijen (airfryer/salade) schrijven in het venster als het open is
@@ -6338,6 +6355,12 @@ function agvwGo(){if(!AGVW)return;DS.agv={...AGVW.P};DS.mode="agv";agvwClose();d
 // tegel opent het venster; vriendenrecepten die binnenkomen verversen het venster
 {const _t=dsTiles;dsTiles=function(){_t();const b=[...document.querySelectorAll("#dsM .ds2t")].find(x=>/AGV/.test(x.textContent));if(b){b.setAttribute("onclick","agvOpen()");b.classList.remove("on");b.setAttribute("aria-pressed","false")}}}
 {const _b=dsBody;dsBody=function(){if(AGVW&&$("agvdlg")&&$("agvdlg").open){const b=$("agvw-b"),y=b?b.scrollTop:0;agvwDraw();const bb=$("agvw-b");if(bb)bb.scrollTop=y}if(DS.mode=="agv")DS.mode="rec";return _b()}}
+
+function agvSausHtml(){const P=AGVW?AGVW.P:DS.agv;const b=(k,t)=>`<button class="ds2c${(P.sa||"")==k?" on":""}" onclick="agvSaPick('${k}')" aria-pressed="${(P.sa||"")==k}">${esc(t)}</button>`;
+ return`<div class="agv-af"><p>Saus erbij?</p><div class="agv-afc">${b("","Geen saus")}${AGVSAUS.map(x=>b(x.k,x.n)).join("")}</div></div>`}
+function agvSaPick(k){if(!AGVW)return;AGVW.P.sa=k;const bb=$("agvw-b"),y=bb?bb.scrollTop:0;agvwDraw();const b2=$("agvw-b");if(b2)b2.scrollTop=y}
+
+function agvwSaus(k){if(!AGVW)return;AGVW.P.sa=k;agvwDraw();setTimeout(()=>{if(AGVW&&AGVW.P.sa==k&&AGVW.step==3){AGVW.step=4;agvwDraw()}},260)}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
