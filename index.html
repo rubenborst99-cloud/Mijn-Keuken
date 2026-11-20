@@ -6324,18 +6324,29 @@ const AGVST=[["a","Kies je aardappel","a_pot"],["g","Kies je groente","a_leaf"],
 function agvwIngTxt(x){if(!x)return"";const L=(x.ing||[]).map(i=>typeof i=="string"?(()=>{try{return parse(i).name}catch(e){return i}})():i[2]);return L.filter(Boolean).slice(0,3).join(", ")+(L.length>3?" …":"")}
 function agvwDraw(){const d=$("agvdlg");if(!d||!AGVW)return;const W=AGVW,P=W.P,st=W.step,dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"});
  const prog=`<div class="agvw-pr">${AGVST.map((x,i)=>`<i class="${i<st?"done":i==st?"on":""}"></i>`).join("")}<i class="${st==AGVN?"on":""}"></i></div>`;
- const head=`<div class="agvw-hd"><button class="agvw-bk" onclick="${st?"AGVW.step--;agvwDraw()":"agvwClose()"}" aria-label="${st?"Vorige stap":"Sluiten"}">${ico(st?"chevl":"close")}</button><div class="agvw-tt"><small>${st<AGVN?"Stap "+(st+1)+" van "+AGVN:"Overzicht"} · ${esc(dn)}</small><h2>${st<AGVN?AGVST[st][1]:"Jouw AGV"}</h2></div><button class="agvw-x" onclick="agvwClose()" aria-label="Sluiten">${ico("close")}</button></div>${prog}`;
+ const subT=W.sub=="af"?"Wat ligt er in de vriezer?":W.sub=="sal"?"Welke salade?":"";
+ const head=`<div class="agvw-hd"><button class="agvw-bk" onclick="${W.sub?"AGVW.sub=null;agvwDraw()":st?"AGVW.step--;agvwDraw()":"agvwClose()"}" aria-label="${W.sub?"Terug":st?"Vorige stap":"Sluiten"}">${ico(W.sub||st?"chevl":"close")}</button><div class="agvw-tt"><small>${st<AGVN?"Stap "+(st+1)+" van "+AGVN:"Overzicht"} · ${esc(dn)}</small><h2>${subT||(st<AGVN?AGVST[st][1]:"Jouw AGV")}</h2></div><button class="agvw-x" onclick="agvwClose()" aria-label="Sluiten">${ico("close")}</button></div>${prog}`;
  let body="",foot="";
- if(st==3){const isOn=x=>P[x.w=="v"?"sv":"sg"]==x.k;const card=(x)=>`<button class="agvw-c${isOn(x)?" on":""}" onclick="agvwSaus('${x.k}')" aria-pressed="${isOn(x)}"><span class="agvw-ci">${ico("a_jar")}</span><span class="agvw-cb"><b>${esc(x.n)}</b><small>± ${x.m} min</small><em>${esc(agvwIngTxt(x))}</em></span>${isOn(x)?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
+ const sc=(on,js,ic,name,m,ingt,by)=>`<button class="agvw-c${on?" on":""}" onclick="${js}" aria-pressed="${on}"><span class="agvw-ci">${ico(ic)}</span><span class="agvw-cb"><b>${esc(name)}</b><small>${m?"± "+m+" min":""}${by?(m?" · ":"")+esc(by):""}</small>${ingt?`<em>${esc(ingt)}</em>`:""}</span>${on?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
+ if(W.sub=="af"){const St=agvStockAf(),cur=P.a=="airfryer"?P.af:"";
+  const rest=AGVAF.filter(a=>!St.some(x=>new RegExp(a[0].slice(0,5),"i").test(x.name)));
+  body=`${St.length?`<h3 class="agvw-h" style="margin-top:4px">In je voorraad</h3><div class="agvw-g">${St.map(x=>sc(cur=="st:"+x.id,`agvwSub('st:${x.id}')`,"a_snow",capF(x.name),agvAf("st:"+x.id).m,"",(x.q!=null&&x.c?String(Math.round(x.q)).replace(".",",")+(x.c=="m"?" g":x.c=="v"?" ml":" stuks")+" over":""))).join("")}</div><h3 class="agvw-h">Andere diepvriesaardappels</h3>`:""}<div class="agvw-g">${rest.map(a=>sc(cur==a[0],`agvwSub('${a[0]}')`,"a_snow",a[1],a[2]+5,"","")).join("")}</div>`;
+  foot=`<button class="btn ghost" onclick="AGVW.sub=null;agvwDraw()">${ico("chevl")} Terug</button>`}
+ else if(W.sub=="sal"){agvSalLoad();const O=agvSalOwn(),V=agvSalVr(),busy=agvSalBusy(),cur=P.g=="salade"?(P.gs||""):"";const ing=r=>agvwIngTxt({ing:(r.ing||[]).map(String)});
+  body=`<div class="agvw-g">${sc(cur=="basis","agvwSub('basis')","a_leaf","Simpele frisse salade",10,"sla, komkommer, cherrytomaatjes","")}</div>
+  ${O.length?`<h3 class="agvw-h">Van jullie</h3><div class="agvw-g">${O.map(r=>sc(cur=="own:"+r.id,`agvwSub('own:${r.id}')`,"book",capF(r.name),+r.time||0,ing(r),"")).join("")}</div>`:""}
+  ${V.length?`<h3 class="agvw-h">Van vrienden</h3><div class="agvw-g">${V.map(x=>sc(cur=="vr:"+x.f.uid+":"+x.r.id,`agvwSub(${esc(JSON.stringify("vr:"+x.f.uid+":"+x.r.id))})`,"book",capF(x.r.name),+x.r.time||0,ing(x.r),"van "+x.f.naam)).join("")}</div>`:""}
+  ${busy?`<p class="agvw-n">Salades van vrienden laden…</p>`:!O.length&&!V.length?`<p class="agvw-n">Zodra jij, je vrienden of Chef Pieper een salade opslaan, kun je die hier kiezen.</p>`:""}`;
+  foot=`<button class="btn ghost" onclick="AGVW.sub=null;agvwDraw()">${ico("chevl")} Terug</button>`}
+ else if(st==3){const isOn=x=>P[x.w=="v"?"sv":"sg"]==x.k;const card=(x)=>`<button class="agvw-c${isOn(x)?" on":""}" onclick="agvwSaus('${x.k}')" aria-pressed="${isOn(x)}"><span class="agvw-ci">${ico("a_jar")}</span><span class="agvw-cb"><b>${esc(x.n)}</b><small>± ${x.m} min</small><em>${esc(agvwIngTxt(x))}</em></span>${isOn(x)?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
   body=`<p class="agvw-n" style="margin:2px 2px 4px">Kies er één bij het vlees en één bij de groente, of allebei niet. Tik nog eens om uit te vinken.</p><h3 class="agvw-h" style="margin-top:10px">Bij het vlees</h3><div class="agvw-g">${AGVSAUS.filter(x=>x.w=="v").map(card).join("")}</div><h3 class="agvw-h">Bij de groente</h3><div class="agvw-g">${AGVSAUS.filter(x=>x.w=="g").map(card).join("")}</div>`;
   foot=P.sv||P.sg?`<button class="btn" onclick="AGVW.step++;agvwDraw()">Verder ${ico("chevr")}</button>`:`<button class="btn ghost" onclick="AGVW.step++;agvwDraw()">Geen saus</button>`}
  else if(st<3){const c=AGVST[st][0],cat=AGV[c].items,ex=agvRecs(c),busy=c!="v"&&agvSalBusy();
   const card=(k,name,m,ingt,by,ic)=>`<button class="agvw-c${P[c]==k?" on":""}" onclick="agvwPick('${c}',${esc(JSON.stringify(k))})" aria-pressed="${P[c]==k}"><span class="agvw-ci">${ico(ic)}</span><span class="agvw-cb"><b>${esc(name)}</b><small>${m?"± "+m+" min":""}${by?(m?" · ":"")+esc(by):""}</small>${ingt?`<em>${esc(ingt)}</em>`:""}</span>${P[c]==k?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
-  body=`<div class="agvw-g">${cat.map(x=>card(x.k,x.n,x.m,x.af?"friet, wedges, rösti, kroketjes…":x.k=="salade"?"simpel of een salade uit je recepten":agvwIngTxt(x),"",AGV[c].ic)).join("")}</div>
+  body=`<div class="agvw-g">${cat.map(x=>card(x.k,x.n,x.af&&P.a=="airfryer"?agvAf(P.af).m:x.m,x.af?(P.a=="airfryer"?"Gekozen: "+agvAf(P.af).n.replace(/ uit de airfryer$/,"").toLowerCase()+" · tik om te wijzigen":"friet, wedges, rösti, kroketjes… kies uit je vriezer"):x.k=="salade"?(P.g=="salade"&&P.gs?"Gekozen: "+(P.gs=="basis"?"simpele frisse salade":(agvSalad(P.gs)||{n:"salade"}).n.toLowerCase())+" · tik om te wijzigen":"simpel, of een salade uit recepten"):agvwIngTxt(x),"",AGV[c].ic)).join("")}</div>
   ${ex.length?`<h3 class="agvw-h">Uit recepten</h3><div class="agvw-g">${ex.map(e=>card(e.k,capF(e.r.name),+e.r.time||0,agvwIngTxt({ing:(e.r.ing||[]).map(String)}),e.by,"book")).join("")}</div>`:busy?`<p class="agvw-n">Bijgerechten van vrienden laden…</p>`:""}
-  ${c=="a"&&P.a=="airfryer"?`<div id="agvw-sub">${agvAfHtml()}</div>`:""}${c=="g"&&P.g=="salade"?`<div id="agvw-sub">${agvSalHtml()}</div>`:""}`;
-  const sub=(c=="a"&&P.a=="airfryer")||(c=="g"&&P.g=="salade");
-  foot=`<button class="btn ghost" onclick="agvwPick('${c}','');AGVW.step++;agvwDraw()">Sla over</button>${sub||P[c]?`<button class="btn" onclick="AGVW.step++;agvwDraw()">Verder ${ico("chevr")}</button>`:""}`}
+`;
+  foot=`<button class="btn ghost" onclick="agvwPick('${c}','');AGVW.step++;agvwDraw()">Sla over</button>${P[c]?`<button class="btn" onclick="AGVW.step++;agvwDraw()">Verder ${ico("chevr")}</button>`:""}`}
  else{const n=dp(),cnt=AGVK.filter(k=>P[k]).length,r=agvBuild(P,n);let pr="";if(r&&optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr="≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
   const row=(i,c)=>{const x=P[c]&&agvItem(c,P[c],P);return`<div class="agvw-sr"><span class="agvw-ci">${ico(AGVST[i][2])}</span><span class="agvw-cb"><small>${AGV[c].t}</small><b>${x?esc(x.n):"Overgeslagen"}</b></span><button class="lnk" onclick="AGVW.step=${i};agvwDraw()">Wijzig</button></div>`};
   const sr=`<div class="agvw-sr"><span class="agvw-ci">${ico("a_jar")}</span><span class="agvw-cb"><small>Saus</small><b>${agvSauzen(P).length?esc(agvSauzen(P).map(x=>x.n).join(" en ")):"Geen saus"}</b></span><button class="lnk" onclick="AGVW.step=3;agvwDraw()">Wijzig</button></div>`;
@@ -6344,7 +6355,7 @@ function agvwDraw(){const d=$("agvdlg");if(!d||!AGVW)return;const W=AGVW,P=W.P,s
   const dn2=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"});
   foot=`<button class="btn ghost" onclick="agvwClose()">Annuleren</button><button class="btn" onclick="agvwGo()"${cnt>=2?"":" disabled"}>${ico("check")} Zet op ${esc(dn2)}</button>`}
  d.innerHTML=head+`<div class="agvw-b" id="agvw-b">${body}</div><div class="agvw-ft">${foot}</div>`}
-function agvwPick(c,k){const P=AGVW.P,was=P[c];P[c]=k;if(c=="a"&&k!="airfryer")P.af="";if(c=="g"&&k!="salade")P.gs="";if(c=="g"&&k=="bloemkool"&&was!="bloemkool"&&!P.sg)P.sg="kaas";
+function agvwPick(c,k){if(c=="a"&&k=="airfryer"){AGVW.sub="af";agvwDraw();const b=$("agvw-b");if(b)b.scrollTop=0;return}if(c=="g"&&k=="salade"){AGVW.sub="sal";agvwDraw();const b=$("agvw-b");if(b)b.scrollTop=0;return}const P=AGVW.P,was=P[c];P[c]=k;if(c=="a"&&k!="airfryer")P.af="";if(c=="g"&&k!="salade")P.gs="";if(c=="g"&&k=="bloemkool"&&was!="bloemkool"&&!P.sg)P.sg="kaas";
  const sub=(c=="a"&&k=="airfryer")||(c=="g"&&k=="salade");const b=$("agvw-b"),y=b?b.scrollTop:0;
  if(k&&!sub){agvwDraw();setTimeout(()=>{if(AGVW&&AGVW.P[c]==k&&AGVW.step<AGVN){AGVW.step++;agvwDraw();const bb=$("agvw-b");if(bb)bb.scrollTop=0}},260);return}
  agvwDraw();const bb=$("agvw-b");if(bb){bb.scrollTop=y;if(sub){const s2=$("agvw-sub");if(s2)s2.scrollIntoView({block:"nearest",behavior:"smooth"})}}}
@@ -6362,6 +6373,9 @@ function agvSausHtml(){const P=AGVW?AGVW.P:DS.agv;const b=(k,t)=>`<button class=
 function agvSaPick(k){if(!AGVW)return;AGVW.P.sa=k;const bb=$("agvw-b"),y=bb?bb.scrollTop:0;agvwDraw();const b2=$("agvw-b");if(b2)b2.scrollTop=y}
 
 function agvwSaus(k){if(!AGVW)return;const x=agvSaus(k);if(!x)return;const f=x.w=="v"?"sv":"sg";AGVW.P[f]=AGVW.P[f]==k?"":k;const b=$("agvw-b"),y=b?b.scrollTop:0;agvwDraw();const b2=$("agvw-b");if(b2)b2.scrollTop=y}
+
+function agvwSub(v){if(!AGVW)return;const P=AGVW.P;if(AGVW.sub=="af"){P.a="airfryer";P.af=v}else if(AGVW.sub=="sal"){P.g="salade";P.gs=v}AGVW.sub=null;agvwDraw();
+ setTimeout(()=>{if(AGVW&&!AGVW.sub&&AGVW.step<AGVN){AGVW.step++;agvwDraw();const b=$("agvw-b");if(b)b.scrollTop=0}},260)}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
