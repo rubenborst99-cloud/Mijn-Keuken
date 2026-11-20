@@ -6197,7 +6197,7 @@ function agvBuild(P,n){const parts=AGVK.map(c=>P[c]&&{c,x:agvItem(c,P[c])}).filt
  const lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
  let plan="";if(ord.length>1){const by={};for(const p of ord.slice(1)){const d=T-p.x.m;(by[d]=by[d]||[]).push("de "+lc(p.x.n))}
   const ds=Object.keys(by).map(Number).sort((x,y)=>x-y);plan="Zo is alles tegelijk klaar: begin met de "+lc(ord[0].x.n)+"."+ds.map((d,i)=>(i?",":"")+(d>0?" "+(i?"na":"Na")+" "+d+" minuten "+(i?"":"volg"+(by[d].length>1?"en":"t")+" "):" "+(i?"tegelijk":"Tegelijk")+" ")+by[d].join(" en ")).join("")+".";}
- const steps=(plan?[plan]:[]).concat(...ord.map(p=>p.x.st.map(s=>p.x.n+": "+s)));
+ const steps=[].concat(...ord.map(p=>p.x.st));
  return{name:agvName(P),pers:n,type:"Hoofdgerecht",level:"Makkelijk",time:T+5,ing,steps:steps.join("\n"),agv:{a:P.a||"",g:P.g||"",v:P.v||""}}}
 // ---- tegel + scherm in "Wat eten we?"
 {const _t=dsTiles;dsTiles=function(){_t();const g=document.querySelector("#dsM .ds2ts");if(!g)return;
@@ -6208,7 +6208,7 @@ function agvHtml(){const P=DS.agv,dn=pdk(DS.day).toLocaleDateString("nl-NL",{wee
  const sec=c=>{const C=AGV[c];return`<div class="agv-s"><h4 class="ds2lh">${ico(C.ic)} ${C.t}</h4><div class="agv-g" role="radiogroup" aria-label="${C.t}">${C.items.map(x=>`<button class="agv-c${P[c]==x.k?" on":""}" role="radio" aria-checked="${P[c]==x.k}" onclick="agvPick('${c}','${x.k}')"><b>${esc(x.n)}</b><small>± ${x.m} min</small></button>`).join("")}<button class="agv-c agv-no${!P[c]?" on":""}" role="radio" aria-checked="${!P[c]}" onclick="agvPick('${c}','')"><b>Geen</b><small>Sla over</small></button></div></div>`};
  const r=agvBuild(P,n),cnt=AGVK.filter(c=>P[c]).length;let pv="";
  if(r&&cnt>=2){let pr="";if(optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr=" · ≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
-  pv=`<div class="agv-p"><span class="agv-pi">${ico("plate")}</span><div><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr}</small><small>${r.ing.length} ingrediënten · de bereiding staat op volgorde, zodat alles tegelijk klaar is</small></div></div>`}
+  pv=`<div class="agv-p"><span class="agv-pi">${ico("plate")}</span><div><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr}</small><small>${r.ing.length} ingrediënten · de bereiding begint met wat het langst duurt</small></div></div>`}
  return`<div class="ds2h"><h3>AGV op ${esc(dn)}</h3><p>Kies je aardappel, groente en vlees. Wij maken er één recept van, met boodschappen en bereiding.</p></div>${pv}${AGVK.map(sec).join("")}`}
 function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.scrollTop:0;dsBody();dsCta();if(b)b.scrollTop=y}
 {const _c=dsCta;dsCta=function(){if(DS.mode!="agv")return _c();const dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"}),cnt=AGVK.filter(c=>DS.agv&&DS.agv[c]).length,ok=cnt>=2;
@@ -6221,6 +6221,13 @@ function agvPick(c,k){DS.agv[c]=k;const b=document.getElementById("dsb"),y=b?b.s
 // AGV-recepten horen niet tussen je eigen recepten (ze staan wel in je weekmenu)
 {const _v=recView;recView=function(){return _v().filter(r=>!r.agv)}}
 {const _p=dsPass;dsPass=function(r){return!r.agv&&_p(r)}}
+
+// oude AGV-recepten: planningsstap en "Onderdeel: " voor elke stap weghalen
+function agvTidy(){const NM=AGVK.flatMap(c=>AGV[c].items.map(x=>x.n));let ch=false;
+ for(const r of S.recipes||[]){if(!r.agv||typeof r.steps!="string")continue;let L=r.steps.split("\n");if(/^Zo is alles tegelijk klaar/.test(L[0]))L=L.slice(1);
+  L=L.map(x=>{for(const n of NM)if(x.startsWith(n+": "))return x.slice(n.length+2);return x});const t=L.join("\n");if(t!=r.steps){r.steps=t;ch=true}}
+ if(ch){save();draw()}return ch}
+setTimeout(agvTidy,1600);
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
