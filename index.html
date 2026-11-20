@@ -2442,6 +2442,40 @@ body[data-tab="rec"] h2.pt{margin-bottom:2px}
 .agv-af p{margin:0 0 8px;font-weight:600;font-size:.9rem}
 .agv-afc{display:flex;flex-wrap:wrap;gap:6px}.agv-afc .ds2c small{font-weight:400;opacity:.75;font-size:.75rem}
 .agv-n{margin:8px 0 0!important;font-weight:400!important;color:var(--mute);font-size:.84rem!important}
+/* ---- AGV-keuzevenster */
+#agvdlg.agvw{padding:0;background:var(--bg);color:var(--ink);border:0;width:100vw;max-width:100vw;height:92dvh;max-height:92dvh;margin:auto 0 0;border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden}
+#agvdlg.agvw:not([open]){display:none}
+.agvw .ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.agvw-hd{display:flex;align-items:center;gap:10px;padding:16px 16px 8px}
+.agvw-bk,.agvw-x{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;flex:none}
+.agvw-x{display:none}
+.agvw-tt{flex:1;min-width:0}.agvw-tt small{color:var(--mute);font-size:.8rem}.agvw-tt h2{font:600 1.35rem "Fraunces",serif;margin:2px 0 0}
+.agvw-pr{display:flex;gap:6px;padding:4px 16px 10px}.agvw-pr i{flex:1;height:5px;border-radius:3px;background:var(--line)}.agvw-pr i.done{background:var(--green);opacity:.45}.agvw-pr i.on{background:var(--green)}
+.agvw-b{flex:1;overflow-y:auto;padding:4px 16px 16px;overscroll-behavior:contain}
+.agvw-g{display:grid;grid-template-columns:1fr;gap:8px}
+.agvw-c{display:flex;align-items:center;gap:12px;text-align:left;padding:12px;border-radius:16px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.agvw-c.on{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green);background:rgba(184,68,31,.06)}
+.agvw-ci{width:40px;height:40px;border-radius:12px;background:var(--t-green);color:var(--sagefg);display:grid;place-items:center;flex:none}.agvw-ci .ic{width:18px;height:18px}
+.agvw-cb{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.agvw-cb b{font-weight:600}.agvw-cb small{color:var(--mute);font-size:.8rem}.agvw-cb em{font-style:normal;color:var(--mute);font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.agvw-ck{width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;flex:none}.agvw-ck .ic{width:15px;height:15px}
+.agvw-h{font:700 .95rem "DM Sans";margin:18px 2px 8px}
+.agvw-n{color:var(--mute);font-size:.88rem;margin:12px 2px}
+#agvw-sub .agv-af{margin-top:12px}
+.agvw-ft{display:flex;gap:10px;padding:12px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--bg)}
+.agvw-ft .btn{flex:1;justify-content:center;display:inline-flex;align-items:center;gap:6px;border-radius:14px;padding:13px}.agvw-ft .btn .ic{width:16px;height:16px}
+.agvw-sum{background:var(--t-green);border-radius:18px;padding:16px;margin-bottom:12px}.agvw-sum b{display:block;font:600 1.2rem "Fraunces",serif}.agvw-sum small{display:block;margin-top:4px;opacity:.85}
+.agvw-sl{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.agvw-sr{display:flex;align-items:center;gap:12px;padding:12px;border-top:1px solid var(--line)}.agvw-sr:first-child{border-top:0}
+.agvw-ing{margin-top:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}.agvw-ing summary{cursor:pointer;font-weight:600}.agvw-ing ul{margin:8px 0 0;padding-left:18px;color:var(--ink)}.agvw-ing li{margin:3px 0}
+@media(min-width:1024px){
+ #agvdlg.agvw{width:min(680px,92vw);height:min(760px,90vh);margin:auto;border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+ .agvw-x{display:grid}.agvw-hd{padding:22px 24px 8px}.agvw-pr{padding:4px 24px 12px}.agvw-b{padding:4px 24px 20px}.agvw-ft{padding:14px 24px 20px;justify-content:flex-end}.agvw-ft .btn{flex:none;padding:12px 22px}
+ .agvw-g{grid-template-columns:1fr 1fr}
+}
+.agvw-g{grid-template-columns:minmax(0,1fr)}.agvw-c{min-width:0;width:100%;box-sizing:border-box}
+.agvw-ft .btn.ghost{flex:0 0 auto;padding:13px 18px}
+@media(min-width:1024px){.agvw-g{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.agvw-ft .btn:only-child{flex:1}@media(min-width:1024px){.agvw-ft .btn:only-child{flex:none}}
 </style><style id="thema">:root[data-theme="dark"]{--bg:#1c1814;--card:#27211c;--ink:#f3ebe0;--mute:#b3a698;--line:#3b332b;--green:#ec8a5f;--on:#1c1814;--sunbg:#3a2f1a;--danger:#ff8a80;--sage:#22302a;--sagefg:#8fd0b0;color-scheme:dark}
 :root[data-theme="dark"]{--ing-bg:#5b3420;--ing-fg:#ffcfa6}
 :root[data-theme="dark"]{--made-bg:#1f3a2e;--made-fg:#8fe0b4}
@@ -6212,7 +6246,7 @@ function agvAf(key){let nm,m=15,it;
  if(!nm){const a=AGVAF.find(z=>z[0]==key)||AGVAF[0];nm=a[1];m=a[2];it=a[3]}
  const lc=nm.charAt(0).toLowerCase()+nm.slice(1);
  return{k:"airfryer",n:nm+" uit de airfryer",m:m+5,ing:[it],st:["Verwarm de airfryer voor op 200 °C.","Bak de "+lc+" in ± "+m+" minuten goudbruin en gaar. Schud halverwege.","Bestrooi met wat zout."]}}
-function agvItem(c,k,P){if(c=="a"&&k=="airfryer")return agvAf(P&&P.af);if(c=="g"&&k=="salade"&&P&&P.gs&&P.gs!="basis"){const x=agvSalad(P.gs);if(x)return x}return AGV[c].items.find(x=>x.k==k)}
+function agvItem(c,k,P){if(/^(own|vr):/.test(k||""))return agvSalad(k);if(c=="a"&&k=="airfryer")return agvAf(P&&P.af);if(c=="g"&&k=="salade"&&P&&P.gs&&P.gs!="basis"){const x=agvSalad(P.gs);if(x)return x}return AGV[c].items.find(x=>x.k==k)}
 function agvQty(a,u,n){let x=a*n;if(!u){x=Math.round(x*2)/2;if(x<.5)x=.5}else if(/^(g|ml)$/.test(u))x=x>=100?Math.round(x/10)*10:Math.round(x/5)*5;else x=Math.round(x*2)/2;return x}
 function agvLine(it,n){const[a,u,nm,pl]=it,x=agvQty(a,u,n),num=String(x).replace(".",",");return(num+" "+(u?u+" ":"")+(!u&&x>1&&pl?pl:nm)).trim()}
 function agvName(P){const A=P.a&&agvItem("a",P.a,P),G=P.g&&agvItem("g",P.g,P),V=P.v&&agvItem("v",P.v,P),lc=s=>s.charAt(0).toLowerCase()+s.slice(1);
@@ -6261,6 +6295,49 @@ function agvTidy(){const NM=AGVK.flatMap(c=>AGV[c].items.map(x=>x.n)).concat(["F
   L=L.map(x=>{for(const n of NM)if(x.startsWith(n+": "))return x.slice(n.length+2);return x});const t=L.join("\n");if(t!=r.steps){r.steps=t;ch=true}}
  if(ch){save();draw()}return ch}
 setTimeout(agvTidy,1600);
+
+// ================= AGV-keuzevenster in stappen =================
+const AGVRX={a:/(aardappel|kriel|puree|friet|patat|r[öo]sti|gratin|stamppot|wedges|pommes)/i,g:/(groente|bonen|broccoli|bloemkool|spruit|wortel|peen|spinazie|kool|courgette|aubergine|asperge|erwt|witlof|andijvie|paprika|champignon|venkel|prei|biet|pompoen|zuurkool|spitskool|paksoi|sla\b)/i};
+let AGVW=null;
+(function(){if(document.getElementById("agvdlg"))return;const d=document.createElement("dialog");d.id="agvdlg";d.className="agvw";d.setAttribute("aria-label","AGV samenstellen");document.body.appendChild(d)})();
+function agvRecs(c){if(c=="v")return[];const ok=r=>r&&!r.agv&&AGVRX[c].test(r.name||"")&&!(c=="g"&&agvIsSal(r))&&!/hoofdgerecht/i.test(mainCat(r));
+ const own=dedupR(S.recipes||[]).filter(ok).map(r=>({k:"own:"+r.id,r,by:"van jullie"}));const vr=[];
+ if(typeof VRON!="undefined"&&VRON)for(const f of vrFriends()){const v=DSV[f.uid];if(Array.isArray(v))v.forEach(r=>{if(ok(r))vr.push({k:"vr:"+f.uid+":"+r.id,r,by:"van "+f.naam})})}
+ return own.concat(vr)}
+function agvOpen(){AGVW={step:0,P:{a:"",g:"",v:"",af:"",gs:""}};agvSalLoad();agvwDraw();const d=$("agvdlg");if(!d.open)d.showModal()}
+function agvwClose(){const d=$("agvdlg");if(d&&d.open)d.close();AGVW=null}
+const AGVST=[["a","Kies je aardappel","a_pot"],["g","Kies je groente","a_leaf"],["v","Kies je vlees, vis of vega","plate"]];
+function agvwIngTxt(x){if(!x)return"";const L=(x.ing||[]).map(i=>typeof i=="string"?(()=>{try{return parse(i).name}catch(e){return i}})():i[2]);return L.filter(Boolean).slice(0,3).join(", ")+(L.length>3?" …":"")}
+function agvwDraw(){const d=$("agvdlg");if(!d||!AGVW)return;const W=AGVW,P=W.P,st=W.step,dn=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long",day:"numeric",month:"long"});
+ const prog=`<div class="agvw-pr">${AGVST.map((x,i)=>`<i class="${i<st?"done":i==st?"on":""}"></i>`).join("")}<i class="${st==3?"on":""}"></i></div>`;
+ const head=`<div class="agvw-hd"><button class="agvw-bk" onclick="${st?"AGVW.step--;agvwDraw()":"agvwClose()"}" aria-label="${st?"Vorige stap":"Sluiten"}">${ico(st?"chevl":"close")}</button><div class="agvw-tt"><small>${st<3?"Stap "+(st+1)+" van 3":"Overzicht"} · ${esc(dn)}</small><h2>${st<3?AGVST[st][1]:"Jouw AGV"}</h2></div><button class="agvw-x" onclick="agvwClose()" aria-label="Sluiten">${ico("close")}</button></div>${prog}`;
+ let body="",foot="";
+ if(st<3){const c=AGVST[st][0],cat=AGV[c].items,ex=agvRecs(c),busy=c!="v"&&agvSalBusy();
+  const card=(k,name,m,ingt,by,ic)=>`<button class="agvw-c${P[c]==k?" on":""}" onclick="agvwPick('${c}',${esc(JSON.stringify(k))})" aria-pressed="${P[c]==k}"><span class="agvw-ci">${ico(ic)}</span><span class="agvw-cb"><b>${esc(name)}</b><small>${m?"± "+m+" min":""}${by?(m?" · ":"")+esc(by):""}</small>${ingt?`<em>${esc(ingt)}</em>`:""}</span>${P[c]==k?`<span class="agvw-ck">${ico("check")}</span>`:""}</button>`;
+  body=`<div class="agvw-g">${cat.map(x=>card(x.k,x.n,x.m,x.af?"friet, wedges, rösti, kroketjes…":x.k=="salade"?"simpel of een salade uit je recepten":agvwIngTxt(x),"",AGV[c].ic)).join("")}</div>
+  ${ex.length?`<h3 class="agvw-h">Uit recepten</h3><div class="agvw-g">${ex.map(e=>card(e.k,capF(e.r.name),+e.r.time||0,agvwIngTxt({ing:(e.r.ing||[]).map(String)}),e.by,"book")).join("")}</div>`:busy?`<p class="agvw-n">Bijgerechten van vrienden laden…</p>`:""}
+  ${c=="a"&&P.a=="airfryer"?`<div id="agvw-sub">${agvAfHtml()}</div>`:""}${c=="g"&&P.g=="salade"?`<div id="agvw-sub">${agvSalHtml()}</div>`:""}`;
+  const sub=(c=="a"&&P.a=="airfryer")||(c=="g"&&P.g=="salade");
+  foot=`<button class="btn ghost" onclick="agvwPick('${c}','');AGVW.step++;agvwDraw()">Sla over</button>${sub||P[c]?`<button class="btn" onclick="AGVW.step++;agvwDraw()">Verder ${ico("chevr")}</button>`:""}`}
+ else{const n=dp(),cnt=AGVK.filter(k=>P[k]).length,r=agvBuild(P,n);let pr="";if(r&&optOn("prices"))try{const c=recCost({...r,id:-1},n);if(c.k)pr="≈ "+eur(c.tot/n)+" per persoon"}catch(e){}
+  const row=(i,c)=>{const x=P[c]&&agvItem(c,P[c],P);return`<div class="agvw-sr"><span class="agvw-ci">${ico(AGVST[i][2])}</span><span class="agvw-cb"><small>${AGV[c].t}</small><b>${x?esc(x.n):"Overgeslagen"}</b></span><button class="lnk" onclick="AGVW.step=${i};agvwDraw()">Wijzig</button></div>`};
+  body=cnt>=2&&r?`<div class="agvw-sum"><b>${esc(r.name)}</b><small>Klaar in ± ${r.time} min · ${n} ${n==1?"persoon":"personen"}${pr?" · "+pr:""}</small></div><div class="agvw-sl">${AGVK.map((c,i)=>row(i,c)).join("")}</div><details class="agvw-ing"><summary>${r.ing.length} ingrediënten</summary><ul>${r.ing.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></details>`
+   :`<div class="agvw-sl">${AGVK.map((c,i)=>row(i,c)).join("")}</div><p class="agvw-n">Kies er minstens twee om een AGV te maken.</p>`;
+  const dn2=pdk(DS.day).toLocaleDateString("nl-NL",{weekday:"long"});
+  foot=`<button class="btn ghost" onclick="agvwClose()">Annuleren</button><button class="btn" onclick="agvwGo()"${cnt>=2?"":" disabled"}>${ico("check")} Zet op ${esc(dn2)}</button>`}
+ d.innerHTML=head+`<div class="agvw-b" id="agvw-b">${body}</div><div class="agvw-ft">${foot}</div>`}
+function agvwPick(c,k){const P=AGVW.P;P[c]=k;if(c=="a"&&k!="airfryer")P.af="";if(c=="g"&&k!="salade")P.gs="";
+ const sub=(c=="a"&&k=="airfryer")||(c=="g"&&k=="salade");const b=$("agvw-b"),y=b?b.scrollTop:0;
+ if(k&&!sub){agvwDraw();setTimeout(()=>{if(AGVW&&AGVW.P[c]==k&&AGVW.step<3){AGVW.step++;agvwDraw();const bb=$("agvw-b");if(bb)bb.scrollTop=0}},260);return}
+ agvwDraw();const bb=$("agvw-b");if(bb){bb.scrollTop=y;if(sub){const s2=$("agvw-sub");if(s2)s2.scrollIntoView({block:"nearest",behavior:"smooth"})}}}
+function agvwGo(){if(!AGVW)return;DS.agv={...AGVW.P};DS.mode="agv";agvwClose();dsGo()}
+// de keuzerijen (airfryer/salade) schrijven in het venster als het open is
+{const _p=agvPick;agvPick=function(c,k){if(AGVW){AGVW.P.af=DS.agv&&DS.agv.af||AGVW.P.af;AGVW.P.gs=DS.agv&&DS.agv.gs||AGVW.P.gs;return agvwPick(c,k)}return _p(c,k)}}
+{const _a=agvAfHtml;agvAfHtml=function(){if(AGVW){DS.agv=AGVW.P}return _a()}}
+{const _s=agvSalHtml;agvSalHtml=function(){if(AGVW){DS.agv=AGVW.P}return _s()}}
+// tegel opent het venster; vriendenrecepten die binnenkomen verversen het venster
+{const _t=dsTiles;dsTiles=function(){_t();const b=[...document.querySelectorAll("#dsM .ds2t")].find(x=>/AGV/.test(x.textContent));if(b){b.setAttribute("onclick","agvOpen()");b.classList.remove("on");b.setAttribute("aria-pressed","false")}}}
+{const _b=dsBody;dsBody=function(){if(AGVW&&$("agvdlg")&&$("agvdlg").open){const b=$("agvw-b"),y=b?b.scrollTop:0;agvwDraw();const bb=$("agvw-b");if(bb)bb.scrollTop=y}if(DS.mode=="agv")DS.mode="rec";return _b()}}
 
 function ft(){$("ft").innerHTML="";return;$("ft").innerHTML=`<button class="acl" onclick="go('account')" aria-label="Account en instellingen"><i id="sdot" class="sd ${sb?(/mislukt/i.test(statTxt)?"bad":"ok"):"off"}"></i>Account</button>`}
 async function autoBackup(force){if(!sb||!uid||!HH||!S.recipes||!S.recipes.length)return false;const day=new Date().toISOString().slice(0,10);try{if(!force&&localStorage.getItem("kbk")==day)return true}catch(e){}
